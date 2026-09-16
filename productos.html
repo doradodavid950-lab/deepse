@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Sea Intelligence — Productos</title>
+<style>
+  :root{
+    --azul-oscuro:#062B5B;
+    --azul-oscuro-2:#083868;
+    --azul-medio:#1E66F5;
+    --azul-claro:#D9ECFF;
+    --verde-suave:#B9F5C5;
+    --verde-txt:#1B8A5A;
+    --rojo:#E53935;
+    --naranja:#FFA94D;
+    --amarillo:#FFD76A;
+    --morado:#E7D7FF;
+    --morado-txt:#7B5CC7;
+    --gris-claro:#F3F5F9;
+    --gris-borde:#E4E9F0;
+    --blanco:#FFFFFF;
+    --texto-principal:#0F2540;
+    --texto-secundario:#5B7089;
+    --sombra: 0 10px 30px rgba(6,43,91,.08);
+    --radio: 16px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--gris-claro);
+    color:var(--texto-principal);
+  }
+
+  .app{
+    display:grid;
+    grid-template-columns: 250px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------------- SIDEBAR ---------------- */
+  .sidebar{
+    background:var(--azul-oscuro);
+    color:#EAF1FC;
+    display:flex;
+    flex-direction:column;
+    padding:22px 16px;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
+  .sb-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 10px 22px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    margin-bottom:14px;
+  }
+  .sb-brand .badge{
+    width:38px;height:38px;border-radius:11px;
+    background:rgba(255,255,255,.12);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .sb-brand .name{ font-weight:700; font-size:16px; line-height:1.1;}
+  .sb-brand .name span{ color:var(--amarillo); }
+  .sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); }
+
+  nav.sb-nav{
+    flex:1;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .sb-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:10px;
+    color:rgba(255,255,255,.72);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    border:none;
+    background:none;
+    width:100%;
+    text-align:left;
+  }
+  .sb-link svg{ flex:0 0 auto; opacity:.85; }
+  .sb-link:hover{ background:rgba(255,255,255,.06); color:#fff; }
+  .sb-link.active{
+    background:var(--azul-medio);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(30,102,245,.35);
+  }
+
+  .sb-footer{
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-top:14px;
+    margin-top:10px;
+  }
+  .sb-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 8px;
+  }
+  .sb-user .avatar{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--verde-suave);
+    color:var(--azul-oscuro);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700; font-size:13px;
+  }
+  .sb-user .info strong{ display:block; font-size:13px; }
+  .sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+  .sb-logout{
+    display:flex;align-items:center;gap:8px;
+    width:100%;
+    margin-top:8px;
+    border:none;
+    background:rgba(229,57,53,.15);
+    color:#FFC7C5;
+    padding:9px 12px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .sb-logout:hover{ background:rgba(229,57,53,.28); }
+
+  /* ---------------- MAIN ---------------- */
+  main{ padding:26px 32px 50px; }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:26px;
+  }
+  .topbar h1{ font-size:23px; margin:0; }
+  .topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px;}
+  .top-actions{ display:flex; align-items:center; gap:16px; }
+  .icon-btn{
+    width:40px;height:40px;border-radius:12px;
+    background:var(--blanco);
+    border:1px solid var(--gris-borde);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    position:relative;
+    color:var(--azul-oscuro);
+  }
+  .icon-btn:hover{ border-color:var(--azul-medio); }
+  .dot-alert{
+    position:absolute; top:8px; right:9px;
+    width:7px;height:7px;border-radius:50%;
+    background:var(--rojo);
+    border:1.5px solid var(--blanco);
+  }
+  .top-user{
+    display:flex; align-items:center; gap:10px;
+    background:var(--blanco);
+    border:1px solid var(--gris-borde);
+    padding:6px 14px 6px 6px;
+    border-radius:30px;
+  }
+  .top-user .avatar{
+    width:30px;height:30px;border-radius:50%;
+    background:var(--azul-claro);
+    color:var(--azul-oscuro);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:12px;
+  }
+  .top-user span{ font-size:13.5px; font-weight:600; }
+
+  /* ---------------- PANEL / TOOLBAR ---------------- */
+  .panel{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:20px;
+    margin-bottom:18px;
+  }
+  .panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .panel-head h3{ margin:0; font-size:15.5px; }
+  .panel-head p{ margin:2px 0 0; font-size:12.5px; color:var(--texto-secundario); }
+
+  .btn-primary{
+    border:none;
+    border-radius:10px;
+    padding:10px 18px;
+    background:var(--azul-oscuro);
+    color:var(--blanco);
+    font-size:13.5px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:background .15s;
+  }
+  .btn-primary:hover{ background:var(--azul-medio); }
+
+  .btn-ghost{
+    border:1.5px solid var(--gris-borde);
+    border-radius:10px;
+    padding:9px 16px;
+    background:var(--blanco);
+    color:var(--texto-principal);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .btn-ghost:hover{ border-color:var(--azul-medio); }
+
+  /* Filtros */
+  .filters{
+    display:grid;
+    grid-template-columns: 2fr 1fr 1fr auto auto;
+    gap:10px;
+    margin-bottom:18px;
+    align-items:end;
+  }
+  .filters label{
+    display:block;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--texto-secundario);
+    margin-bottom:5px;
+  }
+  .filters input, .filters select{
+    width:100%;
+    padding:9px 10px;
+    border:1.5px solid var(--gris-borde);
+    border-radius:9px;
+    background:var(--gris-claro);
+    font-size:13px;
+    color:var(--texto-principal);
+  }
+  .filters input:focus, .filters select:focus{
+    outline:none;
+    border-color:var(--azul-medio);
+    background:var(--blanco);
+  }
+
+  .count-badge{
+    display:inline-block;
+    background:var(--azul-claro);
+    color:var(--azul-oscuro);
+    font-size:12px;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:30px;
+    margin-left:8px;
+  }
+
+  /* Tabla */
+  table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
+  table.simple th{
+    text-align:left;
+    color:var(--texto-secundario);
+    font-weight:600;
+    font-size:11.5px;
+    padding:10px 8px;
+    border-bottom:1.5px solid var(--gris-borde);
+  }
+  table.simple td{
+    padding:12px 8px;
+    border-bottom:1px solid #F0F3F7;
+    vertical-align:middle;
+  }
+  table.simple tr:last-child td{ border-bottom:none; }
+  table.simple tr:hover td{ background:#FAFBFD; }
+
+  .pill{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+  }
+  .pill.activo{ background:var(--verde-suave); color:#146142; }
+  .pill.inactivo{ background:#F0F0F0; color:#666; }
+
+  .cat-tag{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+    background:var(--azul-claro);
+    color:var(--azul-oscuro);
+  }
+
+  .row-actions{ display:flex; gap:6px; }
+  .action-btn{
+    width:30px;height:30px;
+    border:1px solid var(--gris-borde);
+    border-radius:8px;
+    background:var(--blanco);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    color:var(--texto-secundario);
+  }
+  .action-btn:hover{ border-color:var(--azul-medio); color:var(--azul-medio); }
+  .action-btn.danger:hover{ border-color:var(--rojo); color:var(--rojo); }
+
+  .empty-state, .loading-state{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--texto-secundario);
+    font-size:13.5px;
+  }
+  .empty-state div.icon{ font-size:36px; margin-bottom:10px; }
+
+  /* ---------------- MODAL ---------------- */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(6,20,45,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal-card{
+    background:var(--blanco);
+    border-radius:18px;
+    width:100%;
+    max-width:560px;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:26px;
+  }
+  .modal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+  }
+  .modal-head h3{ margin:0; font-size:18px; color:var(--azul-oscuro); }
+  .modal-close{
+    border:none; background:none; cursor:pointer;
+    color:var(--texto-secundario);
+    width:32px;height:32px;
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .modal-close:hover{ background:var(--gris-claro); }
+
+  .form-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:14px;
+  }
+  .form-grid .full{ grid-column: 1 / -1; }
+  .field{ margin-bottom:0; }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--azul-oscuro);
+    margin-bottom:6px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;
+    padding:10px 12px;
+    border:1.5px solid var(--gris-borde);
+    border-radius:10px;
+    background:var(--gris-claro);
+    font-size:13.5px;
+    color:var(--texto-principal);
+    font-family:inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none;
+    border-color:var(--azul-medio);
+    background:var(--blanco);
+  }
+  .field textarea{ resize:vertical; min-height:70px; }
+  .field-error{
+    color:var(--rojo);
+    font-size:11.5px;
+    margin-top:5px;
+    display:none;
+  }
+  .field.invalid input, .field.invalid select{ border-color:var(--rojo); background:#FFF4F3; }
+  .field.invalid .field-error{ display:block; }
+
+  .modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid var(--gris-borde);
+  }
+
+  .toast{
+    position:fixed;
+    top:22px;
+    right:22px;
+    background:var(--azul-oscuro);
+    color:#fff;
+    padding:14px 20px;
+    border-radius:12px;
+    font-size:14px;
+    box-shadow:0 18px 45px rgba(6,43,91,.18);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transform: translateY(-140%);
+    opacity:0;
+    transition: transform .35s ease, opacity .35s ease;
+    z-index:200;
+  }
+  .toast.show{ transform: translateY(0); opacity:1; }
+  .toast.error{ background:var(--rojo); }
+  .toast.success{ background:#1B8A5A; }
+
+  @media (max-width: 1100px){
+    .filters{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 800px){
+    .app{ grid-template-columns:1fr; }
+    .sidebar{ display:none; }
+    main{ padding:18px; }
+    .form-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sb-brand">
+      <div class="badge">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/><circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/></svg>
+      </div>
+      <div>
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
+      </div>
+    </div>
+
+    <nav class="sb-nav" id="sbNav">
+      <a class="sb-link" data-view="inicio" href="inicio.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
+        Inicio
+      </a>
+      <a class="sb-link active" data-view="productos" href="productos.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Productos
+      </a>
+      <a class="sb-link" data-view="proveedores" href="proveedores.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Proveedores
+      </a>
+      <a class="sb-link" data-view="recepciones" href="recepciones.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Recepciones
+      </a>
+      <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Almacenamiento
+      </a>
+      <a class="sb-link" data-view="ventas" href="ventas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Ventas
+      </a>
+      <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
+        Trazabilidad
+      </a>
+      <a class="sb-link" data-view="reportes" href="reportes.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Reportes
+      </a>
+      <a class="sb-link" data-view="normas" href="normas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
+        Normas y Calidad
+      </a>
+      <a class="sb-link" data-view="usuarios" href="usuarios.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
+        Usuarios
+      </a>
+      <a class="sb-link" data-view="configuracion" href="configuracion.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Configuración
+      </a>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="avatar" id="sbAvatar">C</div>
+        <div class="info">
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
+        </div>
+      </div>
+      <button class="sb-logout" id="logoutBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8"/></svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <div class="topbar">
+      <div>
+        <h1>Productos</h1>
+        <div class="subtitle">Gestiona y consulta los productos marinos registrados</div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" title="Notificaciones">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="dot-alert"></span>
+        </button>
+        <div class="top-user">
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <h3>Filtros de búsqueda</h3>
+        </div>
+        <button class="btn-primary" id="btnNuevo">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Nuevo producto
+        </button>
+      </div>
+      <div class="filters">
+        <div>
+          <label>Buscar producto</label>
+          <input type="text" id="fSearch" placeholder="Nombre común o científico">
+        </div>
+        <div>
+          <label>Categoría</label>
+          <select id="fCategoria">
+            <option value="">Todas las categorías</option>
+            <option value="Peces">Peces</option>
+            <option value="Mariscos">Mariscos</option>
+            <option value="Moluscos">Moluscos</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label>Estado</label>
+          <select id="fEstado">
+            <option value="">Todos los estados</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
+        <button class="btn-ghost" id="btnLimpiar">Limpiar</button>
+        <button class="btn-primary" id="btnBuscar">Buscar</button>
+      </div>
+    </div>
+
+    <!-- Listado -->
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Lista de productos <span class="count-badge" id="countBadge">0</span></h3>
+      </div>
+
+      <div id="loadingState" class="loading-state">Cargando productos...</div>
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="icon">🐟</div>
+        No hay productos registrados todavía. Crea el primero con "Nuevo producto".
+      </div>
+
+      <table class="simple" id="tablaProductos" style="display:none;">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Nombre científico</th>
+            <th>Categoría</th>
+            <th>Proveedor</th>
+            <th>Fecha captura</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyProductos"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL Nuevo/Editar producto -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modalTitle">Nuevo producto</h3>
+      <button class="modal-close" id="modalClose">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <form id="formProducto" novalidate>
+      <input type="hidden" id="productoId">
+
+      <div class="form-grid">
+        <div class="field full" id="fieldNombre">
+          <label for="pNombre">Nombre del producto *</label>
+          <input type="text" id="pNombre" placeholder="Ej. Pargo Rojo">
+          <div class="field-error">El nombre es obligatorio.</div>
+        </div>
+
+        <div class="field">
+          <label for="pCientifico">Nombre científico</label>
+          <input type="text" id="pCientifico" placeholder="Ej. Lutjanus campechanus">
+        </div>
+
+        <div class="field" id="fieldCategoria">
+          <label for="pCategoria">Categoría *</label>
+          <select id="pCategoria">
+            <option value="">Seleccione</option>
+            <option value="Peces">Peces</option>
+            <option value="Mariscos">Mariscos</option>
+            <option value="Moluscos">Moluscos</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <div class="field-error">Selecciona una categoría.</div>
+        </div>
+
+        <div class="field">
+          <label for="pProveedor">Proveedor</label>
+          <input type="text" id="pProveedor" placeholder="Nombre del proveedor">
+        </div>
+
+        <div class="field">
+          <label for="pFecha">Fecha de captura</label>
+          <input type="date" id="pFecha">
+        </div>
+
+        <div class="field">
+          <label for="pOrigen">Lugar de origen</label>
+          <input type="text" id="pOrigen" placeholder="Ej. Bahía de Cartagena">
+        </div>
+
+        <div class="field">
+          <label for="pEstado">Estado</label>
+          <select id="pEstado">
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label for="pDescripcion">Descripción</label>
+          <textarea id="pDescripcion" placeholder="Descripción del producto (opcional)"></textarea>
+        </div>
+
+        <div class="field full">
+          <label for="pObservaciones">Observaciones</label>
+          <textarea id="pObservaciones" placeholder="Observaciones (opcional)"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-ghost" id="btnCancelar">Cancelar</button>
+        <button type="submit" class="btn-primary" id="btnGuardar">
+          <span id="btnGuardarLabel">Guardar producto</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- SDK de Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+
+<script>
+(async function(){
+  // ---------- Guard de sesión ----------
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  const fullName = session.user.user_metadata && session.user.user_metadata.full_name
+    ? session.user.user_metadata.full_name
+    : session.user.email;
+  const initial = fullName.charAt(0).toUpperCase();
+  document.getElementById('sbUserName').textContent = fullName;
+  document.getElementById('topUserName').textContent = fullName;
+  document.getElementById('sbAvatar').textContent = initial;
+  document.getElementById('topAvatar').textContent = initial;
+
+  document.getElementById('logoutBtn').addEventListener('click', async function(){
+    await supabaseClient.auth.signOut();
+    window.location.href = 'login.html';
+  });
+
+  // ---------- Referencias DOM ----------
+  const tbody          = document.getElementById('tbodyProductos');
+  const tabla           = document.getElementById('tablaProductos');
+  const loadingState    = document.getElementById('loadingState');
+  const emptyState      = document.getElementById('emptyState');
+  const countBadge      = document.getElementById('countBadge');
+
+  const fSearch    = document.getElementById('fSearch');
+  const fCategoria = document.getElementById('fCategoria');
+  const fEstado    = document.getElementById('fEstado');
+
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalTitle    = document.getElementById('modalTitle');
+  const form           = document.getElementById('formProducto');
+  const productoId     = document.getElementById('productoId');
+  const btnGuardarLabel = document.getElementById('btnGuardarLabel');
+  const btnGuardar      = document.getElementById('btnGuardar');
+
+  const pNombre        = document.getElementById('pNombre');
+  const pCientifico     = document.getElementById('pCientifico');
+  const pCategoria      = document.getElementById('pCategoria');
+  const pProveedor      = document.getElementById('pProveedor');
+  const pFecha           = document.getElementById('pFecha');
+  const pOrigen          = document.getElementById('pOrigen');
+  const pEstado           = document.getElementById('pEstado');
+  const pDescripcion     = document.getElementById('pDescripcion');
+  const pObservaciones   = document.getElementById('pObservaciones');
+
+  const toast = document.getElementById('toast');
+
+  let productosCache = [];
+
+  function showToast(message, type){
+    toast.textContent = message;
+    toast.className = 'toast show' + (type ? ' ' + type : '');
+    setTimeout(() => { toast.className = 'toast'; }, 3200);
+  }
+
+  // ---------- Cargar productos desde Supabase ----------
+  async function cargarProductos(){
+    loadingState.style.display = 'block';
+    tabla.style.display = 'none';
+    emptyState.style.display = 'none';
+
+    const { data, error } = await supabaseClient
+      .from('productos')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    loadingState.style.display = 'none';
+
+    if (error) {
+      showToast('No se pudieron cargar los productos: ' + error.message, 'error');
+      emptyState.style.display = 'block';
+      return;
+    }
+
+    productosCache = data || [];
+    renderTabla(productosCache);
+  }
+
+  function renderTabla(lista){
+    countBadge.textContent = lista.length;
+
+    if (lista.length === 0) {
+      tabla.style.display = 'none';
+      emptyState.style.display = 'block';
+      return;
+    }
+
+    emptyState.style.display = 'none';
+    tabla.style.display = 'table';
+
+    tbody.innerHTML = lista.map(function(p){
+      const fecha = p.fecha_captura ? new Date(p.fecha_captura + 'T00:00:00').toLocaleDateString('es-CO') : '—';
+      const estadoClass = p.estado === 'Inactivo' ? 'inactivo' : 'activo';
+      return `
+        <tr>
+          <td><strong>${escapeHtml(p.nombre)}</strong></td>
+          <td>${escapeHtml(p.nombre_cientifico || '—')}</td>
+          <td><span class="cat-tag">${escapeHtml(p.categoria || 'Otros')}</span></td>
+          <td>${escapeHtml(p.proveedor || '—')}</td>
+          <td>${fecha}</td>
+          <td><span class="pill ${estadoClass}">${escapeHtml(p.estado || 'Activo')}</span></td>
+          <td>
+            <div class="row-actions">
+              <button class="action-btn" title="Editar" onclick="editarProducto('${p.id}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 20h9" stroke="currentColor" stroke-width="1.8"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" stroke="currentColor" stroke-width="1.8"/></svg>
+              </button>
+              <button class="action-btn danger" title="Eliminar" onclick="eliminarProducto('${p.id}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" stroke="currentColor" stroke-width="1.8"/></svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ---------- Filtros ----------
+  function aplicarFiltros(){
+    const texto = fSearch.value.trim().toLowerCase();
+    const cat = fCategoria.value;
+    const est = fEstado.value;
+
+    const filtrados = productosCache.filter(function(p){
+      const coincideTexto = !texto ||
+        (p.nombre && p.nombre.toLowerCase().includes(texto)) ||
+        (p.nombre_cientifico && p.nombre_cientifico.toLowerCase().includes(texto));
+      const coincideCat = !cat || p.categoria === cat;
+      const coincideEstado = !est || p.estado === est;
+      return coincideTexto && coincideCat && coincideEstado;
+    });
+
+    renderTabla(filtrados);
+  }
+
+  document.getElementById('btnBuscar').addEventListener('click', aplicarFiltros);
+  fSearch.addEventListener('keyup', function(e){ if (e.key === 'Enter') aplicarFiltros(); });
+  document.getElementById('btnLimpiar').addEventListener('click', function(){
+    fSearch.value = '';
+    fCategoria.value = '';
+    fEstado.value = '';
+    renderTabla(productosCache);
+  });
+
+  // ---------- Modal: abrir / cerrar ----------
+  function abrirModal(modo, producto){
+    form.reset();
+    [document.getElementById('fieldNombre'), document.getElementById('fieldCategoria')].forEach(f => f.classList.remove('invalid'));
+
+    if (modo === 'editar' && producto) {
+      modalTitle.textContent = 'Editar producto';
+      btnGuardarLabel.textContent = 'Guardar cambios';
+      productoId.value = producto.id;
+      pNombre.value = producto.nombre || '';
+      pCientifico.value = producto.nombre_cientifico || '';
+      pCategoria.value = producto.categoria || '';
+      pProveedor.value = producto.proveedor || '';
+      pFecha.value = producto.fecha_captura || '';
+      pOrigen.value = producto.origen || '';
+      pEstado.value = producto.estado || 'Activo';
+      pDescripcion.value = producto.descripcion || '';
+      pObservaciones.value = producto.observaciones || '';
+    } else {
+      modalTitle.textContent = 'Nuevo producto';
+      btnGuardarLabel.textContent = 'Guardar producto';
+      productoId.value = '';
+      pEstado.value = 'Activo';
+    }
+
+    modalOverlay.classList.add('show');
+  }
+
+  function cerrarModal(){
+    modalOverlay.classList.remove('show');
+  }
+
+  document.getElementById('btnNuevo').addEventListener('click', function(){ abrirModal('nuevo'); });
+  document.getElementById('modalClose').addEventListener('click', cerrarModal);
+  document.getElementById('btnCancelar').addEventListener('click', cerrarModal);
+  modalOverlay.addEventListener('click', function(e){ if (e.target === modalOverlay) cerrarModal(); });
+
+  // Editar / Eliminar expuestos globalmente para los botones generados dinámicamente
+  window.editarProducto = function(id){
+    const producto = productosCache.find(p => p.id === id);
+    if (producto) abrirModal('editar', producto);
+  };
+
+  window.eliminarProducto = async function(id){
+    const producto = productosCache.find(p => p.id === id);
+    const nombre = producto ? producto.nombre : 'este producto';
+    if (!confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
+
+    const { error } = await supabaseClient.from('productos').delete().eq('id', id);
+    if (error) {
+      showToast('No se pudo eliminar: ' + error.message, 'error');
+      return;
+    }
+    showToast('Producto eliminado.', 'success');
+    cargarProductos();
+  };
+
+  // ---------- Guardar (crear o editar) ----------
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    let valid = true;
+
+    if (!pNombre.value.trim()) {
+      document.getElementById('fieldNombre').classList.add('invalid');
+      valid = false;
+    } else {
+      document.getElementById('fieldNombre').classList.remove('invalid');
+    }
+
+    if (!pCategoria.value) {
+      document.getElementById('fieldCategoria').classList.add('invalid');
+      valid = false;
+    } else {
+      document.getElementById('fieldCategoria').classList.remove('invalid');
+    }
+
+    if (!valid) {
+      showToast('Completa los campos obligatorios.', 'error');
+      return;
+    }
+
+    const payload = {
+      nombre: pNombre.value.trim(),
+      nombre_cientifico: pCientifico.value.trim() || null,
+      categoria: pCategoria.value,
+      proveedor: pProveedor.value.trim() || null,
+      fecha_captura: pFecha.value || null,
+      origen: pOrigen.value.trim() || null,
+      estado: pEstado.value,
+      descripcion: pDescripcion.value.trim() || null,
+      observaciones: pObservaciones.value.trim() || null
+    };
+
+    btnGuardar.disabled = true;
+    btnGuardarLabel.textContent = 'Guardando...';
+
+    let error;
+    if (productoId.value) {
+      // Editar
+      ({ error } = await supabaseClient.from('productos').update(payload).eq('id', productoId.value));
+    } else {
+      // Crear
+      ({ error } = await supabaseClient.from('productos').insert(payload));
+    }
+
+    btnGuardar.disabled = false;
+    btnGuardarLabel.textContent = productoId.value ? 'Guardar cambios' : 'Guardar producto';
+
+    if (error) {
+      showToast('Error al guardar: ' + error.message, 'error');
+      return;
+    }
+
+    showToast(productoId.value ? 'Producto actualizado.' : 'Producto creado.', 'success');
+    cerrarModal();
+    cargarProductos();
+  });
+
+  // ---------- Navegación lateral ----------
+  document.querySelectorAll('.sb-link').forEach(function(link){
+    link.addEventListener('click', function(){
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  // ---------- Carga inicial ----------
+  cargarProductos();
+})();
+</script>
+
+</body>
+</html>
