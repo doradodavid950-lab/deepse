@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Sea Intelligence — Iniciar sesión</title>
+<style>
+  :root{
+    --azul-oscuro:#062B5B;
+    --azul-medio:#1E66F5;
+    --azul-claro:#D9ECFF;
+    --verde-suave:#B9F5C5;
+    --rojo:#E53935;
+    --naranja:#FFA94D;
+    --amarillo:#FFD76A;
+    --morado:#E7D7FF;
+    --gris-claro:#F3F5F9;
+    --blanco:#FFFFFF;
+    --texto-principal:#0F2540;
+    --texto-secundario:#5B7089;
+    --sombra: 0 18px 45px rgba(6,43,91,.18);
+    --radio: 18px;
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    height:100%;
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:var(--texto-principal);
+    background:var(--gris-claro);
+  }
+
+  .layout{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  /* ---------- PANEL IZQUIERDO (OCEANO) ---------- */
+  .ocean-panel{
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,255,255,.10), transparent 40%),
+      linear-gradient(160deg, #041E40 0%, #062B5B 45%, #0A3E82 100%);
+    color:var(--blanco);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:56px 60px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+
+  .brand-badge{
+    width:52px;height:52px;border-radius:16px;
+    background:rgba(255,255,255,.12);
+    display:flex;align-items:center;justify-content:center;
+    backdrop-filter: blur(4px);
+  }
+
+  .brand-name{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:.3px;
+  }
+  .brand-name span{color:var(--amarillo);}
+
+  .brand-tag{
+    font-size:12.5px;
+    color:rgba(255,255,255,.65);
+    margin-top:2px;
+  }
+
+  .ocean-copy{
+    max-width:430px;
+  }
+  .ocean-copy h1{
+    font-size:34px;
+    line-height:1.25;
+    margin:0 0 14px;
+    font-weight:700;
+  }
+  .ocean-copy p{
+    font-size:15px;
+    line-height:1.6;
+    color:rgba(255,255,255,.72);
+    margin:0;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:34px;
+    margin-top:34px;
+  }
+  .stat-row div{
+    border-left:2px solid rgba(255,255,255,.25);
+    padding-left:14px;
+  }
+  .stat-row strong{
+    display:block;
+    font-size:22px;
+  }
+  .stat-row span{
+    font-size:12px;
+    color:rgba(255,255,255,.6);
+  }
+
+  .waves{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:180px;
+    opacity:.5;
+  }
+
+  .fish-drift{
+    position:absolute;
+    animation: drift 14s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%,100%{ transform: translate(0,0) rotate(0deg); }
+    50%{ transform: translate(18px,-10px) rotate(4deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .fish-drift{ animation:none; }
+  }
+
+  /* ---------- PANEL DERECHO (FORMULARIO) ---------- */
+  .form-panel{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 32px;
+    background:var(--blanco);
+  }
+
+  .form-card{
+    width:100%;
+    max-width:400px;
+  }
+
+  .form-card h2{
+    font-size:26px;
+    margin:0 0 6px;
+    font-weight:700;
+    color:var(--azul-oscuro);
+  }
+  .form-card > p.lead{
+    margin:0 0 30px;
+    color:var(--texto-secundario);
+    font-size:14.5px;
+  }
+
+  .field{
+    margin-bottom:18px;
+  }
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:7px;
+    color:var(--azul-oscuro);
+  }
+  .field-input{
+    position:relative;
+    display:flex;
+    align-items:center;
+    border:1.5px solid #DFE6ee;
+    border-radius:12px;
+    background:var(--gris-claro);
+    transition:border-color .15s, box-shadow .15s, background .15s;
+  }
+  .field-input:focus-within{
+    border-color:var(--azul-medio);
+    background:var(--blanco);
+    box-shadow:0 0 0 4px rgba(30,102,245,.12);
+  }
+  .field-input svg{
+    flex:0 0 auto;
+    margin-left:14px;
+    color:var(--texto-secundario);
+  }
+  .field-input input{
+    flex:1;
+    border:none;
+    background:transparent;
+    outline:none;
+    padding:13px 12px;
+    font-size:14.5px;
+    color:var(--texto-principal);
+    min-width:0;
+  }
+  .toggle-pass{
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:var(--texto-secundario);
+    padding:0 14px;
+    display:flex;
+    align-items:center;
+  }
+  .toggle-pass:hover{ color:var(--azul-medio); }
+
+  .field-error{
+    display:none;
+    color:var(--rojo);
+    font-size:12.5px;
+    margin-top:6px;
+  }
+  .field.invalid .field-input{
+    border-color:var(--rojo);
+    background:#FFF4F3;
+  }
+  .field.invalid .field-error{
+    display:block;
+  }
+
+  .row-between{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:2px 0 22px;
+    font-size:13px;
+  }
+  .checkbox-line{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--texto-secundario);
+    cursor:pointer;
+    user-select:none;
+  }
+  .checkbox-line input{
+    width:16px;height:16px;
+    accent-color:var(--azul-medio);
+  }
+  .link-muted{
+    color:var(--azul-medio);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .link-muted:hover{ text-decoration:underline; }
+
+  .btn-primary{
+    width:100%;
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    background:var(--azul-oscuro);
+    color:var(--blanco);
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:background .15s, transform .1s;
+  }
+  .btn-primary:hover{ background:var(--azul-medio); }
+  .btn-primary:active{ transform: scale(.98); }
+  .btn-primary:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+  }
+
+  .signup-line{
+    text-align:center;
+    margin-top:26px;
+    font-size:13.5px;
+    color:var(--texto-secundario);
+  }
+
+  .toast{
+    position:fixed;
+    top:22px;
+    right:22px;
+    background:var(--azul-oscuro);
+    color:#fff;
+    padding:14px 20px;
+    border-radius:12px;
+    font-size:14px;
+    box-shadow:var(--sombra);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transform: translateY(-140%);
+    opacity:0;
+    transition: transform .35s ease, opacity .35s ease;
+    z-index:50;
+  }
+  .toast.show{ transform: translateY(0); opacity:1; }
+  .toast.error{ background:var(--rojo); }
+  .toast.success{ background:#1B8A5A; }
+
+  @media (max-width: 880px){
+    .layout{ grid-template-columns: 1fr; }
+    .ocean-panel{ display:none; }
+    .form-panel{ padding:32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- PANEL IZQUIERDO -->
+  <section class="ocean-panel">
+    <div class="brand">
+      <div class="brand-badge">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">Deep Sea <span>Intelligence</span></div>
+        <div class="brand-tag">Gestión inteligente de recursos marinos</div>
+      </div>
+    </div>
+
+    <div class="ocean-copy">
+      <h1>Trazabilidad completa,<br>desde la captura hasta la venta.</h1>
+      <p>Registra productos, controla la calidad, gestiona el almacenamiento y da seguimiento a cada venta desde un solo sistema.</p>
+
+      <div class="stat-row">
+        <div><strong>+320</strong><span>Productos activos</span></div>
+        <div><strong>98.5%</strong><span>Disponibilidad</span></div>
+        <div><strong>24/7</strong><span>Monitoreo</span></div>
+      </div>
+    </div>
+
+    <svg class="waves" viewBox="0 0 600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 90 Q 75 60 150 90 T 300 90 T 450 90 T 600 90 V180 H0 Z" fill="rgba(255,255,255,.06)"/>
+      <path d="M0 120 Q 75 95 150 120 T 300 120 T 450 120 T 600 120 V180 H0 Z" fill="rgba(255,255,255,.09)"/>
+      <g class="fish-drift">
+        <path d="M480 40 q14 -10 26 0 q-6 8 -13 8 q-7 0 -13 -8z" fill="rgba(255,215,106,.6)"/>
+      </g>
+    </svg>
+  </section>
+
+  <!-- PANEL DERECHO -->
+  <section class="form-panel">
+    <div class="form-card">
+      <h2>Bienvenido de nuevo</h2>
+      <p class="lead">Ingresa tu correo y contraseña para continuar.</p>
+
+      <form id="loginForm" novalidate>
+
+        <div class="field" id="emailField">
+          <label for="email">Correo electrónico</label>
+          <div class="field-input">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18v12H3z" stroke="currentColor" stroke-width="1.6"/><path d="m3 7 9 6 9-6" stroke="currentColor" stroke-width="1.6"/></svg>
+            <input type="email" id="email" placeholder="ejemplo@correo.com" autocomplete="username">
+          </div>
+          <div class="field-error">Ingresa un correo electrónico válido.</div>
+        </div>
+
+        <div class="field" id="passField">
+          <label for="password">Contraseña</label>
+          <div class="field-input">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
+            <input type="password" id="password" placeholder="Ingresa tu contraseña" autocomplete="current-password">
+            <button type="button" class="toggle-pass" id="togglePass" aria-label="Mostrar contraseña">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+            </button>
+          </div>
+          <div class="field-error">La contraseña debe tener al menos 4 caracteres.</div>
+        </div>
+
+        <div class="row-between">
+          <label class="checkbox-line">
+            <input type="checkbox" id="remember">
+            Recordarme
+          </label>
+          <a href="#" class="link-muted" id="forgotLink">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <span id="submitLabel">Iniciar sesión</span>
+        </button>
+      </form>
+
+      <p class="signup-line">¿No tienes cuenta? <a href="registro.html" class="link-muted">Regístrate aquí</a></p>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- SDK de Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+
+<script>
+(async function(){
+  const form        = document.getElementById('loginForm');
+  const emailField  = document.getElementById('emailField');
+  const passField   = document.getElementById('passField');
+  const emailInput  = document.getElementById('email');
+  const passInput   = document.getElementById('password');
+  const togglePass  = document.getElementById('togglePass');
+  const submitBtn   = document.getElementById('submitBtn');
+  const submitLabel = document.getElementById('submitLabel');
+  const forgotLink  = document.getElementById('forgotLink');
+  const toast       = document.getElementById('toast');
+
+  // Si ya hay una sesión activa de Supabase, saltar directo al dashboard
+  const { data: { session: existingSession } } = await supabaseClient.auth.getSession();
+  if (existingSession) {
+    window.location.href = 'inicio.html';
+    return;
+  }
+
+  function showToast(message, type){
+    toast.textContent = message;
+    toast.className = 'toast show' + (type ? ' ' + type : '');
+    setTimeout(() => { toast.className = 'toast'; }, 3200);
+  }
+
+  function isValidEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  togglePass.addEventListener('click', function(){
+    const isPassword = passInput.type === 'password';
+    passInput.type = isPassword ? 'text' : 'password';
+    togglePass.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+  });
+
+  function clearError(field){ field.classList.remove('invalid'); }
+  emailInput.addEventListener('input', () => clearError(emailField));
+  passInput.addEventListener('input', () => clearError(passField));
+
+  function startLoading(){
+    submitBtn.disabled = true;
+    submitLabel.textContent = 'Verificando...';
+  }
+  function stopLoading(){
+    submitBtn.disabled = false;
+    submitLabel.textContent = 'Iniciar sesión';
+  }
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    let valid = true;
+
+    if (!isValidEmail(emailInput.value.trim())) {
+      emailField.classList.add('invalid');
+      valid = false;
+    }
+    if (passInput.value.trim().length < 4) {
+      passField.classList.add('invalid');
+      valid = false;
+    }
+
+    if (!valid) {
+      showToast('Revisa los campos marcados en rojo.', 'error');
+      return;
+    }
+
+    startLoading();
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: emailInput.value.trim(),
+      password: passInput.value.trim()
+    });
+
+    stopLoading();
+
+    if (error) {
+      showToast('Correo o contraseña incorrectos.', 'error');
+      return;
+    }
+
+    showToast('Inicio de sesión exitoso. Redirigiendo...', 'success');
+    setTimeout(() => { window.location.href = 'inicio.html'; }, 700);
+  });
+
+  forgotLink.addEventListener('click', async function(e){
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    if (!isValidEmail(email)) {
+      showToast('Escribe tu correo arriba antes de recuperar la contraseña.', 'error');
+      return;
+    }
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+    if (error) {
+      showToast('No se pudo enviar el correo de recuperación.', 'error');
+    } else {
+      showToast('Te enviamos un enlace de recuperación a tu correo.', 'success');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

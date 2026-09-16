@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Sea Intelligence — Inicio</title>
+<style>
+  :root{
+    --azul-oscuro:#062B5B;
+    --azul-oscuro-2:#083868;
+    --azul-medio:#1E66F5;
+    --azul-claro:#D9ECFF;
+    --verde-suave:#B9F5C5;
+    --verde-txt:#1B8A5A;
+    --rojo:#E53935;
+    --naranja:#FFA94D;
+    --amarillo:#FFD76A;
+    --morado:#E7D7FF;
+    --morado-txt:#7B5CC7;
+    --gris-claro:#F3F5F9;
+    --gris-borde:#E4E9F0;
+    --blanco:#FFFFFF;
+    --texto-principal:#0F2540;
+    --texto-secundario:#5B7089;
+    --sombra: 0 10px 30px rgba(6,43,91,.08);
+    --radio: 16px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--gris-claro);
+    color:var(--texto-principal);
+  }
+
+  .app{
+    display:grid;
+    grid-template-columns: 250px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------------- SIDEBAR ---------------- */
+  .sidebar{
+    background:var(--azul-oscuro);
+    color:#EAF1FC;
+    display:flex;
+    flex-direction:column;
+    padding:22px 16px;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
+  .sb-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 10px 22px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    margin-bottom:14px;
+  }
+  .sb-brand .badge{
+    width:38px;height:38px;border-radius:11px;
+    background:rgba(255,255,255,.12);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .sb-brand .name{ font-weight:700; font-size:16px; line-height:1.1;}
+  .sb-brand .name span{ color:var(--amarillo); }
+  .sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); }
+
+  nav.sb-nav{
+    flex:1;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .sb-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:10px;
+    color:rgba(255,255,255,.72);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    border:none;
+    background:none;
+    width:100%;
+    text-align:left;
+  }
+  .sb-link svg{ flex:0 0 auto; opacity:.85; }
+  .sb-link:hover{ background:rgba(255,255,255,.06); color:#fff; }
+  .sb-link.active{
+    background:var(--azul-medio);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(30,102,245,.35);
+  }
+
+  .sb-footer{
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-top:14px;
+    margin-top:10px;
+  }
+  .sb-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 8px;
+  }
+  .sb-user .avatar{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--verde-suave);
+    color:var(--azul-oscuro);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700; font-size:13px;
+  }
+  .sb-user .info strong{ display:block; font-size:13px; }
+  .sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+  .sb-logout{
+    display:flex;align-items:center;gap:8px;
+    width:100%;
+    margin-top:8px;
+    border:none;
+    background:rgba(229,57,53,.15);
+    color:#FFC7C5;
+    padding:9px 12px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .sb-logout:hover{ background:rgba(229,57,53,.28); }
+
+  /* ---------------- MAIN ---------------- */
+  main{ padding:26px 32px 50px; }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:26px;
+  }
+  .topbar h1{ font-size:23px; margin:0; }
+  .topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px;}
+  .top-actions{ display:flex; align-items:center; gap:16px; }
+  .icon-btn{
+    width:40px;height:40px;border-radius:12px;
+    background:var(--blanco);
+    border:1px solid var(--gris-borde);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    position:relative;
+    color:var(--azul-oscuro);
+  }
+  .icon-btn:hover{ border-color:var(--azul-medio); }
+  .dot-alert{
+    position:absolute; top:8px; right:9px;
+    width:7px;height:7px;border-radius:50%;
+    background:var(--rojo);
+    border:1.5px solid var(--blanco);
+  }
+  .top-user{
+    display:flex; align-items:center; gap:10px;
+    background:var(--blanco);
+    border:1px solid var(--gris-borde);
+    padding:6px 14px 6px 6px;
+    border-radius:30px;
+  }
+  .top-user .avatar{
+    width:30px;height:30px;border-radius:50%;
+    background:var(--azul-claro);
+    color:var(--azul-oscuro);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:12px;
+  }
+  .top-user span{ font-size:13.5px; font-weight:600; }
+
+  /* ---------------- KPI CARDS ---------------- */
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:22px;
+  }
+  .kpi-card{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    padding:20px;
+    box-shadow:var(--sombra);
+    border-top:4px solid var(--accent, var(--azul-medio));
+  }
+  .kpi-card .top-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .kpi-card .icon-wrap{
+    width:38px;height:38px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--accent-soft, var(--azul-claro));
+    color:var(--accent, var(--azul-medio));
+  }
+  .kpi-card .value{ font-size:26px; font-weight:700; }
+  .kpi-card .label{ font-size:12.5px; color:var(--texto-secundario); margin-top:2px;}
+  .kpi-card .delta{ font-size:11.5px; margin-top:10px; font-weight:600; }
+  .delta.up{ color:var(--verde-txt); }
+  .delta.neutral{ color:var(--texto-secundario); }
+
+  .kpi-card.c1{ --accent:#1E66F5; --accent-soft:#D9ECFF; }
+  .kpi-card.c2{ --accent:#7B5CC7; --accent-soft:#E7D7FF; }
+  .kpi-card.c3{ --accent:#1B8A5A; --accent-soft:#B9F5C5; }
+  .kpi-card.c4{ --accent:#FFA94D; --accent-soft:#FFE8D1; }
+
+  /* ---------------- GRID PRINCIPAL ---------------- */
+  .grid-2{
+    display:grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap:18px;
+    margin-bottom:18px;
+  }
+
+  .panel{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:20px;
+  }
+  .panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .panel-head h3{ margin:0; font-size:15.5px; }
+  .panel-head a{ font-size:12.5px; color:var(--azul-medio); text-decoration:none; font-weight:600; }
+
+  table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
+  table.simple th{
+    text-align:left;
+    color:var(--texto-secundario);
+    font-weight:600;
+    font-size:11.5px;
+    text-transform:none;
+    padding:8px 6px;
+    border-bottom:1px solid var(--gris-borde);
+  }
+  table.simple td{
+    padding:11px 6px;
+    border-bottom:1px solid #F0F3F7;
+    vertical-align:middle;
+  }
+  table.simple tr:last-child td{ border-bottom:none; }
+
+  .pill{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+  }
+  .pill.ok{ background:var(--verde-suave); color:#146142; }
+  .pill.pend{ background:var(--amarillo); color:#7A5A00; }
+  .pill.warn{ background:#FFE3D1; color:#B45300; }
+
+  .alert-item{
+    display:flex;
+    gap:12px;
+    padding:11px 0;
+    border-bottom:1px solid #F0F3F7;
+  }
+  .alert-item:last-child{ border-bottom:none; }
+  .alert-icon{
+    flex:0 0 auto;
+    width:32px;height:32px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .alert-icon.a-warn{ background:#FFE8D1; color:var(--naranja); }
+  .alert-icon.a-err{ background:#FCE1E0; color:var(--rojo); }
+  .alert-icon.a-info{ background:var(--azul-claro); color:var(--azul-medio); }
+  .alert-icon.a-ok{ background:var(--verde-suave); color:var(--verde-txt); }
+  .alert-text strong{ display:block; font-size:13px; }
+  .alert-text span{ font-size:11.5px; color:var(--texto-secundario); }
+
+  /* Donut chart */
+  .donut-wrap{ display:flex; align-items:center; gap:22px; }
+  .donut{
+    width:130px;height:130px;border-radius:50%;
+    background: conic-gradient(
+      var(--azul-medio) 0% 50%,
+      var(--verde-suave) 50% 82%,
+      var(--naranja) 82% 95%,
+      var(--morado) 95% 100%
+    );
+    position:relative;
+    flex:0 0 auto;
+  }
+  .donut::after{
+    content:"";
+    position:absolute; inset:20px;
+    background:var(--blanco);
+    border-radius:50%;
+  }
+  .donut-center{
+    position:absolute; inset:20px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+  }
+  .donut-center strong{ font-size:16px; }
+  .donut-center span{ font-size:10px; color:var(--texto-secundario); }
+  .donut-legend{ display:flex; flex-direction:column; gap:9px; font-size:12.5px; }
+  .donut-legend div{ display:flex; align-items:center; gap:8px; }
+  .swatch{ width:10px;height:10px;border-radius:3px; }
+
+  /* Stepper trazabilidad */
+  .stepper{ display:flex; justify-content:space-between; margin-top:6px; }
+  .step{ text-align:center; flex:1; position:relative; }
+  .step::before{
+    content:"";
+    position:absolute;
+    top:15px; left:-50%; width:100%; height:2px;
+    background:var(--gris-borde);
+    z-index:0;
+  }
+  .step:first-child::before{ display:none; }
+  .step .circle{
+    width:32px;height:32px;border-radius:50%;
+    background:var(--azul-medio);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 8px;
+    position:relative; z-index:1;
+    font-size:14px;
+  }
+  .step span{ font-size:11.5px; color:var(--texto-secundario); }
+
+  @media (max-width: 1100px){
+    .kpi-grid{ grid-template-columns:repeat(2,1fr); }
+    .grid-2{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 800px){
+    .app{ grid-template-columns:1fr; }
+    .sidebar{ display:none; }
+    main{ padding:18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="badge">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/><circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/></svg>
+      </div>
+      <div>
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
+      </div>
+    </div>
+
+    <nav class="sb-nav" id="sbNav">
+      <a class="sb-link active" data-view="inicio">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
+        Inicio
+      </a>
+      <a class="sb-link" data-view="productos">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Productos
+      </a>
+      <a class="sb-link" data-view="proveedores">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Proveedores
+      </a>
+      <a class="sb-link" data-view="recepciones">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Recepciones
+      </a>
+      <a class="sb-link" data-view="almacenamiento">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Almacenamiento
+      </a>
+      <a class="sb-link" data-view="ventas">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Ventas
+      </a>
+      <a class="sb-link" data-view="trazabilidad">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
+        Trazabilidad
+      </a>
+      <a class="sb-link" data-view="reportes">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Reportes
+      </a>
+      <a class="sb-link" data-view="normas">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
+        Normas y Calidad
+      </a>
+      <a class="sb-link" data-view="usuarios">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
+        Usuarios
+      </a>
+      <a class="sb-link" data-view="configuracion">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Configuración
+      </a>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="avatar" id="sbAvatar">C</div>
+        <div class="info">
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
+        </div>
+      </div>
+      <button class="sb-logout" id="logoutBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8"/></svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <div class="topbar">
+      <div>
+        <h1>Inicio</h1>
+        <div class="subtitle">Vista general del sistema — <span id="todayDate"></span></div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" title="Notificaciones">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="dot-alert"></span>
+        </button>
+        <div class="top-user">
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+      <div class="kpi-card c1">
+        <div class="top-row">
+          <div class="icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg></div>
+        </div>
+        <div class="value">128</div>
+        <div class="label">Productos registrados</div>
+        <div class="delta up">↑ +12 este mes</div>
+      </div>
+
+      <div class="kpi-card c2">
+        <div class="top-row">
+          <div class="icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="value">85</div>
+        <div class="label">Productos en almacenamiento</div>
+        <div class="delta neutral">Nivel estable</div>
+      </div>
+
+      <div class="kpi-card c3">
+        <div class="top-row">
+          <div class="icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg></div>
+        </div>
+        <div class="value">$24.680.000</div>
+        <div class="label">Ventas del mes actual</div>
+        <div class="delta up">↑ +8% vs mes anterior</div>
+      </div>
+
+      <div class="kpi-card c4">
+        <div class="top-row">
+          <div class="icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/></svg></div>
+        </div>
+        <div class="value">32</div>
+        <div class="label">Verificaciones de calidad</div>
+        <div class="delta neutral">Este mes</div>
+      </div>
+    </div>
+
+    <!-- FILA 1: recepciones + alertas -->
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Recepciones recientes</h3>
+          <a href="#">Ver todas</a>
+        </div>
+        <table class="simple">
+          <thead>
+            <tr><th>ID</th><th>Producto</th><th>Proveedor</th><th>Fecha</th><th>Peso (kg)</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>REC-0045</td><td>Pargo Rojo</td><td>Juan Pérez</td><td>05/04/2026</td><td>25.5</td><td><span class="pill ok">Aceptado</span></td></tr>
+            <tr><td>REC-0044</td><td>Camarón Blanco</td><td>Mar Azul S.A.S</td><td>04/04/2026</td><td>18.0</td><td><span class="pill ok">Aceptado</span></td></tr>
+            <tr><td>REC-0043</td><td>Trucha Arcoíris</td><td>Carlos Paz</td><td>06/04/2026</td><td>26.0</td><td><span class="pill ok">Aceptado</span></td></tr>
+            <tr><td>REC-0042</td><td>Sierra</td><td>Acuapesca</td><td>02/04/2026</td><td>15.3</td><td><span class="pill ok">Aceptado</span></td></tr>
+            <tr><td>REC-0041</td><td>Bagre</td><td>Pez del Sur S.A.S</td><td>01/04/2026</td><td>31.3</td><td><span class="pill pend">Pendiente</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Alertas y notificaciones</h3>
+          <a href="#">Ver todas</a>
+        </div>
+
+        <div class="alert-item">
+          <div class="alert-icon a-warn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4M12 17h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="alert-text"><strong>Temperatura fuera de rango</strong><span>Cámara 1 · 8.5°C · 05/04/2026</span></div>
+        </div>
+
+        <div class="alert-item">
+          <div class="alert-icon a-err">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m15 9-6 6M9 9l6 6" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <div class="alert-text"><strong>Producto próximo a vencer</strong><span>Camarón Blanco · Lote LTB-021</span></div>
+        </div>
+
+        <div class="alert-item">
+          <div class="alert-icon a-info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8h.01M11 12h1v5h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="alert-text"><strong>Verificación de calidad pendiente</strong><span>3 recepciones pendientes</span></div>
+        </div>
+
+        <div class="alert-item">
+          <div class="alert-icon a-ok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="alert-text"><strong>Respaldo de datos completado</strong><span>Último respaldo exitoso · 05/04/2026</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILA 2: ventas por categoria + trazabilidad -->
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Ventas por categoría (mes actual)</h3>
+        </div>
+        <div class="donut-wrap">
+          <div class="donut">
+            <div class="donut-center"><strong>$24.68M</strong><span>Total</span></div>
+          </div>
+          <div class="donut-legend">
+            <div><span class="swatch" style="background:var(--azul-medio)"></span> Peces — $12.450.000 (50%)</div>
+            <div><span class="swatch" style="background:var(--verde-suave)"></span> Mariscos — $7.850.000 (32%)</div>
+            <div><span class="swatch" style="background:var(--naranja)"></span> Moluscos — $3.120.000 (13%)</div>
+            <div><span class="swatch" style="background:var(--morado)"></span> Otros — $1.260.000 (5%)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Trazabilidad reciente</h3>
+          <a href="#">Ver todas</a>
+        </div>
+        <div class="stepper">
+          <div class="step"><div class="circle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z" stroke="#fff" stroke-width="2"/></svg>
+          </div><span>Captura</span></div>
+          <div class="step"><div class="circle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="#fff" stroke-width="2"/></svg>
+          </div><span>Recepción</span></div>
+          <div class="step"><div class="circle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="#fff" stroke-width="2"/></svg>
+          </div><span>Almacenamiento</span></div>
+          <div class="step"><div class="circle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1" fill="#fff"/><circle cx="17" cy="20" r="1" fill="#fff"/><path d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="#fff" stroke-width="2"/></svg>
+          </div><span>Venta</span></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--texto-secundario);margin-top:18px;">
+          Último lote: <strong style="color:var(--texto-principal)">LOTE-2026-00027</strong> · Camarón Blanco · Pescador Juan Pérez · Vendido el 06/04/2026
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- SDK de Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+
+<script>
+(async function(){
+  // Guard de sesión real: si no hay sesión de Supabase, vuelve al login
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  const fullName = session.user.user_metadata && session.user.user_metadata.full_name
+    ? session.user.user_metadata.full_name
+    : session.user.email;
+
+  const initial = fullName.charAt(0).toUpperCase();
+
+  document.getElementById('sbUserName').textContent = fullName;
+  document.getElementById('topUserName').textContent = fullName;
+  document.getElementById('sbAvatar').textContent = initial;
+  document.getElementById('topAvatar').textContent = initial;
+
+  document.getElementById('todayDate').textContent =
+    new Date().toLocaleDateString('es-CO', { day:'2-digit', month:'long', year:'numeric' });
+
+  document.getElementById('logoutBtn').addEventListener('click', async function(){
+    await supabaseClient.auth.signOut();
+    window.location.href = 'login.html';
+  });
+
+  // Navegación lateral: marca el enlace activo (los demás módulos se conectarán a sus propias vistas)
+  document.querySelectorAll('.sb-link').forEach(function(link){
+    link.addEventListener('click', function(){
+      document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
