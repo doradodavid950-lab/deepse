@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- COMENTARIO: Título de la pestaña limpio -->
 <title>Deep Sea Intelligence — Almacenamiento</title>
 
 <style>
+  /* COMENTARIO: Variables de color para mantener el diseño uniforme en todo el sistema */
   :root{
     --azul-oscuro:#062B5B;
     --azul-oscuro-2:#083868;
@@ -37,14 +39,14 @@
     color:var(--texto-principal);
   }
 
+  /* COMENTARIO: Layout principal usando Grid (Menú lateral de 250px y el resto para el contenido) */
   .app{
     display:grid;
     grid-template-columns:250px 1fr;
     min-height:100vh;
   }
 
-  /* ---------------- SIDEBAR ---------------- */
-
+  /* ---------------- SIDEBAR (MENÚ LATERAL) ---------------- */
   .sidebar{
     background:var(--azul-oscuro);
     color:#EAF1FC;
@@ -56,664 +58,142 @@
     height:100vh;
   }
 
-  .sb-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:6px 10px 22px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:14px;
-  }
-
-  .sb-brand .badge{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:rgba(255,255,255,.12);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .sb-brand .name{
-    font-weight:700;
-    font-size:16px;
-    line-height:1.1;
-  }
-
-  .sb-brand .name span{
-    color:var(--amarillo);
-  }
-
-  .sb-brand .sub{
-    font-size:10.5px;
-    color:rgba(255,255,255,.55);
-  }
-
-  nav.sb-nav{
-    flex:1;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-  }
-
-  .sb-link{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
-    border-radius:10px;
-    color:rgba(255,255,255,.72);
-    text-decoration:none;
-    font-size:14px;
-    font-weight:500;
-    cursor:pointer;
-    border:none;
-    background:none;
-    width:100%;
-    text-align:left;
-  }
-
-  .sb-link svg{
-    flex:0 0 auto;
-    opacity:.85;
-  }
-
-  .sb-link:hover{
-    background:rgba(255,255,255,.06);
-    color:#fff;
-  }
-
-  .sb-link.active{
-    background:var(--azul-medio);
-    color:#fff;
-    box-shadow:0 6px 16px rgba(30,102,245,.35);
-  }
-
-  .sb-footer{
-    border-top:1px solid rgba(255,255,255,.08);
-    padding-top:14px;
-    margin-top:10px;
-  }
-
-  .sb-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px 8px;
-  }
-
-  .sb-user .avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:var(--verde-suave);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:13px;
-  }
-
-  .sb-user .info strong{
-    display:block;
-    font-size:13px;
-  }
-
-  .sb-user .info span{
-    font-size:11px;
-    color:rgba(255,255,255,.5);
-  }
-
-  .sb-logout{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    width:100%;
-    margin-top:8px;
-    border:none;
-    background:rgba(229,57,53,.15);
-    color:#FFC7C5;
-    padding:9px 12px;
-    border-radius:10px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-  }
-
-  .sb-logout:hover{
-    background:rgba(229,57,53,.28);
-  }
-
-  /* ---------------- MAIN ---------------- */
-
-  main{
-    padding:26px 32px 50px;
-  }
-
-  .topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:26px;
-  }
-
-  .topbar h1{
-    font-size:23px;
-    margin:0;
-  }
-
-  .topbar .subtitle{
-    font-size:13px;
-    color:var(--texto-secundario);
-    margin-top:3px;
-  }
-
-  .top-actions{
-    display:flex;
-    align-items:center;
-    gap:16px;
-  }
-
-  .icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:relative;
-    color:var(--azul-oscuro);
-  }
-
-  .icon-btn:hover{
-    border-color:var(--azul-medio);
-  }
-
-  .dot-alert{
-    position:absolute;
-    top:8px;
-    right:9px;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--rojo);
-    border:1.5px solid var(--blanco);
-  }
-
-  .top-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    padding:6px 14px 6px 6px;
-    border-radius:30px;
-  }
-
-  .top-user .avatar{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:12px;
-  }
-
-  .top-user span{
-    font-size:13.5px;
-    font-weight:600;
-  }
-
-  /* ---------------- HEADER ---------------- */
-
-  .module-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:22px;
-  }
-
-  .module-title h2{
-    margin:0;
-    font-size:19px;
-  }
-
-  .module-title p{
-    margin:5px 0 0;
-    font-size:13px;
-    color:var(--texto-secundario);
-  }
-
-  .btn-primary{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    border:none;
-    background:var(--azul-medio);
-    color:#fff;
-    padding:10px 15px;
-    border-radius:10px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-    box-shadow:0 6px 14px rgba(30,102,245,.18);
-  }
-
-  .btn-primary:hover{
-    background:#1558D6;
-  }
-
-  /* ---------------- KPI ---------------- */
-
-  .kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-    margin-bottom:22px;
-  }
-
-  .kpi-card{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    padding:20px;
-    box-shadow:var(--sombra);
-    border-top:4px solid var(--accent,var(--azul-medio));
-  }
-
-  .kpi-card .top-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-  }
-
-  .kpi-card .icon-wrap{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--accent-soft,var(--azul-claro));
-    color:var(--accent,var(--azul-medio));
-  }
-
-  .kpi-card .value{
-    font-size:26px;
-    font-weight:700;
-  }
-
-  .kpi-card .label{
-    font-size:12.5px;
-    color:var(--texto-secundario);
-    margin-top:2px;
-  }
-
-  .kpi-card.c1{
-    --accent:#1E66F5;
-    --accent-soft:#D9ECFF;
-  }
-
-  .kpi-card.c2{
-    --accent:#1B8A5A;
-    --accent-soft:#B9F5C5;
-  }
-
-  .kpi-card.c3{
-    --accent:#7B5CC7;
-    --accent-soft:#E7D7FF;
-  }
-
-  /* ---------------- PANEL ---------------- */
-
-  .panel{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    box-shadow:var(--sombra);
-    padding:20px;
-  }
-
-  .panel-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:16px;
-  }
-
-  .panel-head h3{
-    margin:0;
-    font-size:15.5px;
-  }
-
-  .search-box{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    width:260px;
-    height:38px;
-    border:1px solid var(--gris-borde);
-    border-radius:10px;
-    padding:0 11px;
-    background:#fff;
-  }
-
-  .search-box svg{
-    color:var(--texto-secundario);
-    flex:0 0 auto;
-  }
-
-  .search-box input{
-    width:100%;
-    border:none;
-    outline:none;
-    font-family:inherit;
-    font-size:12.5px;
-    color:var(--texto-principal);
-  }
-
-  table.simple{
-    width:100%;
-    border-collapse:collapse;
-    font-size:13px;
-  }
-
-  table.simple th{
-    text-align:left;
-    color:var(--texto-secundario);
-    font-weight:600;
-    font-size:11.5px;
-    padding:9px 7px;
-    border-bottom:1px solid var(--gris-borde);
-  }
-
-  table.simple td{
-    padding:12px 7px;
-    border-bottom:1px solid #F0F3F7;
-    vertical-align:middle;
-  }
-
-  table.simple tr:last-child td{
-    border-bottom:none;
-  }
-
-  .pill{
-    display:inline-block;
-    padding:4px 10px;
-    border-radius:30px;
-    font-size:11px;
-    font-weight:700;
-  }
-
-  .pill.refrigerado{
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-  }
-
-  .pill.congelado{
-    background:var(--morado);
-    color:var(--morado-txt);
-  }
-
-  .pill.estado{
-    background:var(--verde-suave);
-    color:#146142;
-  }
-
-  .action-btn{
-    border:none;
-    border-radius:8px;
-    padding:7px 9px;
-    font-family:inherit;
-    font-size:11px;
-    font-weight:600;
-    cursor:pointer;
-  }
-
-  .edit-btn{
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-  }
-
-  .delete-btn{
-    background:#FCE1E0;
-    color:var(--rojo);
-  }
-
-  .action-btn:hover{
-    opacity:.82;
-  }
-
-  .empty{
-    text-align:center;
-    padding:35px 10px;
-    color:var(--texto-secundario);
-    font-size:13px;
-  }
-
-  /* ---------------- MODAL ---------------- */
-
-  .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(6,43,91,.42);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:1000;
-  }
-
-  .modal.show{
-    display:flex;
-  }
-
-  .modal-content{
-    width:100%;
-    max-width:650px;
-    max-height:90vh;
-    overflow-y:auto;
-    background:var(--blanco);
-    border-radius:var(--radio);
-    box-shadow:0 20px 60px rgba(6,43,91,.22);
-  }
-
-  .modal-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:20px 22px;
-    border-bottom:1px solid var(--gris-borde);
-  }
-
-  .modal-header h3{
-    margin:0;
-    font-size:16px;
-  }
-
-  .close-btn{
-    width:32px;
-    height:32px;
-    border:none;
-    border-radius:8px;
-    background:var(--gris-claro);
-    color:var(--texto-secundario);
-    cursor:pointer;
-    font-size:20px;
-  }
-
-  .modal-body{
-    padding:22px;
-  }
-
-  .form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
-  }
-
-  .form-group{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-
-  .form-group.full{
-    grid-column:1/-1;
-  }
-
-  .form-group label{
-    font-size:12px;
-    font-weight:600;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea{
-    width:100%;
-    border:1px solid var(--gris-borde);
-    border-radius:9px;
-    padding:10px 11px;
-    font-family:inherit;
-    font-size:12.5px;
-    color:var(--texto-principal);
-    outline:none;
-    background:#fff;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus{
-    border-color:var(--azul-medio);
-  }
-
-  .form-group textarea{
-    min-height:85px;
-    resize:vertical;
-  }
-
-  .form-footer{
-    display:flex;
-    justify-content:flex-end;
-    gap:9px;
-    margin-top:20px;
-  }
-
-  .btn-secondary{
-    border:1px solid var(--gris-borde);
-    background:#fff;
-    color:var(--texto-principal);
-    padding:10px 15px;
-    border-radius:9px;
-    font-family:inherit;
-    font-size:12.5px;
-    font-weight:600;
-    cursor:pointer;
-  }
-
-  .btn-save{
-    border:none;
-    background:var(--azul-medio);
-    color:#fff;
-    padding:10px 17px;
-    border-radius:9px;
-    font-family:inherit;
-    font-size:12.5px;
-    font-weight:600;
-    cursor:pointer;
-  }
-
-  /* ---------------- TOAST ---------------- */
-
-  .toast{
-    position:fixed;
-    right:25px;
-    bottom:25px;
-    padding:12px 16px;
-    border-radius:10px;
-    background:var(--azul-oscuro);
-    color:#fff;
-    font-size:12.5px;
-    box-shadow:var(--sombra);
-    opacity:0;
-    transform:translateY(15px);
-    pointer-events:none;
-    transition:.25s;
-    z-index:2000;
-  }
-
-  .toast.show{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-  .toast.success{
-    background:var(--verde-txt);
-  }
-
-  .toast.error{
-    background:var(--rojo);
-  }
+  .sb-brand{ display:flex; align-items:center; gap:10px; padding:6px 10px 22px; border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:14px; }
+  .sb-brand .badge{ width:38px; height:38px; border-radius:11px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
+  .sb-brand .name{ font-weight:700; font-size:16px; line-height:1.1; }
+  .sb-brand .name span{ color:var(--amarillo); }
+  .sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); }
+
+  nav.sb-nav{ flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:2px; }
+  .sb-link{ display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; color:rgba(255,255,255,.72); text-decoration:none; font-size:14px; font-weight:500; cursor:pointer; border:none; background:none; width:100%; text-align:left; }
+  .sb-link svg{ flex:0 0 auto; opacity:.85; }
+  .sb-link:hover{ background:rgba(255,255,255,.06); color:#fff; }
+  .sb-link.active{ background:var(--azul-medio); color:#fff; box-shadow:0 6px 16px rgba(30,102,245,.35); }
+
+  .sb-footer{ border-top:1px solid rgba(255,255,255,.08); padding-top:14px; margin-top:10px; }
+  .sb-user{ display:flex; align-items:center; gap:10px; padding:8px 8px; }
+  .sb-user .avatar{ width:34px; height:34px; border-radius:50%; background:var(--verde-suave); color:var(--azul-oscuro); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
+  .sb-user .info strong{ display:block; font-size:13px; }
+  .sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+  .sb-logout{ display:flex; align-items:center; gap:8px; width:100%; margin-top:8px; border:none; background:rgba(229,57,53,.15); color:#FFC7C5; padding:9px 12px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; }
+  .sb-logout:hover{ background:rgba(229,57,53,.28); }
+
+  /* ---------------- MAIN (CONTENIDO PRINCIPAL) ---------------- */
+  main{ padding:26px 32px 50px; }
+
+  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; }
+  .topbar h1{ font-size:23px; margin:0; }
+  .topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
+  .top-actions{ display:flex; align-items:center; gap:16px; }
+
+  .icon-btn{ width:40px; height:40px; border-radius:12px; background:var(--blanco); border:1px solid var(--gris-borde); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; color:var(--azul-oscuro); }
+  .icon-btn:hover{ border-color:var(--azul-medio); }
+  .dot-alert{ position:absolute; top:8px; right:9px; width:7px; height:7px; border-radius:50%; background:var(--rojo); border:1.5px solid var(--blanco); }
+
+  .top-user{ display:flex; align-items:center; gap:10px; background:var(--blanco); border:1px solid var(--gris-borde); padding:6px 14px 6px 6px; border-radius:30px; }
+  .top-user .avatar{ width:30px; height:30px; border-radius:50%; background:var(--azul-claro); color:var(--azul-oscuro); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; }
+  .top-user span{ font-size:13.5px; font-weight:600; }
+
+  /* ---------------- HEADER E INDICADORES KPI ---------------- */
+  .module-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+  .module-title h2{ margin:0; font-size:19px; }
+  .module-title p{ margin:5px 0 0; font-size:13px; color:var(--texto-secundario); }
+
+  .btn-primary{ display:flex; align-items:center; gap:8px; border:none; background:var(--azul-medio); color:#fff; padding:10px 15px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; box-shadow:0 6px 14px rgba(30,102,245,.18); }
+  .btn-primary:hover{ background:#1558D6; }
+
+  .kpi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:22px; }
+  .kpi-card{ background:var(--blanco); border-radius:var(--radio); padding:20px; box-shadow:var(--sombra); border-top:4px solid var(--accent,var(--azul-medio)); }
+  .kpi-card .top-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .kpi-card .icon-wrap{ width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:var(--accent-soft,var(--azul-claro)); color:var(--accent,var(--azul-medio)); }
+  .kpi-card .value{ font-size:26px; font-weight:700; }
+  .kpi-card .label{ font-size:12.5px; color:var(--texto-secundario); margin-top:2px; }
+  .kpi-card.c1{ --accent:#1E66F5; --accent-soft:#D9ECFF; }
+  .kpi-card.c2{ --accent:#1B8A5A; --accent-soft:#B9F5C5; }
+  .kpi-card.c3{ --accent:#7B5CC7; --accent-soft:#E7D7FF; }
+
+  /* ---------------- PANELES Y TABLA ---------------- */
+  .panel{ background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); padding:20px; }
+  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .panel-head h3{ margin:0; font-size:15.5px; }
+
+  .search-box{ display:flex; align-items:center; gap:8px; width:260px; height:38px; border:1px solid var(--gris-borde); border-radius:10px; padding:0 11px; background:#fff; }
+  .search-box svg{ color:var(--texto-secundario); flex:0 0 auto; }
+  .search-box input{ width:100%; border:none; outline:none; font-family:inherit; font-size:12.5px; color:var(--texto-principal); }
+
+  table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
+  table.simple th{ text-align:left; color:var(--texto-secundario); font-weight:600; font-size:11.5px; padding:9px 7px; border-bottom:1px solid var(--gris-borde); }
+  table.simple td{ padding:12px 7px; border-bottom:1px solid #F0F3F7; vertical-align:middle; }
+  table.simple tr:last-child td{ border-bottom:none; }
+
+  .pill{ display:inline-block; padding:4px 10px; border-radius:30px; font-size:11px; font-weight:700; }
+  .pill.refrigerado{ background:var(--azul-claro); color:var(--azul-medio); }
+  .pill.congelado{ background:var(--morado); color:var(--morado-txt); }
+  .pill.estado{ background:var(--verde-suave); color:#146142; }
+
+  .action-btn{ border:none; border-radius:8px; padding:7px 9px; font-family:inherit; font-size:11px; font-weight:600; cursor:pointer; }
+  .edit-btn{ background:var(--azul-claro); color:var(--azul-medio); }
+  .delete-btn{ background:#FCE1E0; color:var(--rojo); }
+  .action-btn:hover{ opacity:.82; }
+
+  .empty{ text-align:center; padding:35px 10px; color:var(--texto-secundario); font-size:13px; }
+
+  /* ---------------- MODAL (FORMULARIO EMERGENTE) ---------------- */
+  .modal{ position:fixed; inset:0; background:rgba(6,43,91,.42); display:none; align-items:center; justify-content:center; padding:20px; z-index:1000; }
+  .modal.show{ display:flex; }
+  .modal-content{ width:100%; max-width:650px; max-height:90vh; overflow-y:auto; background:var(--blanco); border-radius:var(--radio); box-shadow:0 20px 60px rgba(6,43,91,.22); }
+  .modal-header{ display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid var(--gris-borde); }
+  .modal-header h3{ margin:0; font-size:16px; }
+  .close-btn{ width:32px; height:32px; border:none; border-radius:8px; background:var(--gris-claro); color:var(--texto-secundario); cursor:pointer; font-size:20px; }
+  .modal-body{ padding:22px; }
+
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-group{ display:flex; flex-direction:column; gap:6px; }
+  .form-group.full{ grid-column:1/-1; }
+  .form-group label{ font-size:12px; font-weight:600; }
+  .form-group input, .form-group select, .form-group textarea{ width:100%; border:1px solid var(--gris-borde); border-radius:9px; padding:10px 11px; font-family:inherit; font-size:12.5px; color:var(--texto-principal); outline:none; background:#fff; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus{ border-color:var(--azul-medio); }
+  .form-group textarea{ min-height:85px; resize:vertical; }
+
+  .form-footer{ display:flex; justify-content:flex-end; gap:9px; margin-top:20px; }
+  .btn-secondary{ border:1px solid var(--gris-borde); background:#fff; color:var(--texto-principal); padding:10px 15px; border-radius:9px; font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
+  .btn-save{ border:none; background:var(--azul-medio); color:#fff; padding:10px 17px; border-radius:9px; font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
+
+  /* ---------------- TOAST (ALERTAS PEQUEÑAS) ---------------- */
+  .toast{ position:fixed; right:25px; bottom:25px; padding:12px 16px; border-radius:10px; background:var(--azul-oscuro); color:#fff; font-size:12.5px; box-shadow:var(--sombra); opacity:0; transform:translateY(15px); pointer-events:none; transition:.25s; z-index:2000; }
+  .toast.show{ opacity:1; transform:translateY(0); }
+  .toast.success{ background:var(--verde-txt); }
+  .toast.error{ background:var(--rojo); }
+
+  /* COMENTARIO: ESTILOS INTEGRADOS DE LAS NOTIFICACIONES */
+  .notification-panel { position: fixed; top: 78px; right: 32px; width: 330px; background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 14px; box-shadow: 0 15px 35px rgba(6,43,91,.16); z-index: 1000; display: none; overflow: hidden; }
+  .notification-panel.show { display: block; }
+  .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 17px; border-bottom: 1px solid var(--gris-borde); }
+  .notification-header strong { font-size: 14px; color: var(--texto-principal); }
+  .notification-header button { border: none; background: none; font-size: 22px; color: var(--texto-secundario); cursor: pointer; padding: 0 5px; }
+  .notification-header button:hover { color: var(--rojo); }
+  .notification-item { display: flex; gap: 10px; padding: 13px 16px; border-bottom: 1px solid #F0F3F7; }
+  .notification-item:last-child { border-bottom: none; }
+  .notification-item .ni-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--azul-claro); color: var(--azul-medio); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .notification-item strong { display: block; font-size: 12.5px; margin-bottom: 2px; color: var(--texto-principal); }
+  .notification-item span { display: block; font-size: 11px; color: var(--texto-secundario); line-height: 1.4; }
+  .notification-empty { padding: 22px 16px; text-align: center; font-size: 12px; color: var(--texto-secundario); }
 
   /* ---------------- RESPONSIVE ---------------- */
-
-  @media(max-width:1100px){
-    .kpi-grid{
-      grid-template-columns:repeat(2,1fr);
-    }
-  }
-
+  @media(max-width:1100px){ .kpi-grid{ grid-template-columns:repeat(2,1fr); } }
   @media(max-width:800px){
-    .app{
-      grid-template-columns:1fr;
-    }
-
-    .sidebar{
-      display:none;
-    }
-
-    main{
-      padding:18px;
-    }
-
-    .form-grid{
-      grid-template-columns:1fr;
-    }
-
-    .form-group.full{
-      grid-column:auto;
-    }
-
-    .module-header{
-      align-items:flex-start;
-      gap:15px;
-      flex-direction:column;
-    }
+    .app{ grid-template-columns:1fr; }
+    .sidebar{ display:none; }
+    main{ padding:18px; }
+    .form-grid{ grid-template-columns:1fr; }
+    .form-group.full{ grid-column:auto; }
+    .module-header{ align-items:flex-start; gap:15px; flex-direction:column; }
+    .notification-panel { right: 18px; left: 18px; width: auto; top: 70px; } 
   }
-
   @media(max-width:600px){
-    .kpi-grid{
-      grid-template-columns:1fr;
-    }
-
-    .panel-head{
-      align-items:flex-start;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .search-box{
-      width:100%;
-    }
+    .kpi-grid{ grid-template-columns:1fr; }
+    .panel-head{ align-items:flex-start; flex-direction:column; gap:12px; }
+    .search-box{ width:100%; }
   }
 </style>
 </head>
@@ -722,1641 +202,622 @@
 
 <div class="app">
 
-  <!-- SIDEBAR -->
+  <!-- COMENTARIO: MENÚ LATERAL (SIDEBAR) -->
   <aside class="sidebar">
 
     <div class="sb-brand">
-
       <div class="badge">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-                stroke="#FFD76A"
-                stroke-width="1.6"
-                stroke-linejoin="round"/>
+          <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/>
           <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
         </svg>
       </div>
-
       <div>
         <div class="name">Deep <span>Sea</span></div>
         <div class="sub">Gestión de recursos marinos</div>
       </div>
-
     </div>
 
-
     <nav class="sb-nav" id="sbNav">
-
       <a class="sb-link" data-view="inicio" href="inicio.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 11l9-7 9 7"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <path d="M5 10v10h14V10"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
         Inicio
       </a>
-
-
       <a class="sb-link" data-view="productos" href="productos.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <circle cx="12" cy="12" r="2.2"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
         Productos
       </a>
-
-
       <a class="sb-link" data-view="proveedores" href="proveedores.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="8" r="3.4"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-          <path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
         Proveedores
       </a>
-
-
       <a class="sb-link" data-view="recepciones" href="recepciones.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <rect x="4" y="7" width="16" height="13" rx="2"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
         Recepciones
       </a>
 
-
-      <!-- ALMACENAMIENTO -->
-
-      <a class="sb-link active"
-         data-view="almacenamiento"
-         href="almacenamiento.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"/>
-          <path d="M9 20v-6h6v6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
-
+      <!-- COMENTARIO: Enlace activo de Almacenamiento -->
+      <a class="sb-link active" data-view="almacenamiento" href="almacenamiento.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
         Almacenamiento
       </a>
 
-
       <a class="sb-link" data-view="ventas" href="ventas.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="9" cy="20" r="1.3" fill="currentColor"/>
-          <circle cx="17" cy="20" r="1.3" fill="currentColor"/>
-          <path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
         Ventas
       </a>
-
-
       <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 6h18M3 12h18M3 18h12"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <circle cx="20" cy="18" r="1.6"
-                  fill="currentColor"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
         Trazabilidad
       </a>
-
-
       <a class="sb-link" data-view="reportes" href="reportes.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M4 20V10M12 20V4M20 20v-7"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         Reportes
       </a>
-
-
       <a class="sb-link" data-view="normas" href="normas.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <path d="m9 12 2 2 4-4"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
         Normas y Calidad
       </a>
-
-
       <a class="sb-link" data-view="usuarios" href="usuarios.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="9" cy="8" r="3"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-          <path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <circle cx="18" cy="8" r="2.2"
-                  stroke="currentColor"
-                  stroke-width="1.5"/>
-          <path d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-                stroke="currentColor"
-                stroke-width="1.5"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
         Usuarios
       </a>
-
-
       <a class="sb-link" data-view="configuracion" href="configuracion.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-          <path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-                stroke="currentColor"
-                stroke-width="1.3"
-                stroke-linejoin="round"/>
-        </svg>
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         Configuración
       </a>
-
     </nav>
 
-
     <div class="sb-footer">
-
       <div class="sb-user">
-
-        <div class="avatar" id="sbAvatar">
-          C
-        </div>
-
+        <div class="avatar" id="sbAvatar">C</div>
         <div class="info">
-          <strong id="sbUserName">
-            Cargando...
-          </strong>
-
-          <span>
-            En línea
-          </span>
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
         </div>
-
       </div>
-
-
       <button class="sb-logout" id="logoutBtn">
-
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-                stroke="currentColor"
-                stroke-width="1.8"/>
-          <path d="M16 17l5-5-5-5M21 12H9"
-                stroke="currentColor"
-                stroke-width="1.8"/>
-        </svg>
-
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8"/></svg>
         Cerrar sesión
-
       </button>
-
     </div>
-
   </aside>
 
-
-  <!-- MAIN -->
-
+  <!-- COMENTARIO: CONTENIDO PRINCIPAL Y BARRA SUPERIOR -->
   <main>
 
     <div class="topbar">
-
       <div>
-
-        <h1>
-          Almacenamiento
-        </h1>
-
-        <div class="subtitle">
-          Control de almacenamiento y conservación — <span id="todayDate"></span>
-        </div>
-
+        <h1>Almacenamiento</h1>
+        <div class="subtitle">Control de almacenamiento y conservación — <span id="todayDate"></span></div>
       </div>
-
 
       <div class="top-actions">
-
-        <button class="icon-btn" title="Notificaciones">
-
+        <!-- COMENTARIO: BOTÓN DE LA CAMPANITA CORREGIDO -->
+        <button class="icon-btn" id="notificationBtn" title="Notificaciones">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-                  stroke="currentColor"
-                  stroke-width="1.6"/>
-            <path d="M10 20a2 2 0 0 0 4 0"
-                  stroke="currentColor"
-                  stroke-width="1.6"/>
+            <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/>
           </svg>
-
-          <span class="dot-alert"></span>
-
+          <span class="dot-alert" id="notificationDot"></span>
         </button>
 
-
         <div class="top-user">
-
-          <div class="avatar" id="topAvatar">
-            C
-          </div>
-
-          <span id="topUserName">
-            Cargando...
-          </span>
-
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
         </div>
-
       </div>
-
     </div>
 
+    <!-- COMENTARIO: PANEL DESPLEGABLE DE NOTIFICACIONES (OCULTO POR DEFECTO) -->
+    <div class="notification-panel" id="notificationPanel">
+      <div class="notification-header">
+        <strong>Notificaciones</strong>
+        <button id="closeNotifications">×</button>
+      </div>
+      <div id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
+      </div>
+    </div>
 
-    <!-- TITULO DEL MODULO -->
-
+    <!-- COMENTARIO: ENCABEZADO DEL MÓDULO -->
     <div class="module-header">
-
       <div class="module-title">
-
-        <h2>
-          Gestión de almacenamiento
-        </h2>
-
-        <p>
-          Registra y controla las condiciones de almacenamiento de los productos marinos.
-        </p>
-
+        <h2>Gestión de almacenamiento</h2>
+        <p>Registra y controla las condiciones de almacenamiento de los productos marinos.</p>
       </div>
-
-
       <button class="btn-primary" id="newStorageBtn">
-
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M12 5v14M5 12h14"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"/>
-        </svg>
-
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         Nuevo almacenamiento
-
       </button>
-
     </div>
 
-
-    <!-- KPI -->
-
+    <!-- COMENTARIO: TARJETAS KPI SUPERIORES -->
     <div class="kpi-grid">
-
       <div class="kpi-card c1">
-
         <div class="top-row">
-
           <div class="icon-wrap">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linejoin="round"/>
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
           </div>
-
         </div>
-
-        <div class="value" id="totalCount">
-          0
-        </div>
-
-        <div class="label">
-          Almacenamientos registrados
-        </div>
-
+        <div class="value" id="totalCount">0</div>
+        <div class="label">Almacenamientos registrados</div>
       </div>
-
 
       <div class="kpi-card c2">
-
         <div class="top-row">
-
           <div class="icon-wrap">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"/>
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
-
         </div>
-
-        <div class="value" id="refrigeratedCount">
-          0
-        </div>
-
-        <div class="label">
-          Productos refrigerados
-        </div>
-
+        <div class="value" id="refrigeratedCount">0</div>
+        <div class="label">Productos refrigerados</div>
       </div>
-
 
       <div class="kpi-card c3">
-
         <div class="top-row">
-
           <div class="icon-wrap">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"/>
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
-
         </div>
-
-        <div class="value" id="frozenCount">
-          0
-        </div>
-
-        <div class="label">
-          Productos congelados
-        </div>
-
+        <div class="value" id="frozenCount">0</div>
+        <div class="label">Productos congelados</div>
       </div>
-
     </div>
 
-
-    <!-- TABLA -->
-
+    <!-- COMENTARIO: TABLA DE ALMACENAMIENTO -->
     <div class="panel">
-
       <div class="panel-head">
-
-        <h3>
-          Registros de almacenamiento
-        </h3>
-
-
+        <h3>Registros de almacenamiento</h3>
         <div class="search-box">
-
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="7"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-            <path d="m20 20-4-4"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"/>
-          </svg>
-
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Buscar producto o ubicación..."
-          >
-
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input type="text" id="searchInput" placeholder="Buscar producto o ubicación...">
         </div>
-
       </div>
-
 
       <div style="overflow-x:auto;">
-
         <table class="simple">
-
           <thead>
-
             <tr>
-
-              <th>
-                Producto
-              </th>
-
-              <th>
-                Tipo
-              </th>
-
-              <th>
-                Ubicación
-              </th>
-
-              <th>
-                Temperatura
-              </th>
-
-              <th>
-                Estado
-              </th>
-
-              <th>
-                Fecha de almacenamiento
-              </th>
-
-              <th>
-                Acciones
-              </th>
-
+              <th>Producto</th>
+              <th>Tipo</th>
+              <th>Ubicación</th>
+              <th>Temperatura</th>
+              <th>Estado</th>
+              <th>Fecha de almacenamiento</th>
+              <th>Acciones</th>
             </tr>
-
           </thead>
-
-
           <tbody id="storageTable">
-
           </tbody>
-
         </table>
 
-
         <div id="emptyMessage" class="empty" style="display:none;">
-
           No hay registros de almacenamiento.
-
         </div>
-
       </div>
-
     </div>
-
   </main>
-
 </div>
 
-
-<!-- MODAL -->
-
+<!-- COMENTARIO: MODAL (FORMULARIO EMERGENTE PARA CREAR/EDITAR) -->
 <div class="modal" id="storageModal">
-
   <div class="modal-content">
-
     <div class="modal-header">
-
-      <h3 id="modalTitle">
-        Nuevo almacenamiento
-      </h3>
-
-      <button class="close-btn" id="closeModal">
-        ×
-      </button>
-
+      <h3 id="modalTitle">Nuevo almacenamiento</h3>
+      <button class="close-btn" id="closeModal">×</button>
     </div>
-
 
     <div class="modal-body">
-
       <form id="storageForm">
-
-        <input
-          type="hidden"
-          id="storageId"
-        >
-
+        <input type="hidden" id="storageId">
 
         <div class="form-grid">
-
-
           <div class="form-group full">
-
-            <label for="producto">
-              Producto *
-            </label>
-
+            <label for="producto">Producto *</label>
             <select id="producto" required>
-
-              <option value="">
-                Seleccionar producto
-              </option>
-
+              <option value="">Seleccionar producto</option>
             </select>
-
           </div>
 
-
           <div class="form-group">
-
-            <label for="tipo">
-              Tipo de almacenamiento *
-            </label>
-
+            <label for="tipo">Tipo de almacenamiento *</label>
             <select id="tipo" required>
-
-              <option value="">
-                Seleccionar tipo
-              </option>
-
-              <option value="Refrigerado">
-                Refrigerado
-              </option>
-
-              <option value="Congelado">
-                Congelado
-              </option>
-
+              <option value="">Seleccionar tipo</option>
+              <option value="Refrigerado">Refrigerado</option>
+              <option value="Congelado">Congelado</option>
             </select>
-
           </div>
 
-
           <div class="form-group">
-
-            <label for="ubicacion">
-              Ubicación *
-            </label>
-
-            <input
-              type="text"
-              id="ubicacion"
-              placeholder="Ej. Cámara 01"
-              required
-            >
-
+            <label for="ubicacion">Ubicación *</label>
+            <input type="text" id="ubicacion" placeholder="Ej. Cámara 01" required>
           </div>
 
-
           <div class="form-group">
-
-            <label for="temperatura">
-              Temperatura (°C)
-            </label>
-
-            <input
-              type="number"
-              id="temperatura"
-              step="0.1"
-              placeholder="Ej. 4"
-            >
-
+            <label for="temperatura">Temperatura (°C)</label>
+            <input type="number" id="temperatura" step="0.1" placeholder="Ej. 4">
           </div>
 
-
           <div class="form-group">
-
-            <label for="estado">
-              Estado del producto *
-            </label>
-
+            <label for="estado">Estado del producto *</label>
             <select id="estado" required>
-
-              <option value="Almacenado">
-                Almacenado
-              </option>
-
-              <option value="Conservado">
-                Conservado
-              </option>
-
-              <option value="Disponible">
-                Disponible
-              </option>
-
-              <option value="En revisión">
-                En revisión
-              </option>
-
+              <option value="Almacenado">Almacenado</option>
+              <option value="Conservado">Conservado</option>
+              <option value="Disponible">Disponible</option>
+              <option value="En revisión">En revisión</option>
             </select>
-
           </div>
-
 
           <div class="form-group">
-
-            <label for="fecha">
-              Fecha de almacenamiento *
-            </label>
-
-            <input
-              type="datetime-local"
-              id="fecha"
-              required
-            >
-
+            <label for="fecha">Fecha de almacenamiento *</label>
+            <input type="datetime-local" id="fecha" required>
           </div>
-
 
           <div class="form-group full">
-
-            <label for="observaciones">
-              Observaciones
-            </label>
-
-            <textarea
-              id="observaciones"
-              placeholder="Observaciones sobre el almacenamiento..."
-            ></textarea>
-
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" placeholder="Observaciones sobre el almacenamiento..."></textarea>
           </div>
-
-
         </div>
-
 
         <div class="form-footer">
-
-          <button
-            type="button"
-            class="btn-secondary"
-            id="cancelBtn"
-          >
-            Cancelar
-          </button>
-
-          <button
-            type="submit"
-            class="btn-save"
-            id="saveBtn"
-          >
-            Guardar almacenamiento
-          </button>
-
+          <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+          <button type="submit" class="btn-save" id="saveBtn">Guardar almacenamiento</button>
         </div>
-
       </form>
-
     </div>
-
   </div>
-
 </div>
-
 
 <div class="toast" id="toast"></div>
 
-
-<!-- SUPABASE -->
-
+<!-- COMENTARIO: CONEXIÓN Y LÓGICA DE JAVASCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-
-const SUPABASE_URL =
-  'https://lohxgdeuohhczejyxwgr.supabase.co';
-
-const SUPABASE_ANON_KEY =
-  'sb_publishable_QpRophkYS0o554DGWmQ_P1fs8NPW';
-
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
+/* ---------------- 1. CONFIGURACIÓN SUPABASE ---------------- */
+const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGWmQ_P1fs8NPW';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let storageData = [];
 let productsData = [];
 
+const storageModal = document.getElementById('storageModal');
+const storageForm = document.getElementById('storageForm');
+const storageTable = document.getElementById('storageTable');
+const searchInput = document.getElementById('searchInput');
+const emptyMessage = document.getElementById('emptyMessage');
 
-const storageModal =
-  document.getElementById('storageModal');
-
-const storageForm =
-  document.getElementById('storageForm');
-
-const storageTable =
-  document.getElementById('storageTable');
-
-const searchInput =
-  document.getElementById('searchInput');
-
-const emptyMessage =
-  document.getElementById('emptyMessage');
-
-
-function showToast(message,type=''){
-
-  const toast =
-    document.getElementById('toast');
-
+function showToast(message, type=''){
+  const toast = document.getElementById('toast');
   toast.textContent = message;
-
-  toast.className =
-    'toast show ' + type;
-
-  setTimeout(function(){
-
-    toast.className =
-      'toast';
-
-  },3000);
-
+  toast.className = 'toast show ' + type;
+  setTimeout(function(){ toast.className = 'toast'; }, 3000);
 }
-
 
 function getInitial(name){
-
-  if(!name){
-    return 'C';
-  }
-
-  return name
-    .trim()
-    .charAt(0)
-    .toUpperCase();
-
+  if(!name) return 'C';
+  return name.trim().charAt(0).toUpperCase();
 }
 
-
+/* ---------------- 2. VALIDACIÓN DE SESIÓN DE USUARIO ---------------- */
 async function checkSession(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.getSession();
-
-
+  const { data, error } = await supabaseClient.auth.getSession();
   if(error || !data.session){
-
-    window.location.href =
-      'login.html';
-
+    window.location.href = 'login.html';
     return null;
-
   }
+  const user = data.session.user;
+  const fullName = user.user_metadata && user.user_metadata.full_name ? user.user_metadata.full_name : user.email;
+  const initial = getInitial(fullName);
 
-
-  const user =
-    data.session.user;
-
-
-  const fullName =
-    user.user_metadata &&
-    user.user_metadata.full_name
-      ? user.user_metadata.full_name
-      : user.email;
-
-
-  const initial =
-    getInitial(fullName);
-
-
-  document.getElementById('sbUserName')
-    .textContent = fullName;
-
-  document.getElementById('topUserName')
-    .textContent = fullName;
-
-  document.getElementById('sbAvatar')
-    .textContent = initial;
-
-  document.getElementById('topAvatar')
-    .textContent = initial;
-
-
-  document.getElementById('todayDate')
-    .textContent =
-      new Date().toLocaleDateString(
-        'es-CO',
-        {
-          day:'2-digit',
-          month:'long',
-          year:'numeric'
-        }
-      );
-
+  document.getElementById('sbUserName').textContent = fullName;
+  document.getElementById('topUserName').textContent = fullName;
+  document.getElementById('sbAvatar').textContent = initial;
+  document.getElementById('topAvatar').textContent = initial;
+  document.getElementById('todayDate').textContent = new Date().toLocaleDateString('es-CO', { day:'2-digit', month:'long', year:'numeric' });
 
   return data.session;
-
 }
 
-
+/* ---------------- 3. FUNCIONES PARA CARGAR DATOS (READ) ---------------- */
 async function loadProducts(){
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from('productos')
-      .select('id,nombre')
-      .order(
-        'nombre',
-        {
-          ascending:true
-        }
-      );
-
-
-  if(error){
-
-    console.error(error);
-
-    showToast(
-      'No se pudieron cargar los productos',
-      'error'
-    );
-
-    return;
-
-  }
-
-
-  productsData =
-    data || [];
-
-
-  const select =
-    document.getElementById('producto');
-
-
-  select.innerHTML =
-    '<option value="">Seleccionar producto</option>';
-
-
+  const { data, error } = await supabaseClient.from('productos').select('id,nombre').order('nombre', { ascending:true });
+  if(error){ console.error(error); showToast('No se pudieron cargar los productos', 'error'); return; }
+  
+  productsData = data || [];
+  const select = document.getElementById('producto');
+  select.innerHTML = '<option value="">Seleccionar producto</option>';
   productsData.forEach(function(product){
-
-    const option =
-      document.createElement('option');
-
-    option.value =
-      product.id;
-
-    option.textContent =
-      product.nombre;
-
+    const option = document.createElement('option');
+    option.value = product.id; option.textContent = product.nombre;
     select.appendChild(option);
-
   });
-
 }
-
 
 async function loadStorage(){
+  const { data, error } = await supabaseClient
+    .from('almacenamientos')
+    .select('id, producto_id, tipo, ubicacion, temperatura, estado_producto, fecha_almacenamiento, observaciones, productos ( nombre )')
+    .order('fecha_almacenamiento', { ascending:false });
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from('almacenamientos')
-      .select(`
-        id,
-        producto_id,
-        tipo,
-        ubicacion,
-        temperatura,
-        estado_producto,
-        fecha_almacenamiento,
-        observaciones,
-        productos (
-          nombre
-        )
-      `)
-      .order(
-        'fecha_almacenamiento',
-        {
-          ascending:false
-        }
-      );
-
-
-  if(error){
-
-    console.error(error);
-
-    showToast(
-      'No se pudieron cargar los almacenamientos',
-      'error'
-    );
-
-    return;
-
-  }
-
-
-  storageData =
-    data || [];
-
-
+  if(error){ console.error(error); showToast('No se pudieron cargar los almacenamientos', 'error'); return; }
+  
+  storageData = data || [];
   updateCounters();
-
   renderStorage();
-
 }
-
 
 function updateCounters(){
+  const total = storageData.length;
+  const refrigerated = storageData.filter(item => item.tipo === 'Refrigerado').length;
+  const frozen = storageData.filter(item => item.tipo === 'Congelado').length;
 
-  const total =
-    storageData.length;
-
-
-  const refrigerated =
-    storageData.filter(
-      function(item){
-        return item.tipo === 'Refrigerado';
-      }
-    ).length;
-
-
-  const frozen =
-    storageData.filter(
-      function(item){
-        return item.tipo === 'Congelado';
-      }
-    ).length;
-
-
-  document.getElementById('totalCount')
-    .textContent = total;
-
-  document.getElementById('refrigeratedCount')
-    .textContent = refrigerated;
-
-  document.getElementById('frozenCount')
-    .textContent = frozen;
-
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('refrigeratedCount').textContent = refrigerated;
+  document.getElementById('frozenCount').textContent = frozen;
 }
-
 
 function formatDate(value){
-
-  if(!value){
-    return '-';
-  }
-
-
-  const date =
-    new Date(value);
-
-
-  if(isNaN(date.getTime())){
-    return '-';
-  }
-
-
-  return date.toLocaleDateString(
-    'es-CO',
-    {
-      day:'2-digit',
-      month:'2-digit',
-      year:'numeric'
-    }
-  );
-
+  if(!value) return '-';
+  const date = new Date(value);
+  if(isNaN(date.getTime())) return '-';
+  return date.toLocaleDateString('es-CO', { day:'2-digit', month:'2-digit', year:'numeric' });
 }
-
 
 function escapeHtml(value){
-
-  return String(value)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'","&#039;");
-
+  return String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;");
 }
 
-
+/* ---------------- 4. DIBUJAR LA TABLA Y BUSCADOR ---------------- */
 function renderStorage(){
-
-  const search =
-    searchInput.value
-      .toLowerCase()
-      .trim();
-
-
-  const filtered =
-    storageData.filter(
-      function(item){
-
-        const product =
-          item.productos &&
-          item.productos.nombre
-            ? item.productos.nombre
-            : '';
-
-
-        const location =
-          item.ubicacion || '';
-
-
-        const type =
-          item.tipo || '';
-
-
-        const state =
-          item.estado_producto || '';
-
-
-        return (
-          product.toLowerCase().includes(search) ||
-          location.toLowerCase().includes(search) ||
-          type.toLowerCase().includes(search) ||
-          state.toLowerCase().includes(search)
-        );
-
-      }
-    );
-
+  const search = searchInput.value.toLowerCase().trim();
+  const filtered = storageData.filter(function(item){
+    const product = item.productos && item.productos.nombre ? item.productos.nombre : '';
+    const location = item.ubicacion || '';
+    const type = item.tipo || '';
+    const state = item.estado_producto || '';
+    
+    return (product.toLowerCase().includes(search) || location.toLowerCase().includes(search) || type.toLowerCase().includes(search) || state.toLowerCase().includes(search));
+  });
 
   storageTable.innerHTML = '';
 
-
   if(filtered.length === 0){
-
-    emptyMessage.style.display =
-      'block';
-
+    emptyMessage.style.display = 'block';
     return;
-
   }
-
-
-  emptyMessage.style.display =
-    'none';
-
+  
+  emptyMessage.style.display = 'none';
 
   filtered.forEach(function(item){
-
-    const row =
-      document.createElement('tr');
-
-
-    const productName =
-      item.productos &&
-      item.productos.nombre
-        ? item.productos.nombre
-        : 'Sin producto';
-
-
-    const typeClass =
-      item.tipo === 'Refrigerado'
-        ? 'refrigerado'
-        : 'congelado';
-
-
-    const temperature =
-      item.temperatura !== null &&
-      item.temperatura !== undefined
-        ? item.temperatura + ' °C'
-        : '-';
-
+    const row = document.createElement('tr');
+    const productName = item.productos && item.productos.nombre ? item.productos.nombre : 'Sin producto';
+    const typeClass = item.tipo === 'Refrigerado' ? 'refrigerado' : 'congelado';
+    const temperature = item.temperatura !== null && item.temperatura !== undefined ? item.temperatura + ' °C' : '-';
 
     row.innerHTML = `
-
+      <td><strong>${escapeHtml(productName)}</strong></td>
+      <td><span class="pill ${typeClass}">${escapeHtml(item.tipo || '-')}</span></td>
+      <td>${escapeHtml(item.ubicacion || '-')}</td>
+      <td>${escapeHtml(temperature)}</td>
+      <td><span class="pill estado">${escapeHtml(item.estado_producto || '-')}</span></td>
+      <td>${formatDate(item.fecha_almacenamiento)}</td>
       <td>
-        <strong>
-          ${escapeHtml(productName)}
-        </strong>
+        <button class="action-btn edit-btn" onclick="editStorage('${item.id}')">Editar</button>
+        <button class="action-btn delete-btn" onclick="deleteStorage('${item.id}')">Eliminar</button>
       </td>
-
-      <td>
-        <span class="pill ${typeClass}">
-          ${escapeHtml(item.tipo || '-')}
-        </span>
-      </td>
-
-      <td>
-        ${escapeHtml(item.ubicacion || '-')}
-      </td>
-
-      <td>
-        ${escapeHtml(temperature)}
-      </td>
-
-      <td>
-        <span class="pill estado">
-          ${escapeHtml(item.estado_producto || '-')}
-        </span>
-      </td>
-
-      <td>
-        ${formatDate(item.fecha_almacenamiento)}
-      </td>
-
-      <td>
-
-        <button
-          class="action-btn edit-btn"
-          onclick="editStorage('${item.id}')"
-        >
-          Editar
-        </button>
-
-        <button
-          class="action-btn delete-btn"
-          onclick="deleteStorage('${item.id}')"
-        >
-          Eliminar
-        </button>
-
-      </td>
-
     `;
-
-
     storageTable.appendChild(row);
-
   });
-
 }
 
-
+/* ---------------- 5. LÓGICA DEL MODAL Y GUARDADO (CREATE/UPDATE) ---------------- */
 function openModal(){
-
   storageForm.reset();
-
-
-  document.getElementById('storageId')
-    .value = '';
-
-
-  document.getElementById('modalTitle')
-    .textContent =
-      'Nuevo almacenamiento';
-
-
-  document.getElementById('saveBtn')
-    .textContent =
-      'Guardar almacenamiento';
-
-
-  const now =
-    new Date();
-
-
-  now.setMinutes(
-    now.getMinutes() -
-    now.getTimezoneOffset()
-  );
-
-
-  document.getElementById('fecha')
-    .value =
-      now.toISOString()
-        .slice(0,16);
-
-
+  document.getElementById('storageId').value = '';
+  document.getElementById('modalTitle').textContent = 'Nuevo almacenamiento';
+  document.getElementById('saveBtn').textContent = 'Guardar almacenamiento';
+  
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  document.getElementById('fecha').value = now.toISOString().slice(0,16);
   storageModal.classList.add('show');
-
 }
 
-
-function closeModal(){
-
-  storageModal.classList.remove('show');
-
-}
-
+function closeModal(){ storageModal.classList.remove('show'); }
 
 function editStorage(id){
+  const item = storageData.find(storage => storage.id === id);
+  if(!item) return;
 
-  const item =
-    storageData.find(
-      function(storage){
-        return storage.id === id;
-      }
-    );
-
-
-  if(!item){
-    return;
-  }
-
-
-  document.getElementById('storageId')
-    .value = item.id;
-
-
-  document.getElementById('producto')
-    .value = item.producto_id || '';
-
-
-  document.getElementById('tipo')
-    .value = item.tipo || '';
-
-
-  document.getElementById('ubicacion')
-    .value = item.ubicacion || '';
-
-
-  document.getElementById('temperatura')
-    .value =
-      item.temperatura ?? '';
-
-
-  document.getElementById('estado')
-    .value =
-      item.estado_producto ||
-      'Almacenado';
-
-
-  document.getElementById('observaciones')
-    .value =
-      item.observaciones || '';
-
+  document.getElementById('storageId').value = item.id;
+  document.getElementById('producto').value = item.producto_id || '';
+  document.getElementById('tipo').value = item.tipo || '';
+  document.getElementById('ubicacion').value = item.ubicacion || '';
+  document.getElementById('temperatura').value = item.temperatura ?? '';
+  document.getElementById('estado').value = item.estado_producto || 'Almacenado';
+  document.getElementById('observaciones').value = item.observaciones || '';
 
   if(item.fecha_almacenamiento){
-
-    const date =
-      new Date(
-        item.fecha_almacenamiento
-      );
-
-
-    date.setMinutes(
-      date.getMinutes() -
-      date.getTimezoneOffset()
-    );
-
-
-    document.getElementById('fecha')
-      .value =
-        date.toISOString()
-          .slice(0,16);
-
+    const date = new Date(item.fecha_almacenamiento);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    document.getElementById('fecha').value = date.toISOString().slice(0,16);
   }
 
-
-  document.getElementById('modalTitle')
-    .textContent =
-      'Editar almacenamiento';
-
-
-  document.getElementById('saveBtn')
-    .textContent =
-      'Actualizar almacenamiento';
-
-
+  document.getElementById('modalTitle').textContent = 'Editar almacenamiento';
+  document.getElementById('saveBtn').textContent = 'Actualizar almacenamiento';
   storageModal.classList.add('show');
-
 }
-
 
 async function saveStorage(event){
-
   event.preventDefault();
+  
+  const storageId = document.getElementById('storageId').value;
+  const productoId = document.getElementById('producto').value;
+  const tipo = document.getElementById('tipo').value;
+  const ubicacion = document.getElementById('ubicacion').value.trim();
+  const temperaturaValue = document.getElementById('temperatura').value;
+  const estado = document.getElementById('estado').value;
+  const fecha = document.getElementById('fecha').value;
+  const observaciones = document.getElementById('observaciones').value.trim();
 
-
-  const storageId =
-    document.getElementById('storageId')
-      .value;
-
-
-  const productoId =
-    document.getElementById('producto')
-      .value;
-
-
-  const tipo =
-    document.getElementById('tipo')
-      .value;
-
-
-  const ubicacion =
-    document.getElementById('ubicacion')
-      .value.trim();
-
-
-  const temperaturaValue =
-    document.getElementById('temperatura')
-      .value;
-
-
-  const estado =
-    document.getElementById('estado')
-      .value;
-
-
-  const fecha =
-    document.getElementById('fecha')
-      .value;
-
-
-  const observaciones =
-    document.getElementById('observaciones')
-      .value.trim();
-
-
-  if(
-    !productoId ||
-    !tipo ||
-    !ubicacion ||
-    !estado ||
-    !fecha
-  ){
-
-    showToast(
-      'Completa los campos obligatorios',
-      'error'
-    );
-
-    return;
-
+  if(!productoId || !tipo || !ubicacion || !estado || !fecha){
+    showToast('Completa los campos obligatorios', 'error'); return;
   }
 
-
-  const temperatura =
-    temperaturaValue === ''
-      ? null
-      : Number(temperaturaValue);
-
+  const temperatura = temperaturaValue === '' ? null : Number(temperaturaValue);
 
   const payload = {
-
-    producto_id:productoId,
-
-    tipo:tipo,
-
-    ubicacion:ubicacion,
-
-    temperatura:temperatura,
-
-    estado_producto:estado,
-
-    fecha_almacenamiento:
-      new Date(fecha).toISOString(),
-
-    observaciones:
-      observaciones || null
-
+    producto_id: productoId,
+    tipo: tipo,
+    ubicacion: ubicacion,
+    temperatura: temperatura,
+    estado_producto: estado,
+    fecha_almacenamiento: new Date(fecha).toISOString(),
+    observaciones: observaciones || null
   };
 
-
-  const saveButton =
-    document.getElementById('saveBtn');
-
-
-  saveButton.disabled =
-    true;
-
-
-  saveButton.textContent =
-    'Guardando...';
-
+  const saveButton = document.getElementById('saveBtn');
+  saveButton.disabled = true;
+  saveButton.textContent = 'Guardando...';
 
   let result;
-
-
   if(storageId){
-
-    result =
-      await supabaseClient
-        .from('almacenamientos')
-        .update(payload)
-        .eq('id',storageId);
-
+    result = await supabaseClient.from('almacenamientos').update(payload).eq('id',storageId);
   }else{
-
-    result =
-      await supabaseClient
-        .from('almacenamientos')
-        .insert([payload]);
-
+    result = await supabaseClient.from('almacenamientos').insert([payload]);
   }
 
-
-  saveButton.disabled =
-    false;
-
-
-  saveButton.textContent =
-    storageId
-      ? 'Actualizar almacenamiento'
-      : 'Guardar almacenamiento';
-
+  saveButton.disabled = false;
+  saveButton.textContent = storageId ? 'Actualizar almacenamiento' : 'Guardar almacenamiento';
 
   if(result.error){
-
-    console.error(result.error);
-
-    showToast(
-      'No se pudo guardar el almacenamiento',
-      'error'
-    );
-
-    return;
-
+    console.error(result.error); showToast('No se pudo guardar el almacenamiento', 'error'); return;
   }
-
 
   closeModal();
-
-
-  showToast(
-    storageId
-      ? 'Almacenamiento actualizado correctamente'
-      : 'Almacenamiento registrado correctamente',
-    'success'
-  );
-
-
+  showToast(storageId ? 'Almacenamiento actualizado correctamente' : 'Almacenamiento registrado correctamente', 'success');
   await loadStorage();
-
 }
-
 
 async function deleteStorage(id){
+  const item = storageData.find(storage => storage.id === id);
+  if(!item) return;
 
-  const item =
-    storageData.find(
-      function(storage){
-        return storage.id === id;
-      }
-    );
+  const productName = item.productos && item.productos.nombre ? item.productos.nombre : 'este producto';
+  const confirmed = confirm('¿Deseas eliminar el registro de almacenamiento de "' + productName + '"?');
+  if(!confirmed) return;
 
-
-  if(!item){
-    return;
-  }
-
-
-  const productName =
-    item.productos &&
-    item.productos.nombre
-      ? item.productos.nombre
-      : 'este producto';
-
-
-  const confirmed =
-    confirm(
-      '¿Deseas eliminar el registro de almacenamiento de "' +
-      productName +
-      '"?'
-    );
-
-
-  if(!confirmed){
-    return;
-  }
-
-
-  const {
-    error
-  } =
-    await supabaseClient
-      .from('almacenamientos')
-      .delete()
-      .eq('id',id);
-
-
-  if(error){
-
-    console.error(error);
-
-    showToast(
-      'No se pudo eliminar el registro',
-      'error'
-    );
-
-    return;
-
-  }
-
-
-  showToast(
-    'Registro eliminado correctamente',
-    'success'
-  );
-
-
+  const { error } = await supabaseClient.from('almacenamientos').delete().eq('id',id);
+  if(error){ console.error(error); showToast('No se pudo eliminar el registro', 'error'); return; }
+  
+  showToast('Registro eliminado correctamente', 'success');
   await loadStorage();
-
 }
 
+/* ---------------- 6. EVENTOS CLICK Y LISTENERS ---------------- */
+document.getElementById('newStorageBtn').addEventListener('click', openModal);
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.getElementById('cancelBtn').addEventListener('click', closeModal);
+storageForm.addEventListener('submit', saveStorage);
+searchInput.addEventListener('input', renderStorage);
+storageModal.addEventListener('click', function(event){ if(event.target === storageModal){ closeModal(); } });
+document.getElementById('logoutBtn').addEventListener('click', async function(){ await supabaseClient.auth.signOut(); window.location.href = 'login.html'; });
 
-/* ---------------- EVENTOS ---------------- */
+/* ---------------- 7. LÓGICA DE NOTIFICACIONES (INTEGRADA) ---------------- */
+const btnCampana = document.getElementById('notificationBtn');
+const panelNotificaciones = document.getElementById('notificationPanel');
+const cerrarNotificaciones = document.getElementById('closeNotifications');
 
-document
-  .getElementById('newStorageBtn')
-  .addEventListener(
-    'click',
-    openModal
-  );
+if (btnCampana && panelNotificaciones) {
+  // Abrir o cerrar el panel al darle clic a la campana
+  btnCampana.addEventListener('click', function(e) {
+    e.stopPropagation();
+    panelNotificaciones.classList.toggle('show');
+    if (panelNotificaciones.classList.contains('show')) {
+      cargarLasNotificaciones();
+    }
+  });
+  // Cerrar con la X
+  cerrarNotificaciones.addEventListener('click', function() { panelNotificaciones.classList.remove('show'); });
+  // Cerrar al hacer clic afuera
+  document.addEventListener('click', function(e) {
+    if (!panelNotificaciones.contains(e.target) && !btnCampana.contains(e.target)) {
+      panelNotificaciones.classList.remove('show');
+    }
+  });
+}
 
+// Busca la info directo en Supabase
+async function cargarLasNotificaciones() {
+  const contenido = document.getElementById('notificationContent');
+  const punto = document.getElementById('notificationDot');
+  if (!contenido || !punto) return;
+  
+  contenido.innerHTML = '<div class="notification-empty">Buscando alertas...</div>';
+  let hayNotificaciones = false;
+  let htmlNotifs = '';
 
-document
-  .getElementById('closeModal')
-  .addEventListener(
-    'click',
-    closeModal
-  );
-
-
-document
-  .getElementById('cancelBtn')
-  .addEventListener(
-    'click',
-    closeModal
-  );
-
-
-storageForm
-  .addEventListener(
-    'submit',
-    saveStorage
-  );
-
-
-searchInput
-  .addEventListener(
-    'input',
-    renderStorage
-  );
-
-
-storageModal
-  .addEventListener(
-    'click',
-    function(event){
-
-      if(event.target === storageModal){
-        closeModal();
+  const { data: recepcionesNotif } = await supabaseClient.from('recepciones').select('id,peso,estado_producto,fecha_recepcion').order('fecha_recepcion', {ascending: false}).limit(20);
+  if (recepcionesNotif) {
+    recepcionesNotif.forEach(r => {
+      const estado = r.estado_producto || 'Recibido';
+      if (estado.toLowerCase() !== 'recibido') {
+        hayNotificaciones = true;
+        htmlNotifs += `
+          <div class="notification-item">
+            <div class="ni-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <strong>Recepción: ${escapeHtml(estado)}</strong>
+              <span>Carga de ${Number(r.peso || 0).toLocaleString('es-CO')} kg.</span>
+            </div>
+          </div>
+        `;
       }
+    });
+  }
 
-    }
-  );
+  const { data: productosNotif } = await supabaseClient.from('productos').select('id,nombre,estado').order('created_at', {ascending: false}).limit(20);
+  if (productosNotif) {
+    productosNotif.forEach(p => {
+      if (p.estado && p.estado.toLowerCase() === 'inactivo') {
+        hayNotificaciones = true;
+        htmlNotifs += `
+          <div class="notification-item">
+            <div class="ni-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v11" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="18.5" r="1" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <strong>Producto inactivo</strong>
+              <span>${escapeHtml(p.nombre)}</span>
+            </div>
+          </div>
+        `;
+      }
+    });
+  }
 
+  if (!hayNotificaciones) {
+    punto.style.display = 'none';
+    contenido.innerHTML = '<div class="notification-empty">No hay notificaciones pendientes.</div>';
+  } else {
+    punto.style.display = 'block';
+    contenido.innerHTML = htmlNotifs;
+  }
+}
 
-document
-  .getElementById('logoutBtn')
-  .addEventListener(
-    'click',
-    async function(){
-
-      await supabaseClient.auth.signOut();
-
-      window.location.href =
-        'login.html';
-
-    }
-  );
-
-
-/* ---------------- INICIO ---------------- */
-
+/* ---------------- 8. ARRANQUE DE LA APP ---------------- */
 async function init(){
-
-  const session =
-    await checkSession();
-
-
-  if(!session){
-    return;
-  }
-
-
+  const session = await checkSession();
+  if(!session) return;
+  
   await loadProducts();
-
   await loadStorage();
-
 }
-
 
 init();
 

@@ -431,14 +431,41 @@
   .toast.error{ background:var(--rojo); }
   .toast.success{ background:#1B8A5A; }
 
-  @media (max-width: 1100px){
-    .filters{ grid-template-columns: 1fr 1fr; }
+  /* ---------------- NOTIFICACIONES ---------------- */
+  .notification-panel {
+    position: fixed;
+    top: 78px;
+    right: 32px;
+    width: 330px;
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(6,43,91,.16);
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
   }
-  @media (max-width: 800px){
+  .notification-panel.show { display: block; }
+  .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 17px; border-bottom: 1px solid var(--gris-borde); }
+  .notification-header strong { font-size: 14px; color: var(--texto-principal); }
+  .notification-header button { border: none; background: none; font-size: 22px; color: var(--texto-secundario); cursor: pointer; padding: 0 5px; }
+  .notification-header button:hover { color: var(--rojo); }
+  .notification-item { display: flex; gap: 10px; padding: 13px 16px; border-bottom: 1px solid #F0F3F7; }
+  .notification-item:last-child { border-bottom: none; }
+  .notification-item .ni-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--azul-claro); color: var(--azul-medio); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .notification-item strong { display: block; font-size: 12.5px; margin-bottom: 2px; color: var(--texto-principal); }
+  .notification-item span { display: block; font-size: 11px; color: var(--texto-secundario); line-height: 1.4; }
+  .notification-empty { padding: 22px 16px; text-align: center; font-size: 12px; color: var(--texto-secundario); }
+  
+  @media(max-width:800px){ 
     .app{ grid-template-columns:1fr; }
     .sidebar{ display:none; }
     main{ padding:18px; }
     .form-grid{ grid-template-columns: 1fr; }
+    .notification-panel { right: 18px; left: 18px; width: auto; top: 70px; } 
+  }
+  @media (max-width: 1100px){
+    .filters{ grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
@@ -448,7 +475,6 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-
     <div class="sb-brand">
       <div class="badge">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/><circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/></svg>
@@ -529,14 +555,29 @@
         <div class="subtitle">Gestiona y consulta los productos marinos registrados</div>
       </div>
       <div class="top-actions">
-        <button class="icon-btn" title="Notificaciones">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="dot-alert"></span>
-        </button>
-        <div class="top-user">
-          <div class="avatar" id="topAvatar">C</div>
-          <span id="topUserName">Cargando...</span>
-        </div>
+          <button class="icon-btn" id="notificationBtn" title="Notificaciones">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+             <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/>
+             <path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+            <span class="dot-alert" id="notificationDot"></span>
+          </button>
+
+          <div class="top-user">
+           <div class="avatar" id="topAvatar">C</div>
+           <span id="topUserName">Cargando...</span>
+          </div>
+      </div>
+    </div> 
+
+    <!-- PANEL DESPLEGABLE NOTIFICACIONES -->
+    <div class="notification-panel" id="notificationPanel">
+      <div class="notification-header">
+        <strong>Notificaciones</strong>
+        <button id="closeNotifications">×</button>
+      </div>
+      <div id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
       </div>
     </div>
 
@@ -984,6 +1025,121 @@
   // ---------- Carga inicial ----------
   cargarProductos();
 })();
+</script>
+
+<script>
+  // ---------- LÓGICA DE NOTIFICACIONES ----------
+  const btnCampana = document.getElementById('notificationBtn');
+  const panelNotificaciones = document.getElementById('notificationPanel');
+  const cerrarNotificaciones = document.getElementById('closeNotifications');
+
+  if (btnCampana && panelNotificaciones) {
+    // Abrir panel
+    btnCampana.addEventListener('click', function(e) {
+      e.stopPropagation();
+      panelNotificaciones.classList.toggle('show');
+      if (panelNotificaciones.classList.contains('show')) {
+        cargarLasNotificaciones();
+      }
+    });
+
+    // Cerrar con la X
+    cerrarNotificaciones.addEventListener('click', function() {
+      panelNotificaciones.classList.remove('show');
+    });
+
+    // Cerrar al hacer clic afuera
+    document.addEventListener('click', function(e) {
+      if (!panelNotificaciones.contains(e.target) && !btnCampana.contains(e.target)) {
+        panelNotificaciones.classList.remove('show');
+      }
+    });
+  }
+
+  async function cargarLasNotificaciones() {
+    const contenido = document.getElementById('notificationContent');
+    const punto = document.getElementById('notificationDot');
+    
+    if (!contenido || !punto) return;
+    
+    contenido.innerHTML = '<div class="notification-empty">Buscando alertas...</div>';
+    let hayNotificaciones = false;
+    let htmlNotifs = '';
+
+    // 1. Consultar recepciones
+    const { data: recepciones } = await supabaseClient
+      .from('recepciones')
+      .select('id,peso,estado_producto,fecha_recepcion')
+      .order('fecha_recepcion', {ascending: false})
+      .limit(20);
+
+    if (recepciones) {
+      recepciones.forEach(r => {
+        const estado = r.estado_producto || 'Recibido';
+        if (estado.toLowerCase() !== 'recibido') {
+          hayNotificaciones = true;
+          htmlNotifs += `
+            <div class="notification-item">
+              <div class="ni-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/>
+                  <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <strong>Recepción: ${escapeHTMLNotif(estado)}</strong>
+                <span>Carga de ${Number(r.peso || 0).toLocaleString('es-CO')} kg.</span>
+              </div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // 2. Consultar productos inactivos
+    const { data: productos } = await supabaseClient
+      .from('productos')
+      .select('id,nombre,estado')
+      .order('created_at', {ascending: false})
+      .limit(20);
+
+    if (productos) {
+      productos.forEach(p => {
+        if (p.estado && p.estado.toLowerCase() === 'inactivo') {
+          hayNotificaciones = true;
+          htmlNotifs += `
+            <div class="notification-item">
+              <div class="ni-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3v11" stroke="currentColor" stroke-width="1.8"/>
+                  <circle cx="12" cy="18.5" r="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <strong>Producto inactivo</strong>
+                <span>${escapeHTMLNotif(p.nombre)}</span>
+              </div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // 3. Mostrar resultado
+    if (!hayNotificaciones) {
+      punto.style.display = 'none';
+      contenido.innerHTML = '<div class="notification-empty">No hay notificaciones pendientes.</div>';
+    } else {
+      punto.style.display = 'block';
+      contenido.innerHTML = htmlNotifs;
+    }
+  }
+
+  function escapeHTMLNotif(text) {
+    const div = document.createElement('div');
+    div.textContent = text ?? '';
+    return div.innerHTML;
+  }
 </script>
 
 </body>

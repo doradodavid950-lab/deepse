@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- COMENTARIO: Título de la pestaña limpio -->
 <title>Deep Sea Intelligence — Normas y Calidad</title>
 
 <style>
+  /* COMENTARIO: Variables de color para mantener el diseño uniforme */
   :root{
     --azul-oscuro:#062B5B;
     --azul-oscuro-2:#083868;
@@ -37,14 +39,14 @@
     color:var(--texto-principal);
   }
 
+  /* COMENTARIO: Layout principal usando Grid */
   .app{
     display:grid;
     grid-template-columns:250px 1fr;
     min-height:100vh;
   }
 
-  /* ---------------- SIDEBAR ---------------- */
-
+  /* ---------------- SIDEBAR (MENÚ LATERAL) ---------------- */
   .sidebar{
     background:var(--azul-oscuro);
     color:#EAF1FC;
@@ -56,701 +58,150 @@
     height:100vh;
   }
 
-  .sb-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:6px 10px 22px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:14px;
-  }
+  .sb-brand{ display:flex; align-items:center; gap:10px; padding:6px 10px 22px; border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:14px; }
+  .sb-brand .badge{ width:38px; height:38px; border-radius:11px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
+  .sb-brand .name{ font-weight:700; font-size:16px; line-height:1.1; }
+  .sb-brand .name span{ color:var(--amarillo); }
+  .sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); }
 
-  .sb-brand .badge{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:rgba(255,255,255,.12);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+  nav.sb-nav{ flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:2px; }
+  .sb-link{ display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; color:rgba(255,255,255,.72); text-decoration:none; font-size:14px; font-weight:500; cursor:pointer; border:none; background:none; width:100%; text-align:left; }
+  .sb-link svg{ flex:0 0 auto; opacity:.85; }
+  .sb-link:hover{ background:rgba(255,255,255,.06); color:#fff; }
+  .sb-link.active{ background:var(--azul-medio); color:#fff; box-shadow:0 6px 16px rgba(30,102,245,.35); }
 
-  .sb-brand .name{
-    font-weight:700;
-    font-size:16px;
-    line-height:1.1;
-  }
+  .sb-footer{ border-top:1px solid rgba(255,255,255,.08); padding-top:14px; margin-top:10px; }
+  .sb-user{ display:flex; align-items:center; gap:10px; padding:8px 8px; }
+  .sb-user .avatar{ width:34px; height:34px; border-radius:50%; background:var(--verde-suave); color:var(--azul-oscuro); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
+  .sb-user .info strong{ display:block; font-size:13px; }
+  .sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+  .sb-logout{ display:flex; align-items:center; gap:8px; width:100%; margin-top:8px; border:none; background:rgba(229,57,53,.15); color:#FFC7C5; padding:9px 12px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; }
+  .sb-logout:hover{ background:rgba(229,57,53,.28); }
 
-  .sb-brand .name span{
-    color:var(--amarillo);
-  }
+  /* ---------------- MAIN (CONTENIDO PRINCIPAL) ---------------- */
+  main{ padding:26px 32px 50px; }
 
-  .sb-brand .sub{
-    font-size:10.5px;
-    color:rgba(255,255,255,.55);
-  }
+  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; }
+  .topbar h1{ font-size:23px; margin:0; }
+  .topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
+  .top-actions{ display:flex; align-items:center; gap:16px; }
 
-  nav.sb-nav{
-    flex:1;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-  }
+  .icon-btn{ width:40px; height:40px; border-radius:12px; background:var(--blanco); border:1px solid var(--gris-borde); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; color:var(--azul-oscuro); }
+  .icon-btn:hover{ border-color:var(--azul-medio); }
+  .dot-alert{ position:absolute; top:8px; right:9px; width:7px; height:7px; border-radius:50%; background:var(--rojo); border:1.5px solid var(--blanco); }
 
-  .sb-link{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
-    border-radius:10px;
-    color:rgba(255,255,255,.72);
-    text-decoration:none;
-    font-size:14px;
-    font-weight:500;
-    cursor:pointer;
-    border:none;
-    background:none;
-    width:100%;
-    text-align:left;
-  }
+  .top-user{ display:flex; align-items:center; gap:10px; background:var(--blanco); border:1px solid var(--gris-borde); padding:6px 14px 6px 6px; border-radius:30px; }
+  .top-user .avatar{ width:30px; height:30px; border-radius:50%; background:var(--azul-claro); color:var(--azul-oscuro); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; }
+  .top-user span{ font-size:13.5px; font-weight:600; }
 
-  .sb-link svg{
-    flex:0 0 auto;
-    opacity:.85;
-  }
+  /* ---------------- KPI (TARJETAS INDICADORAS) ---------------- */
+  .kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:22px; }
+  .kpi-card{ background:var(--blanco); border-radius:var(--radio); padding:20px; box-shadow:var(--sombra); border-top:4px solid var(--accent,var(--azul-medio)); }
+  .kpi-card .top-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .kpi-card .icon-wrap{ width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:var(--accent-soft,var(--azul-claro)); color:var(--accent,var(--azul-medio)); }
+  .kpi-card .value{ font-size:26px; font-weight:700; }
+  .kpi-card .label{ font-size:12.5px; color:var(--texto-secundario); margin-top:2px; }
+  .kpi-card .delta{ font-size:11.5px; margin-top:10px; font-weight:600; }
+  .delta.up{ color:var(--verde-txt); }
+  .delta.neutral{ color:var(--texto-secundario); }
 
-  .sb-link:hover{
-    background:rgba(255,255,255,.06);
-    color:#fff;
-  }
+  .kpi-card.c1{ --accent:#1E66F5; --accent-soft:#D9ECFF; }
+  .kpi-card.c2{ --accent:#1B8A5A; --accent-soft:#B9F5C5; }
+  .kpi-card.c3{ --accent:#7B5CC7; --accent-soft:#E7D7FF; }
+  .kpi-card.c4{ --accent:#FFA94D; --accent-soft:#FFE8D1; }
 
-  .sb-link.active{
-    background:var(--azul-medio);
-    color:#fff;
-    box-shadow:0 6px 16px rgba(30,102,245,.35);
-  }
-
-  .sb-footer{
-    border-top:1px solid rgba(255,255,255,.08);
-    padding-top:14px;
-    margin-top:10px;
-  }
-
-  .sb-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px 8px;
-  }
-
-  .sb-user .avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:var(--verde-suave);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:13px;
-  }
-
-  .sb-user .info strong{
-    display:block;
-    font-size:13px;
-  }
-
-  .sb-user .info span{
-    font-size:11px;
-    color:rgba(255,255,255,.5);
-  }
-
-  .sb-logout{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    width:100%;
-    margin-top:8px;
-    border:none;
-    background:rgba(229,57,53,.15);
-    color:#FFC7C5;
-    padding:9px 12px;
-    border-radius:10px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-  }
-
-  .sb-logout:hover{
-    background:rgba(229,57,53,.28);
-  }
-
-  /* ---------------- MAIN ---------------- */
-
-  main{
-    padding:26px 32px 50px;
-  }
-
-  .topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:26px;
-  }
-
-  .topbar h1{
-    font-size:23px;
-    margin:0;
-  }
-
-  .topbar .subtitle{
-    font-size:13px;
-    color:var(--texto-secundario);
-    margin-top:3px;
-  }
-
-  .top-actions{
-    display:flex;
-    align-items:center;
-    gap:16px;
-  }
-
-  .icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:relative;
-    color:var(--azul-oscuro);
-  }
-
-  .icon-btn:hover{
-    border-color:var(--azul-medio);
-  }
-
-  .dot-alert{
-    position:absolute;
-    top:8px;
-    right:9px;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--rojo);
-    border:1.5px solid var(--blanco);
-  }
-
-  .top-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    padding:6px 14px 6px 6px;
-    border-radius:30px;
-  }
-
-  .top-user .avatar{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:12px;
-  }
-
-  .top-user span{
-    font-size:13.5px;
-    font-weight:600;
-  }
-
-  /* ---------------- KPI ---------------- */
-
-  .kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-    margin-bottom:22px;
-  }
-
-  .kpi-card{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    padding:20px;
-    box-shadow:var(--sombra);
-    border-top:4px solid var(--accent,var(--azul-medio));
-  }
-
-  .kpi-card .top-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-  }
-
-  .kpi-card .icon-wrap{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--accent-soft,var(--azul-claro));
-    color:var(--accent,var(--azul-medio));
-  }
-
-  .kpi-card .value{
-    font-size:26px;
-    font-weight:700;
-  }
-
-  .kpi-card .label{
-    font-size:12.5px;
-    color:var(--texto-secundario);
-    margin-top:2px;
-  }
-
-  .kpi-card .delta{
-    font-size:11.5px;
-    margin-top:10px;
-    font-weight:600;
-  }
-
-  .delta.up{
-    color:var(--verde-txt);
-  }
-
-  .delta.neutral{
-    color:var(--texto-secundario);
-  }
-
-  .kpi-card.c1{
-    --accent:#1E66F5;
-    --accent-soft:#D9ECFF;
-  }
-
-  .kpi-card.c2{
-    --accent:#7B5CC7;
-    --accent-soft:#E7D7FF;
-  }
-
-  .kpi-card.c3{
-    --accent:#1B8A5A;
-    --accent-soft:#B9F5C5;
-  }
-
-  .kpi-card.c4{
-    --accent:#FFA94D;
-    --accent-soft:#FFE8D1;
-  }
-
-  /* ---------------- GRID ---------------- */
-
-  .grid-2{
-    display:grid;
-    grid-template-columns:1.6fr 1fr;
-    gap:18px;
-    margin-bottom:18px;
-  }
-
-  .panel{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    box-shadow:var(--sombra);
-    padding:20px;
-  }
-
-  .panel-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-  }
-
-  .panel-head h3{
-    margin:0;
-    font-size:15.5px;
-  }
-
-  .panel-head a{
-    font-size:12.5px;
-    color:var(--azul-medio);
-    text-decoration:none;
-    font-weight:600;
-  }
+  /* ---------------- PANELES ---------------- */
+  .grid-2{ display:grid; grid-template-columns:1.6fr 1fr; gap:18px; margin-bottom:18px; }
+  .panel{ background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); padding:20px; }
+  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .panel-head h3{ margin:0; font-size:15.5px; }
+  .panel-head a{ font-size:12.5px; color:var(--azul-medio); text-decoration:none; font-weight:600; }
 
   /* ---------------- NORMAS ---------------- */
-
-  .normas-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
-  }
-
-  .norma-card{
-    border:1px solid var(--gris-borde);
-    border-radius:13px;
-    padding:16px;
-    background:#fff;
-  }
-
-  .norma-icon{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:12px;
-  }
-
-  .norma-icon.azul{
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-  }
-
-  .norma-icon.verde{
-    background:var(--verde-suave);
-    color:var(--verde-txt);
-  }
-
-  .norma-icon.morado{
-    background:var(--morado);
-    color:var(--morado-txt);
-  }
-
-  .norma-card h4{
-    margin:0 0 7px;
-    font-size:14px;
-  }
-
-  .norma-card p{
-    margin:0;
-    color:var(--texto-secundario);
-    font-size:12px;
-    line-height:1.55;
-  }
+  .normas-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .norma-card{ border:1px solid var(--gris-borde); border-radius:13px; padding:16px; background:#fff; }
+  .norma-icon{ width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+  .norma-icon.azul{ background:var(--azul-claro); color:var(--azul-medio); }
+  .norma-icon.verde{ background:var(--verde-suave); color:var(--verde-txt); }
+  .norma-icon.morado{ background:var(--morado); color:var(--morado-txt); }
+  .norma-card h4{ margin:0 0 7px; font-size:14px; }
+  .norma-card p{ margin:0; color:var(--texto-secundario); font-size:12px; line-height:1.55; }
 
   /* ---------------- BOTONES ---------------- */
+  .btn{ border:none; border-radius:10px; padding:9px 14px; font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
+  .btn-primary{ background:var(--azul-medio); color:#fff; }
+  .btn-primary:hover{ background:#1558d6; }
+  .btn-secondary{ background:var(--gris-claro); color:var(--texto-principal); border:1px solid var(--gris-borde); }
+  .btn-danger{ background:#FCE1E0; color:var(--rojo); }
 
-  .btn{
-    border:none;
-    border-radius:10px;
-    padding:9px 14px;
-    font-family:inherit;
-    font-size:12.5px;
-    font-weight:600;
-    cursor:pointer;
-  }
+  /* ---------------- TABLA ---------------- */
+  table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
+  table.simple th{ text-align:left; color:var(--texto-secundario); font-weight:600; font-size:11.5px; text-transform:none; padding:8px 6px; border-bottom:1px solid var(--gris-borde); }
+  table.simple td{ padding:11px 6px; border-bottom:1px solid #F0F3F7; vertical-align:middle; }
+  table.simple tr:last-child td{ border-bottom:none; }
 
-  .btn-primary{
-    background:var(--azul-medio);
-    color:#fff;
-  }
-
-  .btn-primary:hover{
-    background:#1558d6;
-  }
-
-  .btn-secondary{
-    background:var(--gris-claro);
-    color:var(--texto-principal);
-    border:1px solid var(--gris-borde);
-  }
-
-  .btn-danger{
-    background:#FCE1E0;
-    color:var(--rojo);
-  }
-
-  /* ---------------- TABLE ---------------- */
-
-  table.simple{
-    width:100%;
-    border-collapse:collapse;
-    font-size:13px;
-  }
-
-  table.simple th{
-    text-align:left;
-    color:var(--texto-secundario);
-    font-weight:600;
-    font-size:11.5px;
-    text-transform:none;
-    padding:8px 6px;
-    border-bottom:1px solid var(--gris-borde);
-  }
-
-  table.simple td{
-    padding:11px 6px;
-    border-bottom:1px solid #F0F3F7;
-    vertical-align:middle;
-  }
-
-  table.simple tr:last-child td{
-    border-bottom:none;
-  }
-
-  .pill{
-    display:inline-block;
-    padding:3px 10px;
-    border-radius:30px;
-    font-size:11px;
-    font-weight:700;
-  }
-
-  .pill.ok{
-    background:var(--verde-suave);
-    color:#146142;
-  }
-
-  .pill.pend{
-    background:var(--amarillo);
-    color:#7A5A00;
-  }
-
-  .pill.warn{
-    background:#FFE3D1;
-    color:#B45300;
-  }
+  .pill{ display:inline-block; padding:3px 10px; border-radius:30px; font-size:11px; font-weight:700; }
+  .pill.ok{ background:var(--verde-suave); color:#146142; }
+  .pill.pend{ background:var(--amarillo); color:#7A5A00; }
+  .pill.warn{ background:#FFE3D1; color:#B45300; }
 
   /* ---------------- FILTROS ---------------- */
-
-  .filters{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:16px;
-    flex-wrap:wrap;
-  }
-
-  .search{
-    flex:1;
-    min-width:220px;
-    position:relative;
-  }
-
-  .search input{
-    width:100%;
-    padding:10px 12px 10px 36px;
-    border:1px solid var(--gris-borde);
-    border-radius:10px;
-    font-family:inherit;
-    font-size:12.5px;
-    outline:none;
-    background:#fff;
-  }
-
-  .search input:focus{
-    border-color:var(--azul-medio);
-  }
-
-  .search svg{
-    position:absolute;
-    left:12px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--texto-secundario);
-  }
-
-  select,
-  input,
-  textarea{
-    font-family:inherit;
-  }
-
-  .filter-select{
-    padding:10px 12px;
-    border:1px solid var(--gris-borde);
-    border-radius:10px;
-    background:#fff;
-    color:var(--texto-principal);
-    font-size:12.5px;
-    outline:none;
-  }
+  .filters{ display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+  .search{ flex:1; min-width:220px; position:relative; }
+  .search input{ width:100%; padding:10px 12px 10px 36px; border:1px solid var(--gris-borde); border-radius:10px; font-family:inherit; font-size:12.5px; outline:none; background:#fff; }
+  .search input:focus{ border-color:var(--azul-medio); }
+  .search svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--texto-secundario); }
+  
+  select, input, textarea{ font-family:inherit; }
+  .filter-select{ padding:10px 12px; border:1px solid var(--gris-borde); border-radius:10px; background:#fff; color:var(--texto-principal); font-size:12.5px; outline:none; }
 
   /* ---------------- MODAL ---------------- */
+  .modal{ position:fixed; inset:0; background:rgba(6,43,91,.45); display:none; align-items:center; justify-content:center; padding:20px; z-index:1000; }
+  .modal.show{ display:flex; }
+  .modal-box{ width:100%; max-width:620px; background:#fff; border-radius:var(--radio); box-shadow:0 20px 60px rgba(6,43,91,.2); overflow:hidden; }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--gris-borde); }
+  .modal-head h3{ margin:0; font-size:16px; }
+  .close{ width:34px; height:34px; border:none; border-radius:9px; background:var(--gris-claro); color:var(--texto-secundario); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  
+  .form{ padding:20px; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field.full{ grid-column:1/-1; }
+  .field label{ font-size:12px; font-weight:600; color:var(--texto-principal); }
+  .field input, .field select, .field textarea{ width:100%; padding:10px 11px; border:1px solid var(--gris-borde); border-radius:9px; outline:none; font-size:12.5px; color:var(--texto-principal); background:#fff; }
+  .field textarea{ resize:vertical; min-height:85px; }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--azul-medio); }
+  .modal-actions{ display:flex; justify-content:flex-end; gap:9px; padding:0 20px 20px; }
 
-  .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(6,43,91,.45);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:1000;
-  }
+  .empty{ text-align:center; color:var(--texto-secundario); padding:25px; font-size:13px; }
+  .message{ margin-bottom:14px; padding:10px 12px; border-radius:9px; font-size:12px; display:none; }
+  .message.error{ display:block; background:#FCE1E0; color:#A3211E; }
 
-  .modal.show{
-    display:flex;
-  }
+  /* COMENTARIO: ESTILOS INTEGRADOS DE LAS NOTIFICACIONES */
+  .notification-panel { position: fixed; top: 78px; right: 32px; width: 330px; background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 14px; box-shadow: 0 15px 35px rgba(6,43,91,.16); z-index: 1000; display: none; overflow: hidden; }
+  .notification-panel.show { display: block; }
+  .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 17px; border-bottom: 1px solid var(--gris-borde); }
+  .notification-header strong { font-size: 14px; color: var(--texto-principal); }
+  .notification-header button { border: none; background: none; font-size: 22px; color: var(--texto-secundario); cursor: pointer; padding: 0 5px; }
+  .notification-header button:hover { color: var(--rojo); }
+  .notification-item { display: flex; gap: 10px; padding: 13px 16px; border-bottom: 1px solid #F0F3F7; }
+  .notification-item:last-child { border-bottom: none; }
+  .notification-item .ni-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--azul-claro); color: var(--azul-medio); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .notification-item strong { display: block; font-size: 12.5px; margin-bottom: 2px; color: var(--texto-principal); }
+  .notification-item span { display: block; font-size: 11px; color: var(--texto-secundario); line-height: 1.4; }
+  .notification-empty { padding: 22px 16px; text-align: center; font-size: 12px; color: var(--texto-secundario); }
 
-  .modal-box{
-    width:100%;
-    max-width:620px;
-    background:#fff;
-    border-radius:var(--radio);
-    box-shadow:0 20px 60px rgba(6,43,91,.2);
-    overflow:hidden;
-  }
-
-  .modal-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:18px 20px;
-    border-bottom:1px solid var(--gris-borde);
-  }
-
-  .modal-head h3{
-    margin:0;
-    font-size:16px;
-  }
-
-  .close{
-    width:34px;
-    height:34px;
-    border:none;
-    border-radius:9px;
-    background:var(--gris-claro);
-    color:var(--texto-secundario);
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .form{
-    padding:20px;
-  }
-
-  .form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-  }
-
-  .field{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-
-  .field.full{
-    grid-column:1/-1;
-  }
-
-  .field label{
-    font-size:12px;
-    font-weight:600;
-    color:var(--texto-principal);
-  }
-
-  .field input,
-  .field select,
-  .field textarea{
-    width:100%;
-    padding:10px 11px;
-    border:1px solid var(--gris-borde);
-    border-radius:9px;
-    outline:none;
-    font-size:12.5px;
-    color:var(--texto-principal);
-    background:#fff;
-  }
-
-  .field textarea{
-    resize:vertical;
-    min-height:85px;
-  }
-
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus{
-    border-color:var(--azul-medio);
-  }
-
-  .modal-actions{
-    display:flex;
-    justify-content:flex-end;
-    gap:9px;
-    padding:0 20px 20px;
-  }
-
-  .empty{
-    text-align:center;
-    color:var(--texto-secundario);
-    padding:25px;
-    font-size:13px;
-  }
-
-  .message{
-    margin-bottom:14px;
-    padding:10px 12px;
-    border-radius:9px;
-    font-size:12px;
-    display:none;
-  }
-
-  .message.error{
-    display:block;
-    background:#FCE1E0;
-    color:#A3211E;
-  }
-
-  @media (max-width:1100px){
-    .kpi-grid{
-      grid-template-columns:repeat(2,1fr);
-    }
-
-    .grid-2{
-      grid-template-columns:1fr;
-    }
-
-    .normas-grid{
-      grid-template-columns:1fr 1fr;
-    }
-  }
-
+  /* ---------------- RESPONSIVE ---------------- */
+  @media (max-width:1100px){ .kpi-grid{ grid-template-columns:repeat(2,1fr); } .grid-2{ grid-template-columns:1fr; } .normas-grid{ grid-template-columns:1fr 1fr; } }
   @media (max-width:800px){
-    .app{
-      grid-template-columns:1fr;
-    }
-
-    .sidebar{
-      display:none;
-    }
-
-    main{
-      padding:18px;
-    }
-
-    .normas-grid{
-      grid-template-columns:1fr;
-    }
-
-    .form-grid{
-      grid-template-columns:1fr;
-    }
-
-    .field.full{
-      grid-column:auto;
-    }
-
-    .top-user{
-      display:none;
-    }
+    .app{ grid-template-columns:1fr; }
+    .sidebar{ display:none; }
+    main{ padding:18px; }
+    .normas-grid{ grid-template-columns:1fr; }
+    .form-grid{ grid-template-columns:1fr; }
+    .field.full{ grid-column:auto; }
+    .top-user{ display:none; }
+    .notification-panel { right: 18px; left: 18px; width: auto; top: 70px; } 
   }
 </style>
 </head>
@@ -759,503 +210,227 @@
 
 <div class="app">
 
-  <!-- SIDEBAR -->
+  <!-- COMENTARIO: MENÚ LATERAL (SIDEBAR) -->
   <aside class="sidebar">
-
     <div class="sb-brand">
-
       <div class="badge">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-                stroke="#FFD76A"
-                stroke-width="1.6"
-                stroke-linejoin="round"/>
+          <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/>
           <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
         </svg>
       </div>
-
       <div>
         <div class="name">Deep <span>Sea</span></div>
         <div class="sub">Gestión de recursos marinos</div>
       </div>
-
     </div>
 
     <nav class="sb-nav" id="sbNav">
-
       <a class="sb-link" data-view="inicio" href="inicio.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 11l9-7 9 7"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <path d="M5 10v10h14V10"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
         Inicio
       </a>
-
       <a class="sb-link" data-view="productos" href="productos.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <circle cx="12" cy="12" r="2.2"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
         Productos
       </a>
-
       <a class="sb-link" data-view="proveedores" href="proveedores.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="8" r="3.4"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-          <path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
         Proveedores
       </a>
-
       <a class="sb-link" data-view="recepciones" href="recepciones.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <rect x="4" y="7" width="16" height="13" rx="2"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
         Recepciones
       </a>
-
       <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"/>
-          <path d="M9 20v-6h6v6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
         Almacenamiento
       </a>
-
       <a class="sb-link" data-view="ventas" href="ventas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="9" cy="20" r="1.3" fill="currentColor"/>
-          <circle cx="17" cy="20" r="1.3" fill="currentColor"/>
-          <path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
         Ventas
       </a>
-
       <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 6h18M3 12h18M3 18h12"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <circle cx="20" cy="18" r="1.6"
-                  fill="currentColor"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
         Trazabilidad
       </a>
-
       <a class="sb-link" data-view="reportes" href="reportes.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M4 20V10M12 20V4M20 20v-7"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         Reportes
       </a>
 
+      <!-- COMENTARIO: Enlace activo de Normas y Calidad -->
       <a class="sb-link active" data-view="normas" href="normas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <path d="m9 12 2 2 4-4"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
         Normas y Calidad
       </a>
 
       <a class="sb-link" data-view="usuarios" href="usuarios.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="9" cy="8" r="3"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-          <path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <circle cx="18" cy="8" r="2.2"
-                  stroke="currentColor"
-                  stroke-width="1.5"/>
-          <path d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-                stroke="currentColor"
-                stroke-width="1.5"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
         Usuarios
       </a>
-
       <a class="sb-link" data-view="configuracion" href="configuracion.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-          <path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-                stroke="currentColor"
-                stroke-width="1.3"
-                stroke-linejoin="round"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         Configuración
       </a>
-
     </nav>
 
     <div class="sb-footer">
-
       <div class="sb-user">
-
         <div class="avatar" id="sbAvatar">C</div>
-
         <div class="info">
           <strong id="sbUserName">Cargando...</strong>
           <span>En línea</span>
         </div>
-
       </div>
-
       <button class="sb-logout" id="logoutBtn">
-
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-                stroke="currentColor"
-                stroke-width="1.8"/>
-          <path d="M16 17l5-5-5-5M21 12H9"
-                stroke="currentColor"
-                stroke-width="1.8"/>
-        </svg>
-
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8"/></svg>
         Cerrar sesión
-
       </button>
-
     </div>
-
   </aside>
 
-
-  <!-- MAIN -->
+  <!-- COMENTARIO: CONTENIDO PRINCIPAL Y BARRA SUPERIOR -->
   <main>
-
     <div class="topbar">
-
       <div>
         <h1>Normas y Calidad</h1>
-        <div class="subtitle">
-          Consulta de regulaciones y seguimiento de la calidad de los productos marinos — <span id="todayDate"></span>
-        </div>
+        <div class="subtitle">Consulta de regulaciones y seguimiento de la calidad de los productos marinos — <span id="todayDate"></span></div>
       </div>
 
       <div class="top-actions">
-
-        <button class="icon-btn" title="Notificaciones">
-
+        <!-- COMENTARIO: BOTÓN DE LA CAMPANITA CORREGIDO -->
+        <button class="icon-btn" id="notificationBtn" title="Notificaciones">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-                  stroke="currentColor"
-                  stroke-width="1.6"/>
-            <path d="M10 20a2 2 0 0 0 4 0"
-                  stroke="currentColor"
-                  stroke-width="1.6"/>
+            <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/>
           </svg>
-
-          <span class="dot-alert"></span>
-
+          <span class="dot-alert" id="notificationDot"></span>
         </button>
 
         <div class="top-user">
           <div class="avatar" id="topAvatar">C</div>
           <span id="topUserName">Cargando...</span>
         </div>
+      </div> 
+    </div> 
 
+    <!-- COMENTARIO: PANEL DESPLEGABLE DE NOTIFICACIONES (OCULTO POR DEFECTO) -->
+    <div class="notification-panel" id="notificationPanel">
+      <div class="notification-header">
+        <strong>Notificaciones</strong>
+        <button id="closeNotifications">×</button>
       </div>
-
+      <div id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
+      </div>
     </div>
 
-
-    <!-- KPI -->
-
+    <!-- COMENTARIO: TARJETAS KPI (INDICADORES DE CALIDAD) -->
     <div class="kpi-grid">
-
       <div class="kpi-card c1">
-
         <div class="top-row">
           <div class="icon-wrap">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M4 4h16v16H4z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-              <path d="M8 8h8M8 12h8M8 16h5"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
           </div>
         </div>
-
         <div class="value" id="totalControles">0</div>
         <div class="label">Controles realizados</div>
         <div class="delta neutral">Registros de calidad</div>
-
       </div>
 
-
       <div class="kpi-card c2">
-
         <div class="top-row">
           <div class="icon-wrap">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="m5 13 4 4L19 7"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </div>
-
         <div class="value" id="totalAprobados">0</div>
         <div class="label">Controles aprobados</div>
         <div class="delta up">Calidad verificada</div>
-
       </div>
 
-
       <div class="kpi-card c3">
-
         <div class="top-row">
           <div class="icon-wrap">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v18M3 12h18"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
           </div>
         </div>
-
         <div class="value" id="totalRechazados">0</div>
         <div class="label">Controles rechazados</div>
         <div class="delta neutral">Requieren seguimiento</div>
-
       </div>
 
-
       <div class="kpi-card c4">
-
         <div class="top-row">
           <div class="icon-wrap">
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="9"
-                      stroke="currentColor"
-                      stroke-width="1.6"/>
-              <path d="M12 7v5l3 2"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
           </div>
         </div>
-
         <div class="value" id="totalPendientes">0</div>
         <div class="label">Controles pendientes</div>
         <div class="delta neutral">Pendientes de revisión</div>
-
       </div>
-
     </div>
 
-
-    <!-- INFORMACIÓN SOBRE NORMAS -->
-
+    <!-- COMENTARIO: PANEL DE INFORMACIÓN DE NORMAS -->
     <div class="panel">
-
       <div class="panel-head">
-
         <h3>Normas y regulaciones</h3>
-
       </div>
-
-
       <div class="normas-grid">
-
         <div class="norma-card">
-
           <div class="norma-icon azul">
-
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-              <path d="m9 12 2 2 4-4"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-            </svg>
-
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
-
           <h4>Control sanitario</h4>
-
-          <p>
-            Seguimiento de las condiciones de calidad de los productos
-            recibidos y registro de las verificaciones realizadas.
-          </p>
-
+          <p>Seguimiento de las condiciones de calidad de los productos recibidos y registro de las verificaciones realizadas.</p>
         </div>
 
-
         <div class="norma-card">
-
           <div class="norma-icon verde">
-
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-              <path d="M5 5h14v14H5z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-              <path d="M8 9h8M8 13h8M8 17h5"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-            </svg>
-
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5z" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
           </div>
-
           <h4>Estándares de calidad</h4>
-
-          <p>
-            Registro de características del producto como color, olor,
-            textura y resultado de la evaluación.
-          </p>
-
+          <p>Registro de características del producto como color, olor, textura y resultado de la evaluación.</p>
         </div>
-
 
         <div class="norma-card">
-
           <div class="norma-icon morado">
-
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-              <path d="M4 6h16v14H4z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-              <path d="M8 6V4h8v2"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-              <path d="M8 11h8M8 15h5"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-            </svg>
-
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v14H4z" stroke="currentColor" stroke-width="1.7"/><path d="M8 6V4h8v2" stroke="currentColor" stroke-width="1.7"/><path d="M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
-
           <h4>Seguimiento de calidad</h4>
-
-          <p>
-            Consulta de los controles registrados para facilitar el
-            seguimiento y control de los productos marinos.
-          </p>
-
+          <p>Consulta de los controles registrados para facilitar el seguimiento y control de los productos marinos.</p>
         </div>
-
       </div>
-
     </div>
 
-
-    <!-- CONTROLES DE CALIDAD -->
-
+    <!-- COMENTARIO: TABLA DE CONTROLES DE CALIDAD -->
     <div class="panel" style="margin-top:18px;">
-
       <div class="panel-head">
-
         <h3>Registro de controles de calidad</h3>
-
         <button class="btn btn-primary" id="btnNuevo">
-
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-               style="vertical-align:-2px;margin-right:5px;">
-            <path d="M12 5v14M5 12h14"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"/>
-          </svg>
-
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:5px;"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           Nuevo control
-
         </button>
-
       </div>
-
 
       <div class="filters">
-
         <div class="search">
-
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="7"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-            <path d="m16 16 4 4"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"/>
-          </svg>
-
-          <input
-            type="text"
-            id="buscar"
-            placeholder="Buscar producto..."
-          >
-
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input type="text" id="buscar" placeholder="Buscar producto...">
         </div>
-
-
         <select id="filtroResultado" class="filter-select">
-
           <option value="">Todos los resultados</option>
           <option value="Aprobado">Aprobado</option>
           <option value="Rechazado">Rechazado</option>
           <option value="Pendiente">Pendiente</option>
-
         </select>
-
       </div>
 
-
       <div style="overflow-x:auto;">
-
         <table class="simple">
-
           <thead>
-
             <tr>
               <th>Producto</th>
               <th>Color</th>
@@ -1265,965 +440,393 @@
               <th>Fecha</th>
               <th>Acciones</th>
             </tr>
-
           </thead>
-
           <tbody id="tablaControles">
-
             <tr>
-              <td colspan="7" class="empty">
-                Cargando controles...
-              </td>
+              <td colspan="7" class="empty">Cargando controles...</td>
             </tr>
-
           </tbody>
-
         </table>
-
       </div>
-
     </div>
 
   </main>
-
 </div>
 
-
-<!-- MODAL -->
-
+<!-- COMENTARIO: MODAL (FORMULARIO PARA NUEVO CONTROL) -->
 <div class="modal" id="modal">
-
   <div class="modal-box">
-
     <div class="modal-head">
-
       <h3 id="modalTitulo">Nuevo control de calidad</h3>
-
       <button class="close" id="cerrarModal">
-
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path d="M6 6l12 12M18 6 6 18"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
-        </svg>
-
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
-
     </div>
 
-
     <form class="form" id="formControl">
-
       <input type="hidden" id="controlId">
-
-
       <div id="mensaje" class="message"></div>
 
-
       <div class="form-grid">
-
         <div class="field full">
-
           <label for="producto">Producto</label>
-
           <select id="producto" required>
-
             <option value="">Seleccionar producto</option>
-
           </select>
-
         </div>
-
-
         <div class="field">
-
           <label for="color">Color</label>
-
-          <input
-            type="text"
-            id="color"
-            placeholder="Ej. Característico"
-          >
-
+          <input type="text" id="color" placeholder="Ej. Característico">
         </div>
-
-
         <div class="field">
-
           <label for="olor">Olor</label>
-
-          <input
-            type="text"
-            id="olor"
-            placeholder="Ej. Fresco"
-          >
-
+          <input type="text" id="olor" placeholder="Ej. Fresco">
         </div>
-
-
         <div class="field">
-
           <label for="textura">Textura</label>
-
-          <input
-            type="text"
-            id="textura"
-            placeholder="Ej. Firme"
-          >
-
+          <input type="text" id="textura" placeholder="Ej. Firme">
         </div>
-
-
         <div class="field">
-
           <label for="resultado">Resultado</label>
-
           <select id="resultado" required>
-
             <option value="Pendiente">Pendiente</option>
             <option value="Aprobado">Aprobado</option>
             <option value="Rechazado">Rechazado</option>
-
           </select>
-
         </div>
-
-
         <div class="field full">
-
           <label for="observaciones">Observaciones</label>
-
-          <textarea
-            id="observaciones"
-            placeholder="Observaciones del control de calidad..."
-          ></textarea>
-
+          <textarea id="observaciones" placeholder="Observaciones del control de calidad..."></textarea>
         </div>
-
       </div>
-
     </form>
 
-
     <div class="modal-actions">
-
-      <button class="btn btn-secondary" id="cancelar">
-        Cancelar
-      </button>
-
-      <button class="btn btn-primary" id="guardar">
-        Guardar control
-      </button>
-
+      <button class="btn btn-secondary" id="cancelar">Cancelar</button>
+      <button class="btn btn-primary" id="guardar">Guardar control</button>
     </div>
-
   </div>
-
 </div>
 
-
-<!-- SDK DE SUPABASE -->
-
+<!-- COMENTARIO: CONEXIÓN SUPABASE Y LÓGICA DE JAVASCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+/* ---------------- 1. CONFIGURACIÓN SUPABASE ---------------- */
+const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const SUPABASE_URL =
-    'https://lohxgdeuohhczejyxwgr.supabase.co';
+let controles = [];
+let productos = [];
 
-  const SUPABASE_ANON_KEY =
-    'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+/* ---------------- 2. VALIDACIÓN DE SESIÓN DE USUARIO ---------------- */
+(async function(){
+  const { data: { session } } = await supabaseClient.auth.getSession();
 
-  const supabaseClient =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
+  if(!session){ window.location.href = 'login.html'; return; }
 
+  const fullName = session.user.user_metadata && session.user.user_metadata.full_name ? session.user.user_metadata.full_name : session.user.email;
+  const initial = fullName.charAt(0).toUpperCase();
 
-  let controles = [];
-  let productos = [];
+  document.getElementById('sbUserName').textContent = fullName;
+  document.getElementById('topUserName').textContent = fullName;
+  document.getElementById('sbAvatar').textContent = initial;
+  document.getElementById('topAvatar').textContent = initial;
+  document.getElementById('todayDate').textContent = new Date().toLocaleDateString('es-CO', { day:'2-digit', month:'long', year:'numeric' });
 
+  document.getElementById('logoutBtn').addEventListener('click', async function(){
+    await supabaseClient.auth.signOut();
+    window.location.href = 'login.html';
+  });
 
-  /* ---------------- SESIÓN ---------------- */
+  cargarProductos();
+  cargarControles();
+})();
 
-  (async function(){
+/* ---------------- 3. CARGAR LISTA DE PRODUCTOS ---------------- */
+async function cargarProductos(){
+  const { data, error } = await supabaseClient.from('productos').select('id,nombre').order('nombre');
+  if(error){ console.error(error); return; }
 
-    const {
-      data: { session }
-    } = await supabaseClient.auth.getSession();
+  productos = data || [];
+  const select = document.getElementById('producto');
+  select.innerHTML = '<option value="">Seleccionar producto</option>';
 
-    if(!session){
+  productos.forEach(function(producto){
+    const option = document.createElement('option');
+    option.value = producto.id;
+    option.textContent = producto.nombre;
+    select.appendChild(option);
+  });
+}
 
-      window.location.href = 'login.html';
+/* ---------------- 4. CARGAR CONTROLES Y KPI ---------------- */
+async function cargarControles(){
+  const { data, error } = await supabaseClient.from('controles_calidad').select('id, producto_id, color, olor, textura, resultado, observaciones, fecha_control, productos (nombre)').order('fecha_control', { ascending:false });
 
-      return;
+  if(error){
+    console.error(error);
+    document.getElementById('tablaControles').innerHTML = `<tr><td colspan="7" class="empty">No se pudieron cargar los controles.</td></tr>`;
+    return;
+  }
+
+  controles = data || [];
+  actualizarKpis();
+  mostrarControles();
+}
+
+function actualizarKpis(){
+  const total = controles.length;
+  const aprobados = controles.filter(c => c.resultado === 'Aprobado').length;
+  const rechazados = controles.filter(c => c.resultado === 'Rechazado').length;
+  const pendientes = controles.filter(c => c.resultado === 'Pendiente').length;
+
+  document.getElementById('totalControles').textContent = total;
+  document.getElementById('totalAprobados').textContent = aprobados;
+  document.getElementById('totalRechazados').textContent = rechazados;
+  document.getElementById('totalPendientes').textContent = pendientes;
+}
+
+/* ---------------- 5. DIBUJAR TABLA CON FILTROS ---------------- */
+function mostrarControles(){
+  const busqueda = document.getElementById('buscar').value.toLowerCase().trim();
+  const filtro = document.getElementById('filtroResultado').value;
+
+  const lista = controles.filter(function(control){
+    const nombre = control.productos && control.productos.nombre ? control.productos.nombre.toLowerCase() : '';
+    const coincideBusqueda = nombre.includes(busqueda);
+    const coincideFiltro = !filtro || control.resultado === filtro;
+    return coincideBusqueda && coincideFiltro;
+  });
+
+  const tbody = document.getElementById('tablaControles');
+
+  if(lista.length === 0){
+    tbody.innerHTML = `<tr><td colspan="7" class="empty">No hay controles de calidad registrados.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = '';
+
+  lista.forEach(function(control){
+    const tr = document.createElement('tr');
+    let clase = 'pend';
+    if(control.resultado === 'Aprobado') clase = 'ok';
+    if(control.resultado === 'Rechazado') clase = 'warn';
+
+    const fecha = control.fecha_control ? new Date(control.fecha_control).toLocaleDateString('es-CO') : '-';
+    const nombreProducto = control.productos && control.productos.nombre ? control.productos.nombre : 'Sin producto';
+
+    tr.innerHTML = `
+      <td>${escapar(nombreProducto)}</td>
+      <td>${escapar(control.color || '-')}</td>
+      <td>${escapar(control.olor || '-')}</td>
+      <td>${escapar(control.textura || '-')}</td>
+      <td><span class="pill ${clase}">${escapar(control.resultado)}</span></td>
+      <td>${fecha}</td>
+      <td>
+        <button class="btn btn-secondary" onclick="editarControl('${control.id}')" style="padding:6px 9px;margin-right:4px;" title="Editar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="m4 16 9.5-9.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 1 0 3L8 20H4v-4z" stroke="currentColor" stroke-width="1.7"/><path d="M13.5 7.5 17 11" stroke="currentColor" stroke-width="1.7"/></svg>
+        </button>
+        <button class="btn btn-danger" onclick="eliminarControl('${control.id}')" style="padding:6px 9px;" title="Eliminar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9 7V4h6v3M6 7l1 14h10l1-14" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById('buscar').addEventListener('input', mostrarControles);
+document.getElementById('filtroResultado').addEventListener('change', mostrarControles);
+
+/* ---------------- 6. LÓGICA DEL MODAL DE EDICIÓN Y CREACIÓN ---------------- */
+function abrirModal(){ document.getElementById('modal').classList.add('show'); }
+
+function cerrarModal(){
+  document.getElementById('modal').classList.remove('show');
+  document.getElementById('formControl').reset();
+  document.getElementById('controlId').value = '';
+  document.getElementById('modalTitulo').textContent = 'Nuevo control de calidad';
+  ocultarMensaje();
+}
+
+document.getElementById('btnNuevo').addEventListener('click', abrirModal);
+document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
+document.getElementById('cancelar').addEventListener('click', cerrarModal);
+document.getElementById('modal').addEventListener('click', function(e){ if(e.target === this) cerrarModal(); });
+
+/* ---------------- 7. GUARDAR CONTROL EN SUPABASE ---------------- */
+document.getElementById('guardar').addEventListener('click', guardarControl);
+
+async function guardarControl(){
+  const id = document.getElementById('controlId').value;
+  const producto_id = document.getElementById('producto').value;
+  const color = document.getElementById('color').value.trim();
+  const olor = document.getElementById('olor').value.trim();
+  const textura = document.getElementById('textura').value.trim();
+  const resultado = document.getElementById('resultado').value;
+  const observaciones = document.getElementById('observaciones').value.trim();
+
+  if(!producto_id){ mostrarMensaje('Debes seleccionar un producto.'); return; }
+
+  const registro = {
+    producto_id: producto_id,
+    color: color || null,
+    olor: olor || null,
+    textura: textura || null,
+    resultado: resultado,
+    observaciones: observaciones || null
+  };
+
+  let response;
+  if(id){
+    response = await supabaseClient.from('controles_calidad').update(registro).eq('id',id);
+  }else{
+    response = await supabaseClient.from('controles_calidad').insert(registro);
+  }
+
+  if(response.error){
+    console.error(response.error); mostrarMensaje('No se pudo guardar el control de calidad.'); return;
+  }
+
+  cerrarModal();
+  cargarControles();
+}
+
+/* ---------------- 8. EDITAR Y ELIMINAR CONTROL ---------------- */
+window.editarControl = function(id){
+  const control = controles.find(c => c.id === id);
+  if(!control) return;
+
+  document.getElementById('controlId').value = control.id;
+  document.getElementById('producto').value = control.producto_id;
+  document.getElementById('color').value = control.color || '';
+  document.getElementById('olor').value = control.olor || '';
+  document.getElementById('textura').value = control.textura || '';
+  document.getElementById('resultado').value = control.resultado || 'Pendiente';
+  document.getElementById('observaciones').value = control.observaciones || '';
+  document.getElementById('modalTitulo').textContent = 'Editar control de calidad';
+  abrirModal();
+};
+
+window.eliminarControl = async function(id){
+  const confirmar = confirm('¿Deseas eliminar este control de calidad?');
+  if(!confirmar) return;
+
+  const { error } = await supabaseClient.from('controles_calidad').delete().eq('id',id);
+
+  if(error){ console.error(error); alert('No se pudo eliminar el control.'); return; }
+  cargarControles();
+};
+
+/* ---------------- 9. FUNCIONES DE AYUDA (MENSAJES Y SANITIZACIÓN) ---------------- */
+function mostrarMensaje(texto){
+  const mensaje = document.getElementById('mensaje');
+  mensaje.textContent = texto;
+  mensaje.className = 'message error';
+}
+
+function ocultarMensaje(){
+  const mensaje = document.getElementById('mensaje');
+  mensaje.textContent = '';
+  mensaje.className = 'message';
+}
+
+function escapar(texto){
+  return String(texto).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+/* ---------------- 10. LÓGICA DE NOTIFICACIONES (INTEGRADA) ---------------- */
+const btnCampana = document.getElementById('notificationBtn');
+const panelNotificaciones = document.getElementById('notificationPanel');
+const cerrarNotificaciones = document.getElementById('closeNotifications');
+
+if (btnCampana && panelNotificaciones) {
+  // Abrir o cerrar el panel al darle clic a la campana
+  btnCampana.addEventListener('click', function(e) {
+    e.stopPropagation();
+    panelNotificaciones.classList.toggle('show');
+    if (panelNotificaciones.classList.contains('show')) {
+      cargarLasNotificaciones();
     }
-
-
-    const fullName =
-      session.user.user_metadata &&
-      session.user.user_metadata.full_name
-        ? session.user.user_metadata.full_name
-        : session.user.email;
-
-
-    const initial =
-      fullName.charAt(0).toUpperCase();
-
-
-    document.getElementById('sbUserName').textContent =
-      fullName;
-
-    document.getElementById('topUserName').textContent =
-      fullName;
-
-    document.getElementById('sbAvatar').textContent =
-      initial;
-
-    document.getElementById('topAvatar').textContent =
-      initial;
-
-
-    document.getElementById('todayDate').textContent =
-      new Date().toLocaleDateString(
-        'es-CO',
-        {
-          day:'2-digit',
-          month:'long',
-          year:'numeric'
-        }
-      );
-
-
-    document.getElementById('logoutBtn')
-      .addEventListener('click', async function(){
-
-        await supabaseClient.auth.signOut();
-
-        window.location.href = 'login.html';
-
-      });
-
-
-    cargarProductos();
-
-    cargarControles();
-
-  })();
-
-
-  /* ---------------- PRODUCTOS ---------------- */
-
-  async function cargarProductos(){
-
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from('productos')
-      .select('id,nombre')
-      .order('nombre');
-
-
-    if(error){
-
-      console.error(error);
-
-      return;
+  });
+  // Cerrar con la X
+  cerrarNotificaciones.addEventListener('click', function() { panelNotificaciones.classList.remove('show'); });
+  // Cerrar al hacer clic afuera
+  document.addEventListener('click', function(e) {
+    if (!panelNotificaciones.contains(e.target) && !btnCampana.contains(e.target)) {
+      panelNotificaciones.classList.remove('show');
     }
+  });
+}
 
+function escapeHtmlNotif(texto) {
+  const div = document.createElement('div');
+  div.textContent = texto ?? '';
+  return div.innerHTML;
+}
 
-    productos = data || [];
+// Busca la info directo en Supabase
+async function cargarLasNotificaciones() {
+  const contenido = document.getElementById('notificationContent');
+  const punto = document.getElementById('notificationDot');
+  if (!contenido || !punto) return;
+  
+  contenido.innerHTML = '<div class="notification-empty">Buscando alertas...</div>';
+  let hayNotificaciones = false;
+  let htmlNotifs = '';
 
-
-    const select =
-      document.getElementById('producto');
-
-
-    select.innerHTML =
-      '<option value="">Seleccionar producto</option>';
-
-
-    productos.forEach(function(producto){
-
-      const option =
-        document.createElement('option');
-
-      option.value =
-        producto.id;
-
-      option.textContent =
-        producto.nombre;
-
-      select.appendChild(option);
-
+  const { data: recepcionesNotif } = await supabaseClient.from('recepciones').select('id,peso,estado_producto,fecha_recepcion').order('fecha_recepcion', {ascending: false}).limit(20);
+  if (recepcionesNotif) {
+    recepcionesNotif.forEach(r => {
+      const estado = r.estado_producto || 'Recibido';
+      if (estado.toLowerCase() !== 'recibido') {
+        hayNotificaciones = true;
+        htmlNotifs += `
+          <div class="notification-item">
+            <div class="ni-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <strong>Recepción: ${escapeHtmlNotif(estado)}</strong>
+              <span>Carga de ${Number(r.peso || 0).toLocaleString('es-CO')} kg.</span>
+            </div>
+          </div>
+        `;
+      }
     });
-
   }
 
-
-  /* ---------------- CONTROLES ---------------- */
-
-  async function cargarControles(){
-
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from('controles_calidad')
-      .select(`
-        id,
-        producto_id,
-        color,
-        olor,
-        textura,
-        resultado,
-        observaciones,
-        fecha_control,
-        productos (
-          nombre
-        )
-      `)
-      .order(
-        'fecha_control',
-        { ascending:false }
-      );
-
-
-    if(error){
-
-      console.error(error);
-
-      document.getElementById(
-        'tablaControles'
-      ).innerHTML = `
-        <tr>
-          <td colspan="7" class="empty">
-            No se pudieron cargar los controles.
-          </td>
-        </tr>
-      `;
-
-      return;
-    }
-
-
-    controles = data || [];
-
-
-    actualizarKpis();
-
-    mostrarControles();
-
-  }
-
-
-  /* ---------------- KPI ---------------- */
-
-  function actualizarKpis(){
-
-    const total =
-      controles.length;
-
-
-    const aprobados =
-      controles.filter(
-        c => c.resultado === 'Aprobado'
-      ).length;
-
-
-    const rechazados =
-      controles.filter(
-        c => c.resultado === 'Rechazado'
-      ).length;
-
-
-    const pendientes =
-      controles.filter(
-        c => c.resultado === 'Pendiente'
-      ).length;
-
-
-    document.getElementById(
-      'totalControles'
-    ).textContent = total;
-
-
-    document.getElementById(
-      'totalAprobados'
-    ).textContent = aprobados;
-
-
-    document.getElementById(
-      'totalRechazados'
-    ).textContent = rechazados;
-
-
-    document.getElementById(
-      'totalPendientes'
-    ).textContent = pendientes;
-
-  }
-
-
-  /* ---------------- TABLA ---------------- */
-
-  function mostrarControles(){
-
-    const busqueda =
-      document.getElementById(
-        'buscar'
-      ).value
-      .toLowerCase()
-      .trim();
-
-
-    const filtro =
-      document.getElementById(
-        'filtroResultado'
-      ).value;
-
-
-    const lista =
-      controles.filter(function(control){
-
-        const nombre =
-          control.productos &&
-          control.productos.nombre
-            ? control.productos.nombre.toLowerCase()
-            : '';
-
-
-        const coincideBusqueda =
-          nombre.includes(busqueda);
-
-
-        const coincideFiltro =
-          !filtro ||
-          control.resultado === filtro;
-
-
-        return coincideBusqueda &&
-               coincideFiltro;
-
-      });
-
-
-    const tbody =
-      document.getElementById(
-        'tablaControles'
-      );
-
-
-    if(lista.length === 0){
-
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="7" class="empty">
-            No hay controles de calidad registrados.
-          </td>
-        </tr>
-      `;
-
-      return;
-    }
-
-
-    tbody.innerHTML = '';
-
-
-    lista.forEach(function(control){
-
-      const tr =
-        document.createElement('tr');
-
-
-      let clase =
-        'pend';
-
-
-      if(control.resultado === 'Aprobado'){
-        clase = 'ok';
+  const { data: productosNotif } = await supabaseClient.from('productos').select('id,nombre,estado').order('created_at', {ascending: false}).limit(20);
+  if (productosNotif) {
+    productosNotif.forEach(p => {
+      if (p.estado && p.estado.toLowerCase() === 'inactivo') {
+        hayNotificaciones = true;
+        htmlNotifs += `
+          <div class="notification-item">
+            <div class="ni-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v11" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="18.5" r="1" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <strong>Producto inactivo</strong>
+              <span>${escapeHtmlNotif(p.nombre)}</span>
+            </div>
+          </div>
+        `;
       }
-
-      if(control.resultado === 'Rechazado'){
-        clase = 'warn';
-      }
-
-
-      const fecha =
-        control.fecha_control
-          ? new Date(
-              control.fecha_control
-            ).toLocaleDateString(
-              'es-CO'
-            )
-          : '-';
-
-
-      const nombreProducto =
-        control.productos &&
-        control.productos.nombre
-          ? control.productos.nombre
-          : 'Sin producto';
-
-
-      tr.innerHTML = `
-
-        <td>${escapar(nombreProducto)}</td>
-
-        <td>${escapar(control.color || '-')}</td>
-
-        <td>${escapar(control.olor || '-')}</td>
-
-        <td>${escapar(control.textura || '-')}</td>
-
-        <td>
-          <span class="pill ${clase}">
-            ${escapar(control.resultado)}
-          </span>
-        </td>
-
-        <td>${fecha}</td>
-
-        <td>
-
-          <button
-            class="btn btn-secondary"
-            onclick="editarControl('${control.id}')"
-            style="padding:6px 9px;margin-right:4px;"
-            title="Editar"
-          >
-
-            <svg width="13" height="13"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <path d="m4 16 9.5-9.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 1 0 3L8 20H4v-4z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-
-              <path d="M13.5 7.5 17 11"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-
-            </svg>
-
-          </button>
-
-
-          <button
-            class="btn btn-danger"
-            onclick="eliminarControl('${control.id}')"
-            style="padding:6px 9px;"
-            title="Eliminar"
-          >
-
-            <svg width="13" height="13"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <path d="M4 7h16M10 11v6M14 11v6"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-
-              <path d="M9 7V4h6v3M6 7l1 14h10l1-14"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linejoin="round"/>
-
-            </svg>
-
-          </button>
-
-        </td>
-      `;
-
-
-      tbody.appendChild(tr);
-
     });
-
   }
 
-
-  /* ---------------- BUSCAR ---------------- */
-
-  document.getElementById(
-    'buscar'
-  ).addEventListener(
-    'input',
-    mostrarControles
-  );
-
-
-  document.getElementById(
-    'filtroResultado'
-  ).addEventListener(
-    'change',
-    mostrarControles
-  );
-
-
-  /* ---------------- MODAL ---------------- */
-
-  function abrirModal(){
-
-    document.getElementById(
-      'modal'
-    ).classList.add('show');
-
+  if (!hayNotificaciones) {
+    punto.style.display = 'none';
+    contenido.innerHTML = '<div class="notification-empty">No hay notificaciones pendientes.</div>';
+  } else {
+    punto.style.display = 'block';
+    contenido.innerHTML = htmlNotifs;
   }
-
-
-  function cerrarModal(){
-
-    document.getElementById(
-      'modal'
-    ).classList.remove('show');
-
-    document.getElementById(
-      'formControl'
-    ).reset();
-
-    document.getElementById(
-      'controlId'
-    ).value = '';
-
-    document.getElementById(
-      'modalTitulo'
-    ).textContent =
-      'Nuevo control de calidad';
-
-    ocultarMensaje();
-
-  }
-
-
-  document.getElementById(
-    'btnNuevo'
-  ).addEventListener(
-    'click',
-    abrirModal
-  );
-
-
-  document.getElementById(
-    'cerrarModal'
-  ).addEventListener(
-    'click',
-    cerrarModal
-  );
-
-
-  document.getElementById(
-    'cancelar'
-  ).addEventListener(
-    'click',
-    cerrarModal
-  );
-
-
-  document.getElementById(
-    'modal'
-  ).addEventListener(
-    'click',
-    function(e){
-
-      if(e.target === this){
-        cerrarModal();
-      }
-
-    }
-  );
-
-
-  /* ---------------- GUARDAR ---------------- */
-
-  document.getElementById(
-    'guardar'
-  ).addEventListener(
-    'click',
-    guardarControl
-  );
-
-
-  async function guardarControl(){
-
-    const id =
-      document.getElementById(
-        'controlId'
-      ).value;
-
-
-    const producto_id =
-      document.getElementById(
-        'producto'
-      ).value;
-
-
-    const color =
-      document.getElementById(
-        'color'
-      ).value.trim();
-
-
-    const olor =
-      document.getElementById(
-        'olor'
-      ).value.trim();
-
-
-    const textura =
-      document.getElementById(
-        'textura'
-      ).value.trim();
-
-
-    const resultado =
-      document.getElementById(
-        'resultado'
-      ).value;
-
-
-    const observaciones =
-      document.getElementById(
-        'observaciones'
-      ).value.trim();
-
-
-    if(!producto_id){
-
-      mostrarMensaje(
-        'Debes seleccionar un producto.'
-      );
-
-      return;
-    }
-
-
-    const registro = {
-
-      producto_id:producto_id,
-
-      color:color || null,
-
-      olor:olor || null,
-
-      textura:textura || null,
-
-      resultado:resultado,
-
-      observaciones:
-        observaciones || null
-
-    };
-
-
-    let response;
-
-
-    if(id){
-
-      response =
-        await supabaseClient
-          .from('controles_calidad')
-          .update(registro)
-          .eq('id',id);
-
-    }else{
-
-      response =
-        await supabaseClient
-          .from('controles_calidad')
-          .insert(registro);
-
-    }
-
-
-    if(response.error){
-
-      console.error(response.error);
-
-      mostrarMensaje(
-        'No se pudo guardar el control de calidad.'
-      );
-
-      return;
-    }
-
-
-    cerrarModal();
-
-    cargarControles();
-
-  }
-
-
-  /* ---------------- EDITAR ---------------- */
-
-  window.editarControl =
-    function(id){
-
-      const control =
-        controles.find(
-          c => c.id === id
-        );
-
-
-      if(!control){
-        return;
-      }
-
-
-      document.getElementById(
-        'controlId'
-      ).value =
-        control.id;
-
-
-      document.getElementById(
-        'producto'
-      ).value =
-        control.producto_id;
-
-
-      document.getElementById(
-        'color'
-      ).value =
-        control.color || '';
-
-
-      document.getElementById(
-        'olor'
-      ).value =
-        control.olor || '';
-
-
-      document.getElementById(
-        'textura'
-      ).value =
-        control.textura || '';
-
-
-      document.getElementById(
-        'resultado'
-      ).value =
-        control.resultado || 'Pendiente';
-
-
-      document.getElementById(
-        'observaciones'
-      ).value =
-        control.observaciones || '';
-
-
-      document.getElementById(
-        'modalTitulo'
-      ).textContent =
-        'Editar control de calidad';
-
-
-      abrirModal();
-
-    };
-
-
-  /* ---------------- ELIMINAR ---------------- */
-
-  window.eliminarControl =
-    async function(id){
-
-      const confirmar =
-        confirm(
-          '¿Deseas eliminar este control de calidad?'
-        );
-
-
-      if(!confirmar){
-        return;
-      }
-
-
-      const {
-        error
-      } = await supabaseClient
-        .from('controles_calidad')
-        .delete()
-        .eq('id',id);
-
-
-      if(error){
-
-        console.error(error);
-
-        alert(
-          'No se pudo eliminar el control.'
-        );
-
-        return;
-      }
-
-
-      cargarControles();
-
-    };
-
-
-  /* ---------------- MENSAJES ---------------- */
-
-  function mostrarMensaje(texto){
-
-    const mensaje =
-      document.getElementById(
-        'mensaje'
-      );
-
-
-    mensaje.textContent =
-      texto;
-
-
-    mensaje.className =
-      'message error';
-
-  }
-
-
-  function ocultarMensaje(){
-
-    const mensaje =
-      document.getElementById(
-        'mensaje'
-      );
-
-
-    mensaje.textContent =
-      '';
-
-
-    mensaje.className =
-      'message';
-
-  }
-
-
-  /* ---------------- SEGURIDAD TEXTO ---------------- */
-
-  function escapar(texto){
-
-    return String(texto)
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;')
-      .replace(/'/g,'&#039;');
-
-  }
-
+}
 </script>
 
 </body>
