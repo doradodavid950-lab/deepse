@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
 <title>Inicio — Deep Sea</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
 
 :root{
   --azul-oscuro:#062B5B;
@@ -30,11 +41,17 @@
   --radio:16px;
 }
 
+
+/* =========================================================
+   BASE
+========================================================= */
+
 *{
   box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
   margin:0;
   padding:0;
   font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -42,11 +59,25 @@ html,body{
   color:var(--texto-principal);
 }
 
+body{
+  overflow-x:hidden;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
 .app{
   display:grid;
   grid-template-columns:250px 1fr;
   min-height:100vh;
 }
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
 .sidebar{
   background:var(--azul-oscuro);
@@ -57,6 +88,7 @@ html,body{
   position:sticky;
   top:0;
   height:100vh;
+  z-index:1000;
 }
 
 .sb-brand{
@@ -134,6 +166,11 @@ nav.sb-nav{
   box-shadow:0 6px 16px rgba(30,102,245,.35);
 }
 
+
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
+
 .sb-footer{
   border-top:1px solid rgba(255,255,255,.08);
   padding-top:14px;
@@ -190,9 +227,20 @@ nav.sb-nav{
   background:rgba(229,57,53,.28);
 }
 
+
+/* =========================================================
+   MAIN
+========================================================= */
+
 main{
   padding:26px 32px 50px;
+  min-width:0;
 }
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
 
 .topbar{
   display:flex;
@@ -282,6 +330,36 @@ main{
   font-weight:600;
 }
 
+
+/* =========================================================
+   BOTÓN MENÚ MÓVIL
+========================================================= */
+
+.mobile-menu-btn{
+  display:none;
+  border:1px solid var(--gris-borde);
+  background:var(--blanco);
+  color:var(--azul-oscuro);
+  border-radius:12px;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(6,43,91,.06);
+}
+
+.mobile-menu-btn:hover{
+  border-color:var(--azul-medio);
+}
+
+.mobile-menu-btn:active{
+  transform:scale(.97);
+}
+
+
+/* =========================================================
+   KPI
+========================================================= */
+
 .kpi-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -360,6 +438,11 @@ main{
   --accent-soft:#FFE8D1;
 }
 
+
+/* =========================================================
+   GRID
+========================================================= */
+
 .grid-2{
   display:grid;
   grid-template-columns:1.6fr 1fr;
@@ -367,11 +450,17 @@ main{
   margin-bottom:18px;
 }
 
+
+/* =========================================================
+   PANELES
+========================================================= */
+
 .panel{
   background:var(--blanco);
   border-radius:var(--radio);
   box-shadow:var(--sombra);
   padding:20px;
+  min-width:0;
 }
 
 .panel-head{
@@ -395,6 +484,17 @@ main{
 
 .panel-head a:hover{
   text-decoration:underline;
+}
+
+
+/* =========================================================
+   TABLA
+========================================================= */
+
+.table-scroll{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 table.simple{
@@ -423,6 +523,11 @@ table.simple tr:last-child td{
   border-bottom:none;
 }
 
+
+/* =========================================================
+   PILLS
+========================================================= */
+
 .pill{
   display:inline-block;
   padding:3px 10px;
@@ -445,6 +550,11 @@ table.simple tr:last-child td{
   background:#FFE3D1;
   color:#B45300;
 }
+
+
+/* =========================================================
+   ALERTAS
+========================================================= */
 
 .alert-item{
   display:flex;
@@ -487,6 +597,10 @@ table.simple tr:last-child td{
   color:var(--verde-txt);
 }
 
+.alert-text{
+  min-width:0;
+}
+
 .alert-text strong{
   display:block;
   font-size:13px;
@@ -496,6 +610,11 @@ table.simple tr:last-child td{
   font-size:11.5px;
   color:var(--texto-secundario);
 }
+
+
+/* =========================================================
+   DONUT
+========================================================= */
 
 .donut-wrap{
   display:flex;
@@ -532,6 +651,7 @@ table.simple tr:last-child td{
   flex-direction:column;
   align-items:center;
   justify-content:center;
+  z-index:2;
 }
 
 .donut-center strong{
@@ -560,12 +680,25 @@ table.simple tr:last-child td{
   width:10px;
   height:10px;
   border-radius:3px;
+  flex:0 0 auto;
+}
+
+
+/* =========================================================
+   STEPPER
+========================================================= */
+
+.stepper-scroll{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 .stepper{
   display:flex;
   justify-content:space-between;
   margin-top:6px;
+  min-width:500px;
 }
 
 .step{
@@ -609,12 +742,22 @@ table.simple tr:last-child td{
   color:var(--texto-secundario);
 }
 
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
 .empty{
   text-align:center;
   padding:22px 10px;
   color:var(--texto-secundario);
   font-size:12px;
 }
+
+
+/* =========================================================
+   NOTIFICACIONES
+========================================================= */
 
 .notification-panel{
   position:fixed;
@@ -625,7 +768,7 @@ table.simple tr:last-child td{
   border:1px solid var(--gris-borde);
   border-radius:14px;
   box-shadow:0 15px 35px rgba(6,43,91,.16);
-  z-index:1000;
+  z-index:1100;
   display:none;
   overflow:hidden;
 }
@@ -697,6 +840,20 @@ table.simple tr:last-child td{
   color:var(--texto-secundario);
 }
 
+
+/* =========================================================
+   CAPA DEL MENÚ MÓVIL
+========================================================= */
+
+.mobile-overlay{
+  display:none;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
 @media(max-width:1100px){
 
   .kpi-grid{
@@ -709,59 +866,594 @@ table.simple tr:last-child td{
 
 }
 
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
 @media(max-width:800px){
 
-  .app{
-    grid-template-columns:1fr;
+  body{
+    overflow-x:hidden;
   }
+
+  .app{
+    display:block;
+    min-height:100vh;
+    width:100%;
+  }
+
+
+  /* -------------------------
+     SIDEBAR MÓVIL
+  ------------------------- */
 
   .sidebar{
-    display:none;
+
+    display:flex;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:270px;
+    max-width:85vw;
+
+    height:100vh;
+
+    transform:translateX(-105%);
+
+    transition:transform .25s ease;
+
+    z-index:1200;
+
+    box-shadow:
+      8px 0 30px rgba(0,0,0,.20);
+
+    overflow-y:auto;
   }
+
+
+  .sidebar.mobile-open{
+    transform:translateX(0);
+  }
+
+
+  .mobile-overlay{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.42);
+
+    z-index:1150;
+  }
+
+
+  .mobile-overlay.show{
+    display:block;
+  }
+
+
+  /* -------------------------
+     MAIN
+  ------------------------- */
 
   main{
-    padding:18px;
+
+    width:100%;
+
+    min-width:0;
+
+    padding:
+      16px
+      14px
+      30px;
   }
 
+
+  /* -------------------------
+     TOPBAR
+  ------------------------- */
+
   .topbar{
-    align-items:flex-start;
+
+    display:grid;
+
+    grid-template-columns:
+      42px
+      minmax(0,1fr)
+      auto;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:20px;
   }
+
+
+  .mobile-menu-btn{
+
+    display:flex;
+
+    width:42px;
+    height:42px;
+  }
+
+
+  .topbar h1{
+
+    font-size:21px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+  }
+
+
+  .topbar .subtitle{
+
+    font-size:11px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+  }
+
+
+  .top-actions{
+    gap:7px;
+  }
+
+
+  .top-user{
+
+    padding:4px;
+
+    border-radius:50%;
+  }
+
 
   .top-user span{
     display:none;
   }
 
+
+  .top-user .avatar{
+
+    width:32px;
+    height:32px;
+  }
+
+
+  .icon-btn{
+
+    width:40px;
+    height:40px;
+  }
+
+
+  /* -------------------------
+     NOTIFICACIONES
+  ------------------------- */
+
   .notification-panel{
-    right:18px;
-    left:18px;
-    width:auto;
+
+    position:fixed;
+
     top:70px;
+
+    left:10px;
+    right:10px;
+
+    width:auto;
+
+    max-width:none;
+
+    max-height:
+      calc(100vh - 85px);
+
+    overflow-y:auto;
+  }
+
+
+  /* -------------------------
+     KPI
+  ------------------------- */
+
+  .kpi-grid{
+
+    grid-template-columns:1fr;
+
+    gap:13px;
+
+    margin-bottom:18px;
+  }
+
+
+  .kpi-card{
+
+    width:100%;
+
+    padding:17px;
+
+    border-radius:14px;
+  }
+
+
+  .kpi-card .value{
+    font-size:24px;
+  }
+
+
+  /* -------------------------
+     GRID
+  ------------------------- */
+
+  .grid-2{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    margin-bottom:14px;
+  }
+
+
+  /* -------------------------
+     PANELES
+  ------------------------- */
+
+  .panel{
+
+    width:100%;
+
+    min-width:0;
+
+    padding:16px;
+
+    border-radius:14px;
+
+    overflow:hidden;
+  }
+
+
+  .panel-head h3{
+    font-size:15px;
+  }
+
+
+  /* -------------------------
+     TABLA
+  ------------------------- */
+
+  .table-scroll{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    -webkit-overflow-scrolling:touch;
+  }
+
+
+  table.simple{
+
+    min-width:540px;
+
+    font-size:12px;
+  }
+
+
+  table.simple th{
+
+    padding:
+      8px
+      7px;
+
+    font-size:11px;
+  }
+
+
+  table.simple td{
+
+    padding:
+      10px
+      7px;
+  }
+
+
+  /* -------------------------
+     DONUT
+  ------------------------- */
+
+  .donut-wrap{
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:20px;
+
+    padding-top:5px;
+  }
+
+
+  .donut{
+
+    width:150px;
+    height:150px;
+  }
+
+
+  .donut::after{
+
+    inset:22px;
+  }
+
+
+  .donut-center{
+
+    inset:22px;
+  }
+
+
+  .donut-center strong{
+    font-size:18px;
+  }
+
+
+  .donut-legend{
+
+    width:100%;
+
+    gap:8px;
+  }
+
+
+  .donut-legend div{
+
+    width:100%;
+
+    background:#F8FAFC;
+
+    border-radius:8px;
+
+    padding:8px 10px;
+  }
+
+
+  /* -------------------------
+     ALERTAS
+  ------------------------- */
+
+  .alert-item{
+
+    gap:10px;
+
+    padding:
+      11px
+      0;
+  }
+
+
+  .alert-text{
+    min-width:0;
+  }
+
+
+  .alert-text strong{
+    font-size:12.5px;
+  }
+
+
+  .alert-text span{
+    font-size:11px;
+
+    line-height:1.4;
+  }
+
+
+  /* -------------------------
+     FLUJO
+  ------------------------- */
+
+  .stepper-scroll{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    -webkit-overflow-scrolling:touch;
+
+    padding-bottom:4px;
+  }
+
+
+  .stepper{
+
+    width:520px;
+
+    min-width:520px;
+
+    padding:
+      5px
+      5px
+      8px;
+  }
+
+
+  /* -------------------------
+     SIDEBAR
+  ------------------------- */
+
+  .sb-link{
+
+    padding:
+      11px
+      12px;
+  }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUEÑOS
+========================================================= */
+
+@media(max-width:400px){
+
+  main{
+
+    padding:
+      13px
+      10px
+      25px;
+  }
+
+
+  .topbar{
+
+    grid-template-columns:
+      39px
+      minmax(0,1fr)
+      auto;
+
+    gap:7px;
+  }
+
+
+  .mobile-menu-btn{
+
+    width:39px;
+    height:39px;
+  }
+
+
+  .topbar h1{
+    font-size:19px;
+  }
+
+
+  .topbar .subtitle{
+    font-size:10px;
+  }
+
+
+  .icon-btn{
+
+    width:39px;
+    height:39px;
+  }
+
+
+  .top-user .avatar{
+
+    width:30px;
+    height:30px;
+  }
+
+
+  .kpi-card{
+    padding:14px;
+  }
+
+
+  .kpi-card .value{
+    font-size:21px;
+  }
+
+
+  .panel{
+    padding:14px;
+  }
+
+
+  .notification-panel{
+
+    left:8px;
+    right:8px;
+  }
+
+
+  .donut{
+
+    width:140px;
+    height:140px;
+  }
+
+
+  .donut::after{
+    inset:20px;
+  }
+
+
+  .donut-center{
+    inset:20px;
   }
 
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
 <aside class="sidebar">
+
 
   <div class="sb-brand">
 
     <div class="badge">
 
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
           stroke="#FFD76A"
           stroke-width="1.6"
-          stroke-linejoin="round"/>
-        <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
+          stroke-linejoin="round"
+        />
+
+        <circle
+          cx="16"
+          cy="10.3"
+          r=".9"
+          fill="#FFD76A"
+        />
+
       </svg>
 
     </div>
+
 
     <div>
 
@@ -778,17 +1470,37 @@ table.simple tr:last-child td{
   </div>
 
 
-  <nav class="sb-nav" id="sbNav">
+  <nav
+    class="sb-nav"
+    id="sbNav"
+  >
 
-    <a class="sb-link active" data-view="inicio" href="inicio.html">
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 11l9-7 9 7"
+    <a
+      class="sb-link active"
+      data-view="inicio"
+      href="inicio.html"
+    >
+
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M3 11l9-7 9 7"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <path d="M5 10v10h14V10"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="M5 10v10h14V10"
           stroke="currentColor"
-          stroke-width="1.7"/>
+          stroke-width="1.7"
+        />
+
       </svg>
 
       Inicio
@@ -796,15 +1508,33 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="productos" href="productos.html">
+    <a
+      class="sb-link"
+      data-view="productos"
+      href="productos.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <circle cx="12" cy="12" r="2.2"
+          stroke-width="1.7"
+        />
+
+        <circle
+          cx="12"
+          cy="12"
+          r="2.2"
           stroke="currentColor"
-          stroke-width="1.7"/>
+          stroke-width="1.7"
+        />
+
       </svg>
 
       Productos
@@ -812,15 +1542,33 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="proveedores" href="proveedores.html">
+    <a
+      class="sb-link"
+      data-view="proveedores"
+      href="proveedores.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="3.4"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <circle
+          cx="12"
+          cy="8"
+          r="3.4"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
           stroke="currentColor"
-          stroke-width="1.7"/>
+          stroke-width="1.7"
+        />
+
       </svg>
 
       Proveedores
@@ -828,15 +1576,35 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="recepciones" href="recepciones.html">
+    <a
+      class="sb-link"
+      data-view="recepciones"
+      href="recepciones.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <rect x="4" y="7" width="16" height="13" rx="2"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <rect
+          x="4"
+          y="7"
+          width="16"
+          height="13"
+          rx="2"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
           stroke="currentColor"
-          stroke-width="1.7"/>
+          stroke-width="1.7"
+        />
+
       </svg>
 
       Recepciones
@@ -844,16 +1612,32 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
+    <a
+      class="sb-link"
+      data-view="almacenamiento"
+      href="almacenamiento.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M3 9.5 12 4l9 5.5V20H3V9.5z"
           stroke="currentColor"
           stroke-width="1.7"
-          stroke-linejoin="round"/>
-        <path d="M9 20v-6h6v6"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M9 20v-6h6v6"
           stroke="currentColor"
-          stroke-width="1.7"/>
+          stroke-width="1.7"
+        />
+
       </svg>
 
       Almacenamiento
@@ -861,14 +1645,39 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="ventas" href="ventas.html">
+    <a
+      class="sb-link"
+      data-view="ventas"
+      href="ventas.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="9" cy="20" r="1.3" fill="currentColor"/>
-        <circle cx="17" cy="20" r="1.3" fill="currentColor"/>
-        <path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <circle
+          cx="9"
+          cy="20"
+          r="1.3"
+          fill="currentColor"
+        />
+
+        <circle
+          cx="17"
+          cy="20"
+          r="1.3"
+          fill="currentColor"
+        />
+
+        <path
+          d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
           stroke="currentColor"
-          stroke-width="1.7"/>
+          stroke-width="1.7"
+        />
+
       </svg>
 
       Ventas
@@ -876,13 +1685,32 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
+    <a
+      class="sb-link"
+      data-view="trazabilidad"
+      href="trazabilidad.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 6h18M3 12h18M3 18h12"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M3 6h18M3 12h18M3 18h12"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <circle cx="20" cy="18" r="1.6" fill="currentColor"/>
+          stroke-width="1.7"
+        />
+
+        <circle
+          cx="20"
+          cy="18"
+          r="1.6"
+          fill="currentColor"
+        />
+
       </svg>
 
       Trazabilidad
@@ -890,13 +1718,26 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="reportes" href="reportes.html">
+    <a
+      class="sb-link"
+      data-view="reportes"
+      href="reportes.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M4 20V10M12 20V4M20 20v-7"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M4 20V10M12 20V4M20 20v-7"
           stroke="currentColor"
           stroke-width="1.7"
-          stroke-linecap="round"/>
+          stroke-linecap="round"
+        />
+
       </svg>
 
       Reportes
@@ -904,15 +1745,31 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="normas" href="normas.html">
+    <a
+      class="sb-link"
+      data-view="normas"
+      href="normas.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <path d="m9 12 2 2 4-4"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="m9 12 2 2 4-4"
           stroke="currentColor"
-          stroke-width="1.7"/>
+          stroke-width="1.7"
+        />
+
       </svg>
 
       Normas y Calidad
@@ -920,21 +1777,47 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="usuarios" href="usuarios.html">
+    <a
+      class="sb-link"
+      data-view="usuarios"
+      href="usuarios.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="9" cy="8" r="3"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <circle
+          cx="9"
+          cy="8"
+          r="3"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <circle cx="18" cy="8" r="2.2"
+          stroke-width="1.7"
+        />
+
+        <circle
+          cx="18"
+          cy="8"
+          r="2.2"
           stroke="currentColor"
-          stroke-width="1.5"/>
-        <path d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
+          stroke-width="1.5"
+        />
+
+        <path
+          d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
           stroke="currentColor"
-          stroke-width="1.5"/>
+          stroke-width="1.5"
+        />
+
       </svg>
 
       Usuarios
@@ -942,16 +1825,34 @@ table.simple tr:last-child td{
     </a>
 
 
-    <a class="sb-link" data-view="configuracion" href="configuracion.html">
+    <a
+      class="sb-link"
+      data-view="configuracion"
+      href="configuracion.html"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="3"
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
           stroke="currentColor"
-          stroke-width="1.7"/>
-        <path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
+          stroke-width="1.7"
+        />
+
+        <path
+          d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
           stroke="currentColor"
           stroke-width="1.3"
-          stroke-linejoin="round"/>
+          stroke-linejoin="round"
+        />
+
       </svg>
 
       Configuración
@@ -965,9 +1866,13 @@ table.simple tr:last-child td{
 
     <div class="sb-user">
 
-      <div class="avatar" id="sbAvatar">
+      <div
+        class="avatar"
+        id="sbAvatar"
+      >
         C
       </div>
+
 
       <div class="info">
 
@@ -984,15 +1889,31 @@ table.simple tr:last-child td{
     </div>
 
 
-    <button class="sb-logout" id="logoutBtn">
+    <button
+      class="sb-logout"
+      id="logoutBtn"
+      type="button"
+    >
 
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
           stroke="currentColor"
-          stroke-width="1.8"/>
-        <path d="M16 17l5-5-5-5M21 12H9"
+          stroke-width="1.8"
+        />
+
+        <path
+          d="M16 17l5-5-5-5M21 12H9"
           stroke="currentColor"
-          stroke-width="1.8"/>
+          stroke-width="1.8"
+        />
+
       </svg>
 
       Cerrar sesión
@@ -1004,9 +1925,52 @@ table.simple tr:last-child td{
 </aside>
 
 
+<!-- =====================================================
+     CAPA MÓVIL
+===================================================== -->
+
+<div
+  class="mobile-overlay"
+  id="mobileOverlay"
+></div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
 <main>
 
+
   <div class="topbar">
+
+
+    <button
+      class="mobile-menu-btn"
+      id="mobileMenuBtn"
+      type="button"
+      aria-label="Abrir menú"
+      title="Abrir menú"
+    >
+
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+
+        <path
+          d="M4 6h16M4 12h16M4 18h16"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+        />
+
+      </svg>
+
+    </button>
+
 
     <div>
 
@@ -1015,7 +1979,10 @@ table.simple tr:last-child td{
       </h1>
 
       <div class="subtitle">
-        Vista general del sistema — <span id="todayDate"></span>
+
+        Vista general del sistema —
+        <span id="todayDate"></span>
+
       </div>
 
     </div>
@@ -1023,21 +1990,39 @@ table.simple tr:last-child td{
 
     <div class="top-actions">
 
+
       <button
         class="icon-btn"
         id="notificationBtn"
-        title="Notificaciones">
+        title="Notificaciones"
+        type="button"
+      >
 
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+
+          <path
+            d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
             stroke="currentColor"
-            stroke-width="1.6"/>
-          <path d="M10 20a2 2 0 0 0 4 0"
+            stroke-width="1.6"
+          />
+
+          <path
+            d="M10 20a2 2 0 0 0 4 0"
             stroke="currentColor"
-            stroke-width="1.6"/>
+            stroke-width="1.6"
+          />
+
         </svg>
 
-        <span class="dot-alert" id="notificationDot"></span>
+        <span
+          class="dot-alert"
+          id="notificationDot"
+        ></span>
 
       </button>
 
@@ -1045,9 +2030,13 @@ table.simple tr:last-child td{
       <a
         href="configuracion.html"
         class="top-user"
-        title="Ir a configuración">
+        title="Ir a configuración"
+      >
 
-        <div class="avatar" id="topAvatar">
+        <div
+          class="avatar"
+          id="topAvatar"
+        >
           C
         </div>
 
@@ -1062,7 +2051,14 @@ table.simple tr:last-child td{
   </div>
 
 
-  <div class="notification-panel" id="notificationPanel">
+  <!-- ===================================================
+       NOTIFICACIONES
+  ==================================================== -->
+
+  <div
+    class="notification-panel"
+    id="notificationPanel"
+  >
 
     <div class="notification-header">
 
@@ -1070,22 +2066,30 @@ table.simple tr:last-child td{
         Notificaciones
       </strong>
 
-      <button id="closeNotifications">
+      <button
+        id="closeNotifications"
+        type="button"
+      >
         ×
       </button>
 
     </div>
 
+
     <div id="notificationContent">
 
       <div class="notification-empty">
-        Cargando notificaciones...
+        Abre las notificaciones para consultar.
       </div>
 
     </div>
 
   </div>
 
+
+  <!-- ===================================================
+       KPI
+  ==================================================== -->
 
   <section class="kpi-grid">
 
@@ -1096,7 +2100,10 @@ table.simple tr:last-child td{
 
         <div>
 
-          <div class="value" id="totalProductos">
+          <div
+            class="value"
+            id="totalProductos"
+          >
             0
           </div>
 
@@ -1106,25 +2113,36 @@ table.simple tr:last-child td{
 
         </div>
 
+
         <div class="icon-wrap">
 
-          <svg width="19" height="19"
-               viewBox="0 0 24 24"
-               fill="none">
+          <svg
+            width="19"
+            height="19"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
 
-            <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
+            <path
+              d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
-            <circle cx="12" cy="12" r="2.2"
+            <circle
+              cx="12"
+              cy="12"
+              r="2.2"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
           </svg>
 
         </div>
 
       </div>
+
 
       <div class="delta up">
         Información actualizada
@@ -1139,7 +2157,10 @@ table.simple tr:last-child td{
 
         <div>
 
-          <div class="value" id="totalProveedores">
+          <div
+            class="value"
+            id="totalProveedores"
+          >
             0
           </div>
 
@@ -1149,25 +2170,36 @@ table.simple tr:last-child td{
 
         </div>
 
+
         <div class="icon-wrap">
 
-          <svg width="19" height="19"
-               viewBox="0 0 24 24"
-               fill="none">
+          <svg
+            width="19"
+            height="19"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
 
-            <circle cx="12" cy="8" r="3.4"
+            <circle
+              cx="12"
+              cy="8"
+              r="3.4"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
-            <path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
+            <path
+              d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
           </svg>
 
         </div>
 
       </div>
+
 
       <div class="delta up">
         Proveedores registrados
@@ -1182,7 +2214,10 @@ table.simple tr:last-child td{
 
         <div>
 
-          <div class="value" id="totalRecepciones">
+          <div
+            class="value"
+            id="totalRecepciones"
+          >
             0
           </div>
 
@@ -1192,28 +2227,38 @@ table.simple tr:last-child td{
 
         </div>
 
+
         <div class="icon-wrap">
 
-          <svg width="19" height="19"
-               viewBox="0 0 24 24"
-               fill="none">
+          <svg
+            width="19"
+            height="19"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
 
-            <rect x="4" y="7"
+            <rect
+              x="4"
+              y="7"
               width="16"
               height="13"
               rx="2"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
-            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+            <path
+              d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
           </svg>
 
         </div>
 
       </div>
+
 
       <div class="delta up">
         Registros de entrada
@@ -1228,7 +2273,10 @@ table.simple tr:last-child td{
 
         <div>
 
-          <div class="value" id="pesoTotal">
+          <div
+            class="value"
+            id="pesoTotal"
+          >
             0 kg
           </div>
 
@@ -1238,25 +2286,34 @@ table.simple tr:last-child td{
 
         </div>
 
+
         <div class="icon-wrap">
 
-          <svg width="19" height="19"
-               viewBox="0 0 24 24"
-               fill="none">
+          <svg
+            width="19"
+            height="19"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
 
-            <path d="M6 8h12l1 12H5L6 8z"
+            <path
+              d="M6 8h12l1 12H5L6 8z"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
-            <path d="M9 8a3 3 0 0 1 6 0"
+            <path
+              d="M9 8a3 3 0 0 1 6 0"
               stroke="currentColor"
-              stroke-width="1.7"/>
+              stroke-width="1.7"
+            />
 
           </svg>
 
         </div>
 
       </div>
+
 
       <div class="delta neutral">
         Total acumulado
@@ -1266,6 +2323,10 @@ table.simple tr:last-child td{
 
   </section>
 
+
+  <!-- ===================================================
+       ACTIVIDAD + ALERTAS
+  ==================================================== -->
 
   <div class="grid-2">
 
@@ -1285,45 +2346,53 @@ table.simple tr:last-child td{
       </div>
 
 
-      <table class="simple">
+      <div class="table-scroll">
 
-        <thead>
+        <table class="simple">
 
-          <tr>
+          <thead>
 
-            <th>
-              Producto
-            </th>
+            <tr>
 
-            <th>
-              Peso
-            </th>
+              <th>
+                Producto
+              </th>
 
-            <th>
-              Estado
-            </th>
+              <th>
+                Peso
+              </th>
 
-            <th>
-              Fecha
-            </th>
+              <th>
+                Estado
+              </th>
 
-          </tr>
+              <th>
+                Fecha
+              </th>
 
-        </thead>
+            </tr>
 
-        <tbody id="recentTable">
+          </thead>
 
-          <tr>
 
-            <td colspan="4" class="empty">
-              Cargando información...
-            </td>
+          <tbody id="recentTable">
 
-          </tr>
+            <tr>
 
-        </tbody>
+              <td
+                colspan="4"
+                class="empty"
+              >
+                Cargando información...
+              </td>
 
-      </table>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
 
     </section>
 
@@ -1345,25 +2414,38 @@ table.simple tr:last-child td{
 
           <div class="alert-icon a-info">
 
-            <svg width="16" height="16"
-                 viewBox="0 0 24 24"
-                 fill="none">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
 
-              <circle cx="12" cy="12" r="9"
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
                 stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke-width="1.7"
+              />
 
-              <path d="M12 10v6"
+              <path
+                d="M12 10v6"
                 stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke-width="1.7"
+              />
 
-              <circle cx="12" cy="7"
+              <circle
+                cx="12"
+                cy="7"
                 r=".8"
-                fill="currentColor"/>
+                fill="currentColor"
+              />
 
             </svg>
 
           </div>
+
 
           <div class="alert-text">
 
@@ -1386,6 +2468,10 @@ table.simple tr:last-child td{
   </div>
 
 
+  <!-- ===================================================
+       DISTRIBUCIÓN + FLUJO
+  ==================================================== -->
+
   <div class="grid-2">
 
 
@@ -1402,7 +2488,11 @@ table.simple tr:last-child td{
 
       <div class="donut-wrap">
 
-        <div class="donut" id="productDonut">
+
+        <div
+          class="donut"
+          id="productDonut"
+        >
 
           <div class="donut-center">
 
@@ -1419,13 +2509,17 @@ table.simple tr:last-child td{
         </div>
 
 
-        <div class="donut-legend" id="donutLegend">
+        <div
+          class="donut-legend"
+          id="donutLegend"
+        >
 
           <div>
 
-            <span class="swatch"
-                  style="background:#1E66F5">
-            </span>
+            <span
+              class="swatch"
+              style="background:#1E66F5"
+            ></span>
 
             <span>
               Cargando...
@@ -1451,56 +2545,61 @@ table.simple tr:last-child td{
       </div>
 
 
-      <div class="stepper">
+      <div class="stepper-scroll">
 
-        <div class="step">
+        <div class="stepper">
 
-          <div class="circle">
-            1
+
+          <div class="step">
+
+            <div class="circle">
+              1
+            </div>
+
+            <span>
+              Productos
+            </span>
+
           </div>
 
-          <span>
-            Productos
-          </span>
 
-        </div>
+          <div class="step">
 
+            <div class="circle">
+              2
+            </div>
 
-        <div class="step">
+            <span>
+              Recepción
+            </span>
 
-          <div class="circle">
-            2
           </div>
 
-          <span>
-            Recepción
-          </span>
 
-        </div>
+          <div class="step">
 
+            <div class="circle">
+              3
+            </div>
 
-        <div class="step">
+            <span>
+              Control
+            </span>
 
-          <div class="circle">
-            3
           </div>
 
-          <span>
-            Control
-          </span>
 
-        </div>
+          <div class="step">
 
+            <div class="circle">
+              4
+            </div>
 
-        <div class="step">
+            <span>
+              Venta
+            </span>
 
-          <div class="circle">
-            4
           </div>
-
-          <span>
-            Venta
-          </span>
 
         </div>
 
@@ -1517,6 +2616,10 @@ table.simple tr:last-child td{
 
 <script>
 
+/* =========================================================
+   SUPABASE
+========================================================= */
+
 const SUPABASE_URL =
 'https://lohxgdeuohhczejyxwgr.supabase.co';
 
@@ -1530,59 +2633,223 @@ supabase.createClient(
 );
 
 
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
 const notificationBtn =
-document.getElementById('notificationBtn');
+document.getElementById(
+  'notificationBtn'
+);
 
 const notificationPanel =
-document.getElementById('notificationPanel');
+document.getElementById(
+  'notificationPanel'
+);
 
 const closeNotifications =
-document.getElementById('closeNotifications');
+document.getElementById(
+  'closeNotifications'
+);
+
+const mobileMenuBtn =
+document.getElementById(
+  'mobileMenuBtn'
+);
+
+const mobileOverlay =
+document.getElementById(
+  'mobileOverlay'
+);
+
+const sidebar =
+document.querySelector(
+  '.sidebar'
+);
 
 
-notificationBtn.addEventListener('click', function(e){
+/* =========================================================
+   NOTIFICACIONES
+========================================================= */
 
-  e.stopPropagation();
+notificationBtn.addEventListener(
+  'click',
+  async function(e){
 
-  notificationPanel.classList.toggle('show');
+    e.stopPropagation();
 
-  if(
-    notificationPanel.classList.contains('show')
-  ){
+    const abierto =
+      notificationPanel.classList.contains(
+        'show'
+      );
 
-    cargarNotificaciones();
+
+    notificationPanel.classList.toggle(
+      'show'
+    );
+
+
+    if(!abierto){
+
+      await cargarNotificaciones();
+
+    }
 
   }
-
-});
-
-
-closeNotifications.addEventListener('click', function(){
-
-  notificationPanel.classList.remove('show');
-
-});
+);
 
 
-document.addEventListener('click', function(e){
+closeNotifications.addEventListener(
+  'click',
+  function(){
 
-  if(
-    !notificationPanel.contains(e.target) &&
-    !notificationBtn.contains(e.target)
-  ){
-
-    notificationPanel.classList.remove('show');
+    notificationPanel.classList.remove(
+      'show'
+    );
 
   }
+);
 
-});
 
+document.addEventListener(
+  'click',
+  function(e){
+
+    if(
+      !notificationPanel.contains(e.target) &&
+      !notificationBtn.contains(e.target)
+    ){
+
+      notificationPanel.classList.remove(
+        'show'
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   MENÚ MÓVIL
+========================================================= */
+
+function abrirMenuMovil(){
+
+  sidebar.classList.add(
+    'mobile-open'
+  );
+
+  mobileOverlay.classList.add(
+    'show'
+  );
+
+  mobileMenuBtn.setAttribute(
+    'aria-label',
+    'Cerrar menú'
+  );
+
+  document.body.style.overflow =
+    'hidden';
+
+}
+
+
+function cerrarMenuMovil(){
+
+  sidebar.classList.remove(
+    'mobile-open'
+  );
+
+  mobileOverlay.classList.remove(
+    'show'
+  );
+
+  mobileMenuBtn.setAttribute(
+    'aria-label',
+    'Abrir menú'
+  );
+
+  document.body.style.overflow =
+    '';
+
+}
+
+
+mobileMenuBtn.addEventListener(
+  'click',
+  function(){
+
+    const abierto =
+      sidebar.classList.contains(
+        'mobile-open'
+      );
+
+
+    if(abierto){
+
+      cerrarMenuMovil();
+
+    }else{
+
+      abrirMenuMovil();
+
+    }
+
+  }
+);
+
+
+mobileOverlay.addEventListener(
+  'click',
+  cerrarMenuMovil
+);
+
+
+document.querySelectorAll(
+  '.sb-link'
+).forEach(
+  enlace => {
+
+    enlace.addEventListener(
+      'click',
+      function(){
+
+        cerrarMenuMovil();
+
+      }
+    );
+
+  }
+);
+
+
+window.addEventListener(
+  'resize',
+  function(){
+
+    if(
+      window.innerWidth > 800
+    ){
+
+      cerrarMenuMovil();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   USUARIO
+========================================================= */
 
 async function cargarUsuario(){
 
   const {
     data:{session}
-  } = await supabaseClient.auth.getSession();
+  } =
+  await supabaseClient.auth.getSession();
 
 
   if(!session){
@@ -1607,35 +2874,44 @@ async function cargarUsuario(){
 
 
   const inicial =
-    nombre.trim()
+    nombre
+      .trim()
       .charAt(0)
       .toUpperCase();
 
 
   document.getElementById(
     'sbUserName'
-  ).textContent = nombre;
+  ).textContent =
+    nombre;
 
 
   document.getElementById(
     'topUserName'
-  ).textContent = nombre;
+  ).textContent =
+    nombre;
 
 
   document.getElementById(
     'sbAvatar'
-  ).textContent = inicial;
+  ).textContent =
+    inicial;
 
 
   document.getElementById(
     'topAvatar'
-  ).textContent = inicial;
+  ).textContent =
+    inicial;
 
 
   return session;
 
 }
 
+
+/* =========================================================
+   FECHA
+========================================================= */
 
 function colocarFecha(){
 
@@ -1644,9 +2920,13 @@ function colocarFecha(){
 
 
   const opciones = {
+
     day:'2-digit',
+
     month:'long',
+
     year:'numeric'
+
   };
 
 
@@ -1661,118 +2941,209 @@ function colocarFecha(){
 }
 
 
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
 async function cargarDashboard(){
 
-  const productosResult =
-    await supabaseClient
-      .from('productos')
-      .select(
-        'id,nombre,categoria,estado,created_at'
-      )
-      .order(
-        'created_at',
-        {ascending:false}
+  try{
+
+    const [
+
+      productosResult,
+
+      proveedoresResult,
+
+      pesoResult,
+
+      recientesResult
+
+    ] =
+    await Promise.all([
+
+
+      supabaseClient
+        .from('productos')
+        .select(
+          'id,nombre,categoria,estado'
+        ),
+
+
+      supabaseClient
+        .from('proveedores')
+        .select(
+          'id,estado'
+        ),
+
+
+      supabaseClient
+        .from('recepciones')
+        .select(
+          'peso'
+        ),
+
+
+      supabaseClient
+        .from('recepciones')
+        .select(`
+          id,
+          producto_id,
+          peso,
+          estado_producto,
+          fecha_recepcion,
+          productos (
+            nombre
+          )
+        `)
+        .order(
+          'fecha_recepcion',
+          {
+            ascending:false
+          }
+        )
+        .limit(5)
+
+    ]);
+
+
+    if(productosResult.error){
+
+      console.error(
+        'Error productos:',
+        productosResult.error
+      );
+
+    }
+
+
+    if(proveedoresResult.error){
+
+      console.error(
+        'Error proveedores:',
+        proveedoresResult.error
+      );
+
+    }
+
+
+    if(pesoResult.error){
+
+      console.error(
+        'Error peso:',
+        pesoResult.error
+      );
+
+    }
+
+
+    if(recientesResult.error){
+
+      console.error(
+        'Error recepciones:',
+        recientesResult.error
+      );
+
+    }
+
+
+    const productos =
+      productosResult.data || [];
+
+
+    const proveedores =
+      proveedoresResult.data || [];
+
+
+    const pesos =
+      pesoResult.data || [];
+
+
+    const recientes =
+      recientesResult.data || [];
+
+
+    document.getElementById(
+      'totalProductos'
+    ).textContent =
+      productos.length;
+
+
+    document.getElementById(
+      'totalProveedores'
+    ).textContent =
+      proveedores.length;
+
+
+    document.getElementById(
+      'totalRecepciones'
+    ).textContent =
+      pesos.length;
+
+
+    const peso =
+      pesos.reduce(
+        (
+          total,
+          registro
+        ) => {
+
+          return total +
+            Number(
+              registro.peso || 0
+            );
+
+        },
+        0
       );
 
 
-  const proveedoresResult =
-    await supabaseClient
-      .from('proveedores')
-      .select(
-        'id,nombre,estado'
-      );
+    document.getElementById(
+      'pesoTotal'
+    ).textContent =
+      peso.toLocaleString(
+        'es-CO',
+        {
+          minimumFractionDigits:0,
+          maximumFractionDigits:2
+        }
+      ) + ' kg';
 
 
-  const recepcionesResult =
-    await supabaseClient
-      .from('recepciones')
-      .select(`
-        id,
-        producto_id,
-        peso,
-        estado_producto,
-        fecha_recepcion,
-        observaciones
-      `)
-      .order(
-        'fecha_recepcion',
-        {ascending:false}
-      );
-
-
-  const productos =
-    productosResult.data || [];
-
-
-  const proveedores =
-    proveedoresResult.data || [];
-
-
-  const recepciones =
-    recepcionesResult.data || [];
-
-
-  document.getElementById(
-    'totalProductos'
-  ).textContent =
-    productos.length;
-
-
-  document.getElementById(
-    'totalProveedores'
-  ).textContent =
-    proveedores.length;
-
-
-  document.getElementById(
-    'totalRecepciones'
-  ).textContent =
-    recepciones.length;
-
-
-  const peso =
-    recepciones.reduce(
-      (total,r) =>
-        total + Number(r.peso || 0),
-      0
+    cargarActividad(
+      recientes
     );
 
 
-  document.getElementById(
-    'pesoTotal'
-  ).textContent =
-    peso.toLocaleString(
-      'es-CO',
-      {
-        minimumFractionDigits:0,
-        maximumFractionDigits:2
-      }
-    ) + ' kg';
+    cargarDistribucion(
+      productos
+    );
 
 
-  cargarActividad(
-    recepciones,
-    productos
-  );
+    cargarAlertas(
+      productos,
+      proveedores,
+      pesos
+    );
 
+  }catch(error){
 
-  cargarDistribucion(
-    productos
-  );
+    console.error(
+      'Error cargando dashboard:',
+      error
+    );
 
-
-  cargarAlertas(
-    productos,
-    proveedores,
-    recepciones
-  );
+  }
 
 }
 
 
+/* =========================================================
+   ACTIVIDAD RECIENTE
+========================================================= */
+
 function cargarActividad(
-  recepciones,
-  productos
+  recepciones
 ){
 
   const tabla =
@@ -1784,11 +3155,18 @@ function cargarActividad(
   if(!recepciones.length){
 
     tabla.innerHTML = `
+
       <tr>
-        <td colspan="4" class="empty">
+
+        <td
+          colspan="4"
+          class="empty"
+        >
           No hay recepciones registradas.
         </td>
+
       </tr>
+
     `;
 
     return;
@@ -1796,26 +3174,16 @@ function cargarActividad(
   }
 
 
-  const recientes =
-    recepciones.slice(0,5);
-
-
   tabla.innerHTML = '';
 
 
-  recientes.forEach(
+  recepciones.forEach(
     r => {
-
-      const producto =
-        productos.find(
-          p => p.id === r.producto_id
-        );
 
 
       const nombre =
-        producto
-          ? producto.nombre
-          : 'Producto';
+        r.productos?.nombre ||
+        'Producto';
 
 
       let clase =
@@ -1832,32 +3200,46 @@ function cargarActividad(
 
 
       if(
-        estadoLower.includes('pendiente')
+        estadoLower.includes(
+          'pendiente'
+        )
       ){
 
-        clase = 'pend';
+        clase =
+          'pend';
 
       }
 
 
       if(
-        estadoLower.includes('rechaz') ||
-        estadoLower.includes('dañado') ||
-        estadoLower.includes('inactivo')
+        estadoLower.includes(
+          'rechaz'
+        ) ||
+
+        estadoLower.includes(
+          'dañado'
+        ) ||
+
+        estadoLower.includes(
+          'inactivo'
+        )
       ){
 
-        clase = 'warn';
+        clase =
+          'warn';
 
       }
 
 
       const fecha =
         r.fecha_recepcion
+
           ? new Date(
               r.fecha_recepcion
             ).toLocaleDateString(
               'es-CO'
             )
+
           : '-';
 
 
@@ -1870,13 +3252,21 @@ function cargarActividad(
           </td>
 
           <td>
-            ${Number(r.peso || 0).toLocaleString('es-CO')} kg
+            ${Number(
+              r.peso || 0
+            ).toLocaleString(
+              'es-CO'
+            )} kg
           </td>
 
           <td>
-            <span class="pill ${clase}">
+
+            <span
+              class="pill ${clase}"
+            >
               ${escapeHTML(estado)}
             </span>
+
           </td>
 
           <td>
@@ -1892,6 +3282,10 @@ function cargarActividad(
 
 }
 
+
+/* =========================================================
+   DISTRIBUCIÓN
+========================================================= */
 
 function cargarDistribucion(
   productos
@@ -1919,7 +3313,10 @@ function cargarDistribucion(
 
 
       categorias[categoria] =
-        (categorias[categoria] || 0) + 1;
+        (
+          categorias[categoria] ||
+          0
+        ) + 1;
 
     }
   );
@@ -1930,16 +3327,22 @@ function cargarDistribucion(
       categorias
     )
     .sort(
-      (a,b) => b[1] - a[1]
+      (a,b) =>
+        b[1] - a[1]
     )
     .slice(0,4);
 
 
   const colores = [
+
     '#1E66F5',
+
     '#1B8A5A',
+
     '#FFA94D',
+
     '#7B5CC7'
+
   ];
 
 
@@ -1962,14 +3365,20 @@ function cargarDistribucion(
 
 
     legend.innerHTML = `
+
       <div>
-        <span class="swatch"
-              style="background:#1E66F5">
-        </span>
+
+        <span
+          class="swatch"
+          style="background:#1E66F5"
+        ></span>
+
         <span>
           Sin productos registrados
         </span>
+
       </div>
+
     `;
 
     return;
@@ -1977,23 +3386,32 @@ function cargarDistribucion(
   }
 
 
-  let acumulado = 0;
+  let acumulado =
+    0;
+
 
   const partes = [];
 
 
   orden.forEach(
-    ([categoria,cantidad],index) => {
+    (
+      [categoria,cantidad],
+      index
+    ) => {
 
       const porcentaje =
-        (cantidad / total) * 100;
+        (
+          cantidad /
+          total
+        ) * 100;
 
 
       const inicio =
         acumulado;
 
 
-      acumulado += porcentaje;
+      acumulado +=
+        porcentaje;
 
 
       partes.push(
@@ -2017,15 +3435,22 @@ function cargarDistribucion(
     `conic-gradient(${partes.join(',')})`;
 
 
-  legend.innerHTML = '';
+  legend.innerHTML =
+    '';
 
 
   orden.forEach(
-    ([categoria,cantidad],index) => {
+    (
+      [categoria,cantidad],
+      index
+    ) => {
 
       const porcentaje =
         Math.round(
-          (cantidad / total) * 100
+          (
+            cantidad /
+            total
+          ) * 100
         );
 
 
@@ -2039,8 +3464,13 @@ function cargarDistribucion(
           ></span>
 
           <span>
-            ${escapeHTML(categoria)}
+
+            ${escapeHTML(
+              categoria
+            )}
+
             — ${porcentaje}%
+
           </span>
 
         </div>
@@ -2052,6 +3482,10 @@ function cargarDistribucion(
 
 }
 
+
+/* =========================================================
+   ALERTAS
+========================================================= */
 
 function cargarAlertas(
   productos,
@@ -2071,13 +3505,18 @@ function cargarAlertas(
   const productosInactivos =
     productos.filter(
       p =>
+
         p.estado &&
-        p.estado.toLowerCase()
-          === 'inactivo'
+
+        p.estado
+          .toLowerCase() ===
+          'inactivo'
     );
 
 
-  if(productosInactivos.length){
+  if(
+    productosInactivos.length
+  ){
 
     alertas.push({
 
@@ -2097,13 +3536,18 @@ function cargarAlertas(
   const proveedoresInactivos =
     proveedores.filter(
       p =>
+
         p.estado &&
-        p.estado.toLowerCase()
-          === 'inactivo'
+
+        p.estado
+          .toLowerCase() ===
+          'inactivo'
     );
 
 
-  if(proveedoresInactivos.length){
+  if(
+    proveedoresInactivos.length
+  ){
 
     alertas.push({
 
@@ -2139,7 +3583,9 @@ function cargarAlertas(
     );
 
 
-  if(recepcionesPendientes.length){
+  if(
+    recepcionesPendientes.length
+  ){
 
     alertas.push({
 
@@ -2157,9 +3603,13 @@ function cargarAlertas(
 
 
   if(
+
     productos.length === 0 &&
+
     proveedores.length === 0 &&
+
     recepciones.length === 0
+
   ){
 
     alertas.push({
@@ -2194,92 +3644,122 @@ function cargarAlertas(
   }
 
 
-  container.innerHTML = '';
+  container.innerHTML =
+    '';
 
 
-  alertas.slice(0,4).forEach(
-    alerta => {
-
-      let icono = `
-
-        <svg width="16"
-             height="16"
-             viewBox="0 0 24 24"
-             fill="none">
-
-          <circle cx="12"
-                  cy="12"
-                  r="9"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-
-          <path d="M12 10v6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-
-          <circle cx="12"
-                  cy="7"
-                  r=".8"
-                  fill="currentColor"/>
-
-        </svg>
-
-      `;
+  alertas
+    .slice(0,4)
+    .forEach(
+      alerta => {
 
 
-      if(alerta.tipo === 'ok'){
+        let icono = `
 
-        icono = `
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
 
-          <svg width="16"
-               height="16"
-               viewBox="0 0 24 24"
-               fill="none">
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+              stroke="currentColor"
+              stroke-width="1.7"
+            />
 
-            <path d="m5 12 4 4L19 6"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"/>
+            <path
+              d="M12 10v6"
+              stroke="currentColor"
+              stroke-width="1.7"
+            />
+
+            <circle
+              cx="12"
+              cy="7"
+              r=".8"
+              fill="currentColor"
+            />
 
           </svg>
 
         `;
 
+
+        if(
+          alerta.tipo ===
+          'ok'
+        ){
+
+          icono = `
+
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <path
+                d="m5 12 4 4L19 6"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+            </svg>
+
+          `;
+
+        }
+
+
+        container.innerHTML += `
+
+          <div class="alert-item">
+
+            <div
+              class="alert-icon a-${alerta.tipo}"
+            >
+
+              ${icono}
+
+            </div>
+
+
+            <div class="alert-text">
+
+              <strong>
+                ${escapeHTML(
+                  alerta.titulo
+                )}
+              </strong>
+
+              <span>
+                ${escapeHTML(
+                  alerta.texto
+                )}
+              </span>
+
+            </div>
+
+          </div>
+
+        `;
+
       }
-
-
-      container.innerHTML += `
-
-        <div class="alert-item">
-
-          <div class="alert-icon a-${alerta.tipo}">
-
-            ${icono}
-
-          </div>
-
-          <div class="alert-text">
-
-            <strong>
-              ${escapeHTML(alerta.titulo)}
-            </strong>
-
-            <span>
-              ${escapeHTML(alerta.texto)}
-            </span>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-  );
+    );
 
 }
 
+
+/* =========================================================
+   NOTIFICACIONES
+========================================================= */
 
 async function cargarNotificaciones(){
 
@@ -2295,196 +3775,280 @@ async function cargarNotificaciones(){
     );
 
 
-  contenido.innerHTML = '';
+  contenido.innerHTML = `
+
+    <div class="notification-empty">
+      Cargando notificaciones...
+    </div>
+
+  `;
 
 
-  let hayNotificaciones =
-    false;
+  try{
+
+    const [
+
+      recepcionesResult,
+
+      productosResult
+
+    ] =
+    await Promise.all([
 
 
-  const recepcionesResult =
-    await supabaseClient
-      .from('recepciones')
-      .select(
-        'id,peso,estado_producto,fecha_recepcion'
-      )
-      .order(
-        'fecha_recepcion',
-        {ascending:false}
-      )
-      .limit(20);
+      supabaseClient
+        .from('recepciones')
+        .select(
+          'id,peso,estado_producto,fecha_recepcion'
+        )
+        .order(
+          'fecha_recepcion',
+          {
+            ascending:false
+          }
+        )
+        .limit(20),
 
 
-  const recepciones =
-    recepcionesResult.data || [];
+      supabaseClient
+        .from('productos')
+        .select(
+          'id,nombre,estado'
+        )
+        .order(
+          'created_at',
+          {
+            ascending:false
+          }
+        )
+        .limit(20)
+
+    ]);
 
 
-  recepciones.forEach(
-    r => {
-
-      const estado =
-        r.estado_producto ||
-        'Recibido';
+    const recepciones =
+      recepcionesResult.data || [];
 
 
-      const estadoLower =
-        estado.toLowerCase();
+    const productos =
+      productosResult.data || [];
 
 
-      if(
-        estadoLower !== 'recibido'
-      ){
-
-        hayNotificaciones =
-          true;
+    let html =
+      '';
 
 
-        contenido.innerHTML += `
+    let hayNotificaciones =
+      false;
 
-          <div class="notification-item">
 
-            <div class="ni-icon">
+    recepciones.forEach(
+      r => {
 
-              <svg width="16"
-                   height="16"
-                   viewBox="0 0 24 24"
-                   fill="none">
+        const estado =
+          r.estado_producto ||
+          'Recibido';
 
-                <path d="M12 3v12"
-                      stroke="currentColor"
-                      stroke-width="1.8"/>
 
-                <circle cx="12"
-                        cy="19"
-                        r="1"
-                        fill="currentColor"/>
+        const estadoLower =
+          estado.toLowerCase();
 
-              </svg>
+
+        if(
+          estadoLower !==
+          'recibido'
+        ){
+
+          hayNotificaciones =
+            true;
+
+
+          html += `
+
+            <div class="notification-item">
+
+              <div class="ni-icon">
+
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+
+                  <path
+                    d="M12 3v12"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+
+                  <circle
+                    cx="12"
+                    cy="19"
+                    r="1"
+                    fill="currentColor"
+                  />
+
+                </svg>
+
+              </div>
+
+
+              <div>
+
+                <strong>
+
+                  Recepción con estado
+                  ${escapeHTML(
+                    estado
+                  )}
+
+                </strong>
+
+                <span>
+
+                  Se registró una recepción de
+                  ${Number(
+                    r.peso || 0
+                  ).toLocaleString(
+                    'es-CO'
+                  )} kg.
+
+                </span>
+
+              </div>
 
             </div>
 
-            <div>
+          `;
 
-              <strong>
-                Recepción con estado ${escapeHTML(estado)}
-              </strong>
-
-              <span>
-                Se registró una recepción de
-                ${Number(r.peso || 0).toLocaleString('es-CO')} kg.
-              </span>
-
-            </div>
-
-          </div>
-
-        `;
+        }
 
       }
-
-    }
-  );
+    );
 
 
-  const productosResult =
-    await supabaseClient
-      .from('productos')
-      .select(
-        'id,nombre,estado'
-      )
-      .order(
-        'created_at',
-        {ascending:false}
-      )
-      .limit(20);
+    productos.forEach(
+      p => {
+
+        if(
+
+          p.estado &&
+
+          p.estado
+            .toLowerCase() ===
+            'inactivo'
+
+        ){
+
+          hayNotificaciones =
+            true;
 
 
-  const productos =
-    productosResult.data || [];
+          html += `
+
+            <div class="notification-item">
+
+              <div class="ni-icon">
+
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+
+                  <path
+                    d="M12 3v11"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+
+                  <circle
+                    cx="12"
+                    cy="18.5"
+                    r="1"
+                    fill="currentColor"
+                  />
+
+                </svg>
+
+              </div>
 
 
-  productos.forEach(
-    p => {
+              <div>
 
-      if(
-        p.estado &&
-        p.estado.toLowerCase()
-          === 'inactivo'
-      ){
+                <strong>
+                  Producto inactivo
+                </strong>
 
-        hayNotificaciones =
-          true;
+                <span>
+                  ${escapeHTML(
+                    p.nombre
+                  )}
+                </span>
 
-
-        contenido.innerHTML += `
-
-          <div class="notification-item">
-
-            <div class="ni-icon">
-
-              <svg width="16"
-                   height="16"
-                   viewBox="0 0 24 24"
-                   fill="none">
-
-                <path d="M12 3v11"
-                      stroke="currentColor"
-                      stroke-width="1.8"/>
-
-                <circle cx="12"
-                        cy="18.5"
-                        r="1"
-                        fill="currentColor"/>
-
-              </svg>
-
-            </div>
-
-            <div>
-
-              <strong>
-                Producto inactivo
-              </strong>
-
-              <span>
-                ${escapeHTML(p.nombre)}
-              </span>
+              </div>
 
             </div>
 
-          </div>
+          `;
 
-        `;
+        }
 
       }
+    );
+
+
+    if(!hayNotificaciones){
+
+      punto.style.display =
+        'none';
+
+
+      contenido.innerHTML = `
+
+        <div class="notification-empty">
+          No hay notificaciones pendientes.
+        </div>
+
+      `;
+
+    }else{
+
+      punto.style.display =
+        'block';
+
+
+      contenido.innerHTML =
+        html;
 
     }
-  );
 
+  }catch(error){
 
-  if(!hayNotificaciones){
-
-    punto.style.display =
-      'none';
+    console.error(
+      'Error cargando notificaciones:',
+      error
+    );
 
 
     contenido.innerHTML = `
 
       <div class="notification-empty">
-        No hay notificaciones pendientes.
+        No fue posible cargar las notificaciones.
       </div>
 
     `;
-
-  }else{
-
-    punto.style.display =
-      'block';
 
   }
 
 }
 
+
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 document.getElementById(
   'logoutBtn'
@@ -2492,19 +4056,30 @@ document.getElementById(
   'click',
   async function(){
 
-    await supabaseClient
-      .auth
-      .signOut();
+    try{
 
+      await supabaseClient
+        .auth
+        .signOut();
 
-    window.location.href =
-      'login.html';
+    }finally{
+
+      window.location.href =
+        'login.html';
+
+    }
 
   }
 );
 
 
-function escapeHTML(text){
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
+
+function escapeHTML(
+  text
+){
 
   const div =
     document.createElement(
@@ -2520,6 +4095,10 @@ function escapeHTML(text){
 
 }
 
+
+/* =========================================================
+   INICIAR
+========================================================= */
 
 async function iniciar(){
 
@@ -2539,9 +4118,6 @@ async function iniciar(){
 
   await cargarDashboard();
 
-
-  await cargarNotificaciones();
-
 }
 
 
@@ -2549,5 +4125,7 @@ iniciar();
 
 </script>
 
+
 </body>
+
 </html>
