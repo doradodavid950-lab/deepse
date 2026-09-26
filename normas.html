@@ -6,1277 +6,1163 @@
 <title>Deep Sea Intelligence — Normas y Calidad</title>
 
 <style>
-  :root{
-    --azul-oscuro:#062B5B;
-    --azul-oscuro-2:#083868;
-    --azul-medio:#1E66F5;
-    --azul-claro:#D9ECFF;
-    --verde-suave:#B9F5C5;
-    --verde-txt:#1B8A5A;
-    --rojo:#E53935;
-    --naranja:#FFA94D;
-    --amarillo:#FFD76A;
-    --morado:#E7D7FF;
-    --morado-txt:#7B5CC7;
-    --gris-claro:#F3F5F9;
-    --gris-borde:#E4E9F0;
-    --blanco:#FFFFFF;
-    --texto-principal:#0F2540;
-    --texto-secundario:#5B7089;
-    --sombra:0 10px 30px rgba(6,43,91,.08);
-    --radio:16px;
+:root{
+  --azul-oscuro:#062B5B;
+  --azul-oscuro-2:#083868;
+  --azul-medio:#1E66F5;
+  --azul-claro:#D9ECFF;
+  --verde-suave:#B9F5C5;
+  --verde-txt:#1B8A5A;
+  --rojo:#E53935;
+  --naranja:#FFA94D;
+  --amarillo:#FFD76A;
+  --morado:#E7D7FF;
+  --morado-txt:#7B5CC7;
+  --gris-claro:#F3F5F9;
+  --gris-borde:#E4E9F0;
+  --blanco:#FFFFFF;
+  --texto-principal:#0F2540;
+  --texto-secundario:#5B7089;
+  --sombra:0 10px 30px rgba(6,43,91,.08);
+  --radio:16px;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  padding:0;
+  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--gris-claro);
+  color:var(--texto-principal);
+}
+
+body{min-height:100vh}
+
+.app{
+  display:grid;
+  grid-template-columns:250px 1fr;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  background:var(--azul-oscuro);
+  color:#EAF1FC;
+  display:flex;
+  flex-direction:column;
+  padding:22px 16px;
+  position:sticky;
+  top:0;
+  height:100vh;
+}
+
+.sb-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 10px 22px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:14px;
+}
+
+.sb-brand .badge{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:rgba(255,255,255,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+
+.sb-brand .name{
+  font-weight:700;
+  font-size:16px;
+  line-height:1.1;
+}
+
+.sb-brand .name span{color:var(--amarillo)}
+.sb-brand .sub{
+  font-size:10.5px;
+  color:rgba(255,255,255,.55);
+}
+
+nav.sb-nav{
+  flex:1;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.sb-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:10px;
+  color:rgba(255,255,255,.72);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+  border:none;
+  background:none;
+  width:100%;
+  text-align:left;
+  transition:.2s ease;
+}
+
+.sb-link svg{
+  flex:0 0 auto;
+  opacity:.85;
+}
+
+.sb-link:hover{
+  background:rgba(255,255,255,.06);
+  color:#fff;
+}
+
+.sb-link.active{
+  background:var(--azul-medio);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(30,102,245,.35);
+}
+
+.sb-footer{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:14px;
+  margin-top:10px;
+}
+
+.sb-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px;
+}
+
+.sb-user .avatar{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--verde-suave);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:13px;
+  flex:0 0 auto;
+}
+
+.sb-user .info{min-width:0}
+
+.sb-user .info strong{
+  display:block;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:160px;
+}
+
+.sb-user .info span{
+  font-size:11px;
+  color:rgba(255,255,255,.5);
+}
+
+/* MAIN */
+
+main{
+  padding:26px 32px 50px;
+  min-width:0;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:26px;
+}
+
+.topbar h1{
+  font-size:23px;
+  margin:0;
+}
+
+.topbar .subtitle{
+  font-size:13px;
+  color:var(--texto-secundario);
+  margin-top:3px;
+  line-height:1.5;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex:0 0 auto;
+}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative;
+  color:var(--azul-oscuro);
+}
+
+.icon-btn:hover{border-color:var(--azul-medio)}
+
+.dot-alert{
+  position:absolute;
+  top:8px;
+  right:9px;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--rojo);
+  border:1.5px solid var(--blanco);
+}
+
+.top-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  padding:6px 14px 6px 6px;
+  border-radius:30px;
+}
+
+.top-user .avatar{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:12px;
+}
+
+.top-user span{
+  font-size:13.5px;
+  font-weight:600;
+  max-width:150px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* KPI */
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-bottom:22px;
+}
+
+.kpi-card{
+  background:var(--blanco);
+  border-radius:var(--radio);
+  padding:20px;
+  box-shadow:var(--sombra);
+  border-top:4px solid var(--accent,var(--azul-medio));
+  min-width:0;
+}
+
+.kpi-card .top-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.kpi-card .icon-wrap{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--accent-soft,var(--azul-claro));
+  color:var(--accent,var(--azul-medio));
+}
+
+.kpi-card .value{
+  font-size:26px;
+  font-weight:700;
+}
+
+.kpi-card .label{
+  font-size:12.5px;
+  color:var(--texto-secundario);
+  margin-top:2px;
+}
+
+.kpi-card .delta{
+  font-size:11.5px;
+  margin-top:10px;
+  font-weight:600;
+}
+
+.delta.up{color:var(--verde-txt)}
+.delta.neutral{color:var(--texto-secundario)}
+
+.kpi-card.c1{
+  --accent:#1E66F5;
+  --accent-soft:#D9ECFF;
+}
+
+.kpi-card.c2{
+  --accent:#1B8A5A;
+  --accent-soft:#B9F5C5;
+}
+
+.kpi-card.c3{
+  --accent:#7B5CC7;
+  --accent-soft:#E7D7FF;
+}
+
+.kpi-card.c4{
+  --accent:#FFA94D;
+  --accent-soft:#FFE8D1;
+}
+
+/* PANELES */
+
+.panel{
+  background:var(--blanco);
+  border-radius:var(--radio);
+  box-shadow:var(--sombra);
+  padding:20px;
+}
+
+.panel + .panel{margin-top:18px}
+
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.panel-head h3{
+  margin:0;
+  font-size:15.5px;
+}
+
+/* NORMAS */
+
+.normas-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.norma-card{
+  border:1px solid var(--gris-borde);
+  border-radius:13px;
+  padding:16px;
+  background:#fff;
+  transition:.2s ease;
+}
+
+.norma-card:hover{
+  border-color:#cfd8e5;
+  box-shadow:0 6px 18px rgba(6,43,91,.05);
+}
+
+.norma-icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+}
+
+.norma-icon.azul{
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+}
+
+.norma-icon.verde{
+  background:var(--verde-suave);
+  color:var(--verde-txt);
+}
+
+.norma-icon.morado{
+  background:var(--morado);
+  color:var(--morado-txt);
+}
+
+.norma-card h4{
+  margin:0 0 7px;
+  font-size:14px;
+}
+
+.norma-card p{
+  margin:0;
+  color:var(--texto-secundario);
+  font-size:12px;
+  line-height:1.55;
+}
+
+/* BOTONES */
+
+.btn{
+  border:none;
+  border-radius:10px;
+  padding:9px 14px;
+  font-family:inherit;
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.btn-primary{
+  background:var(--azul-medio);
+  color:#fff;
+}
+
+.btn-primary:hover{background:#1558d6}
+
+.btn-secondary{
+  background:var(--gris-claro);
+  color:var(--texto-principal);
+  border:1px solid var(--gris-borde);
+}
+
+.btn-danger{
+  background:#FCE1E0;
+  color:var(--rojo);
+}
+
+/* TABLA */
+
+.table-container{
+  width:100%;
+  overflow-x:auto;
+}
+
+table.simple{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+table.simple th{
+  text-align:left;
+  color:var(--texto-secundario);
+  font-weight:600;
+  font-size:11.5px;
+  padding:8px 6px;
+  border-bottom:1px solid var(--gris-borde);
+  white-space:nowrap;
+}
+
+table.simple td{
+  padding:11px 6px;
+  border-bottom:1px solid #F0F3F7;
+  vertical-align:middle;
+}
+
+table.simple tr:last-child td{border-bottom:none}
+
+/* TARJETAS MOVILES */
+
+.quality-cards{display:none}
+
+.quality-card{
+  background:#fff;
+  border:1px solid var(--gris-borde);
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:12px;
+  box-shadow:0 6px 18px rgba(6,43,91,.06);
+}
+
+.quality-card:last-child{margin-bottom:0}
+
+.quality-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding-bottom:12px;
+  border-bottom:1px solid #F0F3F7;
+  margin-bottom:12px;
+}
+
+.quality-card-title{min-width:0}
+
+.quality-card-title strong{
+  display:block;
+  font-size:14px;
+  color:var(--texto-principal);
+  line-height:1.35;
+  word-break:break-word;
+}
+
+.quality-card-title span{
+  display:block;
+  margin-top:3px;
+  font-size:11px;
+  color:var(--texto-secundario);
+}
+
+.quality-card-info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.quality-card-field{
+  min-width:0;
+  background:var(--gris-claro);
+  border-radius:10px;
+  padding:9px 10px;
+}
+
+.quality-card-field.full{grid-column:1/-1}
+
+.quality-card-label{
+  display:block;
+  font-size:10px;
+  color:var(--texto-secundario);
+  margin-bottom:3px;
+  font-weight:600;
+}
+
+.quality-card-value{
+  display:block;
+  font-size:12px;
+  color:var(--texto-principal);
+  word-break:break-word;
+}
+
+.quality-card-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.quality-card-actions .btn{
+  flex:1;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.empty-card{
+  text-align:center;
+  color:var(--texto-secundario);
+  background:var(--gris-claro);
+  border:1px dashed var(--gris-borde);
+  border-radius:12px;
+  padding:22px 15px;
+  font-size:12.5px;
+}
+
+/* PILLS */
+
+.pill{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.pill.ok{
+  background:var(--verde-suave);
+  color:#146142;
+}
+
+.pill.pend{
+  background:var(--amarillo);
+  color:#7A5A00;
+}
+
+.pill.warn{
+  background:#FFE3D1;
+  color:#B45300;
+}
+
+/* FILTROS */
+
+.filters{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+
+.search{
+  flex:1;
+  min-width:220px;
+  position:relative;
+}
+
+.search input{
+  width:100%;
+  padding:10px 12px 10px 36px;
+  border:1px solid var(--gris-borde);
+  border-radius:10px;
+  font-family:inherit;
+  font-size:12.5px;
+  outline:none;
+  background:#fff;
+}
+
+.search input:focus{border-color:var(--azul-medio)}
+
+.search svg{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--texto-secundario);
+}
+
+select,input,textarea{font-family:inherit}
+
+.filter-select{
+  padding:10px 12px;
+  border:1px solid var(--gris-borde);
+  border-radius:10px;
+  background:#fff;
+  color:var(--texto-principal);
+  font-size:12.5px;
+  outline:none;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(6,43,91,.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:1000;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  width:100%;
+  max-width:620px;
+  background:#fff;
+  border-radius:var(--radio);
+  box-shadow:0 20px 60px rgba(6,43,91,.2);
+  overflow:hidden;
+  max-height:calc(100vh - 40px);
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 20px;
+  border-bottom:1px solid var(--gris-borde);
+}
+
+.modal-head h3{
+  margin:0;
+  font-size:16px;
+}
+
+.close{
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:9px;
+  background:var(--gris-claro);
+  color:var(--texto-secundario);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.form{
+  padding:20px;
+  overflow-y:auto;
+  max-height:calc(100vh - 160px);
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field.full{grid-column:1/-1}
+
+.field label{
+  font-size:12px;
+  font-weight:600;
+  color:var(--texto-principal);
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  padding:10px 11px;
+  border:1px solid var(--gris-borde);
+  border-radius:9px;
+  outline:none;
+  font-size:12.5px;
+  color:var(--texto-principal);
+  background:#fff;
+}
+
+.field textarea{
+  resize:vertical;
+  min-height:85px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--azul-medio);
+}
+
+.field input.input-error{
+  border-color:var(--rojo);
+  background:#FFF8F8;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  padding:0 20px 20px;
+}
+
+.empty{
+  text-align:center;
+  color:var(--texto-secundario);
+  padding:25px;
+  font-size:13px;
+}
+
+.message{
+  margin-bottom:14px;
+  padding:10px 12px;
+  border-radius:9px;
+  font-size:12px;
+  display:none;
+}
+
+.message.error{
+  display:block;
+  background:#FCE1E0;
+  color:#A3211E;
+}
+
+/* NOTIFICACIONES */
+
+.notification-panel{
+  position:fixed;
+  top:78px;
+  right:32px;
+  width:330px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  border-radius:14px;
+  box-shadow:0 15px 35px rgba(6,43,91,.16);
+  z-index:1000;
+  display:none;
+  overflow:hidden;
+}
+
+.notification-panel.show{display:block}
+
+.notification-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 17px;
+  border-bottom:1px solid var(--gris-borde);
+}
+
+.notification-header strong{
+  font-size:14px;
+  color:var(--texto-principal);
+}
+
+.notification-header button{
+  border:none;
+  background:none;
+  font-size:22px;
+  color:var(--texto-secundario);
+  cursor:pointer;
+  padding:0 5px;
+}
+
+.notification-header button:hover{color:var(--rojo)}
+
+.notification-item{
+  display:flex;
+  gap:10px;
+  padding:13px 16px;
+  border-bottom:1px solid #F0F3F7;
+}
+
+.notification-item:last-child{border-bottom:none}
+
+.notification-item .ni-icon{
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+
+.notification-item strong{
+  display:block;
+  font-size:12.5px;
+  margin-bottom:2px;
+  color:var(--texto-principal);
+}
+
+.notification-item span{
+  display:block;
+  font-size:11px;
+  color:var(--texto-secundario);
+  line-height:1.4;
+}
+
+.notification-empty{
+  padding:22px 16px;
+  text-align:center;
+  font-size:12px;
+  color:var(--texto-secundario);
+}
+
+/* MENU MOVIL */
+
+.mobile-menu-btn{
+  display:none;
+  width:42px;
+  height:42px;
+  min-width:42px;
+  border:1px solid var(--gris-borde);
+  border-radius:10px;
+  background:#fff;
+  color:var(--azul-oscuro);
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:fixed;
+  top:14px;
+  left:14px;
+  z-index:1300;
+  box-shadow:0 6px 16px rgba(6,43,91,.12);
+}
+
+.mobile-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:1100;
+}
+
+.mobile-overlay.show{display:block}
+
+/* RESPONSIVE */
+
+@media (max-width:1100px){
+
+  .kpi-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  *{
-    box-sizing:border-box;
+  .normas-grid{
+    grid-template-columns:1fr 1fr;
   }
+}
 
-  html,
-  body{
-    margin:0;
-    padding:0;
-    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:var(--gris-claro);
-    color:var(--texto-principal);
-  }
-
-  body{
-    min-height:100vh;
-  }
+@media (max-width:800px){
 
   .app{
-    display:grid;
-    grid-template-columns:250px 1fr;
-    min-height:100vh;
+    grid-template-columns:1fr;
   }
-
-  /* =========================
-     SIDEBAR
-  ========================= */
 
   .sidebar{
-    background:var(--azul-oscuro);
-    color:#EAF1FC;
     display:flex;
-    flex-direction:column;
-    padding:22px 16px;
-    position:sticky;
+    position:fixed;
+    left:0;
     top:0;
+    bottom:0;
+    width:280px;
+    max-width:85vw;
     height:100vh;
-  }
-
-  .sb-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:6px 10px 22px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:14px;
-  }
-
-  .sb-brand .badge{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:rgba(255,255,255,.12);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:0 0 auto;
-  }
-
-  .sb-brand .name{
-    font-weight:700;
-    font-size:16px;
-    line-height:1.1;
-  }
-
-  .sb-brand .name span{
-    color:var(--amarillo);
-  }
-
-  .sb-brand .sub{
-    font-size:10.5px;
-    color:rgba(255,255,255,.55);
-  }
-
-  nav.sb-nav{
-    flex:1;
+    z-index:1200;
+    transform:translateX(-110%);
+    transition:transform .25s ease;
+    box-shadow:10px 0 30px rgba(0,0,0,.18);
     overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:2px;
   }
 
-  .sb-link{
+  .sidebar.mobile-open{
+    transform:translateX(0);
+  }
+
+  .mobile-menu-btn{
     display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
-    border-radius:10px;
-    color:rgba(255,255,255,.72);
-    text-decoration:none;
-    font-size:14px;
-    font-weight:500;
-    cursor:pointer;
+    position:fixed;
+    top:14px;
+    left:14px;
+    width:42px;
+    height:42px;
+    min-width:42px;
     border:none;
-    background:none;
-    width:100%;
-    text-align:left;
-    transition:.2s ease;
-  }
-
-  .sb-link svg{
-    flex:0 0 auto;
-    opacity:.85;
-  }
-
-  .sb-link:hover{
-    background:rgba(255,255,255,.06);
+    border-radius:10px;
+    background:var(--azul-oscuro);
     color:#fff;
+    z-index:1300;
+    box-shadow:0 8px 18px rgba(6,43,91,.22);
   }
-
-  .sb-link.active{
-    background:var(--azul-medio);
-    color:#fff;
-    box-shadow:0 6px 16px rgba(30,102,245,.35);
-  }
-
-  .sb-footer{
-    border-top:1px solid rgba(255,255,255,.08);
-    padding-top:14px;
-    margin-top:10px;
-  }
-
-  .sb-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px;
-  }
-
-  .sb-user .avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:var(--verde-suave);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:13px;
-    flex:0 0 auto;
-  }
-
-  .sb-user .info{
-    min-width:0;
-  }
-
-  .sb-user .info strong{
-    display:block;
-    font-size:13px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:160px;
-  }
-
-  .sb-user .info span{
-    font-size:11px;
-    color:rgba(255,255,255,.5);
-  }
-
-  /* =========================
-     MAIN
-  ========================= */
 
   main{
-    padding:26px 32px 50px;
+    padding:72px 18px 30px;
     min-width:0;
   }
 
   .topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:18px;
-    margin-bottom:26px;
+    gap:12px;
+    align-items:flex-start;
+    margin-bottom:20px;
   }
 
   .topbar h1{
-    font-size:23px;
-    margin:0;
+    font-size:20px;
+    line-height:1.2;
   }
 
   .topbar .subtitle{
-    font-size:13px;
-    color:var(--texto-secundario);
-    margin-top:3px;
     line-height:1.5;
-  }
-
-  .top-actions{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    flex:0 0 auto;
-  }
-
-  .icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:relative;
-    color:var(--azul-oscuro);
-  }
-
-  .icon-btn:hover{
-    border-color:var(--azul-medio);
-  }
-
-  .dot-alert{
-    position:absolute;
-    top:8px;
-    right:9px;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--rojo);
-    border:1.5px solid var(--blanco);
-  }
-
-  .top-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    padding:6px 14px 6px 6px;
-    border-radius:30px;
-  }
-
-  .top-user .avatar{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
     font-size:12px;
   }
 
-  .top-user span{
-    font-size:13.5px;
-    font-weight:600;
-    max-width:150px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+  .top-actions{gap:8px}
+  .top-user{display:none}
+
+  .notification-panel{
+    right:18px;
+    left:18px;
+    width:auto;
+    top:70px;
   }
 
-  /* =========================
-     KPI
-  ========================= */
-
   .kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-    margin-bottom:22px;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:16px;
   }
 
   .kpi-card{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    padding:20px;
-    box-shadow:var(--sombra);
-    border-top:4px solid var(--accent,var(--azul-medio));
-    min-width:0;
-  }
-
-  .kpi-card .top-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
+    padding:15px;
+    border-radius:14px;
   }
 
   .kpi-card .icon-wrap{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--accent-soft,var(--azul-claro));
-    color:var(--accent,var(--azul-medio));
+    width:34px;
+    height:34px;
   }
 
-  .kpi-card .value{
-    font-size:26px;
-    font-weight:700;
-  }
+  .kpi-card .value{font-size:22px}
 
   .kpi-card .label{
-    font-size:12.5px;
-    color:var(--texto-secundario);
-    margin-top:2px;
+    font-size:11.5px;
+    line-height:1.35;
   }
 
   .kpi-card .delta{
-    font-size:11.5px;
-    margin-top:10px;
-    font-weight:600;
-  }
-
-  .delta.up{
-    color:var(--verde-txt);
-  }
-
-  .delta.neutral{
-    color:var(--texto-secundario);
-  }
-
-  .kpi-card.c1{
-    --accent:#1E66F5;
-    --accent-soft:#D9ECFF;
-  }
-
-  .kpi-card.c2{
-    --accent:#1B8A5A;
-    --accent-soft:#B9F5C5;
-  }
-
-  .kpi-card.c3{
-    --accent:#7B5CC7;
-    --accent-soft:#E7D7FF;
-  }
-
-  .kpi-card.c4{
-    --accent:#FFA94D;
-    --accent-soft:#FFE8D1;
-  }
-
-  /* =========================
-     PANELES
-  ========================= */
-
-  .panel{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    box-shadow:var(--sombra);
-    padding:20px;
-  }
-
-  .panel + .panel{
-    margin-top:18px;
-  }
-
-  .panel-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:14px;
-  }
-
-  .panel-head h3{
-    margin:0;
-    font-size:15.5px;
-  }
-
-  /* =========================
-     NORMAS
-  ========================= */
-
-  .normas-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
-  }
-
-  .norma-card{
-    border:1px solid var(--gris-borde);
-    border-radius:13px;
-    padding:16px;
-    background:#fff;
-    transition:.2s ease;
-  }
-
-  .norma-card:hover{
-    border-color:#cfd8e5;
-    box-shadow:0 6px 18px rgba(6,43,91,.05);
-  }
-
-  .norma-icon{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:12px;
-  }
-
-  .norma-icon.azul{
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-  }
-
-  .norma-icon.verde{
-    background:var(--verde-suave);
-    color:var(--verde-txt);
-  }
-
-  .norma-icon.morado{
-    background:var(--morado);
-    color:var(--morado-txt);
-  }
-
-  .norma-card h4{
-    margin:0 0 7px;
-    font-size:14px;
-  }
-
-  .norma-card p{
-    margin:0;
-    color:var(--texto-secundario);
-    font-size:12px;
-    line-height:1.55;
-  }
-
-  /* =========================
-     BOTONES
-  ========================= */
-
-  .btn{
-    border:none;
-    border-radius:10px;
-    padding:9px 14px;
-    font-family:inherit;
-    font-size:12.5px;
-    font-weight:600;
-    cursor:pointer;
-    transition:.2s ease;
-  }
-
-  .btn-primary{
-    background:var(--azul-medio);
-    color:#fff;
-  }
-
-  .btn-primary:hover{
-    background:#1558d6;
-  }
-
-  .btn-secondary{
-    background:var(--gris-claro);
-    color:var(--texto-principal);
-    border:1px solid var(--gris-borde);
-  }
-
-  .btn-danger{
-    background:#FCE1E0;
-    color:var(--rojo);
-  }
-
-  /* =========================
-     TABLA
-  ========================= */
-
-  .table-container{
-    width:100%;
-    overflow-x:auto;
-  }
-
-  table.simple{
-    width:100%;
-    border-collapse:collapse;
-    font-size:13px;
-  }
-
-  table.simple th{
-    text-align:left;
-    color:var(--texto-secundario);
-    font-weight:600;
-    font-size:11.5px;
-    text-transform:none;
-    padding:8px 6px;
-    border-bottom:1px solid var(--gris-borde);
-    white-space:nowrap;
-  }
-
-  table.simple td{
-    padding:11px 6px;
-    border-bottom:1px solid #F0F3F7;
-    vertical-align:middle;
-  }
-
-  table.simple tr:last-child td{
-    border-bottom:none;
-  }
-
-  /* =========================
-     TARJETAS MOVILES
-  ========================= */
-
-  .quality-cards{
-    display:none;
-  }
-
-  .quality-card{
-    background:#fff;
-    border:1px solid var(--gris-borde);
-    border-radius:16px;
-    padding:15px;
-    margin-bottom:12px;
-    box-shadow:0 6px 18px rgba(6,43,91,.06);
-  }
-
-  .quality-card:last-child{
-    margin-bottom:0;
-  }
-
-  .quality-card-head{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:10px;
-    padding-bottom:12px;
-    border-bottom:1px solid #F0F3F7;
-    margin-bottom:12px;
-  }
-
-  .quality-card-title{
-    min-width:0;
-  }
-
-  .quality-card-title strong{
-    display:block;
-    font-size:14px;
-    color:var(--texto-principal);
-    line-height:1.35;
-    word-break:break-word;
-  }
-
-  .quality-card-title span{
-    display:block;
-    margin-top:3px;
-    font-size:11px;
-    color:var(--texto-secundario);
-  }
-
-  .quality-card-info{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
-
-  .quality-card-field{
-    min-width:0;
-    background:var(--gris-claro);
-    border-radius:10px;
-    padding:9px 10px;
-  }
-
-  .quality-card-field.full{
-    grid-column:1/-1;
-  }
-
-  .quality-card-label{
-    display:block;
-    font-size:10px;
-    color:var(--texto-secundario);
-    margin-bottom:3px;
-    font-weight:600;
-  }
-
-  .quality-card-value{
-    display:block;
-    font-size:12px;
-    color:var(--texto-principal);
-    word-break:break-word;
-  }
-
-  .quality-card-actions{
-    display:flex;
-    gap:8px;
-    margin-top:12px;
-  }
-
-  .quality-card-actions .btn{
-    flex:1;
-    min-height:38px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .empty-card{
-    text-align:center;
-    color:var(--texto-secundario);
-    background:var(--gris-claro);
-    border:1px dashed var(--gris-borde);
-    border-radius:12px;
-    padding:22px 15px;
-    font-size:12.5px;
-  }
-
-  /* =========================
-     PILLS
-  ========================= */
-
-  .pill{
-    display:inline-block;
-    padding:3px 10px;
-    border-radius:30px;
-    font-size:11px;
-    font-weight:700;
-    white-space:nowrap;
-  }
-
-  .pill.ok{
-    background:var(--verde-suave);
-    color:#146142;
-  }
-
-  .pill.pend{
-    background:var(--amarillo);
-    color:#7A5A00;
-  }
-
-  .pill.warn{
-    background:#FFE3D1;
-    color:#B45300;
-  }
-
-  /* =========================
-     FILTROS
-  ========================= */
-
-  .filters{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:16px;
-    flex-wrap:wrap;
-  }
-
-  .search{
-    flex:1;
-    min-width:220px;
-    position:relative;
-  }
-
-  .search input{
-    width:100%;
-    padding:10px 12px 10px 36px;
-    border:1px solid var(--gris-borde);
-    border-radius:10px;
-    font-family:inherit;
-    font-size:12.5px;
-    outline:none;
-    background:#fff;
-  }
-
-  .search input:focus{
-    border-color:var(--azul-medio);
-  }
-
-  .search svg{
-    position:absolute;
-    left:12px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--texto-secundario);
-  }
-
-  select,
-  input,
-  textarea{
-    font-family:inherit;
-  }
-
-  .filter-select{
-    padding:10px 12px;
-    border:1px solid var(--gris-borde);
-    border-radius:10px;
-    background:#fff;
-    color:var(--texto-principal);
-    font-size:12.5px;
-    outline:none;
-  }
-
-  /* =========================
-     MODAL
-  ========================= */
-
-  .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(6,43,91,.45);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:1000;
-  }
-
-  .modal.show{
-    display:flex;
-  }
-
-  .modal-box{
-    width:100%;
-    max-width:620px;
-    background:#fff;
-    border-radius:var(--radio);
-    box-shadow:0 20px 60px rgba(6,43,91,.2);
-    overflow:hidden;
-    max-height:calc(100vh - 40px);
-  }
-
-  .modal-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:18px 20px;
-    border-bottom:1px solid var(--gris-borde);
-  }
-
-  .modal-head h3{
-    margin:0;
-    font-size:16px;
-  }
-
-  .close{
-    width:34px;
-    height:34px;
-    border:none;
-    border-radius:9px;
-    background:var(--gris-claro);
-    color:var(--texto-secundario);
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .form{
-    padding:20px;
-    overflow-y:auto;
-    max-height:calc(100vh - 160px);
-  }
-
-  .form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-  }
-
-  .field{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-
-  .field.full{
-    grid-column:1/-1;
-  }
-
-  .field label{
-    font-size:12px;
-    font-weight:600;
-    color:var(--texto-principal);
-  }
-
-  .field input,
-  .field select,
-  .field textarea{
-    width:100%;
-    padding:10px 11px;
-    border:1px solid var(--gris-borde);
-    border-radius:9px;
-    outline:none;
-    font-size:12.5px;
-    color:var(--texto-principal);
-    background:#fff;
-  }
-
-  .field textarea{
-    resize:vertical;
-    min-height:85px;
-  }
-
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus{
-    border-color:var(--azul-medio);
-  }
-
-  .field input.input-error{
-    border-color:var(--rojo);
-    background:#FFF8F8;
-  }
-
-  .modal-actions{
-    display:flex;
-    justify-content:flex-end;
-    gap:9px;
-    padding:0 20px 20px;
-  }
-
-  .empty{
-    text-align:center;
-    color:var(--texto-secundario);
-    padding:25px;
-    font-size:13px;
-  }
-
-  .message{
-    margin-bottom:14px;
-    padding:10px 12px;
-    border-radius:9px;
-    font-size:12px;
-    display:none;
-  }
-
-  .message.error{
-    display:block;
-    background:#FCE1E0;
-    color:#A3211E;
-  }
-
-  /* =========================
-     NOTIFICACIONES
-  ========================= */
-
-  .notification-panel{
-    position:fixed;
-    top:78px;
-    right:32px;
-    width:330px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    border-radius:14px;
-    box-shadow:0 15px 35px rgba(6,43,91,.16);
-    z-index:1000;
-    display:none;
-    overflow:hidden;
-  }
-
-  .notification-panel.show{
-    display:block;
-  }
-
-  .notification-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:15px 17px;
-    border-bottom:1px solid var(--gris-borde);
-  }
-
-  .notification-header strong{
-    font-size:14px;
-    color:var(--texto-principal);
-  }
-
-  .notification-header button{
-    border:none;
-    background:none;
-    font-size:22px;
-    color:var(--texto-secundario);
-    cursor:pointer;
-    padding:0 5px;
-  }
-
-  .notification-header button:hover{
-    color:var(--rojo);
-  }
-
-  .notification-item{
-    display:flex;
-    gap:10px;
-    padding:13px 16px;
-    border-bottom:1px solid #F0F3F7;
-  }
-
-  .notification-item:last-child{
-    border-bottom:none;
-  }
-
-  .notification-item .ni-icon{
-    width:32px;
-    height:32px;
-    border-radius:9px;
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:0 0 auto;
-  }
-
-  .notification-item strong{
-    display:block;
-    font-size:12.5px;
-    margin-bottom:2px;
-    color:var(--texto-principal);
-  }
-
-  .notification-item span{
-    display:block;
-    font-size:11px;
-    color:var(--texto-secundario);
+    font-size:10.5px;
     line-height:1.4;
   }
 
-  .notification-empty{
-    padding:22px 16px;
-    text-align:center;
-    font-size:12px;
-    color:var(--texto-secundario);
+  .normas-grid{
+    grid-template-columns:1fr;
+    gap:10px;
   }
 
-  /* =========================
-     MENU MOVIL
-  ========================= */
+  .norma-card{padding:14px}
 
-  .mobile-menu-btn{
-    display:none;
-    width:42px;
-    height:42px;
-    border:none;
-    border-radius:12px;
-    background:var(--azul-oscuro);
-    color:#fff;
+  .norma-card h4{font-size:13.5px}
+
+  .norma-card p{font-size:11.5px}
+
+  .panel{
+    padding:16px;
+    border-radius:14px;
+  }
+
+  .panel-head{
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .panel-head h3{font-size:14.5px}
+
+  .filters{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .search{
+    width:100%;
+    min-width:0;
+  }
+
+  .filter-select{width:100%}
+
+  .table-container{display:none}
+
+  .quality-cards{display:block}
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{grid-column:auto}
+
+  .modal{
+    padding:10px;
     align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:fixed;
-    top:16px;
-    left:16px;
-    z-index:1200;
-    box-shadow:0 6px 18px rgba(6,43,91,.22);
   }
 
-  .mobile-overlay{
-    display:none;
+  .modal-box{
+    max-height:calc(100vh - 20px);
+    border-radius:15px;
   }
 
-  /* =========================
-     RESPONSIVE
-  ========================= */
-
-  @media (max-width:1100px){
-
-    .kpi-grid{
-      grid-template-columns:repeat(2,1fr);
-    }
-
-    .normas-grid{
-      grid-template-columns:1fr 1fr;
-    }
-
+  .form{
+    max-height:calc(100vh - 180px);
+    padding:16px;
   }
 
-  @media (max-width:800px){
-
-    .app{
-      grid-template-columns:1fr;
-    }
-
-    .sidebar{
-      display:flex;
-      position:fixed;
-      left:0;
-      top:0;
-      bottom:0;
-      width:250px;
-      height:100vh;
-      z-index:1100;
-      transform:translateX(-100%);
-      transition:transform .25s ease;
-      box-shadow:12px 0 30px rgba(6,43,91,.18);
-    }
-
-    .sidebar.mobile-open{
-      transform:translateX(0);
-    }
-
-    .mobile-menu-btn{
-      display:flex;
-    }
-
-    .mobile-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(6,43,91,.35);
-      z-index:1050;
-    }
-
-    .mobile-overlay.show{
-      display:block;
-    }
-
-    main{
-      padding:72px 18px 30px;
-      min-width:0;
-    }
-
-    .topbar{
-      gap:12px;
-      align-items:flex-start;
-      margin-bottom:20px;
-    }
-
-    .topbar h1{
-      font-size:20px;
-      line-height:1.2;
-    }
-
-    .topbar .subtitle{
-      line-height:1.5;
-      font-size:12px;
-    }
-
-    .top-actions{
-      gap:8px;
-    }
-
-    .top-user{
-      display:none;
-    }
-
-    .notification-panel{
-      right:18px;
-      left:18px;
-      width:auto;
-      top:70px;
-    }
-
-    .kpi-grid{
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-bottom:16px;
-    }
-
-    .kpi-card{
-      padding:15px;
-      border-radius:14px;
-    }
-
-    .kpi-card .icon-wrap{
-      width:34px;
-      height:34px;
-    }
-
-    .kpi-card .value{
-      font-size:22px;
-    }
-
-    .kpi-card .label{
-      font-size:11.5px;
-      line-height:1.35;
-    }
-
-    .kpi-card .delta{
-      font-size:10.5px;
-      line-height:1.4;
-    }
-
-    .normas-grid{
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-
-    .norma-card{
-      padding:14px;
-    }
-
-    .norma-card h4{
-      font-size:13.5px;
-    }
-
-    .norma-card p{
-      font-size:11.5px;
-    }
-
-    .panel{
-      padding:16px;
-      border-radius:14px;
-    }
-
-    .panel-head{
-      align-items:flex-start;
-      flex-wrap:wrap;
-    }
-
-    .panel-head h3{
-      font-size:14.5px;
-    }
-
-    .filters{
-      flex-direction:column;
-      align-items:stretch;
-    }
-
-    .search{
-      width:100%;
-      min-width:0;
-    }
-
-    .filter-select{
-      width:100%;
-    }
-
-    .table-container{
-      display:none;
-    }
-
-    .quality-cards{
-      display:block;
-    }
-
-    .form-grid{
-      grid-template-columns:1fr;
-    }
-
-    .field.full{
-      grid-column:auto;
-    }
-
-    .modal{
-      padding:10px;
-      align-items:center;
-    }
-
-    .modal-box{
-      max-height:calc(100vh - 20px);
-      border-radius:15px;
-    }
-
-    .form{
-      max-height:calc(100vh - 180px);
-      padding:16px;
-    }
-
-    .modal-head{
-      padding:15px 16px;
-    }
-
-    .modal-actions{
-      flex-direction:column;
-      padding:0 16px 16px;
-    }
-
-    .modal-actions .btn{
-      width:100%;
-      min-height:40px;
-    }
-
+  .modal-head{
+    padding:15px 16px;
   }
 
-  @media (max-width:520px){
-
-    main{
-      padding-left:14px;
-      padding-right:14px;
-    }
-
-    .kpi-grid{
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .kpi-card{
-      padding:13px;
-    }
-
-    .kpi-card .top-row{
-      margin-bottom:10px;
-    }
-
-    .kpi-card .value{
-      font-size:21px;
-    }
-
-    .kpi-card .label{
-      font-size:11px;
-    }
-
-    .kpi-card .delta{
-      font-size:10px;
-    }
-
-    .panel{
-      padding:14px;
-    }
-
-    .panel-head{
-      gap:10px;
-    }
-
-    .panel-head .btn{
-      width:100%;
-    }
-
-    .quality-card{
-      padding:13px;
-    }
-
-    .quality-card-info{
-      grid-template-columns:1fr;
-    }
-
-    .quality-card-field.full{
-      grid-column:auto;
-    }
-
-    .quality-card-actions{
-      flex-direction:column;
-    }
-
-    .quality-card-actions .btn{
-      width:100%;
-    }
-
-    .topbar{
-      flex-wrap:wrap;
-    }
-
-    .top-actions{
-      margin-left:auto;
-    }
-
-    .modal{
-      padding:7px;
-    }
-
-    .modal-box{
-      width:100%;
-    }
-
+  .modal-actions{
+    flex-direction:column;
+    padding:0 16px 16px;
   }
+
+  .modal-actions .btn{
+    width:100%;
+    min-height:40px;
+  }
+}
+
+@media (max-width:520px){
+
+  main{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  .kpi-grid{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .kpi-card{padding:13px}
+
+  .kpi-card .top-row{margin-bottom:10px}
+
+  .kpi-card .value{font-size:21px}
+
+  .kpi-card .label{font-size:11px}
+
+  .kpi-card .delta{font-size:10px}
+
+  .panel{padding:14px}
+
+  .panel-head{gap:10px}
+
+  .panel-head .btn{width:100%}
+
+  .quality-card{padding:13px}
+
+  .quality-card-info{
+    grid-template-columns:1fr;
+  }
+
+  .quality-card-field.full{
+    grid-column:auto;
+  }
+
+  .quality-card-actions{
+    flex-direction:column;
+  }
+
+  .quality-card-actions .btn{width:100%}
+
+  .topbar{flex-wrap:wrap}
+
+  .top-actions{margin-left:auto}
+
+  .modal{padding:7px}
+
+  .modal-box{width:100%}
+}
 </style>
 </head>
 
 <body>
 
-<!-- BOTÓN MENÚ MÓVIL -->
-<button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<button
+  class="mobile-menu-btn"
+  id="mobileMenuBtn"
+  type="button"
+  aria-label="Abrir menú"
+  title="Abrir menú"
+>
+  <svg width="22" height="22" viewBox="0 0 24 24"
+       fill="none" stroke="currentColor" stroke-width="2">
     <path d="M4 6h16"></path>
     <path d="M4 12h16"></path>
     <path d="M4 18h16"></path>
@@ -1287,14 +1173,9 @@
 
 <div class="app">
 
-  <!-- =========================
-       SIDEBAR
-  ========================= -->
-
   <aside class="sidebar">
 
     <div class="sb-brand">
-
       <div class="badge">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
@@ -1309,19 +1190,14 @@
         <div class="name">Deep <span>Sea</span></div>
         <div class="sub">Gestión de recursos marinos</div>
       </div>
-
     </div>
 
     <nav class="sb-nav" id="sbNav">
 
       <a class="sb-link" data-view="inicio" href="inicio.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 11l9-7 9 7"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <path d="M5 10v10h14V10"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+          <path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/>
         </svg>
         Inicio
       </a>
@@ -1329,11 +1205,9 @@
       <a class="sb-link" data-view="productos" href="productos.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
           <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke="currentColor" stroke-width="1.7"/>
           <circle cx="12" cy="12" r="2.2"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
+                  stroke="currentColor" stroke-width="1.7"/>
         </svg>
         Productos
       </a>
@@ -1341,11 +1215,9 @@
       <a class="sb-link" data-view="proveedores" href="proveedores.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="8" r="3.4"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
+                  stroke="currentColor" stroke-width="1.7"/>
           <path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke="currentColor" stroke-width="1.7"/>
         </svg>
         Proveedores
       </a>
@@ -1353,11 +1225,9 @@
       <a class="sb-link" data-view="recepciones" href="recepciones.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
           <rect x="4" y="7" width="16" height="13" rx="2"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke="currentColor" stroke-width="1.7"/>
           <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke="currentColor" stroke-width="1.7"/>
         </svg>
         Recepciones
       </a>
@@ -1389,10 +1259,8 @@
       <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
           <path d="M3 6h18M3 12h18M3 18h12"
-                stroke="currentColor"
-                stroke-width="1.7"/>
-          <circle cx="20" cy="18" r="1.6"
-                  fill="currentColor"/>
+                stroke="currentColor" stroke-width="1.7"/>
+          <circle cx="20" cy="18" r="1.6" fill="currentColor"/>
         </svg>
         Trazabilidad
       </a>
@@ -1410,11 +1278,9 @@
       <a class="sb-link active" data-view="normas" href="normas.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
           <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke="currentColor" stroke-width="1.7"/>
           <path d="m9 12 2 2 4-4"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke="currentColor" stroke-width="1.7"/>
         </svg>
         Normas y Calidad
       </a>
@@ -1422,17 +1288,13 @@
       <a class="sb-link" data-view="usuarios" href="usuarios.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
           <circle cx="9" cy="8" r="3"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
+                  stroke="currentColor" stroke-width="1.7"/>
           <path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-                stroke="currentColor"
-                stroke-width="1.7"/>
+                stroke="currentColor" stroke-width="1.7"/>
           <circle cx="18" cy="8" r="2.2"
-                  stroke="currentColor"
-                  stroke-width="1.5"/>
+                  stroke="currentColor" stroke-width="1.5"/>
           <path d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-                stroke="currentColor"
-                stroke-width="1.5"/>
+                stroke="currentColor" stroke-width="1.5"/>
         </svg>
         Usuarios
       </a>
@@ -1440,8 +1302,7 @@
       <a class="sb-link" data-view="configuracion" href="configuracion.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="3"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
+                  stroke="currentColor" stroke-width="1.7"/>
           <path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
                 stroke="currentColor"
                 stroke-width="1.3"
@@ -1453,39 +1314,29 @@
     </nav>
 
     <div class="sb-footer">
-
       <div class="sb-user">
-
         <div class="avatar" id="sbAvatar">C</div>
 
         <div class="info">
           <strong id="sbUserName">Cargando...</strong>
           <span>En línea</span>
         </div>
-
       </div>
-
     </div>
 
   </aside>
-
-  <!-- =========================
-       CONTENIDO PRINCIPAL
-  ========================= -->
 
   <main>
 
     <div class="topbar">
 
       <div>
-
         <h1>Normas y Calidad</h1>
 
         <div class="subtitle">
           Consulta de regulaciones y seguimiento de la calidad de los productos marinos —
           <span id="todayDate"></span>
         </div>
-
       </div>
 
       <div class="top-actions">
@@ -1494,11 +1345,9 @@
 
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-                  stroke="currentColor"
-                  stroke-width="1.6"/>
+                  stroke="currentColor" stroke-width="1.6"/>
             <path d="M10 20a2 2 0 0 0 4 0"
-                  stroke="currentColor"
-                  stroke-width="1.6"/>
+                  stroke="currentColor" stroke-width="1.6"/>
           </svg>
 
           <span class="dot-alert" id="notificationDot"></span>
@@ -1506,83 +1355,56 @@
         </button>
 
         <div class="top-user">
-
           <div class="avatar" id="topAvatar">C</div>
-
           <span id="topUserName">Cargando...</span>
-
         </div>
 
       </div>
 
     </div>
-
-    <!-- NOTIFICACIONES -->
 
     <div class="notification-panel" id="notificationPanel">
 
       <div class="notification-header">
-
         <strong>Notificaciones</strong>
-
         <button id="closeNotifications">×</button>
-
       </div>
 
       <div id="notificationContent">
-
         <div class="notification-empty">
           Cargando notificaciones...
         </div>
-
       </div>
 
     </div>
-
-    <!-- =========================
-         KPI
-    ========================= -->
 
     <div class="kpi-grid">
 
       <div class="kpi-card c1">
 
         <div class="top-row">
-
           <div class="icon-wrap">
-
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M4 4h16v16H4z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
+                    stroke="currentColor" stroke-width="1.7"/>
               <path d="M8 8h8M8 12h8M8 16h5"
                     stroke="currentColor"
                     stroke-width="1.7"
                     stroke-linecap="round"/>
             </svg>
-
           </div>
-
         </div>
 
         <div class="value" id="totalControles">0</div>
-
-        <div class="label">
-          Controles realizados
-        </div>
-
-        <div class="delta neutral">
-          Registros de calidad
-        </div>
+        <div class="label">Controles realizados</div>
+        <div class="delta neutral">Registros de calidad</div>
 
       </div>
 
       <div class="kpi-card c2">
 
         <div class="top-row">
-
           <div class="icon-wrap">
-
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="m5 13 4 4L19 7"
                     stroke="currentColor"
@@ -1590,58 +1412,38 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"/>
             </svg>
-
           </div>
-
         </div>
 
         <div class="value" id="totalAprobados">0</div>
-
-        <div class="label">
-          Controles aprobados
-        </div>
-
-        <div class="delta up">
-          Calidad verificada
-        </div>
+        <div class="label">Controles aprobados</div>
+        <div class="delta up">Calidad verificada</div>
 
       </div>
 
       <div class="kpi-card c3">
 
         <div class="top-row">
-
           <div class="icon-wrap">
-
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M12 3v18M3 12h18"
                     stroke="currentColor"
                     stroke-width="1.7"
                     stroke-linecap="round"/>
             </svg>
-
           </div>
-
         </div>
 
         <div class="value" id="totalRechazados">0</div>
-
-        <div class="label">
-          Controles rechazados
-        </div>
-
-        <div class="delta neutral">
-          Requieren seguimiento
-        </div>
+        <div class="label">Controles rechazados</div>
+        <div class="delta neutral">Requieren seguimiento</div>
 
       </div>
 
       <div class="kpi-card c4">
 
         <div class="top-row">
-
           <div class="icon-wrap">
-
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="9"
                       stroke="currentColor"
@@ -1651,35 +1453,21 @@
                     stroke-width="1.7"
                     stroke-linecap="round"/>
             </svg>
-
           </div>
-
         </div>
 
         <div class="value" id="totalPendientes">0</div>
-
-        <div class="label">
-          Controles pendientes
-        </div>
-
-        <div class="delta neutral">
-          Pendientes de revisión
-        </div>
+        <div class="label">Controles pendientes</div>
+        <div class="delta neutral">Pendientes de revisión</div>
 
       </div>
 
     </div>
 
-    <!-- =========================
-         NORMAS
-    ========================= -->
-
     <div class="panel">
 
       <div class="panel-head">
-
         <h3>Normas y regulaciones</h3>
-
       </div>
 
       <div class="normas-grid">
@@ -1687,16 +1475,12 @@
         <div class="norma-card">
 
           <div class="norma-icon azul">
-
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
               <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
+                    stroke="currentColor" stroke-width="1.7"/>
               <path d="m9 12 2 2 4-4"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
+                    stroke="currentColor" stroke-width="1.7"/>
             </svg>
-
           </div>
 
           <h4>Control sanitario</h4>
@@ -1710,17 +1494,14 @@
         <div class="norma-card">
 
           <div class="norma-icon verde">
-
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
               <path d="M5 5h14v14H5z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
+                    stroke="currentColor" stroke-width="1.7"/>
               <path d="M8 9h8M8 13h8M8 17h5"
                     stroke="currentColor"
                     stroke-width="1.7"
                     stroke-linecap="round"/>
             </svg>
-
           </div>
 
           <h4>Estándares de calidad</h4>
@@ -1734,19 +1515,15 @@
         <div class="norma-card">
 
           <div class="norma-icon morado">
-
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
               <path d="M4 6h16v14H4z"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
+                    stroke="currentColor" stroke-width="1.7"/>
               <path d="M8 6V4h8v2"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
+                    stroke="currentColor" stroke-width="1.7"/>
               <path d="M8 11h8M8 15h5"
                     stroke="currentColor"
                     stroke-width="1.7"/>
             </svg>
-
           </div>
 
           <h4>Seguimiento de calidad</h4>
@@ -1760,10 +1537,6 @@
       </div>
 
     </div>
-
-    <!-- =========================
-         REGISTRO
-    ========================= -->
 
     <div class="panel">
 
@@ -1810,35 +1583,19 @@
         </div>
 
         <select id="filtroResultado" class="filter-select">
-
-          <option value="">
-            Todos los resultados
-          </option>
-
-          <option value="Aprobado">
-            Aprobado
-          </option>
-
-          <option value="Rechazado">
-            Rechazado
-          </option>
-
-          <option value="Pendiente">
-            Pendiente
-          </option>
-
+          <option value="">Todos los resultados</option>
+          <option value="Aprobado">Aprobado</option>
+          <option value="Rechazado">Rechazado</option>
+          <option value="Pendiente">Pendiente</option>
         </select>
 
       </div>
-
-      <!-- TABLA ESCRITORIO -->
 
       <div class="table-container">
 
         <table class="simple">
 
           <thead>
-
             <tr>
               <th>Producto</th>
               <th>Color</th>
@@ -1848,17 +1605,14 @@
               <th>Fecha</th>
               <th>Acciones</th>
             </tr>
-
           </thead>
 
           <tbody id="tablaControles">
 
             <tr>
-
               <td colspan="7" class="empty">
                 Cargando controles...
               </td>
-
             </tr>
 
           </tbody>
@@ -1867,8 +1621,6 @@
 
       </div>
 
-      <!-- TARJETAS CELULAR -->
-
       <div class="quality-cards" id="qualityCards"></div>
 
     </div>
@@ -1876,10 +1628,6 @@
   </main>
 
 </div>
-
-<!-- =========================
-     MODAL
-========================= -->
 
 <div class="modal" id="modal">
 
@@ -1914,25 +1662,17 @@
 
         <div class="field full">
 
-          <label for="producto">
-            Producto
-          </label>
+          <label for="producto">Producto</label>
 
           <select id="producto" required>
-
-            <option value="">
-              Seleccionar producto
-            </option>
-
+            <option value="">Seleccionar producto</option>
           </select>
 
         </div>
 
         <div class="field">
 
-          <label for="color">
-            Color
-          </label>
+          <label for="color">Color</label>
 
           <input
             type="text"
@@ -1946,9 +1686,7 @@
 
         <div class="field">
 
-          <label for="olor">
-            Olor
-          </label>
+          <label for="olor">Olor</label>
 
           <input
             type="text"
@@ -1962,9 +1700,7 @@
 
         <div class="field">
 
-          <label for="textura">
-            Textura
-          </label>
+          <label for="textura">Textura</label>
 
           <input
             type="text"
@@ -1978,33 +1714,19 @@
 
         <div class="field">
 
-          <label for="resultado">
-            Resultado
-          </label>
+          <label for="resultado">Resultado</label>
 
           <select id="resultado" required>
-
-            <option value="Pendiente">
-              Pendiente
-            </option>
-
-            <option value="Aprobado">
-              Aprobado
-            </option>
-
-            <option value="Rechazado">
-              Rechazado
-            </option>
-
+            <option value="Pendiente">Pendiente</option>
+            <option value="Aprobado">Aprobado</option>
+            <option value="Rechazado">Rechazado</option>
           </select>
 
         </div>
 
         <div class="field full">
 
-          <label for="observaciones">
-            Observaciones
-          </label>
+          <label for="observaciones">Observaciones</label>
 
           <textarea
             id="observaciones"
@@ -2036,79 +1758,39 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+const SUPABASE_URL='https://lohxgdeuohhczejyxwgr.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const SUPABASE_URL =
-  'https://lohxgdeuohhczejyxwgr.supabase.co';
+let controles=[];
+let productos=[];
 
-const SUPABASE_ANON_KEY =
-  'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+const $=id=>document.getElementById(id);
 
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
-let controles = [];
-let productos = [];
-
-
-/* =========================
-   SESIÓN
-========================= */
+/* SESIÓN */
 
 (async function(){
 
-  const {
-    data:{session}
-  } =
-    await supabaseClient.auth.getSession();
+  const {data:{session}}=await supabaseClient.auth.getSession();
 
   if(!session){
-
-    window.location.href =
-      'login.html';
-
+    window.location.href='login.html';
     return;
-
   }
 
-  const fullName =
-    session.user.user_metadata &&
-    session.user.user_metadata.full_name
-      ? session.user.user_metadata.full_name
-      : session.user.email;
+  const fullName=session.user.user_metadata?.full_name||session.user.email;
+  const initial=fullName.charAt(0).toUpperCase();
 
-  const initial =
-    fullName.charAt(0).toUpperCase();
+  $('sbUserName').textContent=fullName;
+  $('topUserName').textContent=fullName;
+  $('sbAvatar').textContent=initial;
+  $('topAvatar').textContent=initial;
 
-  document.getElementById(
-    'sbUserName'
-  ).textContent = fullName;
-
-  document.getElementById(
-    'topUserName'
-  ).textContent = fullName;
-
-  document.getElementById(
-    'sbAvatar'
-  ).textContent = initial;
-
-  document.getElementById(
-    'topAvatar'
-  ).textContent = initial;
-
-  document.getElementById(
-    'todayDate'
-  ).textContent =
-    new Date().toLocaleDateString(
-      'es-CO',
-      {
-        day:'2-digit',
-        month:'long',
-        year:'numeric'
-      }
-    );
+  $('todayDate').textContent=new Date().toLocaleDateString('es-CO',{
+    day:'2-digit',
+    month:'long',
+    year:'numeric'
+  });
 
   await Promise.all([
     cargarProductos(),
@@ -2117,1691 +1799,911 @@ let productos = [];
 
 })();
 
-
-/* =========================
-   PRODUCTOS
-========================= */
+/* PRODUCTOS */
 
 async function cargarProductos(){
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from('productos')
-      .select('id,nombre')
-      .order('nombre');
+  const {data,error}=await supabaseClient
+    .from('productos')
+    .select('id,nombre')
+    .order('nombre');
 
   if(error){
-
     console.error(error);
-
     return;
-
   }
 
-  productos =
-    data || [];
+  productos=data||[];
 
-  const select =
-    document.getElementById(
-      'producto'
-    );
+  $('producto').innerHTML='<option value="">Seleccionar producto</option>';
 
-  select.innerHTML =
-    '<option value="">Seleccionar producto</option>';
-
-  productos.forEach(function(producto){
-
-    const option =
-      document.createElement(
-        'option'
-      );
-
-    option.value =
-      producto.id;
-
-    option.textContent =
-      producto.nombre;
-
-    select.appendChild(
-      option
-    );
-
+  productos.forEach(producto=>{
+    const option=document.createElement('option');
+    option.value=producto.id;
+    option.textContent=producto.nombre;
+    $('producto').appendChild(option);
   });
-
 }
 
-
-/* =========================
-   CONTROLES
-========================= */
+/* CONTROLES */
 
 async function cargarControles(){
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from('controles_calidad')
-      .select(`
-        id,
-        producto_id,
-        color,
-        olor,
-        textura,
-        resultado,
-        observaciones,
-        fecha_control,
-        productos (nombre)
-      `)
-      .order(
-        'fecha_control',
-        {
-          ascending:false
-        }
-      );
+  const {data,error}=await supabaseClient
+    .from('controles_calidad')
+    .select(`
+      id,
+      producto_id,
+      color,
+      olor,
+      textura,
+      resultado,
+      observaciones,
+      fecha_control,
+      productos(nombre)
+    `)
+    .order('fecha_control',{ascending:false});
 
   if(error){
 
     console.error(error);
 
-    document.getElementById(
-      'tablaControles'
-    ).innerHTML =
-      `
+    $('tablaControles').innerHTML=`
       <tr>
         <td colspan="7" class="empty">
           No se pudieron cargar los controles.
         </td>
       </tr>
-      `;
+    `;
 
-    document.getElementById(
-      'qualityCards'
-    ).innerHTML =
-      `
+    $('qualityCards').innerHTML=`
       <div class="empty-card">
         No se pudieron cargar los controles.
       </div>
-      `;
+    `;
 
     return;
-
   }
 
-  controles =
-    data || [];
+  controles=data||[];
 
   actualizarKpis();
-
   mostrarControles();
-
 }
 
-
-/* =========================
-   KPIS
-========================= */
+/* KPIS */
 
 function actualizarKpis(){
 
-  const total =
-    controles.length;
+  $('totalControles').textContent=controles.length;
 
-  const aprobados =
-    controles.filter(
-      function(c){
-        return c.resultado === 'Aprobado';
-      }
-    ).length;
+  $('totalAprobados').textContent=
+    controles.filter(c=>c.resultado==='Aprobado').length;
 
-  const rechazados =
-    controles.filter(
-      function(c){
-        return c.resultado === 'Rechazado';
-      }
-    ).length;
+  $('totalRechazados').textContent=
+    controles.filter(c=>c.resultado==='Rechazado').length;
 
-  const pendientes =
-    controles.filter(
-      function(c){
-        return c.resultado === 'Pendiente';
-      }
-    ).length;
-
-  document.getElementById(
-    'totalControles'
-  ).textContent =
-    total;
-
-  document.getElementById(
-    'totalAprobados'
-  ).textContent =
-    aprobados;
-
-  document.getElementById(
-    'totalRechazados'
-  ).textContent =
-    rechazados;
-
-  document.getElementById(
-    'totalPendientes'
-  ).textContent =
-    pendientes;
-
+  $('totalPendientes').textContent=
+    controles.filter(c=>c.resultado==='Pendiente').length;
 }
 
-
-/* =========================
-   MOSTRAR CONTROLES
-========================= */
+/* MOSTRAR CONTROLES */
 
 function mostrarControles(){
 
-  const busqueda =
-    document.getElementById(
-      'buscar'
-    ).value
-      .toLowerCase()
-      .trim();
+  const busqueda=$('buscar').value.toLowerCase().trim();
+  const filtro=$('filtroResultado').value;
 
-  const filtro =
-    document.getElementById(
-      'filtroResultado'
-    ).value;
+  const lista=controles.filter(control=>{
 
-  const lista =
-    controles.filter(
-      function(control){
+    const nombre=control.productos?.nombre?.toLowerCase()||'';
 
-        const nombre =
-          control.productos &&
-          control.productos.nombre
-            ? control.productos.nombre.toLowerCase()
-            : '';
+    return nombre.includes(busqueda) &&
+      (!filtro||control.resultado===filtro);
 
-        const coincideBusqueda =
-          nombre.includes(
-            busqueda
-          );
-
-        const coincideFiltro =
-          !filtro ||
-          control.resultado === filtro;
-
-        return (
-          coincideBusqueda &&
-          coincideFiltro
-        );
-
-      }
-    );
+  });
 
   mostrarTabla(lista);
-
   mostrarTarjetas(lista);
-
 }
 
-
-/* =========================
-   TABLA
-========================= */
+/* TABLA */
 
 function mostrarTabla(lista){
 
-  const tbody =
-    document.getElementById(
-      'tablaControles'
-    );
+  const tbody=$('tablaControles');
 
-  if(lista.length === 0){
+  if(!lista.length){
 
-    tbody.innerHTML =
-      `
+    tbody.innerHTML=`
       <tr>
         <td colspan="7" class="empty">
           No hay controles de calidad registrados.
         </td>
       </tr>
-      `;
+    `;
 
     return;
-
   }
 
-  tbody.innerHTML = '';
+  tbody.innerHTML='';
 
-  lista.forEach(
-    function(control){
+  lista.forEach(control=>{
 
-      const tr =
-        document.createElement(
-          'tr'
-        );
+    const tr=document.createElement('tr');
+    const clase=obtenerClaseResultado(control.resultado);
+    const fecha=obtenerFecha(control.fecha_control);
+    const nombreProducto=obtenerNombreProducto(control);
 
-      const clase =
-        obtenerClaseResultado(
-          control.resultado
-        );
+    tr.innerHTML=`
+      <td>${escapar(nombreProducto)}</td>
+      <td>${escapar(control.color||'-')}</td>
+      <td>${escapar(control.olor||'-')}</td>
+      <td>${escapar(control.textura||'-')}</td>
 
-      const fecha =
-        obtenerFecha(
-          control.fecha_control
-        );
+      <td>
+        <span class="pill ${clase}">
+          ${escapar(control.resultado)}
+        </span>
+      </td>
 
-      const nombreProducto =
-        obtenerNombreProducto(
-          control
-        );
+      <td>${fecha}</td>
 
-      tr.innerHTML =
-        `
-        <td>
-          ${escapar(nombreProducto)}
-        </td>
+      <td>
 
-        <td>
-          ${escapar(
-            control.color || '-'
-          )}
-        </td>
+        <button
+          class="btn btn-secondary"
+          onclick="editarControl('${control.id}')"
+          style="padding:6px 9px;margin-right:4px;"
+          title="Editar"
+        >
 
-        <td>
-          ${escapar(
-            control.olor || '-'
-          )}
-        </td>
+          <svg width="13" height="13"
+               viewBox="0 0 24 24"
+               fill="none">
 
-        <td>
-          ${escapar(
-            control.textura || '-'
-          )}
-        </td>
+            <path
+              d="m4 16 9.5-9.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 1 0 3L8 20H4v-4z"
+              stroke="currentColor"
+              stroke-width="1.7"
+            />
 
-        <td>
+            <path
+              d="M13.5 7.5 17 11"
+              stroke="currentColor"
+              stroke-width="1.7"
+            />
 
-          <span class="pill ${clase}">
-            ${escapar(
-              control.resultado
-            )}
-          </span>
+          </svg>
 
-        </td>
+        </button>
 
-        <td>
-          ${fecha}
-        </td>
+        <button
+          class="btn btn-danger"
+          onclick="eliminarControl('${control.id}')"
+          style="padding:6px 9px;"
+          title="Eliminar"
+        >
 
-        <td>
+          <svg width="13" height="13"
+               viewBox="0 0 24 24"
+               fill="none">
 
-          <button
-            class="btn btn-secondary"
-            onclick="editarControl('${control.id}')"
-            style="padding:6px 9px;margin-right:4px;"
-            title="Editar"
-          >
+            <path
+              d="M4 7h16M10 11v6M14 11v6"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+            />
 
-            <svg width="13" height="13"
-                 viewBox="0 0 24 24"
-                 fill="none">
+            <path
+              d="M9 7V4h6v3M6 7l1 14h10l1-14"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linejoin="round"
+            />
 
-              <path
-                d="m4 16 9.5-9.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 1 0 3L8 20H4v-4z"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
+          </svg>
 
-              <path
-                d="M13.5 7.5 17 11"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
+        </button>
 
-            </svg>
+      </td>
+    `;
 
-          </button>
-
-          <button
-            class="btn btn-danger"
-            onclick="eliminarControl('${control.id}')"
-            style="padding:6px 9px;"
-            title="Eliminar"
-          >
-
-            <svg width="13" height="13"
-                 viewBox="0 0 24 24"
-                 fill="none">
-
-              <path
-                d="M4 7h16M10 11v6M14 11v6"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-              <path
-                d="M9 7V4h6v3M6 7l1 14h10l1-14"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-
-            </svg>
-
-          </button>
-
-        </td>
-        `;
-
-      tbody.appendChild(
-        tr
-      );
-
-    }
-  );
-
+    tbody.appendChild(tr);
+  });
 }
 
-
-/* =========================
-   TARJETAS MOVILES
-========================= */
+/* TARJETAS MÓVILES */
 
 function mostrarTarjetas(lista){
 
-  const contenedor =
-    document.getElementById(
-      'qualityCards'
-    );
+  const contenedor=$('qualityCards');
 
-  if(lista.length === 0){
+  if(!lista.length){
 
-    contenedor.innerHTML =
-      `
+    contenedor.innerHTML=`
       <div class="empty-card">
         No hay controles de calidad registrados.
       </div>
-      `;
+    `;
 
     return;
-
   }
 
-  contenedor.innerHTML = '';
+  contenedor.innerHTML='';
 
-  lista.forEach(
-    function(control){
+  lista.forEach(control=>{
 
-      const card =
-        document.createElement(
-          'div'
-        );
+    const card=document.createElement('div');
+    card.className='quality-card';
 
-      card.className =
-        'quality-card';
+    const clase=obtenerClaseResultado(control.resultado);
+    const fecha=obtenerFecha(control.fecha_control);
+    const nombreProducto=obtenerNombreProducto(control);
 
-      const clase =
-        obtenerClaseResultado(
-          control.resultado
-        );
+    card.innerHTML=`
+      <div class="quality-card-head">
 
-      const fecha =
-        obtenerFecha(
-          control.fecha_control
-        );
+        <div class="quality-card-title">
 
-      const nombreProducto =
-        obtenerNombreProducto(
-          control
-        );
+          <strong>
+            ${escapar(nombreProducto)}
+          </strong>
 
-      card.innerHTML =
-        `
-        <div class="quality-card-head">
-
-          <div class="quality-card-title">
-
-            <strong>
-              ${escapar(
-                nombreProducto
-              )}
-            </strong>
-
-            <span>
-              Control de calidad
-            </span>
-
-          </div>
-
-          <span class="pill ${clase}">
-            ${escapar(
-              control.resultado
-            )}
+          <span>
+            Control de calidad
           </span>
 
         </div>
 
-        <div class="quality-card-info">
+        <span class="pill ${clase}">
+          ${escapar(control.resultado)}
+        </span>
 
-          <div class="quality-card-field">
+      </div>
 
-            <span class="quality-card-label">
-              Color
-            </span>
+      <div class="quality-card-info">
 
-            <span class="quality-card-value">
-              ${escapar(
-                control.color || '-'
-              )}
-            </span>
-
-          </div>
-
-          <div class="quality-card-field">
-
-            <span class="quality-card-label">
-              Olor
-            </span>
-
-            <span class="quality-card-value">
-              ${escapar(
-                control.olor || '-'
-              )}
-            </span>
-
-          </div>
-
-          <div class="quality-card-field">
-
-            <span class="quality-card-label">
-              Textura
-            </span>
-
-            <span class="quality-card-value">
-              ${escapar(
-                control.textura || '-'
-              )}
-            </span>
-
-          </div>
-
-          <div class="quality-card-field">
-
-            <span class="quality-card-label">
-              Fecha
-            </span>
-
-            <span class="quality-card-value">
-              ${fecha}
-            </span>
-
-          </div>
-
-          ${
-            control.observaciones
-              ? `
-                <div class="quality-card-field full">
-
-                  <span class="quality-card-label">
-                    Observaciones
-                  </span>
-
-                  <span class="quality-card-value">
-                    ${escapar(
-                      control.observaciones
-                    )}
-                  </span>
-
-                </div>
-              `
-              : ''
-          }
-
+        <div class="quality-card-field">
+          <span class="quality-card-label">Color</span>
+          <span class="quality-card-value">
+            ${escapar(control.color||'-')}
+          </span>
         </div>
 
-        <div class="quality-card-actions">
-
-          <button
-            class="btn btn-secondary"
-            onclick="editarControl('${control.id}')"
-          >
-
-            <svg width="13" height="13"
-                 viewBox="0 0 24 24"
-                 fill="none"
-                 style="margin-right:5px;">
-
-              <path
-                d="m4 16 9.5-9.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 1 0 3L8 20H4v-4z"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <path
-                d="M13.5 7.5 17 11"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-            </svg>
-
-            Editar
-
-          </button>
-
-          <button
-            class="btn btn-danger"
-            onclick="eliminarControl('${control.id}')"
-          >
-
-            <svg width="13" height="13"
-                 viewBox="0 0 24 24"
-                 fill="none"
-                 style="margin-right:5px;">
-
-              <path
-                d="M4 7h16M10 11v6M14 11v6"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-              />
-
-              <path
-                d="M9 7V4h6v3M6 7l1 14h10l1-14"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-
-            </svg>
-
-            Eliminar
-
-          </button>
-
+        <div class="quality-card-field">
+          <span class="quality-card-label">Olor</span>
+          <span class="quality-card-value">
+            ${escapar(control.olor||'-')}
+          </span>
         </div>
-        `;
 
-      contenedor.appendChild(
-        card
-      );
+        <div class="quality-card-field">
+          <span class="quality-card-label">Textura</span>
+          <span class="quality-card-value">
+            ${escapar(control.textura||'-')}
+          </span>
+        </div>
 
-    }
-  );
+        <div class="quality-card-field">
+          <span class="quality-card-label">Fecha</span>
+          <span class="quality-card-value">
+            ${fecha}
+          </span>
+        </div>
 
+        ${
+          control.observaciones
+          ? `
+            <div class="quality-card-field full">
+              <span class="quality-card-label">
+                Observaciones
+              </span>
+
+              <span class="quality-card-value">
+                ${escapar(control.observaciones)}
+              </span>
+            </div>
+          `
+          : ''
+        }
+
+      </div>
+
+      <div class="quality-card-actions">
+
+        <button
+          class="btn btn-secondary"
+          onclick="editarControl('${control.id}')"
+        >
+
+          <svg width="13" height="13"
+               viewBox="0 0 24 24"
+               fill="none"
+               style="margin-right:5px;">
+
+            <path
+              d="m4 16 9.5-9.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 1 0 3L8 20H4v-4z"
+              stroke="currentColor"
+              stroke-width="1.7"
+            />
+
+            <path
+              d="M13.5 7.5 17 11"
+              stroke="currentColor"
+              stroke-width="1.7"
+            />
+
+          </svg>
+
+          Editar
+
+        </button>
+
+        <button
+          class="btn btn-danger"
+          onclick="eliminarControl('${control.id}')"
+        >
+
+          <svg width="13" height="13"
+               viewBox="0 0 24 24"
+               fill="none"
+               style="margin-right:5px;">
+
+            <path
+              d="M4 7h16M10 11v6M14 11v6"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M9 7V4h6v3M6 7l1 14h10l1-14"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linejoin="round"
+            />
+
+          </svg>
+
+          Eliminar
+
+        </button>
+
+      </div>
+    `;
+
+    contenedor.appendChild(card);
+  });
 }
 
-
-/* =========================
-   FUNCIONES AUXILIARES
-========================= */
+/* FUNCIONES AUXILIARES */
 
 function obtenerClaseResultado(resultado){
 
-  let clase =
-    'pend';
+  if(resultado==='Aprobado') return 'ok';
+  if(resultado==='Rechazado') return 'warn';
 
-  if(resultado === 'Aprobado'){
-    clase = 'ok';
-  }
-
-  if(resultado === 'Rechazado'){
-    clase = 'warn';
-  }
-
-  return clase;
-
+  return 'pend';
 }
 
 function obtenerFecha(fecha){
 
-  if(!fecha){
-    return '-';
-  }
-
-  return new Date(
-    fecha
-  ).toLocaleDateString(
-    'es-CO'
-  );
-
+  return fecha
+    ? new Date(fecha).toLocaleDateString('es-CO')
+    : '-';
 }
 
 function obtenerNombreProducto(control){
 
-  return (
-    control.productos &&
-    control.productos.nombre
-      ? control.productos.nombre
-      : 'Sin producto'
-  );
-
+  return control.productos?.nombre||'Sin producto';
 }
 
+/* FILTROS */
 
-/* =========================
-   FILTROS
-========================= */
+$('buscar').addEventListener('input',mostrarControles);
+$('filtroResultado').addEventListener('change',mostrarControles);
 
-document
-  .getElementById(
-    'buscar'
-  )
-  .addEventListener(
-    'input',
-    mostrarControles
-  );
-
-document
-  .getElementById(
-    'filtroResultado'
-  )
-  .addEventListener(
-    'change',
-    mostrarControles
-  );
-
-
-/* =========================
-   MODAL
-========================= */
+/* MODAL */
 
 function abrirModal(){
-
-  document
-    .getElementById(
-      'modal'
-    )
-    .classList
-    .add('show');
-
+  $('modal').classList.add('show');
 }
 
 function cerrarModal(){
 
-  document
-    .getElementById(
-      'modal'
-    )
-    .classList
-    .remove('show');
-
-  document
-    .getElementById(
-      'formControl'
-    )
-    .reset();
-
-  document
-    .getElementById(
-      'controlId'
-    )
-    .value = '';
-
-  document
-    .getElementById(
-      'modalTitulo'
-    )
-    .textContent =
-      'Nuevo control de calidad';
+  $('modal').classList.remove('show');
+  $('formControl').reset();
+  $('controlId').value='';
+  $('modalTitulo').textContent='Nuevo control de calidad';
 
   limpiarErroresCampos();
-
   ocultarMensaje();
-
 }
 
-document
-  .getElementById(
-    'btnNuevo'
-  )
-  .addEventListener(
-    'click',
-    abrirModal
-  );
+$('btnNuevo').addEventListener('click',abrirModal);
+$('cerrarModal').addEventListener('click',cerrarModal);
+$('cancelar').addEventListener('click',cerrarModal);
 
-document
-  .getElementById(
-    'cerrarModal'
-  )
-  .addEventListener(
-    'click',
-    cerrarModal
-  );
+$('modal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget) cerrarModal();
+});
 
-document
-  .getElementById(
-    'cancelar'
-  )
-  .addEventListener(
-    'click',
-    cerrarModal
-  );
+$('guardar').addEventListener('click',guardarControl);
 
-document
-  .getElementById(
-    'modal'
-  )
-  .addEventListener(
-    'click',
-    function(e){
-
-      if(e.target === this){
-        cerrarModal();
-      }
-
-    }
-  );
-
-document
-  .getElementById(
-    'guardar'
-  )
-  .addEventListener(
-    'click',
-    guardarControl
-  );
-
-
-/* =========================
-   VALIDACIÓN CALIDAD
-========================= */
+/* VALIDACIÓN */
 
 function validarCaracteristica(valor){
 
-  return /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s.,;:()\-\/]+$/.test(
-    valor
-  );
-
+  return /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s.,;:()\-\/]+$/.test(valor);
 }
 
 function validarCamposCalidad(){
 
-  const campos = [
-
-    {
-      id:'color',
-      nombre:'Color'
-    },
-
-    {
-      id:'olor',
-      nombre:'Olor'
-    },
-
-    {
-      id:'textura',
-      nombre:'Textura'
-    }
-
+  const campos=[
+    {id:'color',nombre:'Color'},
+    {id:'olor',nombre:'Olor'},
+    {id:'textura',nombre:'Textura'}
   ];
 
   limpiarErroresCampos();
 
-  for(
-    const campo of campos
-  ){
+  for(const campo of campos){
 
-    const elemento =
-      document.getElementById(
-        campo.id
-      );
+    const elemento=$(campo.id);
+    const valor=elemento.value.trim();
 
-    const valor =
-      elemento.value.trim();
+    if(!valor) continue;
 
-    if(!valor){
-      continue;
-    }
+    if(!validarCaracteristica(valor)){
 
-    if(
-      !validarCaracteristica(
-        valor
-      )
-    ){
-
-      elemento.classList.add(
-        'input-error'
-      );
+      elemento.classList.add('input-error');
 
       mostrarMensaje(
-        'El campo ' +
-        campo.nombre +
+        'El campo '+campo.nombre+
         ' solo puede contener palabras y no puede incluir números.'
       );
 
       elemento.focus();
 
       return false;
-
     }
-
   }
 
   return true;
-
 }
 
 function limpiarErroresCampos(){
 
-  document
-    .querySelectorAll(
-      '.input-error'
-    )
-    .forEach(
-      function(campo){
-
-        campo.classList.remove(
-          'input-error'
-        );
-
-      }
-    );
-
+  document.querySelectorAll('.input-error').forEach(campo=>{
+    campo.classList.remove('input-error');
+  });
 }
 
+/* COLOR / OLOR / TEXTURA */
 
-/* =========================
-   CAMPOS COLOR / OLOR / TEXTURA
-========================= */
+['color','olor','textura'].forEach(id=>{
 
-[
-  'color',
-  'olor',
-  'textura'
-].forEach(
-  function(id){
+  $(id).addEventListener('input',function(){
 
-    const campo =
-      document.getElementById(
-        id
-      );
+    this.value=this.value.replace(/[0-9]/g,'');
+    this.classList.remove('input-error');
 
-    campo.addEventListener(
-      'input',
-      function(){
+  });
 
-        this.value =
-          this.value.replace(
-            /[0-9]/g,
-            ''
-          );
+});
 
-        this.classList.remove(
-          'input-error'
-        );
-
-      }
-    );
-
-  }
-);
-
-
-/* =========================
-   GUARDAR
-========================= */
+/* GUARDAR */
 
 async function guardarControl(){
 
-  const id =
-    document.getElementById(
-      'controlId'
-    ).value;
-
-  const producto_id =
-    document.getElementById(
-      'producto'
-    ).value;
-
-  const color =
-    document.getElementById(
-      'color'
-    ).value.trim();
-
-  const olor =
-    document.getElementById(
-      'olor'
-    ).value.trim();
-
-  const textura =
-    document.getElementById(
-      'textura'
-    ).value.trim();
-
-  const resultado =
-    document.getElementById(
-      'resultado'
-    ).value;
-
-  const observaciones =
-    document.getElementById(
-      'observaciones'
-    ).value.trim();
+  const id=$('controlId').value;
+  const producto_id=$('producto').value;
+  const color=$('color').value.trim();
+  const olor=$('olor').value.trim();
+  const textura=$('textura').value.trim();
+  const resultado=$('resultado').value;
+  const observaciones=$('observaciones').value.trim();
 
   ocultarMensaje();
 
   if(!producto_id){
-
-    mostrarMensaje(
-      'Debes seleccionar un producto.'
-    );
-
+    mostrarMensaje('Debes seleccionar un producto.');
     return;
-
   }
 
-  if(!validarCamposCalidad()){
+  if(!validarCamposCalidad()) return;
 
-    return;
-
-  }
-
-  const registro = {
-
-    producto_id:
-      producto_id,
-
-    color:
-      color || null,
-
-    olor:
-      olor || null,
-
-    textura:
-      textura || null,
-
-    resultado:
-      resultado,
-
-    observaciones:
-      observaciones || null
-
+  const registro={
+    producto_id,
+    color:color||null,
+    olor:olor||null,
+    textura:textura||null,
+    resultado,
+    observaciones:observaciones||null
   };
 
   let response;
 
   if(id){
 
-    response =
-      await supabaseClient
-        .from(
-          'controles_calidad'
-        )
-        .update(
-          registro
-        )
-        .eq(
-          'id',
-          id
-        );
+    response=await supabaseClient
+      .from('controles_calidad')
+      .update(registro)
+      .eq('id',id);
 
   }else{
 
-    response =
-      await supabaseClient
-        .from(
-          'controles_calidad'
-        )
-        .insert(
-          registro
-        );
+    response=await supabaseClient
+      .from('controles_calidad')
+      .insert(registro);
 
   }
 
   if(response.error){
 
-    console.error(
-      response.error
-    );
+    console.error(response.error);
 
     mostrarMensaje(
       'No se pudo guardar el control de calidad.'
     );
 
     return;
-
   }
 
   cerrarModal();
-
   await cargarControles();
-
 }
 
+/* EDITAR */
 
-/* =========================
-   EDITAR
-========================= */
+window.editarControl=function(id){
 
-window.editarControl =
-  function(id){
+  const control=controles.find(c=>c.id===id);
 
-    const control =
-      controles.find(
-        function(c){
-          return c.id === id;
-        }
-      );
+  if(!control) return;
 
-    if(!control){
-      return;
-    }
+  $('controlId').value=control.id;
+  $('producto').value=control.producto_id;
+  $('color').value=control.color||'';
+  $('olor').value=control.olor||'';
+  $('textura').value=control.textura||'';
+  $('resultado').value=control.resultado||'Pendiente';
+  $('observaciones').value=control.observaciones||'';
 
-    document.getElementById(
-      'controlId'
-    ).value =
-      control.id;
+  $('modalTitulo').textContent='Editar control de calidad';
 
-    document.getElementById(
-      'producto'
-    ).value =
-      control.producto_id;
+  limpiarErroresCampos();
+  ocultarMensaje();
+  abrirModal();
+};
 
-    document.getElementById(
-      'color'
-    ).value =
-      control.color || '';
+/* ELIMINAR */
 
-    document.getElementById(
-      'olor'
-    ).value =
-      control.olor || '';
+window.eliminarControl=async function(id){
 
-    document.getElementById(
-      'textura'
-    ).value =
-      control.textura || '';
+  if(!confirm('¿Deseas eliminar este control de calidad?')) return;
 
-    document.getElementById(
-      'resultado'
-    ).value =
-      control.resultado ||
-      'Pendiente';
+  const {error}=await supabaseClient
+    .from('controles_calidad')
+    .delete()
+    .eq('id',id);
 
-    document.getElementById(
-      'observaciones'
-    ).value =
-      control.observaciones ||
-      '';
+  if(error){
 
-    document.getElementById(
-      'modalTitulo'
-    ).textContent =
-      'Editar control de calidad';
+    console.error(error);
+    alert('No se pudo eliminar el control.');
+    return;
+  }
 
-    limpiarErroresCampos();
+  await cargarControles();
+};
 
-    ocultarMensaje();
-
-    abrirModal();
-
-  };
-
-
-/* =========================
-   ELIMINAR
-========================= */
-
-window.eliminarControl =
-  async function(id){
-
-    const confirmar =
-      confirm(
-        '¿Deseas eliminar este control de calidad?'
-      );
-
-    if(!confirmar){
-      return;
-    }
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from(
-          'controles_calidad'
-        )
-        .delete()
-        .eq(
-          'id',
-          id
-        );
-
-    if(error){
-
-      console.error(
-        error
-      );
-
-      alert(
-        'No se pudo eliminar el control.'
-      );
-
-      return;
-
-    }
-
-    await cargarControles();
-
-  };
-
-
-/* =========================
-   MENSAJES
-========================= */
+/* MENSAJES */
 
 function mostrarMensaje(texto){
 
-  const mensaje =
-    document.getElementById(
-      'mensaje'
-    );
+  const mensaje=$('mensaje');
 
-  mensaje.textContent =
-    texto;
-
-  mensaje.className =
-    'message error';
-
+  mensaje.textContent=texto;
+  mensaje.className='message error';
 }
 
 function ocultarMensaje(){
 
-  const mensaje =
-    document.getElementById(
-      'mensaje'
-    );
+  const mensaje=$('mensaje');
 
-  mensaje.textContent =
-    '';
-
-  mensaje.className =
-    'message';
-
+  mensaje.textContent='';
+  mensaje.className='message';
 }
 
-
-/* =========================
-   ESCAPE
-========================= */
+/* ESCAPE */
 
 function escapar(texto){
 
   return String(texto)
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
-    );
-
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
 }
 
+/* NOTIFICACIONES */
 
-/* =========================
-   NOTIFICACIONES
-========================= */
+const btnCampana=$('notificationBtn');
+const panelNotificaciones=$('notificationPanel');
+const cerrarNotificaciones=$('closeNotifications');
 
-const btnCampana =
-  document.getElementById(
-    'notificationBtn'
-  );
+if(btnCampana&&panelNotificaciones){
 
-const panelNotificaciones =
-  document.getElementById(
-    'notificationPanel'
-  );
+  btnCampana.addEventListener('click',e=>{
 
-const cerrarNotificaciones =
-  document.getElementById(
-    'closeNotifications'
-  );
+    e.stopPropagation();
 
-if(
-  btnCampana &&
-  panelNotificaciones
-){
+    panelNotificaciones.classList.toggle('show');
 
-  btnCampana.addEventListener(
-    'click',
-    function(e){
-
-      e.stopPropagation();
-
-      panelNotificaciones
-        .classList
-        .toggle(
-          'show'
-        );
-
-      if(
-        panelNotificaciones
-          .classList
-          .contains('show')
-      ){
-
-        cargarLasNotificaciones();
-
-      }
-
+    if(panelNotificaciones.classList.contains('show')){
+      cargarLasNotificaciones();
     }
-  );
+  });
 
-  cerrarNotificaciones.addEventListener(
-    'click',
-    function(){
+  cerrarNotificaciones.addEventListener('click',()=>{
+    panelNotificaciones.classList.remove('show');
+  });
 
-      panelNotificaciones
-        .classList
-        .remove(
-          'show'
-        );
+  document.addEventListener('click',e=>{
 
+    if(
+      !panelNotificaciones.contains(e.target)&&
+      !btnCampana.contains(e.target)
+    ){
+      panelNotificaciones.classList.remove('show');
     }
-  );
 
-  document.addEventListener(
-    'click',
-    function(e){
-
-      if(
-        !panelNotificaciones.contains(
-          e.target
-        ) &&
-        !btnCampana.contains(
-          e.target
-        )
-      ){
-
-        panelNotificaciones
-          .classList
-          .remove(
-            'show'
-          );
-
-      }
-
-    }
-  );
-
+  });
 }
-
 
 function escapeHtmlNotif(texto){
 
-  const div =
-    document.createElement(
-      'div'
-    );
+  const div=document.createElement('div');
 
-  div.textContent =
-    texto ?? '';
+  div.textContent=texto??'';
 
   return div.innerHTML;
-
 }
-
 
 async function cargarLasNotificaciones(){
 
-  const contenido =
-    document.getElementById(
-      'notificationContent'
-    );
+  const contenido=$('notificationContent');
+  const punto=$('notificationDot');
 
-  const punto =
-    document.getElementById(
-      'notificationDot'
-    );
+  if(!contenido||!punto) return;
 
-  if(
-    !contenido ||
-    !punto
-  ){
-
-    return;
-
-  }
-
-  contenido.innerHTML =
+  contenido.innerHTML=
     '<div class="notification-empty">Buscando alertas...</div>';
 
-  let hayNotificaciones =
-    false;
+  let hayNotificaciones=false;
+  let htmlNotifs='';
 
-  let htmlNotifs =
-    '';
-
-  const {
-    data:recepcionesNotif
-  } =
-    await supabaseClient
-      .from(
-        'recepciones'
-      )
-      .select(
-        'id,peso,estado_producto,fecha_recepcion'
-      )
-      .order(
-        'fecha_recepcion',
-        {
-          ascending:false
-        }
-      )
-      .limit(20);
+  const {data:recepcionesNotif}=await supabaseClient
+    .from('recepciones')
+    .select('id,peso,estado_producto,fecha_recepcion')
+    .order('fecha_recepcion',{ascending:false})
+    .limit(20);
 
   if(recepcionesNotif){
 
-    recepcionesNotif.forEach(
-      function(r){
+    recepcionesNotif.forEach(r=>{
 
-        const estado =
-          r.estado_producto ||
-          'Recibido';
+      const estado=r.estado_producto||'Recibido';
 
-        if(
-          estado
-            .toLowerCase() !==
-          'recibido'
-        ){
+      if(estado.toLowerCase()!=='recibido'){
 
-          hayNotificaciones =
-            true;
+        hayNotificaciones=true;
 
-          htmlNotifs +=
-            `
-            <div class="notification-item">
+        htmlNotifs+=`
+          <div class="notification-item">
 
-              <div class="ni-icon">
+            <div class="ni-icon">
+              <svg width="16" height="16"
+                   viewBox="0 0 24 24"
+                   fill="none">
 
-                <svg width="16" height="16"
-                     viewBox="0 0 24 24"
-                     fill="none">
+                <path d="M12 3v12"
+                      stroke="currentColor"
+                      stroke-width="1.8"/>
 
-                  <path
-                    d="M12 3v12"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  />
+                <circle cx="12" cy="19" r="1"
+                        fill="currentColor"/>
 
-                  <circle
-                    cx="12"
-                    cy="19"
-                    r="1"
-                    fill="currentColor"
-                  />
+              </svg>
+            </div>
 
-                </svg>
+            <div>
 
-              </div>
+              <strong>
+                Recepción:
+                ${escapeHtmlNotif(estado)}
+              </strong>
 
-              <div>
-
-                <strong>
-                  Recepción:
-                  ${escapeHtmlNotif(estado)}
-                </strong>
-
-                <span>
-                  Carga de
-                  ${Number(
-                    r.peso || 0
-                  ).toLocaleString(
-                    'es-CO'
-                  )}
-                  kg.
-                </span>
-
-              </div>
+              <span>
+                Carga de
+                ${Number(r.peso||0).toLocaleString('es-CO')}
+                kg.
+              </span>
 
             </div>
-            `;
 
-        }
-
+          </div>
+        `;
       }
-    );
-
+    });
   }
 
-
-  const {
-    data:productosNotif
-  } =
-    await supabaseClient
-      .from(
-        'productos'
-      )
-      .select(
-        'id,nombre,estado'
-      )
-      .order(
-        'created_at',
-        {
-          ascending:false
-        }
-      )
-      .limit(20);
+  const {data:productosNotif}=await supabaseClient
+    .from('productos')
+    .select('id,nombre,estado')
+    .order('created_at',{ascending:false})
+    .limit(20);
 
   if(productosNotif){
 
-    productosNotif.forEach(
-      function(p){
+    productosNotif.forEach(p=>{
 
-        if(
-          p.estado &&
-          p.estado
-            .toLowerCase() ===
-          'inactivo'
-        ){
+      if(p.estado&&p.estado.toLowerCase()==='inactivo'){
 
-          hayNotificaciones =
-            true;
+        hayNotificaciones=true;
 
-          htmlNotifs +=
-            `
-            <div class="notification-item">
+        htmlNotifs+=`
+          <div class="notification-item">
 
-              <div class="ni-icon">
+            <div class="ni-icon">
 
-                <svg width="16" height="16"
-                     viewBox="0 0 24 24"
-                     fill="none">
+              <svg width="16" height="16"
+                   viewBox="0 0 24 24"
+                   fill="none">
 
-                  <path
-                    d="M12 3v11"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  />
+                <path d="M12 3v11"
+                      stroke="currentColor"
+                      stroke-width="1.8"/>
 
-                  <circle
-                    cx="12"
-                    cy="18.5"
-                    r="1"
-                    fill="currentColor"
-                  />
+                <circle cx="12" cy="18.5" r="1"
+                        fill="currentColor"/>
 
-                </svg>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Producto inactivo
-                </strong>
-
-                <span>
-                  ${escapeHtmlNotif(
-                    p.nombre
-                  )}
-                </span>
-
-              </div>
+              </svg>
 
             </div>
-            `;
 
-        }
+            <div>
 
+              <strong>Producto inactivo</strong>
+
+              <span>
+                ${escapeHtmlNotif(p.nombre)}
+              </span>
+
+            </div>
+
+          </div>
+        `;
       }
-    );
-
+    });
   }
-
 
   if(!hayNotificaciones){
 
-    punto.style.display =
-      'none';
+    punto.style.display='none';
 
-    contenido.innerHTML =
-      `
+    contenido.innerHTML=`
       <div class="notification-empty">
         No hay notificaciones pendientes.
       </div>
-      `;
+    `;
 
   }else{
 
-    punto.style.display =
-      'block';
-
-    contenido.innerHTML =
-      htmlNotifs;
+    punto.style.display='block';
+    contenido.innerHTML=htmlNotifs;
 
   }
-
 }
 
+/* MENU MÓVIL */
 
-/* =========================
-   MENU MOVIL
-========================= */
-
-const mobileMenuBtn =
-  document.getElementById(
-    'mobileMenuBtn'
-  );
-
-const mobileOverlay =
-  document.getElementById(
-    'mobileOverlay'
-  );
-
-const sidebar =
-  document.querySelector(
-    '.sidebar'
-  );
-
+const mobileMenuBtn=$('mobileMenuBtn');
+const mobileOverlay=$('mobileOverlay');
+const sidebar=document.querySelector('.sidebar');
 
 function abrirMenuMovil(){
 
-  sidebar.classList.add(
-    'mobile-open'
-  );
+  if(!sidebar) return;
 
-  mobileOverlay.classList.add(
-    'show'
-  );
+  sidebar.classList.add('mobile-open');
+  mobileOverlay.classList.add('show');
 
+  mobileMenuBtn.setAttribute('aria-label','Cerrar menú');
+  mobileMenuBtn.setAttribute('title','Cerrar menú');
+
+  mobileMenuBtn.innerHTML=`
+    <svg width="22" height="22" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 6l12 12"></path>
+      <path d="M18 6L6 18"></path>
+    </svg>
+  `;
+
+  document.body.style.overflow='hidden';
 }
-
 
 function cerrarMenuMovil(){
 
-  sidebar.classList.remove(
-    'mobile-open'
-  );
+  if(!sidebar) return;
 
-  mobileOverlay.classList.remove(
-    'show'
-  );
+  sidebar.classList.remove('mobile-open');
+  mobileOverlay.classList.remove('show');
 
+  mobileMenuBtn.setAttribute('aria-label','Abrir menú');
+  mobileMenuBtn.setAttribute('title','Abrir menú');
+
+  mobileMenuBtn.innerHTML=`
+    <svg width="22" height="22" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 6h16"></path>
+      <path d="M4 12h16"></path>
+      <path d="M4 18h16"></path>
+    </svg>
+  `;
+
+  document.body.style.overflow='';
 }
-
 
 if(mobileMenuBtn){
 
-  mobileMenuBtn.addEventListener(
-    'click',
-    abrirMenuMovil
-  );
+  mobileMenuBtn.addEventListener('click',()=>{
 
+    sidebar.classList.contains('mobile-open')
+      ? cerrarMenuMovil()
+      : abrirMenuMovil();
+
+  });
 }
-
 
 if(mobileOverlay){
-
-  mobileOverlay.addEventListener(
-    'click',
-    cerrarMenuMovil
-  );
-
+  mobileOverlay.addEventListener('click',cerrarMenuMovil);
 }
 
+if(sidebar){
 
-document
-  .querySelectorAll(
-    '.sb-link'
-  )
-  .forEach(
-    function(enlace){
+  sidebar.querySelectorAll('a').forEach(enlace=>{
 
-      enlace.addEventListener(
-        'click',
-        function(){
+    enlace.addEventListener('click',()=>{
 
-          if(
-            window.innerWidth <=
-            800
-          ){
+      if(window.innerWidth<=800){
+        cerrarMenuMovil();
+      }
 
-            cerrarMenuMovil();
+    });
 
-          }
+  });
+}
 
-        }
-      );
+document.addEventListener('keydown',e=>{
 
-    }
-  );
-
-
-window.addEventListener(
-  'resize',
-  function(){
-
-    if(
-      window.innerWidth > 800
-    ){
-
-      cerrarMenuMovil();
-
-    }
-
+  if(e.key==='Escape'){
+    cerrarMenuMovil();
   }
-);
 
+});
+
+window.addEventListener('resize',()=>{
+
+  if(window.innerWidth>800){
+    cerrarMenuMovil();
+  }
+
+});
 </script>
 
 </body>
