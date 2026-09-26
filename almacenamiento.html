@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -179,26 +178,6 @@ font-size:13px;
 .sb-user .info span{
 font-size:11px;
 color:rgba(255,255,255,.5);
-}
-
-.sb-logout{
-display:flex;
-align-items:center;
-gap:8px;
-width:100%;
-margin-top:8px;
-border:none;
-background:rgba(229,57,53,.15);
-color:#FFC7C5;
-padding:9px 12px;
-border-radius:10px;
-font-size:13px;
-font-weight:600;
-cursor:pointer;
-}
-
-.sb-logout:hover{
-background:rgba(229,57,53,.28);
 }
 
 /* =====================================================
@@ -1377,21 +1356,6 @@ En línea
 
 </div>
 
-<button class="sb-logout" id="logoutBtn">
-
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-stroke="currentColor"
-stroke-width="1.8"/>
-<path d="M16 17l5-5-5-5M21 12H9"
-stroke="currentColor"
-stroke-width="1.8"/>
-</svg>
-
-Cerrar sesión
-
-</button>
-
 </div>
 
 </aside>
@@ -1405,13 +1369,12 @@ Cerrar sesión
 
 <div class="topbar">
 
-<!-- BOTÓN MÓVIL -->
-
 <button
 class="mobile-menu-btn"
 id="mobileMenuBtn"
 type="button"
 aria-label="Abrir menú"
+title="Abrir menú"
 >
 
 <svg
@@ -1452,6 +1415,7 @@ Gestión y control de almacenamiento —
 class="icon-btn"
 id="notificationBtn"
 title="Notificaciones"
+type="button"
 >
 
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -1506,7 +1470,10 @@ id="notificationPanel"
 Notificaciones
 </strong>
 
-<button id="closeNotifications">
+<button
+id="closeNotifications"
+type="button"
+>
 ×
 </button>
 
@@ -1546,6 +1513,7 @@ de los productos marinos.
 <button
 class="btn-primary"
 id="newStorageBtn"
+type="button"
 >
 
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
@@ -1567,7 +1535,6 @@ Nuevo almacenamiento
 ===================================================== -->
 
 <div class="kpi-grid">
-
 
 <div class="kpi-card c1">
 
@@ -1707,33 +1674,13 @@ placeholder="Buscar producto o ubicación..."
 
 <tr>
 
-<th>
-Producto
-</th>
-
-<th>
-Tipo
-</th>
-
-<th>
-Ubicación
-</th>
-
-<th>
-Temperatura
-</th>
-
-<th>
-Estado
-</th>
-
-<th>
-Fecha de almacenamiento
-</th>
-
-<th>
-Acciones
-</th>
+<th>Producto</th>
+<th>Tipo</th>
+<th>Ubicación</th>
+<th>Temperatura</th>
+<th>Estado</th>
+<th>Fecha de almacenamiento</th>
+<th>Acciones</th>
 
 </tr>
 
@@ -1762,13 +1709,14 @@ No hay registros de almacenamiento.
 </div>
 
 
-<!-- OVERLAY MÓVIL -->
+<!-- =====================================================
+     OVERLAY MÓVIL
+===================================================== -->
 
 <div
 class="mobile-overlay"
 id="mobileOverlay"
->
-</div>
+></div>
 
 
 <!-- =====================================================
@@ -1791,6 +1739,7 @@ Nuevo almacenamiento
 <button
 class="close-btn"
 id="closeModal"
+type="button"
 >
 ×
 </button>
@@ -1983,7 +1932,9 @@ Guardar almacenamiento
 </div>
 
 
-<!-- TOAST -->
+<!-- =====================================================
+     TOAST
+===================================================== -->
 
 <div
 class="toast"
@@ -1996,7 +1947,6 @@ id="toast"
 ===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script>
 
@@ -2037,10 +1987,7 @@ document.getElementById('emptyMessage');
    TOAST
 ===================================================== */
 
-function showToast(
-message,
-type=''
-){
+function showToast(message,type=''){
 
 const toast =
 document.getElementById('toast');
@@ -2051,15 +1998,12 @@ message;
 toast.className =
 'toast show ' + type;
 
-setTimeout(
-function(){
+setTimeout(function(){
 
 toast.className =
 'toast';
 
-},
-3000
-);
+},3000);
 
 }
 
@@ -2170,9 +2114,7 @@ return data.session;
 async function loadProducts(){
 
 const select =
-document.getElementById(
-'producto'
-);
+document.getElementById('producto');
 
 select.innerHTML =
 '<option value="">Cargando productos...</option>';
@@ -2190,30 +2132,19 @@ ascending:true
 );
 
 
-console.log(
-'PRODUCTOS DEVUELTOS:',
-data
-);
-
-console.log(
-'ERROR PRODUCTOS:',
-error
-);
-
-
 if(error){
 
 console.error(
-'ERROR COMPLETO:',
+'ERROR AL CARGAR PRODUCTOS:',
 error
 );
 
 select.innerHTML =
 '<option value="">Error al cargar productos</option>';
 
-alert(
-'ERROR AL CARGAR PRODUCTOS:\n\n' +
-error.message
+showToast(
+'No se pudieron cargar los productos',
+'error'
 );
 
 return;
@@ -2229,9 +2160,7 @@ data.length === 0
 select.innerHTML =
 '<option value="">No hay productos registrados</option>';
 
-alert(
-'Supabase respondió correctamente, pero no encontró productos.'
-);
+productsData = [];
 
 return;
 
@@ -2246,13 +2175,10 @@ select.innerHTML =
 '<option value="">Seleccionar producto</option>';
 
 
-data.forEach(
-function(product){
+data.forEach(function(product){
 
 const option =
-document.createElement(
-'option'
-);
+document.createElement('option');
 
 option.value =
 product.id;
@@ -2260,18 +2186,9 @@ product.id;
 option.textContent =
 product.nombre;
 
-select.appendChild(
-option
-);
+select.appendChild(option);
 
-}
-);
-
-
-console.log(
-'Productos cargados correctamente:',
-data.length
-);
+});
 
 }
 
@@ -2324,7 +2241,6 @@ return;
 storageData =
 data || [];
 
-
 updateCounters();
 
 renderStorage();
@@ -2341,20 +2257,16 @@ function updateCounters(){
 const total =
 storageData.length;
 
-
 const refrigerated =
 storageData.filter(
 item =>
-item.tipo ===
-'Refrigerado'
+item.tipo === 'Refrigerado'
 ).length;
-
 
 const frozen =
 storageData.filter(
 item =>
-item.tipo ===
-'Congelado'
+item.tipo === 'Congelado'
 ).length;
 
 
@@ -2391,17 +2303,13 @@ return '-';
 const date =
 new Date(value);
 
-
 if(
-isNaN(
-date.getTime()
-)
+isNaN(date.getTime())
 ){
 
 return '-';
 
 }
-
 
 return date.toLocaleDateString(
 'es-CO',
@@ -2422,26 +2330,11 @@ year:'numeric'
 function escapeHtml(value){
 
 return String(value)
-.replaceAll(
-'&',
-'&amp;'
-)
-.replaceAll(
-'<',
-'&lt;'
-)
-.replaceAll(
-'>',
-'&gt;'
-)
-.replaceAll(
-'"',
-'&quot;'
-)
-.replaceAll(
-"'",
-'&#039;'
-);
+.replaceAll('&','&amp;')
+.replaceAll('<','&lt;')
+.replaceAll('>','&gt;')
+.replaceAll('"','&quot;')
+.replaceAll("'","&#039;");
 
 }
 
@@ -2459,8 +2352,7 @@ searchInput.value
 
 
 const filtered =
-storageData.filter(
-function(item){
+storageData.filter(function(item){
 
 const product =
 item.productos &&
@@ -2470,16 +2362,13 @@ item.productos.nombre
 :
 '';
 
-
 const location =
 item.ubicacion ||
 '';
 
-
 const type =
 item.tipo ||
 '';
-
 
 const state =
 item.estado_producto ||
@@ -2512,12 +2401,10 @@ state
 
 );
 
-}
-);
+});
 
 
-storageTable.innerHTML =
-'';
+storageTable.innerHTML = '';
 
 
 if(
@@ -2536,13 +2423,10 @@ emptyMessage.style.display =
 'none';
 
 
-filtered.forEach(
-function(item){
+filtered.forEach(function(item){
 
 const row =
-document.createElement(
-'tr'
-);
+document.createElement('tr');
 
 
 const productName =
@@ -2555,8 +2439,7 @@ item.productos.nombre
 
 
 const typeClass =
-item.tipo ===
-'Refrigerado'
+item.tipo === 'Refrigerado'
 ?
 'refrigerado'
 :
@@ -2609,6 +2492,7 @@ ${formatDate(item.fecha_almacenamiento)}
 <button
 class="action-btn edit-btn"
 onclick="editStorage('${item.id}')"
+type="button"
 >
 Editar
 </button>
@@ -2616,6 +2500,7 @@ Editar
 <button
 class="action-btn delete-btn"
 onclick="deleteStorage('${item.id}')"
+type="button"
 >
 Eliminar
 </button>
@@ -2625,12 +2510,9 @@ Eliminar
 `;
 
 
-storageTable.appendChild(
-row
-);
+storageTable.appendChild(row);
 
-}
-);
+});
 
 }
 
@@ -2646,8 +2528,7 @@ storageForm.reset();
 
 document.getElementById(
 'storageId'
-).value =
-'';
+).value = '';
 
 
 document.getElementById(
@@ -2665,7 +2546,6 @@ document.getElementById(
 const now =
 new Date();
 
-
 now.setMinutes(
 now.getMinutes() -
 now.getTimezoneOffset()
@@ -2675,26 +2555,21 @@ now.getTimezoneOffset()
 document.getElementById(
 'fecha'
 ).value =
-now.toISOString()
-.slice(
-0,
-16
-);
+now.toISOString().slice(0,16);
 
 
-document.getElementById(
-'producto'
-).innerHTML =
+const productSelect =
+document.getElementById('producto');
+
+
+productSelect.innerHTML =
 '<option value="">Seleccionar producto</option>';
 
 
-productsData.forEach(
-function(product){
+productsData.forEach(function(product){
 
 const option =
-document.createElement(
-'option'
-);
+document.createElement('option');
 
 option.value =
 product.id;
@@ -2702,20 +2577,12 @@ product.id;
 option.textContent =
 product.nombre;
 
+productSelect.appendChild(option);
 
-document.getElementById(
-'producto'
-).appendChild(
-option
-);
-
-}
-);
+});
 
 
-storageModal.classList.add(
-'show'
-);
+storageModal.classList.add('show');
 
 }
 
@@ -2726,9 +2593,7 @@ storageModal.classList.add(
 
 function closeModal(){
 
-storageModal.classList.remove(
-'show'
-);
+storageModal.classList.remove('show');
 
 }
 
@@ -2794,30 +2659,22 @@ document.getElementById(
 item.observaciones || '';
 
 
-if(
-item.fecha_almacenamiento
-){
+if(item.fecha_almacenamiento){
 
 const date =
 new Date(
 item.fecha_almacenamiento
 );
 
-
 date.setMinutes(
 date.getMinutes() -
 date.getTimezoneOffset()
 );
 
-
 document.getElementById(
 'fecha'
 ).value =
-date.toISOString()
-.slice(
-0,
-16
-);
+date.toISOString().slice(0,16);
 
 }
 
@@ -2834,9 +2691,7 @@ document.getElementById(
 'Actualizar almacenamiento';
 
 
-storageModal.classList.add(
-'show'
-);
+storageModal.classList.add('show');
 
 }
 
@@ -2923,9 +2778,7 @@ temperaturaValue === ''
 ?
 null
 :
-Number(
-temperaturaValue
-);
+Number(temperaturaValue);
 
 
 const payload = {
@@ -2946,26 +2799,20 @@ estado_producto:
 estado,
 
 fecha_almacenamiento:
-new Date(
-fecha
-).toISOString(),
+new Date(fecha).toISOString(),
 
 observaciones:
-observaciones ||
-null
+observaciones || null
 
 };
 
 
 const saveButton =
-document.getElementById(
-'saveBtn'
-);
+document.getElementById('saveBtn');
 
 
 saveButton.disabled =
 true;
-
 
 saveButton.textContent =
 'Guardando...';
@@ -2980,19 +2827,14 @@ result =
 await supabaseClient
 .from('almacenamientos')
 .update(payload)
-.eq(
-'id',
-storageId
-);
+.eq('id',storageId);
 
 }else{
 
 result =
 await supabaseClient
 .from('almacenamientos')
-.insert([
-payload
-]);
+.insert([payload]);
 
 }
 
@@ -3088,10 +2930,7 @@ const {error} =
 await supabaseClient
 .from('almacenamientos')
 .delete()
-.eq(
-'id',
-id
-);
+.eq('id',id);
 
 
 if(error){
@@ -3167,35 +3006,12 @@ storageModal.addEventListener(
 function(event){
 
 if(
-event.target ===
-storageModal
+event.target === storageModal
 ){
 
 closeModal();
 
 }
-
-}
-);
-
-
-/* =====================================================
-   CERRAR SESIÓN
-===================================================== */
-
-document.getElementById(
-'logoutBtn'
-).addEventListener(
-'click',
-async function(){
-
-await supabaseClient
-.auth
-.signOut();
-
-
-window.location.href =
-'login.html';
 
 }
 );
@@ -3210,12 +3026,10 @@ document.getElementById(
 'notificationBtn'
 );
 
-
 const panelNotificaciones =
 document.getElementById(
 'notificationPanel'
 );
-
 
 const cerrarNotificaciones =
 document.getElementById(
@@ -3233,7 +3047,6 @@ btnCampana.addEventListener(
 function(e){
 
 e.stopPropagation();
-
 
 panelNotificaciones
 .classList
@@ -3271,10 +3084,8 @@ document.addEventListener(
 function(e){
 
 if(
-!panelNotificaciones
-.contains(e.target) &&
-!btnCampana
-.contains(e.target)
+!panelNotificaciones.contains(e.target) &&
+!btnCampana.contains(e.target)
 ){
 
 panelNotificaciones
@@ -3300,7 +3111,6 @@ document.getElementById(
 'notificationContent'
 );
 
-
 const punto =
 document.getElementById(
 'notificationDot'
@@ -3323,7 +3133,6 @@ contenido.innerHTML =
 
 let hayNotificaciones =
 false;
-
 
 let htmlNotifs =
 '';
@@ -3407,9 +3216,7 @@ ${escapeHtml(estado)}
 Carga de
 ${Number(
 r.peso || 0
-).toLocaleString(
-'es-CO'
-)}
+).toLocaleString('es-CO')}
 kg.
 </span>
 
@@ -3451,9 +3258,7 @@ p => {
 
 if(
 p.estado &&
-p.estado
-.toLowerCase()
-===
+p.estado.toLowerCase() ===
 'inactivo'
 ){
 
@@ -3549,12 +3354,10 @@ document.getElementById(
 'mobileMenuBtn'
 );
 
-
 const mobileOverlay =
 document.getElementById(
 'mobileOverlay'
 );
-
 
 const mobileSidebar =
 document.querySelector(
@@ -3562,7 +3365,9 @@ document.querySelector(
 );
 
 
-/* ABRIR MENÚ */
+/* =====================================================
+   ABRIR MENÚ
+===================================================== */
 
 function openMobileMenu(){
 
@@ -3583,6 +3388,11 @@ mobileOverlay.classList.add(
 
 mobileMenuBtn.setAttribute(
 'aria-label',
+'Cerrar menú'
+);
+
+mobileMenuBtn.setAttribute(
+'title',
 'Cerrar menú'
 );
 
@@ -3613,7 +3423,9 @@ document.body.style.overflow =
 }
 
 
-/* CERRAR MENÚ */
+/* =====================================================
+   CERRAR MENÚ
+===================================================== */
 
 function closeMobileMenu(){
 
@@ -3634,6 +3446,11 @@ mobileOverlay.classList.remove(
 
 mobileMenuBtn.setAttribute(
 'aria-label',
+'Abrir menú'
+);
+
+mobileMenuBtn.setAttribute(
+'title',
 'Abrir menú'
 );
 
@@ -3666,7 +3483,9 @@ document.body.style.overflow =
 }
 
 
-/* BOTÓN */
+/* =====================================================
+   BOTÓN MENÚ
+===================================================== */
 
 if(mobileMenuBtn){
 
@@ -3694,7 +3513,9 @@ openMobileMenu();
 }
 
 
-/* OVERLAY */
+/* =====================================================
+   OVERLAY
+===================================================== */
 
 if(mobileOverlay){
 
@@ -3706,7 +3527,9 @@ closeMobileMenu
 }
 
 
-/* ENLACES DEL SIDEBAR */
+/* =====================================================
+   ENLACES DEL SIDEBAR
+===================================================== */
 
 if(mobileSidebar){
 
@@ -3736,15 +3559,16 @@ closeMobileMenu();
 }
 
 
-/* ESC */
+/* =====================================================
+   ESC
+===================================================== */
 
 document.addEventListener(
 'keydown',
 function(event){
 
 if(
-event.key ===
-'Escape'
+event.key === 'Escape'
 ){
 
 closeMobileMenu();
@@ -3755,7 +3579,9 @@ closeMobileMenu();
 );
 
 
-/* CAMBIO DE TAMAÑO */
+/* =====================================================
+   CAMBIO DE TAMAÑO
+===================================================== */
 
 window.addEventListener(
 'resize',
@@ -3803,4 +3629,3 @@ init();
 </body>
 
 </html>
-```

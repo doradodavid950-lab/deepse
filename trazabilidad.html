@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- COMENTARIO: Título de la pestaña limpio -->
 <title>Deep Sea Intelligence — Trazabilidad</title>
 
 <style>
-  /* COMENTARIO: Variables de color para mantener el diseño uniforme */
   :root{
     --azul-oscuro:#062B5B;
     --azul-oscuro-2:#083868;
@@ -39,14 +37,13 @@
     color:var(--texto-principal);
   }
 
-  /* COMENTARIO: Layout principal usando Grid */
   .app{
     display:grid;
     grid-template-columns:250px 1fr;
     min-height:100vh;
   }
 
-  /* ---------------- SIDEBAR (MENÚ LATERAL) ---------------- */
+  /* ---------------- SIDEBAR ---------------- */
   .sidebar{
     background:var(--azul-oscuro);
     color:#EAF1FC;
@@ -56,134 +53,810 @@
     position:sticky;
     top:0;
     height:100vh;
+    z-index:1001;
   }
 
-  .sb-brand{ display:flex; align-items:center; gap:10px; padding:6px 10px 22px; border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:14px; }
-  .sb-brand .badge{ width:38px; height:38px; border-radius:11px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; }
-  .sb-brand .name{ font-weight:700; font-size:16px; line-height:1.1; }
-  .sb-brand .name span{ color:var(--amarillo); }
-  .sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); }
+  .sb-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 10px 22px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    margin-bottom:14px;
+  }
 
-  nav.sb-nav{ flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:2px; }
-  .sb-link{ display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; color:rgba(255,255,255,.72); text-decoration:none; font-size:14px; font-weight:500; cursor:pointer; border:none; background:none; width:100%; text-align:left; }
-  .sb-link svg{ flex:0 0 auto; opacity:.85; }
-  .sb-link:hover{ background:rgba(255,255,255,.06); color:#fff; }
-  .sb-link.active{ background:var(--azul-medio); color:#fff; box-shadow:0 6px 16px rgba(30,102,245,.35); }
+  .sb-brand .badge{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    background:rgba(255,255,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 
-  .sb-footer{ border-top:1px solid rgba(255,255,255,.08); padding-top:14px; margin-top:10px; }
-  .sb-user{ display:flex; align-items:center; gap:10px; padding:8px 8px; }
-  .sb-user .avatar{ width:34px; height:34px; border-radius:50%; background:var(--verde-suave); color:var(--azul-oscuro); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
-  .sb-user .info strong{ display:block; font-size:13px; }
-  .sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
-  .sb-logout{ display:flex; align-items:center; gap:8px; width:100%; margin-top:8px; border:none; background:rgba(229,57,53,.15); color:#FFC7C5; padding:9px 12px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; }
-  .sb-logout:hover{ background:rgba(229,57,53,.28); }
+  .sb-brand .name{
+    font-weight:700;
+    font-size:16px;
+    line-height:1.1;
+  }
 
-  /* ---------------- MAIN (CONTENIDO PRINCIPAL) ---------------- */
-  main{ padding:26px 32px 50px; }
+  .sb-brand .name span{
+    color:var(--amarillo);
+  }
 
-  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; }
-  .topbar h1{ font-size:23px; margin:0; }
-  .topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
-  .top-actions{ display:flex; align-items:center; gap:16px; }
+  .sb-brand .sub{
+    font-size:10.5px;
+    color:rgba(255,255,255,.55);
+  }
 
-  .icon-btn{ width:40px; height:40px; border-radius:12px; background:var(--blanco); border:1px solid var(--gris-borde); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; color:var(--azul-oscuro); }
-  .icon-btn:hover{ border-color:var(--azul-medio); }
-  .dot-alert{ position:absolute; top:8px; right:9px; width:7px; height:7px; border-radius:50%; background:var(--rojo); border:1.5px solid var(--blanco); }
+  nav.sb-nav{
+    flex:1;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
 
-  .top-user{ display:flex; align-items:center; gap:10px; background:var(--blanco); border:1px solid var(--gris-borde); padding:6px 14px 6px 6px; border-radius:30px; }
-  .top-user .avatar{ width:30px; height:30px; border-radius:50%; background:var(--azul-claro); color:var(--azul-oscuro); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; }
-  .top-user span{ font-size:13.5px; font-weight:600; }
+  .sb-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:10px;
+    color:rgba(255,255,255,.72);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    border:none;
+    background:none;
+    width:100%;
+    text-align:left;
+  }
 
-  /* ---------------- BUSCADOR DE TRAZABILIDAD ---------------- */
-  .search-panel{ background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); padding:20px; margin-bottom:18px; }
-  .search-panel h3{ margin:0 0 5px; font-size:15.5px; }
-  .search-panel p{ margin:0 0 16px; font-size:12px; color:var(--texto-secundario); }
-  .search-row{ display:flex; gap:10px; }
-  .search-box{ flex:1; position:relative; }
-  .search-box svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--texto-secundario); }
-  .search-box input{ width:100%; padding:11px 12px 11px 38px; border:1px solid var(--gris-borde); border-radius:10px; font-family:inherit; font-size:13px; outline:none; }
-  .search-box input:focus{ border-color:var(--azul-medio); }
+  .sb-link svg{
+    flex:0 0 auto;
+    opacity:.85;
+  }
 
-  .btn{ border:none; border-radius:10px; padding:10px 16px; font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer; }
-  .btn-primary{ background:var(--azul-medio); color:#fff; }
-  .btn-primary:hover{ background:#1558d6; }
+  .sb-link:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff;
+  }
+
+  .sb-link.active{
+    background:var(--azul-medio);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(30,102,245,.35);
+  }
+
+  .sb-footer{
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-top:14px;
+    margin-top:10px;
+  }
+
+  .sb-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 8px;
+  }
+
+  .sb-user .avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--verde-suave);
+    color:var(--azul-oscuro);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:13px;
+  }
+
+  .sb-user .info strong{
+    display:block;
+    font-size:13px;
+  }
+
+  .sb-user .info span{
+    font-size:11px;
+    color:rgba(255,255,255,.5);
+  }
+
+  /* ---------------- MAIN ---------------- */
+  main{
+    padding:26px 32px 50px;
+    min-width:0;
+  }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:26px;
+  }
+
+  .topbar h1{
+    font-size:23px;
+    margin:0;
+  }
+
+  .topbar .subtitle{
+    font-size:13px;
+    color:var(--texto-secundario);
+    margin-top:3px;
+  }
+
+  .top-actions{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+
+  .icon-btn{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    background:var(--blanco);
+    border:1px solid var(--gris-borde);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    position:relative;
+    color:var(--azul-oscuro);
+  }
+
+  .icon-btn:hover{
+    border-color:var(--azul-medio);
+  }
+
+  .dot-alert{
+    position:absolute;
+    top:8px;
+    right:9px;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--rojo);
+    border:1.5px solid var(--blanco);
+  }
+
+  .top-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--blanco);
+    border:1px solid var(--gris-borde);
+    padding:6px 14px 6px 6px;
+    border-radius:30px;
+  }
+
+  .top-user .avatar{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--azul-claro);
+    color:var(--azul-oscuro);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:12px;
+  }
+
+  .top-user span{
+    font-size:13.5px;
+    font-weight:600;
+  }
+
+  /* ---------------- BUSCADOR ---------------- */
+  .search-panel{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:20px;
+    margin-bottom:18px;
+  }
+
+  .search-panel h3{
+    margin:0 0 5px;
+    font-size:15.5px;
+  }
+
+  .search-panel p{
+    margin:0 0 16px;
+    font-size:12px;
+    color:var(--texto-secundario);
+  }
+
+  .search-row{
+    display:flex;
+    gap:10px;
+  }
+
+  .search-box{
+    flex:1;
+    position:relative;
+  }
+
+  .search-box svg{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--texto-secundario);
+  }
+
+  .search-box input{
+    width:100%;
+    padding:11px 12px 11px 38px;
+    border:1px solid var(--gris-borde);
+    border-radius:10px;
+    font-family:inherit;
+    font-size:13px;
+    outline:none;
+  }
+
+  .search-box input:focus{
+    border-color:var(--azul-medio);
+  }
+
+  .btn{
+    border:none;
+    border-radius:10px;
+    padding:10px 16px;
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+  }
+
+  .btn-primary{
+    background:var(--azul-medio);
+    color:#fff;
+  }
+
+  .btn-primary:hover{
+    background:#1558d6;
+  }
 
   /* ---------------- PRODUCTO ---------------- */
-  .product-header{ background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); padding:20px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
-  .product-info{ display:flex; align-items:center; gap:14px; }
-  .product-icon{ width:48px; height:48px; border-radius:13px; background:var(--azul-claro); color:var(--azul-medio); display:flex; align-items:center; justify-content:center; }
-  .product-info h2{ margin:0; font-size:17px; }
-  .product-info p{ margin:4px 0 0; color:var(--texto-secundario); font-size:12px; }
-  .product-status{ padding:6px 12px; border-radius:30px; background:var(--verde-suave); color:#146142; font-size:11px; font-weight:700; }
+  .product-header{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:20px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+  }
 
-  /* ---------------- LÍNEA DE TIEMPO (TIMELINE) ---------------- */
-  .panel{ background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); padding:20px; }
-  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-  .panel-head h3{ margin:0; font-size:15.5px; }
+  .product-info{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
 
-  .timeline{ position:relative; padding:5px 0 5px 30px; }
-  .timeline::before{ content:""; position:absolute; left:14px; top:20px; bottom:20px; width:2px; background:var(--gris-borde); }
-  .timeline-item{ position:relative; display:flex; gap:15px; margin-bottom:25px; }
-  .timeline-item:last-child{ margin-bottom:0; }
-  
-  .timeline-circle{ position:absolute; left:-30px; top:0; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; z-index:2; }
-  .timeline-circle.done{ background:var(--verde-suave); color:var(--verde-txt); }
-  .timeline-circle.current{ background:var(--azul-medio); color:#fff; }
-  .timeline-circle.pending{ background:var(--gris-claro); color:var(--texto-secundario); border:1px solid var(--gris-borde); }
-  
-  .timeline-content{ flex:1; border:1px solid var(--gris-borde); border-radius:12px; padding:13px 15px; }
-  .timeline-top{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
-  .timeline-content h4{ margin:0; font-size:13.5px; }
-  .timeline-content p{ margin:5px 0 0; color:var(--texto-secundario); font-size:11.5px; line-height:1.5; }
-  .timeline-date{ font-size:10.5px; color:var(--texto-secundario); white-space:nowrap; }
+  .product-icon{
+    width:48px;
+    height:48px;
+    border-radius:13px;
+    background:var(--azul-claro);
+    color:var(--azul-medio);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 
-  /* ---------------- TABLA DE RECEPCIONES ---------------- */
-  .table-panel{ margin-top:18px; }
-  table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
-  table.simple th{ text-align:left; color:var(--texto-secundario); font-weight:600; font-size:11.5px; padding:8px 6px; border-bottom:1px solid var(--gris-borde); }
-  table.simple td{ padding:11px 6px; border-bottom:1px solid #F0F3F7; vertical-align:middle; }
-  table.simple tr:last-child td{ border-bottom:none; }
-  
-  .pill{ display:inline-block; padding:3px 10px; border-radius:30px; font-size:11px; font-weight:700; }
-  .pill.ok{ background:var(--verde-suave); color:#146142; }
-  .pill.pend{ background:var(--amarillo); color:#7A5A00; }
-  .pill.info{ background:var(--azul-claro); color:#1454B8; }
-  .empty{ text-align:center; color:var(--texto-secundario); padding:25px; font-size:13px; }
+  .product-info h2{
+    margin:0;
+    font-size:17px;
+  }
 
-  /* COMENTARIO: ESTILOS INTEGRADOS DE LAS NOTIFICACIONES */
-  .notification-panel { position: fixed; top: 78px; right: 32px; width: 330px; background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 14px; box-shadow: 0 15px 35px rgba(6,43,91,.16); z-index: 1000; display: none; overflow: hidden; }
-  .notification-panel.show { display: block; }
-  .notification-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 17px; border-bottom: 1px solid var(--gris-borde); }
-  .notification-header strong { font-size: 14px; color: var(--texto-principal); }
-  .notification-header button { border: none; background: none; font-size: 22px; color: var(--texto-secundario); cursor: pointer; padding: 0 5px; }
-  .notification-header button:hover { color: var(--rojo); }
-  .notification-item { display: flex; gap: 10px; padding: 13px 16px; border-bottom: 1px solid #F0F3F7; }
-  .notification-item:last-child { border-bottom: none; }
-  .notification-item .ni-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--azul-claro); color: var(--azul-medio); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
-  .notification-item strong { display: block; font-size: 12.5px; margin-bottom: 2px; color: var(--texto-principal); }
-  .notification-item span { display: block; font-size: 11px; color: var(--texto-secundario); line-height: 1.4; }
-  .notification-empty { padding: 22px 16px; text-align: center; font-size: 12px; color: var(--texto-secundario); }
+  .product-info p{
+    margin:4px 0 0;
+    color:var(--texto-secundario);
+    font-size:12px;
+  }
+
+  .product-status{
+    padding:6px 12px;
+    border-radius:30px;
+    background:var(--verde-suave);
+    color:#146142;
+    font-size:11px;
+    font-weight:700;
+  }
+
+  /* ---------------- TIMELINE ---------------- */
+  .panel{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:20px;
+  }
+
+  .panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+  }
+
+  .panel-head h3{
+    margin:0;
+    font-size:15.5px;
+  }
+
+  .timeline{
+    position:relative;
+    padding:5px 0 5px 30px;
+  }
+
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:14px;
+    top:20px;
+    bottom:20px;
+    width:2px;
+    background:var(--gris-borde);
+  }
+
+  .timeline-item{
+    position:relative;
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+  }
+
+  .timeline-item:last-child{
+    margin-bottom:0;
+  }
+
+  .timeline-circle{
+    position:absolute;
+    left:-30px;
+    top:0;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:2;
+  }
+
+  .timeline-circle.done{
+    background:var(--verde-suave);
+    color:var(--verde-txt);
+  }
+
+  .timeline-circle.current{
+    background:var(--azul-medio);
+    color:#fff;
+  }
+
+  .timeline-circle.pending{
+    background:var(--gris-claro);
+    color:var(--texto-secundario);
+    border:1px solid var(--gris-borde);
+  }
+
+  .timeline-content{
+    flex:1;
+    border:1px solid var(--gris-borde);
+    border-radius:12px;
+    padding:13px 15px;
+    min-width:0;
+  }
+
+  .timeline-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+
+  .timeline-content h4{
+    margin:0;
+    font-size:13.5px;
+  }
+
+  .timeline-content p{
+    margin:5px 0 0;
+    color:var(--texto-secundario);
+    font-size:11.5px;
+    line-height:1.5;
+  }
+
+  .timeline-date{
+    font-size:10.5px;
+    color:var(--texto-secundario);
+    white-space:nowrap;
+  }
+
+  /* ---------------- TABLA ---------------- */
+  .table-panel{
+    margin-top:18px;
+  }
+
+  table.simple{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+
+  table.simple th{
+    text-align:left;
+    color:var(--texto-secundario);
+    font-weight:600;
+    font-size:11.5px;
+    padding:8px 6px;
+    border-bottom:1px solid var(--gris-borde);
+  }
+
+  table.simple td{
+    padding:11px 6px;
+    border-bottom:1px solid #F0F3F7;
+    vertical-align:middle;
+  }
+
+  table.simple tr:last-child td{
+    border-bottom:none;
+  }
+
+  .pill{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+  }
+
+  .pill.ok{
+    background:var(--verde-suave);
+    color:#146142;
+  }
+
+  .pill.pend{
+    background:var(--amarillo);
+    color:#7A5A00;
+  }
+
+  .pill.info{
+    background:var(--azul-claro);
+    color:#1454B8;
+  }
+
+  .empty{
+    text-align:center;
+    color:var(--texto-secundario);
+    padding:25px;
+    font-size:13px;
+  }
+
+  /* ---------------- NOTIFICACIONES ---------------- */
+  .notification-panel{
+    position:fixed;
+    top:78px;
+    right:32px;
+    width:330px;
+    background:var(--blanco);
+    border:1px solid var(--gris-borde);
+    border-radius:14px;
+    box-shadow:0 15px 35px rgba(6,43,91,.16);
+    z-index:1000;
+    display:none;
+    overflow:hidden;
+  }
+
+  .notification-panel.show{
+    display:block;
+  }
+
+  .notification-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px 17px;
+    border-bottom:1px solid var(--gris-borde);
+  }
+
+  .notification-header strong{
+    font-size:14px;
+    color:var(--texto-principal);
+  }
+
+  .notification-header button{
+    border:none;
+    background:none;
+    font-size:22px;
+    color:var(--texto-secundario);
+    cursor:pointer;
+    padding:0 5px;
+  }
+
+  .notification-header button:hover{
+    color:var(--rojo);
+  }
+
+  .notification-item{
+    display:flex;
+    gap:10px;
+    padding:13px 16px;
+    border-bottom:1px solid #F0F3F7;
+  }
+
+  .notification-item:last-child{
+    border-bottom:none;
+  }
+
+  .notification-item .ni-icon{
+    width:32px;
+    height:32px;
+    border-radius:9px;
+    background:var(--azul-claro);
+    color:var(--azul-medio);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 auto;
+  }
+
+  .notification-item strong{
+    display:block;
+    font-size:12.5px;
+    margin-bottom:2px;
+    color:var(--texto-principal);
+  }
+
+  .notification-item span{
+    display:block;
+    font-size:11px;
+    color:var(--texto-secundario);
+    line-height:1.4;
+  }
+
+  .notification-empty{
+    padding:22px 16px;
+    text-align:center;
+    font-size:12px;
+    color:var(--texto-secundario);
+  }
+
+  /* ---------------- BOTÓN MENÚ MÓVIL ---------------- */
+  .mobile-menu-btn{
+    display:none;
+    position:fixed;
+    top:14px;
+    left:14px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:12px;
+    background:var(--azul-oscuro);
+    color:#fff;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:1100;
+    box-shadow:0 6px 18px rgba(6,43,91,.22);
+  }
+
+  .mobile-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(6,43,91,.42);
+    z-index:1000;
+  }
 
   /* ---------------- RESPONSIVE ---------------- */
-  @media (max-width:1100px){ .product-header{ align-items:flex-start; } }
+  @media (max-width:1100px){
+    .product-header{
+      align-items:flex-start;
+    }
+  }
+
   @media (max-width:800px){
-    .app{ grid-template-columns:1fr; }
-    .sidebar{ display:none; }
-    main{ padding:18px; }
-    .top-user{ display:none; }
-    .search-row{ flex-direction:column; }
-    .product-header{ flex-direction:column; }
-    .notification-panel { right: 18px; left: 18px; width: auto; top: 70px; } 
+
+    .app{
+      grid-template-columns:1fr;
+    }
+
+    .sidebar{
+      display:flex;
+      position:fixed;
+      left:-270px;
+      top:0;
+      bottom:0;
+      width:250px;
+      height:100vh;
+      transition:left .25s ease;
+      box-shadow:10px 0 30px rgba(0,0,0,.15);
+    }
+
+    .sidebar.mobile-open{
+      left:0;
+    }
+
+    .mobile-menu-btn{
+      display:flex;
+    }
+
+    .mobile-overlay.show{
+      display:block;
+    }
+
+    main{
+      padding:72px 18px 35px;
+      width:100%;
+      overflow:hidden;
+    }
+
+    .topbar{
+      margin-bottom:20px;
+      gap:12px;
+    }
+
+    .topbar h1{
+      font-size:21px;
+    }
+
+    .topbar .subtitle{
+      font-size:12px;
+      line-height:1.5;
+      padding-right:5px;
+    }
+
+    .top-actions{
+      gap:8px;
+      flex:0 0 auto;
+    }
+
+    .top-user{
+      display:none;
+    }
+
+    .search-row{
+      flex-direction:column;
+    }
+
+    .search-box input{
+      font-size:13px;
+    }
+
+    .btn{
+      width:100%;
+    }
+
+    .product-header{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+
+    .product-info{
+      width:100%;
+    }
+
+    .product-status{
+      align-self:flex-start;
+    }
+
+    .timeline{
+      padding-left:30px;
+    }
+
+    .timeline-top{
+      align-items:flex-start;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .timeline-date{
+      white-space:normal;
+    }
+
+    .timeline-content{
+      padding:12px;
+    }
+
+    .notification-panel{
+      right:18px;
+      left:18px;
+      width:auto;
+      top:65px;
+    }
+
+    .panel,
+    .search-panel,
+    .product-header{
+      padding:16px;
+    }
+  }
+
+  @media (max-width:480px){
+
+    main{
+      padding:68px 12px 25px;
+    }
+
+    .topbar{
+      align-items:flex-start;
+    }
+
+    .topbar h1{
+      font-size:19px;
+    }
+
+    .topbar .subtitle{
+      max-width:280px;
+    }
+
+    .icon-btn{
+      width:38px;
+      height:38px;
+    }
+
+    .search-panel h3{
+      font-size:15px;
+    }
+
+    .product-info{
+      align-items:flex-start;
+    }
+
+    .product-icon{
+      width:44px;
+      height:44px;
+      flex:0 0 auto;
+    }
+
+    .product-info h2{
+      font-size:16px;
+    }
+
+    .timeline-item{
+      margin-bottom:20px;
+    }
+
+    .timeline-content p{
+      font-size:11px;
+    }
+
+    table.simple{
+      min-width:650px;
+    }
   }
 </style>
 </head>
 
 <body>
 
+<!-- BOTÓN PARA ABRIR EL MENÚ EN CELULAR -->
+<button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M4 6h16"></path>
+    <path d="M4 12h16"></path>
+    <path d="M4 18h16"></path>
+  </svg>
+</button>
+
+<!-- FONDO DEL MENÚ MÓVIL -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
 <div class="app">
 
-  <!-- COMENTARIO: MENÚ LATERAL (SIDEBAR) -->
-  <aside class="sidebar">
+  <!-- MENÚ LATERAL -->
+  <aside class="sidebar" id="sidebar">
 
     <div class="sb-brand">
       <div class="badge">
@@ -199,32 +872,37 @@
     </div>
 
     <nav class="sb-nav" id="sbNav">
+
       <a class="sb-link" data-view="inicio" href="inicio.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
         Inicio
       </a>
+
       <a class="sb-link" data-view="productos" href="productos.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
         Productos
       </a>
+
       <a class="sb-link" data-view="proveedores" href="proveedores.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
         Proveedores
       </a>
+
       <a class="sb-link" data-view="recepciones" href="recepciones.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
         Recepciones
       </a>
+
       <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
         Almacenamiento
       </a>
+
       <a class="sb-link" data-view="ventas" href="ventas.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
         Ventas
       </a>
 
-      <!-- COMENTARIO: Enlace activo de Trazabilidad -->
       <a class="sb-link active" data-view="trazabilidad" href="trazabilidad.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
         Trazabilidad
@@ -234,18 +912,22 @@
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         Reportes
       </a>
+
       <a class="sb-link" data-view="normas" href="normas.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
         Normas y Calidad
       </a>
+
       <a class="sb-link" data-view="usuarios" href="usuarios.html">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
         Usuarios
       </a>
+
       <a class="sb-link" data-view="configuracion" href="configuracion.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5 2-1.5c-.1-.4-.1-.8-.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         Configuración
       </a>
+
     </nav>
 
     <div class="sb-footer">
@@ -256,15 +938,13 @@
           <span>En línea</span>
         </div>
       </div>
-      <button class="sb-logout" id="logoutBtn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8"/></svg>
-        Cerrar sesión
-      </button>
     </div>
+
   </aside>
 
-  <!-- COMENTARIO: CONTENIDO PRINCIPAL Y BARRA SUPERIOR -->
+  <!-- CONTENIDO PRINCIPAL -->
   <main>
+
     <div class="topbar">
       <div>
         <h1>Trazabilidad</h1>
@@ -275,7 +955,7 @@
       </div>
 
       <div class="top-actions">
-        <!-- COMENTARIO: BOTÓN DE LA CAMPANITA CORREGIDO -->
+
         <button class="icon-btn" id="notificationBtn" title="Notificaciones">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/>
@@ -288,134 +968,209 @@
           <div class="avatar" id="topAvatar">C</div>
           <span id="topUserName">Cargando...</span>
         </div>
-      </div> 
-    </div> 
 
-    <!-- COMENTARIO: PANEL DESPLEGABLE DE NOTIFICACIONES (OCULTO POR DEFECTO) -->
+      </div>
+    </div>
+
+    <!-- NOTIFICACIONES -->
     <div class="notification-panel" id="notificationPanel">
       <div class="notification-header">
         <strong>Notificaciones</strong>
         <button id="closeNotifications">×</button>
       </div>
+
       <div id="notificationContent">
         <div class="notification-empty">Cargando notificaciones...</div>
       </div>
     </div>
 
-    <!-- COMENTARIO: BUSCADOR PRINCIPAL -->
+    <!-- BUSCADOR -->
     <div class="search-panel">
+
       <h3>Consultar trazabilidad</h3>
-      <p>Busca un producto para consultar su recorrido dentro del sistema.</p>
-      
+
+      <p>
+        Busca un producto para consultar su recorrido dentro del sistema.
+      </p>
+
       <div class="search-row">
+
         <div class="search-box">
+
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/>
             <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
           </svg>
-          <input type="text" id="buscarProducto" placeholder="Buscar por nombre del producto...">
+
+          <input
+            type="text"
+            id="buscarProducto"
+            placeholder="Buscar por nombre del producto..."
+          >
+
         </div>
+
         <button class="btn btn-primary" id="btnBuscar">
           Consultar
         </button>
+
       </div>
+
     </div>
 
-    <!-- COMENTARIO: TARJETA DEL PRODUCTO SELECCIONADO -->
+    <!-- PRODUCTO -->
     <div class="product-header">
+
       <div class="product-info">
+
         <div class="product-icon">
           <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
             <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/>
             <circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/>
           </svg>
         </div>
+
         <div>
           <h2 id="productoNombre">Selecciona un producto</h2>
-          <p id="productoDetalle">La información de trazabilidad aparecerá aquí.</p>
+          <p id="productoDetalle">
+            La información de trazabilidad aparecerá aquí.
+          </p>
         </div>
+
       </div>
-      <span class="product-status" id="productoEstado">Sin seleccionar</span>
+
+      <span class="product-status" id="productoEstado">
+        Sin seleccionar
+      </span>
+
     </div>
 
-    <!-- COMENTARIO: LÍNEA DE TRAZABILIDAD (TIMELINE) -->
+    <!-- TIMELINE -->
     <div class="panel">
+
       <div class="panel-head">
         <h3>Historial de trazabilidad</h3>
       </div>
 
       <div class="timeline" id="timeline">
+
         <div class="timeline-item">
+
           <div class="timeline-circle pending">
+
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z" stroke="currentColor" stroke-width="1.8"/>
             </svg>
+
           </div>
+
           <div class="timeline-content">
+
             <div class="timeline-top">
               <h4>Captura</h4>
               <span class="timeline-date">Pendiente</span>
             </div>
-            <p>Información de captura y origen del producto.</p>
+
+            <p>
+              Información de captura y origen del producto.
+            </p>
+
           </div>
+
         </div>
 
         <div class="timeline-item">
+
           <div class="timeline-circle pending">
+
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
             </svg>
+
           </div>
+
           <div class="timeline-content">
+
             <div class="timeline-top">
               <h4>Recepción</h4>
               <span class="timeline-date">Pendiente</span>
             </div>
-            <p>Registro del ingreso, proveedor, peso y estado del producto.</p>
+
+            <p>
+              Registro del ingreso, proveedor, peso y estado del producto.
+            </p>
+
           </div>
+
         </div>
 
         <div class="timeline-item">
+
           <div class="timeline-circle pending">
+
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
             </svg>
+
           </div>
+
           <div class="timeline-content">
+
             <div class="timeline-top">
               <h4>Almacenamiento</h4>
               <span class="timeline-date">Pendiente</span>
             </div>
-            <p>Seguimiento de la ubicación y condiciones de almacenamiento.</p>
+
+            <p>
+              Seguimiento de la ubicación y condiciones de almacenamiento.
+            </p>
+
           </div>
+
         </div>
 
         <div class="timeline-item">
+
           <div class="timeline-circle pending">
+
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <circle cx="9" cy="20" r="1.2" fill="currentColor"/>
               <circle cx="17" cy="20" r="1.2" fill="currentColor"/>
               <path d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.8"/>
             </svg>
+
           </div>
+
           <div class="timeline-content">
+
             <div class="timeline-top">
               <h4>Venta</h4>
               <span class="timeline-date">Pendiente</span>
             </div>
-            <p>Registro de la venta y salida del producto.</p>
+
+            <p>
+              Registro de la venta y salida del producto.
+            </p>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
 
-    <!-- COMENTARIO: TABLA DE RECEPCIONES RELACIONADAS -->
+    <!-- TABLA -->
     <div class="panel table-panel">
+
       <div class="panel-head">
         <h3>Recepciones relacionadas</h3>
       </div>
+
       <div style="overflow-x:auto;">
+
         <table class="simple">
+
           <thead>
             <tr>
               <th>Producto</th>
@@ -425,301 +1180,1020 @@
               <th>Fecha de recepción</th>
             </tr>
           </thead>
+
           <tbody id="tablaRecepciones">
+
             <tr>
-              <td colspan="5" class="empty">Selecciona un producto para consultar su información.</td>
+              <td colspan="5" class="empty">
+                Selecciona un producto para consultar su información.
+              </td>
             </tr>
+
           </tbody>
+
         </table>
+
       </div>
+
     </div>
+
   </main>
+
 </div>
 
-<!-- COMENTARIO: CONEXIÓN SUPABASE -->
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-/* ---------------- 1. CONFIGURACIÓN SUPABASE ---------------- */
+
+/* ---------------- CONFIGURACIÓN SUPABASE ---------------- */
+
 const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+
 const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
 let productos = [];
 
-/* ---------------- 2. VALIDACIÓN DE SESIÓN DE USUARIO ---------------- */
+
+/* ---------------- VALIDACIÓN DE SESIÓN ---------------- */
+
 (async function(){
-  const { data:{session} } = await supabaseClient.auth.getSession();
+
+  const { data:{session} } =
+    await supabaseClient.auth.getSession();
 
   if(!session){
     window.location.href = 'login.html';
     return;
   }
 
-  const fullName = session.user.user_metadata && session.user.user_metadata.full_name ? session.user.user_metadata.full_name : session.user.email;
-  const initial = fullName.charAt(0).toUpperCase();
+  const fullName =
+    session.user.user_metadata &&
+    session.user.user_metadata.full_name
+      ? session.user.user_metadata.full_name
+      : session.user.email;
+
+  const initial =
+    fullName.charAt(0).toUpperCase();
 
   document.getElementById('sbUserName').textContent = fullName;
+
   document.getElementById('topUserName').textContent = fullName;
+
   document.getElementById('sbAvatar').textContent = initial;
+
   document.getElementById('topAvatar').textContent = initial;
 
-  document.getElementById('todayDate').textContent = new Date().toLocaleDateString('es-CO', { day:'2-digit', month:'long', year:'numeric' });
-
-  document.getElementById('logoutBtn').addEventListener('click', async function(){
-    await supabaseClient.auth.signOut();
-    window.location.href = 'login.html';
-  });
+  document.getElementById('todayDate').textContent =
+    new Date().toLocaleDateString(
+      'es-CO',
+      {
+        day:'2-digit',
+        month:'long',
+        year:'numeric'
+      }
+    );
 
   cargarProductos();
+
 })();
 
-/* ---------------- 3. CARGAR LISTA DE PRODUCTOS ---------------- */
-async function cargarProductos(){
-  const { data, error } = await supabaseClient
-    .from('productos')
-    .select('id, nombre, nombre_cientifico, categoria, proveedor, proveedor_id, fecha_captura, origen, estado')
-    .order('nombre');
 
-  if(error){ console.error(error); return; }
+/* ---------------- CARGAR PRODUCTOS ---------------- */
+
+async function cargarProductos(){
+
+  const { data, error } =
+    await supabaseClient
+      .from('productos')
+      .select(
+        'id, nombre, nombre_cientifico, categoria, proveedor, proveedor_id, fecha_captura, origen, estado'
+      )
+      .order('nombre');
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
   productos = data || [];
+
 }
 
-/* ---------------- 4. LÓGICA DE BÚSQUEDA ---------------- */
-document.getElementById('btnBuscar').addEventListener('click', buscarProducto);
-document.getElementById('buscarProducto').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ buscarProducto(); }});
+
+/* ---------------- BÚSQUEDA ---------------- */
+
+document
+  .getElementById('btnBuscar')
+  .addEventListener('click', buscarProducto);
+
+document
+  .getElementById('buscarProducto')
+  .addEventListener('keydown', function(e){
+
+    if(e.key === 'Enter'){
+      buscarProducto();
+    }
+
+  });
+
 
 async function buscarProducto(){
-  const texto = document.getElementById('buscarProducto').value.toLowerCase().trim();
 
-  if(!texto){ alert('Escribe el nombre de un producto.'); return; }
+  const texto =
+    document
+      .getElementById('buscarProducto')
+      .value
+      .toLowerCase()
+      .trim();
 
-  const encontrado = productos.find(function(producto){ return producto.nombre.toLowerCase().includes(texto); });
+  if(!texto){
+
+    alert('Escribe el nombre de un producto.');
+
+    return;
+
+  }
+
+  const encontrado =
+    productos.find(function(producto){
+
+      return producto.nombre
+        .toLowerCase()
+        .includes(texto);
+
+    });
+
 
   if(!encontrado){
-    document.getElementById('productoNombre').textContent = 'Producto no encontrado';
-    document.getElementById('productoDetalle').textContent = 'No existe un producto registrado con ese nombre.';
-    document.getElementById('productoEstado').textContent = 'Sin resultados';
+
+    document
+      .getElementById('productoNombre')
+      .textContent =
+      'Producto no encontrado';
+
+    document
+      .getElementById('productoDetalle')
+      .textContent =
+      'No existe un producto registrado con ese nombre.';
+
+    document
+      .getElementById('productoEstado')
+      .textContent =
+      'Sin resultados';
+
     limpiarTimeline();
-    document.getElementById('tablaRecepciones').innerHTML = `<tr><td colspan="5" class="empty">No se encontraron registros.</td></tr>`;
+
+    document
+      .getElementById('tablaRecepciones')
+      .innerHTML =
+      `<tr>
+        <td colspan="5" class="empty">
+          No se encontraron registros.
+        </td>
+      </tr>`;
+
     return;
+
   }
 
   mostrarProducto(encontrado);
+
 }
 
-/* ---------------- 5. MOSTRAR INFO DEL PRODUCTO ---------------- */
+
+/* ---------------- MOSTRAR PRODUCTO ---------------- */
+
 async function mostrarProducto(producto){
-  document.getElementById('productoNombre').textContent = producto.nombre;
 
-  let detalle = 'Categoría: ' + (producto.categoria || 'Sin categoría');
-  if(producto.origen){ detalle += ' · Origen: ' + producto.origen; }
-  if(producto.nombre_cientifico){ detalle += ' · Nombre científico: ' + producto.nombre_cientifico; }
+  document
+    .getElementById('productoNombre')
+    .textContent =
+    producto.nombre;
 
-  document.getElementById('productoDetalle').textContent = detalle;
-  document.getElementById('productoEstado').textContent = producto.estado || 'Activo';
+  let detalle =
+    'Categoría: ' +
+    (producto.categoria || 'Sin categoría');
+
+  if(producto.origen){
+
+    detalle +=
+      ' · Origen: ' +
+      producto.origen;
+
+  }
+
+  if(producto.nombre_cientifico){
+
+    detalle +=
+      ' · Nombre científico: ' +
+      producto.nombre_cientifico;
+
+  }
+
+  document
+    .getElementById('productoDetalle')
+    .textContent =
+    detalle;
+
+  document
+    .getElementById('productoEstado')
+    .textContent =
+    producto.estado || 'Activo';
 
   await cargarTrazabilidad(producto);
+
 }
 
-/* ---------------- 6. CARGAR RECEPCIONES (TRAZABILIDAD) ---------------- */
+
+/* ---------------- CARGAR TRAZABILIDAD ---------------- */
+
 async function cargarTrazabilidad(producto){
-  const { data:recepciones, error } = await supabaseClient
-    .from('recepciones')
-    .select('id, producto_id, proveedor_id, peso, estado_producto, fecha_recepcion, observaciones, proveedores(nombre)')
-    .eq('producto_id', producto.id)
-    .order('fecha_recepcion', {ascending:false});
 
-  if(error){ console.error(error); limpiarTimeline(); return; }
+  const {
+    data:recepciones,
+    error
+  } =
+    await supabaseClient
+      .from('recepciones')
+      .select(
+        'id, producto_id, proveedor_id, peso, estado_producto, fecha_recepcion, observaciones, proveedores(nombre)'
+      )
+      .eq('producto_id', producto.id)
+      .order(
+        'fecha_recepcion',
+        {ascending:false}
+      );
 
-  const tieneRecepcion = recepciones && recepciones.length > 0;
-  construirTimeline(producto, recepciones, tieneRecepcion);
-  mostrarRecepciones(recepciones);
-}
+  if(error){
 
-/* ---------------- 7. DIBUJAR EL TIMELINE ---------------- */
-function construirTimeline(producto, recepciones, tieneRecepcion){
-  const fechaCaptura = producto.fecha_captura ? formatearFecha(producto.fecha_captura) : 'Sin registro';
-  const fechaRecepcion = tieneRecepcion ? formatearFecha(recepciones[0].fecha_recepcion) : 'Pendiente';
+    console.error(error);
 
-  const estadoRecepcion = tieneRecepcion ? 'done' : 'pending';
-  const estadoCaptura = producto.fecha_captura ? 'done' : 'pending';
+    limpiarTimeline();
 
-  const timeline = document.getElementById('timeline');
-  timeline.innerHTML = `
-    <div class="timeline-item">
-      <div class="timeline-circle ${estadoCaptura}">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z" stroke="currentColor" stroke-width="1.8"/></svg>
-      </div>
-      <div class="timeline-content">
-        <div class="timeline-top">
-          <h4>Captura</h4>
-          <span class="timeline-date">${fechaCaptura}</span>
-        </div>
-        <p>Producto registrado con origen: ${escapar(producto.origen || 'Sin información de origen')}.</p>
-      </div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-circle ${estadoRecepcion}">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>
-      </div>
-      <div class="timeline-content">
-        <div class="timeline-top">
-          <h4>Recepción</h4>
-          <span class="timeline-date">${fechaRecepcion}</span>
-        </div>
-        <p>${tieneRecepcion ? 'Se encontraron ' + recepciones.length + ' recepción(es) relacionada(s) con este producto.' : 'El producto todavía no tiene una recepción registrada.'}</p>
-      </div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-circle pending">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="timeline-content">
-        <div class="timeline-top">
-          <h4>Almacenamiento</h4><span class="timeline-date">Pendiente</span>
-        </div>
-        <p>El seguimiento del almacenamiento se completará cuando existan registros de almacenamiento.</p>
-      </div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-circle pending">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.2" fill="currentColor"/><circle cx="17" cy="20" r="1.2" fill="currentColor"/><path d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.8"/></svg>
-      </div>
-      <div class="timeline-content">
-        <div class="timeline-top">
-          <h4>Venta</h4><span class="timeline-date">Pendiente</span>
-        </div>
-        <p>El seguimiento de la venta se completará cuando existan registros de ventas.</p>
-      </div>
-    </div>
-  `;
-}
-
-/* ---------------- 8. TABLA INFERIOR ---------------- */
-function mostrarRecepciones(recepciones){
-  const tbody = document.getElementById('tablaRecepciones');
-
-  if(!recepciones || recepciones.length === 0){
-    tbody.innerHTML = `<tr><td colspan="5" class="empty">Este producto no tiene recepciones registradas.</td></tr>`;
     return;
+
+  }
+
+  const tieneRecepcion =
+    recepciones &&
+    recepciones.length > 0;
+
+  construirTimeline(
+    producto,
+    recepciones,
+    tieneRecepcion
+  );
+
+  mostrarRecepciones(recepciones);
+
+}
+
+
+/* ---------------- TIMELINE ---------------- */
+
+function construirTimeline(
+  producto,
+  recepciones,
+  tieneRecepcion
+){
+
+  const fechaCaptura =
+    producto.fecha_captura
+      ? formatearFecha(producto.fecha_captura)
+      : 'Sin registro';
+
+  const fechaRecepcion =
+    tieneRecepcion
+      ? formatearFecha(
+          recepciones[0].fecha_recepcion
+        )
+      : 'Pendiente';
+
+  const estadoRecepcion =
+    tieneRecepcion
+      ? 'done'
+      : 'pending';
+
+  const estadoCaptura =
+    producto.fecha_captura
+      ? 'done'
+      : 'pending';
+
+  const timeline =
+    document.getElementById('timeline');
+
+  timeline.innerHTML = `
+
+    <div class="timeline-item">
+
+      <div class="timeline-circle ${estadoCaptura}">
+
+        <svg width="15" height="15"
+          viewBox="0 0 24 24"
+          fill="none">
+
+          <path
+            d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z"
+            stroke="currentColor"
+            stroke-width="1.8"/>
+
+        </svg>
+
+      </div>
+
+      <div class="timeline-content">
+
+        <div class="timeline-top">
+
+          <h4>Captura</h4>
+
+          <span class="timeline-date">
+            ${fechaCaptura}
+          </span>
+
+        </div>
+
+        <p>
+          Producto registrado con origen:
+          ${escapar(
+            producto.origen ||
+            'Sin información de origen'
+          )}.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="timeline-item">
+
+      <div class="timeline-circle ${estadoRecepcion}">
+
+        <svg width="15" height="15"
+          viewBox="0 0 24 24"
+          fill="none">
+
+          <rect
+            x="4"
+            y="7"
+            width="16"
+            height="13"
+            rx="2"
+            stroke="currentColor"
+            stroke-width="1.8"/>
+
+        </svg>
+
+      </div>
+
+      <div class="timeline-content">
+
+        <div class="timeline-top">
+
+          <h4>Recepción</h4>
+
+          <span class="timeline-date">
+            ${fechaRecepcion}
+          </span>
+
+        </div>
+
+        <p>
+          ${
+            tieneRecepcion
+              ? 'Se encontraron ' +
+                recepciones.length +
+                ' recepción(es) relacionada(s) con este producto.'
+              : 'El producto todavía no tiene una recepción registrada.'
+          }
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="timeline-item">
+
+      <div class="timeline-circle pending">
+
+        <svg width="15" height="15"
+          viewBox="0 0 24 24"
+          fill="none">
+
+          <path
+            d="M3 9.5 12 4l9 5.5V20H3V9.5z"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linejoin="round"/>
+
+        </svg>
+
+      </div>
+
+      <div class="timeline-content">
+
+        <div class="timeline-top">
+
+          <h4>Almacenamiento</h4>
+
+          <span class="timeline-date">
+            Pendiente
+          </span>
+
+        </div>
+
+        <p>
+          El seguimiento del almacenamiento
+          se completará cuando existan
+          registros de almacenamiento.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="timeline-item">
+
+      <div class="timeline-circle pending">
+
+        <svg width="15" height="15"
+          viewBox="0 0 24 24"
+          fill="none">
+
+          <circle
+            cx="9"
+            cy="20"
+            r="1.2"
+            fill="currentColor"/>
+
+          <circle
+            cx="17"
+            cy="20"
+            r="1.2"
+            fill="currentColor"/>
+
+          <path
+            d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
+            stroke="currentColor"
+            stroke-width="1.8"/>
+
+        </svg>
+
+      </div>
+
+      <div class="timeline-content">
+
+        <div class="timeline-top">
+
+          <h4>Venta</h4>
+
+          <span class="timeline-date">
+            Pendiente
+          </span>
+
+        </div>
+
+        <p>
+          El seguimiento de la venta se completará
+          cuando existan registros de ventas.
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ---------------- TABLA ---------------- */
+
+function mostrarRecepciones(recepciones){
+
+  const tbody =
+    document.getElementById(
+      'tablaRecepciones'
+    );
+
+  if(!recepciones ||
+     recepciones.length === 0){
+
+    tbody.innerHTML =
+      `<tr>
+        <td colspan="5" class="empty">
+          Este producto no tiene recepciones registradas.
+        </td>
+      </tr>`;
+
+    return;
+
   }
 
   tbody.innerHTML = '';
+
   recepciones.forEach(function(recepcion){
-    const tr = document.createElement('tr');
-    const proveedor = recepcion.proveedores && recepcion.proveedores.nombre ? recepcion.proveedores.nombre : 'Sin proveedor';
-    const fecha = recepcion.fecha_recepcion ? formatearFecha(recepcion.fecha_recepcion) : '-';
+
+    const tr =
+      document.createElement('tr');
+
+    const proveedor =
+      recepcion.proveedores &&
+      recepcion.proveedores.nombre
+        ? recepcion.proveedores.nombre
+        : 'Sin proveedor';
+
+    const fecha =
+      recepcion.fecha_recepcion
+        ? formatearFecha(
+            recepcion.fecha_recepcion
+          )
+        : '-';
 
     tr.innerHTML = `
-      <td>${escapar(document.getElementById('productoNombre').textContent)}</td>
-      <td>${escapar(proveedor)}</td>
-      <td>${recepcion.peso || '-'}</td>
-      <td><span class="pill info">${escapar(recepcion.estado_producto || 'Recibido')}</span></td>
-      <td>${fecha}</td>
+
+      <td>
+        ${escapar(
+          document
+            .getElementById(
+              'productoNombre'
+            )
+            .textContent
+        )}
+      </td>
+
+      <td>
+        ${escapar(proveedor)}
+      </td>
+
+      <td>
+        ${recepcion.peso || '-'}
+      </td>
+
+      <td>
+        <span class="pill info">
+          ${escapar(
+            recepcion.estado_producto ||
+            'Recibido'
+          )}
+        </span>
+      </td>
+
+      <td>
+        ${fecha}
+      </td>
+
     `;
+
     tbody.appendChild(tr);
+
   });
+
 }
+
 
 function limpiarTimeline(){
-  document.getElementById('timeline').innerHTML = `<div class="empty">No hay información de trazabilidad para mostrar.</div>`;
+
+  document
+    .getElementById('timeline')
+    .innerHTML =
+    `<div class="empty">
+      No hay información de trazabilidad para mostrar.
+    </div>`;
+
 }
+
 
 function formatearFecha(fecha){
-  return new Date(fecha).toLocaleDateString('es-CO', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  return new Date(fecha)
+    .toLocaleDateString(
+      'es-CO',
+      {
+        day:'2-digit',
+        month:'2-digit',
+        year:'numeric'
+      }
+    );
+
 }
+
 
 function escapar(texto){
-  return String(texto).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+
+  return String(texto)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+
 }
 
-/* ---------------- 9. LÓGICA DE NOTIFICACIONES (INTEGRADA) ---------------- */
-const btnCampana = document.getElementById('notificationBtn');
-const panelNotificaciones = document.getElementById('notificationPanel');
-const cerrarNotificaciones = document.getElementById('closeNotifications');
 
-if (btnCampana && panelNotificaciones) {
-  // Abrir o cerrar el panel al darle clic a la campana
-  btnCampana.addEventListener('click', function(e) {
-    e.stopPropagation();
-    panelNotificaciones.classList.toggle('show');
-    if (panelNotificaciones.classList.contains('show')) {
-      cargarLasNotificaciones();
+/* ---------------- NOTIFICACIONES ---------------- */
+
+const btnCampana =
+  document.getElementById(
+    'notificationBtn'
+  );
+
+const panelNotificaciones =
+  document.getElementById(
+    'notificationPanel'
+  );
+
+const cerrarNotificaciones =
+  document.getElementById(
+    'closeNotifications'
+  );
+
+
+if(btnCampana &&
+   panelNotificaciones){
+
+  btnCampana.addEventListener(
+    'click',
+    function(e){
+
+      e.stopPropagation();
+
+      panelNotificaciones
+        .classList
+        .toggle('show');
+
+      if(
+        panelNotificaciones
+          .classList
+          .contains('show')
+      ){
+
+        cargarLasNotificaciones();
+
+      }
+
     }
-  });
-  // Cerrar con la X
-  cerrarNotificaciones.addEventListener('click', function() { panelNotificaciones.classList.remove('show'); });
-  // Cerrar al hacer clic afuera
-  document.addEventListener('click', function(e) {
-    if (!panelNotificaciones.contains(e.target) && !btnCampana.contains(e.target)) {
-      panelNotificaciones.classList.remove('show');
+  );
+
+
+  cerrarNotificaciones.addEventListener(
+    'click',
+    function(){
+
+      panelNotificaciones
+        .classList
+        .remove('show');
+
     }
-  });
+  );
+
+
+  document.addEventListener(
+    'click',
+    function(e){
+
+      if(
+        !panelNotificaciones.contains(e.target) &&
+        !btnCampana.contains(e.target)
+      ){
+
+        panelNotificaciones
+          .classList
+          .remove('show');
+
+      }
+
+    }
+  );
+
 }
 
-// Busca la info directo en Supabase
-async function cargarLasNotificaciones() {
-  const contenido = document.getElementById('notificationContent');
-  const punto = document.getElementById('notificationDot');
-  if (!contenido || !punto) return;
-  
-  contenido.innerHTML = '<div class="notification-empty">Buscando alertas...</div>';
+
+/* ---------------- NOTIFICACIONES SUPABASE ---------------- */
+
+async function cargarLasNotificaciones(){
+
+  const contenido =
+    document.getElementById(
+      'notificationContent'
+    );
+
+  const punto =
+    document.getElementById(
+      'notificationDot'
+    );
+
+  if(!contenido || !punto){
+    return;
+  }
+
+  contenido.innerHTML =
+    '<div class="notification-empty">Buscando alertas...</div>';
+
   let hayNotificaciones = false;
+
   let htmlNotifs = '';
 
-  const { data: recepcionesNotif } = await supabaseClient.from('recepciones').select('id,peso,estado_producto,fecha_recepcion').order('fecha_recepcion', {ascending: false}).limit(20);
-  if (recepcionesNotif) {
+
+  const {
+    data: recepcionesNotif
+  } =
+    await supabaseClient
+      .from('recepciones')
+      .select(
+        'id,peso,estado_producto,fecha_recepcion'
+      )
+      .order(
+        'fecha_recepcion',
+        {
+          ascending:false
+        }
+      )
+      .limit(20);
+
+
+  if(recepcionesNotif){
+
     recepcionesNotif.forEach(r => {
-      const estado = r.estado_producto || 'Recibido';
-      if (estado.toLowerCase() !== 'recibido') {
+
+      const estado =
+        r.estado_producto ||
+        'Recibido';
+
+      if(
+        estado.toLowerCase() !==
+        'recibido'
+      ){
+
         hayNotificaciones = true;
+
         htmlNotifs += `
+
           <div class="notification-item">
+
             <div class="ni-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+
+              <svg width="16" height="16"
+                viewBox="0 0 24 24"
+                fill="none">
+
+                <path
+                  d="M12 3v12"
+                  stroke="currentColor"
+                  stroke-width="1.8"/>
+
+                <circle
+                  cx="12"
+                  cy="19"
+                  r="1"
+                  fill="currentColor"/>
+
+              </svg>
+
             </div>
+
             <div>
-              <strong>Recepción: ${escapar(estado)}</strong>
-              <span>Carga de ${Number(r.peso || 0).toLocaleString('es-CO')} kg.</span>
+
+              <strong>
+                Recepción:
+                ${escapar(estado)}
+              </strong>
+
+              <span>
+                Carga de
+                ${Number(
+                  r.peso || 0
+                ).toLocaleString('es-CO')}
+                kg.
+              </span>
+
             </div>
+
           </div>
+
         `;
+
       }
+
     });
+
   }
 
-  const { data: productosNotif } = await supabaseClient.from('productos').select('id,nombre,estado').order('created_at', {ascending: false}).limit(20);
-  if (productosNotif) {
+
+  const {
+    data: productosNotif
+  } =
+    await supabaseClient
+      .from('productos')
+      .select(
+        'id,nombre,estado'
+      )
+      .order(
+        'created_at',
+        {
+          ascending:false
+        }
+      )
+      .limit(20);
+
+
+  if(productosNotif){
+
     productosNotif.forEach(p => {
-      if (p.estado && p.estado.toLowerCase() === 'inactivo') {
+
+      if(
+        p.estado &&
+        p.estado.toLowerCase() ===
+        'inactivo'
+      ){
+
         hayNotificaciones = true;
+
         htmlNotifs += `
+
           <div class="notification-item">
+
             <div class="ni-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v11" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="18.5" r="1" fill="currentColor"/></svg>
+
+              <svg width="16" height="16"
+                viewBox="0 0 24 24"
+                fill="none">
+
+                <path
+                  d="M12 3v11"
+                  stroke="currentColor"
+                  stroke-width="1.8"/>
+
+                <circle
+                  cx="12"
+                  cy="18.5"
+                  r="1"
+                  fill="currentColor"/>
+
+              </svg>
+
             </div>
+
             <div>
-              <strong>Producto inactivo</strong>
-              <span>${escapar(p.nombre)}</span>
+
+              <strong>
+                Producto inactivo
+              </strong>
+
+              <span>
+                ${escapar(p.nombre)}
+              </span>
+
             </div>
+
           </div>
+
         `;
+
       }
+
     });
+
   }
 
-  if (!hayNotificaciones) {
-    punto.style.display = 'none';
-    contenido.innerHTML = '<div class="notification-empty">No hay notificaciones pendientes.</div>';
-  } else {
-    punto.style.display = 'block';
-    contenido.innerHTML = htmlNotifs;
+
+  if(!hayNotificaciones){
+
+    punto.style.display =
+      'none';
+
+    contenido.innerHTML =
+      '<div class="notification-empty">No hay notificaciones pendientes.</div>';
+
+  }else{
+
+    punto.style.display =
+      'block';
+
+    contenido.innerHTML =
+      htmlNotifs;
+
   }
+
 }
+
+
+/* ---------------- MENÚ MÓVIL ---------------- */
+
+const mobileMenuBtn =
+  document.getElementById(
+    'mobileMenuBtn'
+  );
+
+const mobileOverlay =
+  document.getElementById(
+    'mobileOverlay'
+  );
+
+const sidebar =
+  document.getElementById(
+    'sidebar'
+  );
+
+
+function abrirMenuMovil(){
+
+  sidebar.classList.add(
+    'mobile-open'
+  );
+
+  mobileOverlay.classList.add(
+    'show'
+  );
+
+}
+
+
+function cerrarMenuMovil(){
+
+  sidebar.classList.remove(
+    'mobile-open'
+  );
+
+  mobileOverlay.classList.remove(
+    'show'
+  );
+
+}
+
+
+mobileMenuBtn.addEventListener(
+  'click',
+  function(){
+
+    if(
+      sidebar.classList.contains(
+        'mobile-open'
+      )
+    ){
+
+      cerrarMenuMovil();
+
+    }else{
+
+      abrirMenuMovil();
+
+    }
+
+  }
+);
+
+
+mobileOverlay.addEventListener(
+  'click',
+  cerrarMenuMovil
+);
+
+
+document
+  .querySelectorAll('.sb-link')
+  .forEach(function(link){
+
+    link.addEventListener(
+      'click',
+      function(){
+
+        if(
+          window.innerWidth <= 800
+        ){
+
+          cerrarMenuMovil();
+
+        }
+
+      }
+    );
+
+  });
+
+
+window.addEventListener(
+  'resize',
+  function(){
+
+    if(window.innerWidth > 800){
+
+      cerrarMenuMovil();
+
+    }
+
+  }
+);
+
 </script>
 
 </body>

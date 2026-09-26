@@ -16,10 +16,6 @@
 
 <style>
 
-/* =========================================================
-   VARIABLES
-========================================================= */
-
 :root{
   --azul-oscuro:#062B5B;
   --azul-oscuro-2:#083868;
@@ -41,11 +37,6 @@
   --radio:16px;
 }
 
-
-/* =========================================================
-   BASE
-========================================================= */
-
 *{
   box-sizing:border-box;
 }
@@ -63,21 +54,11 @@ body{
   overflow-x:hidden;
 }
 
-
-/* =========================================================
-   APP
-========================================================= */
-
 .app{
   display:grid;
   grid-template-columns:250px 1fr;
   min-height:100vh;
 }
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
 
 .sidebar{
   background:var(--azul-oscuro);
@@ -166,11 +147,6 @@ nav.sb-nav{
   box-shadow:0 6px 16px rgba(30,102,245,.35);
 }
 
-
-/* =========================================================
-   SIDEBAR FOOTER
-========================================================= */
-
 .sb-footer{
   border-top:1px solid rgba(255,255,255,.08);
   padding-top:14px;
@@ -207,40 +183,10 @@ nav.sb-nav{
   color:rgba(255,255,255,.5);
 }
 
-.sb-logout{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  width:100%;
-  margin-top:8px;
-  border:none;
-  background:rgba(229,57,53,.15);
-  color:#FFC7C5;
-  padding:9px 12px;
-  border-radius:10px;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-.sb-logout:hover{
-  background:rgba(229,57,53,.28);
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
 main{
   padding:26px 32px 50px;
   min-width:0;
 }
-
-
-/* =========================================================
-   TOPBAR
-========================================================= */
 
 .topbar{
   display:flex;
@@ -330,11 +276,6 @@ main{
   font-weight:600;
 }
 
-
-/* =========================================================
-   BOTÓN MENÚ MÓVIL
-========================================================= */
-
 .mobile-menu-btn{
   display:none;
   border:1px solid var(--gris-borde);
@@ -354,11 +295,6 @@ main{
 .mobile-menu-btn:active{
   transform:scale(.97);
 }
-
-
-/* =========================================================
-   KPI
-========================================================= */
 
 .kpi-grid{
   display:grid;
@@ -438,22 +374,12 @@ main{
   --accent-soft:#FFE8D1;
 }
 
-
-/* =========================================================
-   GRID
-========================================================= */
-
 .grid-2{
   display:grid;
   grid-template-columns:1.6fr 1fr;
   gap:18px;
   margin-bottom:18px;
 }
-
-
-/* =========================================================
-   PANELES
-========================================================= */
 
 .panel{
   background:var(--blanco);
@@ -485,11 +411,6 @@ main{
 .panel-head a:hover{
   text-decoration:underline;
 }
-
-
-/* =========================================================
-   TABLA
-========================================================= */
 
 .table-scroll{
   width:100%;
@@ -523,11 +444,6 @@ table.simple tr:last-child td{
   border-bottom:none;
 }
 
-
-/* =========================================================
-   PILLS
-========================================================= */
-
 .pill{
   display:inline-block;
   padding:3px 10px;
@@ -550,11 +466,6 @@ table.simple tr:last-child td{
   background:#FFE3D1;
   color:#B45300;
 }
-
-
-/* =========================================================
-   ALERTAS
-========================================================= */
 
 .alert-item{
   display:flex;
@@ -610,11 +521,6 @@ table.simple tr:last-child td{
   font-size:11.5px;
   color:var(--texto-secundario);
 }
-
-
-/* =========================================================
-   DONUT
-========================================================= */
 
 .donut-wrap{
   display:flex;
@@ -683,11 +589,6 @@ table.simple tr:last-child td{
   flex:0 0 auto;
 }
 
-
-/* =========================================================
-   STEPPER
-========================================================= */
-
 .stepper-scroll{
   width:100%;
   overflow-x:auto;
@@ -742,22 +643,12 @@ table.simple tr:last-child td{
   color:var(--texto-secundario);
 }
 
-
-/* =========================================================
-   EMPTY
-========================================================= */
-
 .empty{
   text-align:center;
   padding:22px 10px;
   color:var(--texto-secundario);
   font-size:12px;
 }
-
-
-/* =========================================================
-   NOTIFICACIONES
-========================================================= */
 
 .notification-panel{
   position:fixed;
@@ -840,19 +731,9 @@ table.simple tr:last-child td{
   color:var(--texto-secundario);
 }
 
-
-/* =========================================================
-   CAPA DEL MENÚ MÓVIL
-========================================================= */
-
 .mobile-overlay{
   display:none;
 }
-
-
-/* =========================================================
-   TABLET
-========================================================= */
 
 @media (max-width:800px) {
 
@@ -896,8 +777,6 @@ table.simple tr:last-child td{
     transition:transform .25s ease;
     z-index:1200;
     box-shadow:8px 0 30px rgba(0,0,0,.20);
-
-    /* IMPORTANTE */
     overflow:hidden;
   }
 
@@ -1113,97 +992,65 @@ table.simple tr:last-child td{
   }
 }
 
-
-/* =========================================================
-   CELULARES PEQUEÑOS
-========================================================= */
-
 @media(max-width:400px){
 
   main{
-
-    padding:
-      13px
-      10px
-      25px;
+    padding:13px 10px 25px;
   }
 
-
   .topbar{
-
-    grid-template-columns:
-      39px
-      minmax(0,1fr)
-      auto;
-
+    grid-template-columns:39px minmax(0,1fr) auto;
     gap:7px;
   }
 
-
   .mobile-menu-btn{
-
     width:39px;
     height:39px;
   }
-
 
   .topbar h1{
     font-size:19px;
   }
 
-
   .topbar .subtitle{
     font-size:10px;
   }
 
-
   .icon-btn{
-
     width:39px;
     height:39px;
   }
 
-
   .top-user .avatar{
-
     width:30px;
     height:30px;
   }
-
 
   .kpi-card{
     padding:14px;
   }
 
-
   .kpi-card .value{
     font-size:21px;
   }
-
 
   .panel{
     padding:14px;
   }
 
-
   .notification-panel{
-
     left:8px;
     right:8px;
   }
 
-
   .donut{
-
     width:140px;
     height:140px;
   }
 
-
   .donut::after{
     inset:20px;
   }
-
 
   .donut-center{
     inset:20px;
@@ -1215,19 +1062,11 @@ table.simple tr:last-child td{
 
 </head>
 
-
 <body>
-
 
 <div class="app">
 
-
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
 <aside class="sidebar">
-
 
   <div class="sb-brand">
 
@@ -1258,7 +1097,6 @@ table.simple tr:last-child td{
 
     </div>
 
-
     <div>
 
       <div class="name">
@@ -1273,12 +1111,10 @@ table.simple tr:last-child td{
 
   </div>
 
-
   <nav
     class="sb-nav"
     id="sbNav"
   >
-
 
     <a
       class="sb-link active"
@@ -1310,7 +1146,6 @@ table.simple tr:last-child td{
       Inicio
 
     </a>
-
 
     <a
       class="sb-link"
@@ -1345,7 +1180,6 @@ table.simple tr:last-child td{
 
     </a>
 
-
     <a
       class="sb-link"
       data-view="proveedores"
@@ -1378,7 +1212,6 @@ table.simple tr:last-child td{
       Proveedores
 
     </a>
-
 
     <a
       class="sb-link"
@@ -1415,7 +1248,6 @@ table.simple tr:last-child td{
 
     </a>
 
-
     <a
       class="sb-link"
       data-view="almacenamiento"
@@ -1447,7 +1279,6 @@ table.simple tr:last-child td{
       Almacenamiento
 
     </a>
-
 
     <a
       class="sb-link"
@@ -1488,7 +1319,6 @@ table.simple tr:last-child td{
 
     </a>
 
-
     <a
       class="sb-link"
       data-view="trazabilidad"
@@ -1521,7 +1351,6 @@ table.simple tr:last-child td{
 
     </a>
 
-
     <a
       class="sb-link"
       data-view="reportes"
@@ -1547,7 +1376,6 @@ table.simple tr:last-child td{
       Reportes
 
     </a>
-
 
     <a
       class="sb-link"
@@ -1579,7 +1407,6 @@ table.simple tr:last-child td{
       Normas y Calidad
 
     </a>
-
 
     <a
       class="sb-link"
@@ -1628,7 +1455,6 @@ table.simple tr:last-child td{
 
     </a>
 
-
     <a
       class="sb-link"
       data-view="configuracion"
@@ -1665,7 +1491,6 @@ table.simple tr:last-child td{
 
   </nav>
 
-
   <div class="sb-footer">
 
     <div class="sb-user">
@@ -1676,7 +1501,6 @@ table.simple tr:last-child td{
       >
         C
       </div>
-
 
       <div class="info">
 
@@ -1692,62 +1516,18 @@ table.simple tr:last-child td{
 
     </div>
 
-
-    <button
-      class="sb-logout"
-      id="logoutBtn"
-      type="button"
-    >
-
-      <svg
-        width="15"
-        height="15"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-          stroke="currentColor"
-          stroke-width="1.8"
-        />
-
-        <path
-          d="M16 17l5-5-5-5M21 12H9"
-          stroke="currentColor"
-          stroke-width="1.8"
-        />
-
-      </svg>
-
-      Cerrar sesión
-
-    </button>
-
   </div>
 
 </aside>
-
-
-<!-- =====================================================
-     CAPA MÓVIL
-===================================================== -->
 
 <div
   class="mobile-overlay"
   id="mobileOverlay"
 ></div>
 
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main>
 
-
   <div class="topbar">
-
 
     <button
       class="mobile-menu-btn"
@@ -1775,7 +1555,6 @@ table.simple tr:last-child td{
 
     </button>
 
-
     <div>
 
       <h1>
@@ -1791,9 +1570,7 @@ table.simple tr:last-child td{
 
     </div>
 
-
     <div class="top-actions">
-
 
       <button
         class="icon-btn"
@@ -1830,7 +1607,6 @@ table.simple tr:last-child td{
 
       </button>
 
-
       <a
         href="configuracion.html"
         class="top-user"
@@ -1854,11 +1630,6 @@ table.simple tr:last-child td{
 
   </div>
 
-
-  <!-- ===================================================
-       NOTIFICACIONES
-  ==================================================== -->
-
   <div
     class="notification-panel"
     id="notificationPanel"
@@ -1879,7 +1650,6 @@ table.simple tr:last-child td{
 
     </div>
 
-
     <div id="notificationContent">
 
       <div class="notification-empty">
@@ -1890,13 +1660,7 @@ table.simple tr:last-child td{
 
   </div>
 
-
-  <!-- ===================================================
-       KPI
-  ==================================================== -->
-
   <section class="kpi-grid">
-
 
     <div class="kpi-card c1">
 
@@ -1916,7 +1680,6 @@ table.simple tr:last-child td{
           </div>
 
         </div>
-
 
         <div class="icon-wrap">
 
@@ -1947,13 +1710,11 @@ table.simple tr:last-child td{
 
       </div>
 
-
       <div class="delta up">
         Información actualizada
       </div>
 
     </div>
-
 
     <div class="kpi-card c2">
 
@@ -1973,7 +1734,6 @@ table.simple tr:last-child td{
           </div>
 
         </div>
-
 
         <div class="icon-wrap">
 
@@ -2004,13 +1764,11 @@ table.simple tr:last-child td{
 
       </div>
 
-
       <div class="delta up">
         Proveedores registrados
       </div>
 
     </div>
-
 
     <div class="kpi-card c3">
 
@@ -2030,7 +1788,6 @@ table.simple tr:last-child td{
           </div>
 
         </div>
-
 
         <div class="icon-wrap">
 
@@ -2063,13 +1820,11 @@ table.simple tr:last-child td{
 
       </div>
 
-
       <div class="delta up">
         Registros de entrada
       </div>
 
     </div>
-
 
     <div class="kpi-card c4">
 
@@ -2089,7 +1844,6 @@ table.simple tr:last-child td{
           </div>
 
         </div>
-
 
         <div class="icon-wrap">
 
@@ -2118,7 +1872,6 @@ table.simple tr:last-child td{
 
       </div>
 
-
       <div class="delta neutral">
         Total acumulado
       </div>
@@ -2127,13 +1880,7 @@ table.simple tr:last-child td{
 
   </section>
 
-
-  <!-- ===================================================
-       ACTIVIDAD + ALERTAS
-  ==================================================== -->
-
   <div class="grid-2">
-
 
     <section class="panel">
 
@@ -2148,7 +1895,6 @@ table.simple tr:last-child td{
         </a>
 
       </div>
-
 
       <div class="table-scroll">
 
@@ -2178,7 +1924,6 @@ table.simple tr:last-child td{
 
           </thead>
 
-
           <tbody id="recentTable">
 
             <tr>
@@ -2200,7 +1945,6 @@ table.simple tr:last-child td{
 
     </section>
 
-
     <section class="panel">
 
       <div class="panel-head">
@@ -2210,7 +1954,6 @@ table.simple tr:last-child td{
         </h3>
 
       </div>
-
 
       <div id="alertsContainer">
 
@@ -2250,7 +1993,6 @@ table.simple tr:last-child td{
 
           </div>
 
-
           <div class="alert-text">
 
             <strong>
@@ -2271,13 +2013,7 @@ table.simple tr:last-child td{
 
   </div>
 
-
-  <!-- ===================================================
-       DISTRIBUCIÓN + FLUJO
-  ==================================================== -->
-
   <div class="grid-2">
-
 
     <section class="panel">
 
@@ -2289,9 +2025,7 @@ table.simple tr:last-child td{
 
       </div>
 
-
       <div class="donut-wrap">
-
 
         <div
           class="donut"
@@ -2311,7 +2045,6 @@ table.simple tr:last-child td{
           </div>
 
         </div>
-
 
         <div
           class="donut-legend"
@@ -2337,7 +2070,6 @@ table.simple tr:last-child td{
 
     </section>
 
-
     <section class="panel">
 
       <div class="panel-head">
@@ -2348,11 +2080,9 @@ table.simple tr:last-child td{
 
       </div>
 
-
       <div class="stepper-scroll">
 
         <div class="stepper">
-
 
           <div class="step">
 
@@ -2366,7 +2096,6 @@ table.simple tr:last-child td{
 
           </div>
 
-
           <div class="step">
 
             <div class="circle">
@@ -2379,7 +2108,6 @@ table.simple tr:last-child td{
 
           </div>
 
-
           <div class="step">
 
             <div class="circle">
@@ -2391,7 +2119,6 @@ table.simple tr:last-child td{
             </span>
 
           </div>
-
 
           <div class="step">
 
@@ -2417,12 +2144,7 @@ table.simple tr:last-child td{
 
 </div>
 
-
 <script>
-
-/* =========================================================
-   SUPABASE
-========================================================= */
 
 const SUPABASE_URL =
 'https://lohxgdeuohhczejyxwgr.supabase.co';
@@ -2435,11 +2157,6 @@ supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
-
-
-/* =========================================================
-   ELEMENTOS
-========================================================= */
 
 const notificationBtn =
 document.getElementById(
@@ -2471,11 +2188,6 @@ document.querySelector(
   '.sidebar'
 );
 
-
-/* =========================================================
-   NOTIFICACIONES
-========================================================= */
-
 notificationBtn.addEventListener(
   'click',
   async function(e){
@@ -2487,11 +2199,9 @@ notificationBtn.addEventListener(
         'show'
       );
 
-
     notificationPanel.classList.toggle(
       'show'
     );
-
 
     if(!abierto){
 
@@ -2501,7 +2211,6 @@ notificationBtn.addEventListener(
 
   }
 );
-
 
 closeNotifications.addEventListener(
   'click',
@@ -2513,7 +2222,6 @@ closeNotifications.addEventListener(
 
   }
 );
-
 
 document.addEventListener(
   'click',
@@ -2532,11 +2240,6 @@ document.addEventListener(
 
   }
 );
-
-
-/* =========================================================
-   MENÚ MÓVIL
-========================================================= */
 
 function abrirMenuMovil(){
 
@@ -2558,7 +2261,6 @@ function abrirMenuMovil(){
 
 }
 
-
 function cerrarMenuMovil(){
 
   sidebar.classList.remove(
@@ -2579,7 +2281,6 @@ function cerrarMenuMovil(){
 
 }
 
-
 mobileMenuBtn.addEventListener(
   'click',
   function(){
@@ -2588,7 +2289,6 @@ mobileMenuBtn.addEventListener(
       sidebar.classList.contains(
         'mobile-open'
       );
-
 
     if(abierto){
 
@@ -2603,12 +2303,10 @@ mobileMenuBtn.addEventListener(
   }
 );
 
-
 mobileOverlay.addEventListener(
   'click',
   cerrarMenuMovil
 );
-
 
 document.querySelectorAll(
   '.sb-link'
@@ -2627,7 +2325,6 @@ document.querySelectorAll(
   }
 );
 
-
 window.addEventListener(
   'resize',
   function(){
@@ -2643,18 +2340,12 @@ window.addEventListener(
   }
 );
 
-
-/* =========================================================
-   USUARIO
-========================================================= */
-
 async function cargarUsuario(){
 
   const {
     data:{session}
   } =
   await supabaseClient.auth.getSession();
-
 
   if(!session){
 
@@ -2665,10 +2356,8 @@ async function cargarUsuario(){
 
   }
 
-
   const user =
     session.user;
-
 
   const nombre =
     user.user_metadata?.full_name ||
@@ -2676,52 +2365,40 @@ async function cargarUsuario(){
     user.email?.split('@')[0] ||
     'Usuario';
 
-
   const inicial =
     nombre
       .trim()
       .charAt(0)
       .toUpperCase();
 
-
   document.getElementById(
     'sbUserName'
   ).textContent =
     nombre;
-
 
   document.getElementById(
     'topUserName'
   ).textContent =
     nombre;
 
-
   document.getElementById(
     'sbAvatar'
   ).textContent =
     inicial;
-
 
   document.getElementById(
     'topAvatar'
   ).textContent =
     inicial;
 
-
   return session;
 
 }
-
-
-/* =========================================================
-   FECHA
-========================================================= */
 
 function colocarFecha(){
 
   const fecha =
     new Date();
-
 
   const opciones = {
 
@@ -2733,7 +2410,6 @@ function colocarFecha(){
 
   };
 
-
   document.getElementById(
     'todayDate'
   ).textContent =
@@ -2743,11 +2419,6 @@ function colocarFecha(){
     );
 
 }
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
 
 async function cargarDashboard(){
 
@@ -2766,13 +2437,11 @@ async function cargarDashboard(){
     ] =
     await Promise.all([
 
-
       supabaseClient
         .from('productos')
         .select(
           'id,nombre,categoria,estado'
         ),
-
 
       supabaseClient
         .from('proveedores')
@@ -2780,13 +2449,11 @@ async function cargarDashboard(){
           'id,estado'
         ),
 
-
       supabaseClient
         .from('recepciones')
         .select(
           'peso'
         ),
-
 
       supabaseClient
         .from('recepciones')
@@ -2810,7 +2477,6 @@ async function cargarDashboard(){
 
     ]);
 
-
     if(productosResult.error){
 
       console.error(
@@ -2819,7 +2485,6 @@ async function cargarDashboard(){
       );
 
     }
-
 
     if(proveedoresResult.error){
 
@@ -2830,7 +2495,6 @@ async function cargarDashboard(){
 
     }
 
-
     if(pesoResult.error){
 
       console.error(
@@ -2839,7 +2503,6 @@ async function cargarDashboard(){
       );
 
     }
-
 
     if(recientesResult.error){
 
@@ -2850,40 +2513,32 @@ async function cargarDashboard(){
 
     }
 
-
     const productos =
       productosResult.data || [];
-
 
     const proveedores =
       proveedoresResult.data || [];
 
-
     const pesos =
       pesoResult.data || [];
 
-
     const recientes =
       recientesResult.data || [];
-
 
     document.getElementById(
       'totalProductos'
     ).textContent =
       productos.length;
 
-
     document.getElementById(
       'totalProveedores'
     ).textContent =
       proveedores.length;
 
-
     document.getElementById(
       'totalRecepciones'
     ).textContent =
       pesos.length;
-
 
     const peso =
       pesos.reduce(
@@ -2901,7 +2556,6 @@ async function cargarDashboard(){
         0
       );
 
-
     document.getElementById(
       'pesoTotal'
     ).textContent =
@@ -2913,16 +2567,13 @@ async function cargarDashboard(){
         }
       ) + ' kg';
 
-
     cargarActividad(
       recientes
     );
 
-
     cargarDistribucion(
       productos
     );
-
 
     cargarAlertas(
       productos,
@@ -2941,11 +2592,6 @@ async function cargarDashboard(){
 
 }
 
-
-/* =========================================================
-   ACTIVIDAD RECIENTE
-========================================================= */
-
 function cargarActividad(
   recepciones
 ){
@@ -2954,7 +2600,6 @@ function cargarActividad(
     document.getElementById(
       'recentTable'
     );
-
 
   if(!recepciones.length){
 
@@ -2977,31 +2622,24 @@ function cargarActividad(
 
   }
 
-
   tabla.innerHTML = '';
-
 
   recepciones.forEach(
     r => {
-
 
       const nombre =
         r.productos?.nombre ||
         'Producto';
 
-
       let clase =
         'ok';
-
 
       const estado =
         r.estado_producto ||
         'Recibido';
 
-
       const estadoLower =
         estado.toLowerCase();
-
 
       if(
         estadoLower.includes(
@@ -3013,7 +2651,6 @@ function cargarActividad(
           'pend';
 
       }
-
 
       if(
         estadoLower.includes(
@@ -3034,7 +2671,6 @@ function cargarActividad(
 
       }
 
-
       const fecha =
         r.fecha_recepcion
 
@@ -3045,7 +2681,6 @@ function cargarActividad(
             )
 
           : '-';
-
 
       tabla.innerHTML += `
 
@@ -3086,11 +2721,6 @@ function cargarActividad(
 
 }
 
-
-/* =========================================================
-   DISTRIBUCIÓN
-========================================================= */
-
 function cargarDistribucion(
   productos
 ){
@@ -3098,15 +2728,12 @@ function cargarDistribucion(
   const total =
     productos.length;
 
-
   document.getElementById(
     'donutTotal'
   ).textContent =
     total;
 
-
   const categorias = {};
-
 
   productos.forEach(
     producto => {
@@ -3114,7 +2741,6 @@ function cargarDistribucion(
       const categoria =
         producto.categoria ||
         'Otros';
-
 
       categorias[categoria] =
         (
@@ -3125,7 +2751,6 @@ function cargarDistribucion(
     }
   );
 
-
   const orden =
     Object.entries(
       categorias
@@ -3135,7 +2760,6 @@ function cargarDistribucion(
         b[1] - a[1]
     )
     .slice(0,4);
-
 
   const colores = [
 
@@ -3149,24 +2773,20 @@ function cargarDistribucion(
 
   ];
 
-
   const donut =
     document.getElementById(
       'productDonut'
     );
-
 
   const legend =
     document.getElementById(
       'donutLegend'
     );
 
-
   if(!orden.length){
 
     donut.style.background =
       '#D9ECFF';
-
 
     legend.innerHTML = `
 
@@ -3189,13 +2809,10 @@ function cargarDistribucion(
 
   }
 
-
   let acumulado =
     0;
 
-
   const partes = [];
-
 
   orden.forEach(
     (
@@ -3209,14 +2826,11 @@ function cargarDistribucion(
           total
         ) * 100;
 
-
       const inicio =
         acumulado;
 
-
       acumulado +=
         porcentaje;
-
 
       partes.push(
         `${colores[index]} ${inicio}% ${acumulado}%`
@@ -3224,7 +2838,6 @@ function cargarDistribucion(
 
     }
   );
-
 
   if(acumulado < 100){
 
@@ -3234,14 +2847,11 @@ function cargarDistribucion(
 
   }
 
-
   donut.style.background =
     `conic-gradient(${partes.join(',')})`;
 
-
   legend.innerHTML =
     '';
-
 
   orden.forEach(
     (
@@ -3256,7 +2866,6 @@ function cargarDistribucion(
             total
           ) * 100
         );
-
 
       legend.innerHTML += `
 
@@ -3286,11 +2895,6 @@ function cargarDistribucion(
 
 }
 
-
-/* =========================================================
-   ALERTAS
-========================================================= */
-
 function cargarAlertas(
   productos,
   proveedores,
@@ -3302,9 +2906,7 @@ function cargarAlertas(
       'alertsContainer'
     );
 
-
   const alertas = [];
-
 
   const productosInactivos =
     productos.filter(
@@ -3316,7 +2918,6 @@ function cargarAlertas(
           .toLowerCase() ===
           'inactivo'
     );
-
 
   if(
     productosInactivos.length
@@ -3336,7 +2937,6 @@ function cargarAlertas(
 
   }
 
-
   const proveedoresInactivos =
     proveedores.filter(
       p =>
@@ -3347,7 +2947,6 @@ function cargarAlertas(
           .toLowerCase() ===
           'inactivo'
     );
-
 
   if(
     proveedoresInactivos.length
@@ -3367,7 +2966,6 @@ function cargarAlertas(
 
   }
 
-
   const recepcionesPendientes =
     recepciones.filter(
       r => {
@@ -3378,14 +2976,12 @@ function cargarAlertas(
             ''
           ).toLowerCase();
 
-
         return estado.includes(
           'pendiente'
         );
 
       }
     );
-
 
   if(
     recepcionesPendientes.length
@@ -3404,7 +3000,6 @@ function cargarAlertas(
     });
 
   }
-
 
   if(
 
@@ -3430,7 +3025,6 @@ function cargarAlertas(
 
   }
 
-
   if(!alertas.length){
 
     alertas.push({
@@ -3447,16 +3041,13 @@ function cargarAlertas(
 
   }
 
-
   container.innerHTML =
     '';
-
 
   alertas
     .slice(0,4)
     .forEach(
       alerta => {
-
 
         let icono = `
 
@@ -3492,7 +3083,6 @@ function cargarAlertas(
 
         `;
 
-
         if(
           alerta.tipo ===
           'ok'
@@ -3521,7 +3111,6 @@ function cargarAlertas(
 
         }
 
-
         container.innerHTML += `
 
           <div class="alert-item">
@@ -3533,7 +3122,6 @@ function cargarAlertas(
               ${icono}
 
             </div>
-
 
             <div class="alert-text">
 
@@ -3560,11 +3148,6 @@ function cargarAlertas(
 
 }
 
-
-/* =========================================================
-   NOTIFICACIONES
-========================================================= */
-
 async function cargarNotificaciones(){
 
   const contenido =
@@ -3572,12 +3155,10 @@ async function cargarNotificaciones(){
       'notificationContent'
     );
 
-
   const punto =
     document.getElementById(
       'notificationDot'
     );
-
 
   contenido.innerHTML = `
 
@@ -3586,7 +3167,6 @@ async function cargarNotificaciones(){
     </div>
 
   `;
-
 
   try{
 
@@ -3598,7 +3178,6 @@ async function cargarNotificaciones(){
 
     ] =
     await Promise.all([
-
 
       supabaseClient
         .from('recepciones')
@@ -3612,7 +3191,6 @@ async function cargarNotificaciones(){
           }
         )
         .limit(20),
-
 
       supabaseClient
         .from('productos')
@@ -3629,22 +3207,17 @@ async function cargarNotificaciones(){
 
     ]);
 
-
     const recepciones =
       recepcionesResult.data || [];
-
 
     const productos =
       productosResult.data || [];
 
-
     let html =
       '';
 
-
     let hayNotificaciones =
       false;
-
 
     recepciones.forEach(
       r => {
@@ -3653,10 +3226,8 @@ async function cargarNotificaciones(){
           r.estado_producto ||
           'Recibido';
 
-
         const estadoLower =
           estado.toLowerCase();
-
 
         if(
           estadoLower !==
@@ -3665,7 +3236,6 @@ async function cargarNotificaciones(){
 
           hayNotificaciones =
             true;
-
 
           html += `
 
@@ -3696,7 +3266,6 @@ async function cargarNotificaciones(){
                 </svg>
 
               </div>
-
 
               <div>
 
@@ -3731,7 +3300,6 @@ async function cargarNotificaciones(){
       }
     );
 
-
     productos.forEach(
       p => {
 
@@ -3747,7 +3315,6 @@ async function cargarNotificaciones(){
 
           hayNotificaciones =
             true;
-
 
           html += `
 
@@ -3779,7 +3346,6 @@ async function cargarNotificaciones(){
 
               </div>
 
-
               <div>
 
                 <strong>
@@ -3803,12 +3369,10 @@ async function cargarNotificaciones(){
       }
     );
 
-
     if(!hayNotificaciones){
 
       punto.style.display =
         'none';
-
 
       contenido.innerHTML = `
 
@@ -3823,7 +3387,6 @@ async function cargarNotificaciones(){
       punto.style.display =
         'block';
 
-
       contenido.innerHTML =
         html;
 
@@ -3835,7 +3398,6 @@ async function cargarNotificaciones(){
       'Error cargando notificaciones:',
       error
     );
-
 
     contenido.innerHTML = `
 
@@ -3849,38 +3411,6 @@ async function cargarNotificaciones(){
 
 }
 
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-document.getElementById(
-  'logoutBtn'
-).addEventListener(
-  'click',
-  async function(){
-
-    try{
-
-      await supabaseClient
-        .auth
-        .signOut();
-
-    }finally{
-
-      window.location.href =
-        'login.html';
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   ESCAPAR HTML
-========================================================= */
-
 function escapeHTML(
   text
 ){
@@ -3890,28 +3420,19 @@ function escapeHTML(
       'div'
     );
 
-
   div.textContent =
     text ?? '';
-
 
   return div.innerHTML;
 
 }
 
-
-/* =========================================================
-   INICIAR
-========================================================= */
-
 async function iniciar(){
 
   colocarFecha();
 
-
   const session =
     await cargarUsuario();
-
 
   if(!session){
 
@@ -3919,16 +3440,13 @@ async function iniciar(){
 
   }
 
-
   await cargarDashboard();
 
 }
 
-
 iniciar();
 
 </script>
-
 
 </body>
 
