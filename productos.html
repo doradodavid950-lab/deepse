@@ -41,6 +41,10 @@ body{
     color:var(--texto-principal);
 }
 
+body{
+    overflow-x:hidden;
+}
+
 .app{
     display:grid;
     grid-template-columns:250px 1fr;
@@ -174,24 +178,35 @@ nav.sb-nav{
     color:rgba(255,255,255,.5);
 }
 
-.sb-logout{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    width:100%;
-    margin-top:8px;
+
+/* =====================================================
+   BOTÓN MENÚ MÓVIL
+===================================================== */
+
+.mobile-menu-btn{
+    display:none;
+    position:fixed;
+    top:14px;
+    left:14px;
+    width:42px;
+    height:42px;
     border:none;
-    background:rgba(229,57,53,.15);
-    color:#FFC7C5;
-    padding:9px 12px;
-    border-radius:10px;
-    font-size:13px;
-    font-weight:600;
+    border-radius:12px;
+    background:var(--azul-oscuro);
+    color:#fff;
+    align-items:center;
+    justify-content:center;
     cursor:pointer;
+    z-index:1300;
+    box-shadow:0 8px 20px rgba(6,43,91,.20);
 }
 
-.sb-logout:hover{
-    background:rgba(229,57,53,.28);
+.mobile-menu-btn:hover{
+    background:var(--azul-medio);
+}
+
+.mobile-overlay{
+    display:none;
 }
 
 
@@ -201,6 +216,7 @@ nav.sb-nav{
 
 main{
     padding:26px 32px 50px;
+    min-width:0;
 }
 
 .topbar{
@@ -286,7 +302,7 @@ main{
 
 
 /* =====================================================
-   PANEL / TOOLBAR
+   PANEL
 ===================================================== */
 
 .panel{
@@ -295,6 +311,7 @@ main{
     box-shadow:var(--sombra);
     padding:20px;
     margin-bottom:18px;
+    min-width:0;
 }
 
 .panel-head{
@@ -775,9 +792,7 @@ table.simple tr:hover td{
 
 
 /* =====================================================
-   RESPONSIVE BÁSICO
-   Por ahora solo evita problemas en pantallas medianas.
-   La adaptación completa para celular la hacemos después.
+   TABLET
 ===================================================== */
 
 @media(max-width:1100px){
@@ -788,29 +803,466 @@ table.simple tr:hover td{
 
 }
 
+
+/* =====================================================
+   ADAPTACIÓN COMPLETA PARA CELULAR
+===================================================== */
+
 @media(max-width:800px){
 
-    .app{
-        grid-template-columns:1fr;
+    html,
+    body{
+        width:100%;
+        max-width:100%;
+        overflow-x:hidden;
     }
 
+    .app{
+        display:block;
+        width:100%;
+        min-height:100vh;
+    }
+
+
+    /* SIDEBAR MÓVIL */
+
     .sidebar{
+        display:flex;
+        position:fixed;
+        left:0;
+        top:0;
+        bottom:0;
+        width:250px;
+        height:100vh;
+        z-index:1200;
+        transform:translateX(-105%);
+        transition:transform .25s ease;
+        box-shadow:10px 0 35px rgba(6,43,91,.25);
+        overflow-y:auto;
+    }
+
+    .sidebar.mobile-open{
+        transform:translateX(0);
+    }
+
+
+    /* FONDO DEL MENÚ */
+
+    .mobile-overlay{
+        position:fixed;
+        inset:0;
+        background:rgba(6,43,91,.40);
+        z-index:1100;
         display:none;
     }
 
+    .mobile-overlay.show{
+        display:block;
+    }
+
+
+    /* BOTÓN HAMBURGUESA */
+
+    .mobile-menu-btn{
+        display:flex;
+    }
+
+
+    /* CONTENIDO */
+
     main{
+        width:100%;
+        max-width:100%;
+        padding:74px 14px 30px;
+        overflow:hidden;
+    }
+
+
+    /* TOPBAR */
+
+    .topbar{
+        width:100%;
+        margin-bottom:20px;
+        align-items:flex-start;
+        gap:12px;
+    }
+
+    .topbar > div:first-child{
+        min-width:0;
+        flex:1;
+        padding-left:48px;
+    }
+
+    .topbar h1{
+        font-size:25px;
+        line-height:1.15;
+        margin:0;
+    }
+
+    .topbar .subtitle{
+        font-size:13px;
+        line-height:1.45;
+        margin-top:6px;
+    }
+
+    .top-actions{
+        flex:0 0 auto;
+        gap:8px;
+    }
+
+    .top-user{
+        display:none;
+    }
+
+    .icon-btn{
+        width:42px;
+        height:42px;
+        flex:0 0 auto;
+    }
+
+
+    /* NOTIFICACIONES */
+
+    .notification-panel{
+        top:68px;
+        left:14px;
+        right:14px;
+        width:auto;
+        max-height:70vh;
+        overflow-y:auto;
+    }
+
+
+    /* PANELES */
+
+    .panel{
+        width:100%;
+        max-width:100%;
         padding:18px;
+        margin-bottom:14px;
+        border-radius:16px;
+        overflow:hidden;
+    }
+
+    .panel-head{
+        width:100%;
+        align-items:flex-start;
+        gap:12px;
+    }
+
+    .panel-head h3{
+        font-size:17px;
+        line-height:1.3;
+    }
+
+
+    /* NUEVO PRODUCTO */
+
+    .panel-head .btn-primary{
+        width:100%;
+        justify-content:center;
+        min-height:44px;
+    }
+
+
+    /* FILTROS */
+
+    .filters{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:12px;
+        width:100%;
+        margin-bottom:0;
+    }
+
+    .filters > div{
+        width:100%;
+        min-width:0;
+    }
+
+    .filters label{
+        font-size:12.5px;
+        margin-bottom:6px;
+    }
+
+    .filters input,
+    .filters select{
+        width:100%;
+        min-width:0;
+        height:46px;
+        padding:10px 13px;
+        font-size:14px;
+        border-radius:11px;
+    }
+
+    .filters button{
+        width:100%;
+        min-height:44px;
+        justify-content:center;
+    }
+
+
+    /* =================================================
+       TABLA -> TARJETAS EN CELULAR
+    ================================================= */
+
+    #tablaProductos{
+        width:100% !important;
+        border-collapse:separate;
+        border-spacing:0;
+    }
+
+    #tablaProductos thead{
+        display:none;
+    }
+
+    #tablaProductos tbody{
+        display:block;
+        width:100%;
+    }
+
+    #tablaProductos tr{
+        display:block;
+        width:100%;
+        background:var(--blanco);
+        border:1px solid var(--gris-borde);
+        border-radius:14px;
+        margin-bottom:12px;
+        padding:8px 12px;
+        box-shadow:0 5px 15px rgba(6,43,91,.05);
+    }
+
+    #tablaProductos tr:hover td{
+        background:transparent;
+    }
+
+    #tablaProductos td{
+        display:grid;
+        grid-template-columns:105px minmax(0,1fr);
+        gap:10px;
+        width:100%;
+        min-width:0;
+        padding:10px 2px;
+        border-bottom:1px solid #F0F3F7;
+        font-size:13px;
+        line-height:1.35;
+        overflow-wrap:anywhere;
+        word-break:break-word;
+    }
+
+    #tablaProductos td:last-child{
+        border-bottom:none;
+    }
+
+    #tablaProductos td::before{
+        font-size:11px;
+        font-weight:700;
+        color:var(--texto-secundario);
+    }
+
+    #tablaProductos td:nth-child(1)::before{
+        content:"Nombre";
+    }
+
+    #tablaProductos td:nth-child(2)::before{
+        content:"Nombre científico";
+    }
+
+    #tablaProductos td:nth-child(3)::before{
+        content:"Categoría";
+    }
+
+    #tablaProductos td:nth-child(4)::before{
+        content:"Proveedor";
+    }
+
+    #tablaProductos td:nth-child(5)::before{
+        content:"Fecha captura";
+    }
+
+    #tablaProductos td:nth-child(6)::before{
+        content:"Estado";
+    }
+
+    #tablaProductos td:nth-child(7)::before{
+        content:"Acciones";
+    }
+
+    #tablaProductos td:first-child strong{
+        font-size:14px;
+    }
+
+    #tablaProductos td:nth-child(7){
+        align-items:center;
+    }
+
+    .row-actions{
+        justify-content:flex-start;
+        gap:8px;
+    }
+
+    .action-btn{
+        width:36px;
+        height:36px;
+        border-radius:9px;
+    }
+
+
+    /* BADGE */
+
+    .count-badge{
+        margin-left:5px;
+        padding:4px 10px;
+    }
+
+
+    /* ESTADOS */
+
+    .empty-state,
+    .loading-state{
+        padding:35px 12px;
+    }
+
+
+    /* MODAL */
+
+    .modal-overlay{
+        padding:12px;
+        align-items:center;
+    }
+
+    .modal-card{
+        width:100%;
+        max-width:100%;
+        max-height:92vh;
+        padding:20px;
+        border-radius:16px;
+    }
+
+    .modal-head h3{
+        font-size:17px;
     }
 
     .form-grid{
         grid-template-columns:1fr;
+        gap:13px;
     }
 
-    .notification-panel{
-        right:18px;
-        left:18px;
-        width:auto;
+    .form-grid .full{
+        grid-column:auto;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+        font-size:14px;
+        min-height:44px;
+    }
+
+    .field textarea{
+        min-height:85px;
+    }
+
+    .modal-footer{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+
+    .modal-footer button{
+        min-height:44px;
+        justify-content:center;
+    }
+
+
+    /* TOAST */
+
+    .toast{
+        left:14px;
+        right:14px;
         top:70px;
+        width:auto;
+        justify-content:center;
+        text-align:center;
+        font-size:13px;
+    }
+
+}
+
+
+/* =====================================================
+   CELULARES PEQUEÑOS
+===================================================== */
+
+@media(max-width:520px){
+
+    main{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .topbar h1{
+        font-size:23px;
+    }
+
+    .topbar .subtitle{
+        font-size:12.5px;
+    }
+
+    .panel{
+        padding:16px;
+    }
+
+    .panel-head h3{
+        font-size:16px;
+    }
+
+    #tablaProductos td{
+        grid-template-columns:95px minmax(0,1fr);
+        font-size:12.5px;
+    }
+
+    #tablaProductos td::before{
+        font-size:10.5px;
+    }
+
+    .modal-footer{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+/* =====================================================
+   CELULAR MUY PEQUEÑO
+===================================================== */
+
+@media(max-width:380px){
+
+    .mobile-menu-btn{
+        width:40px;
+        height:40px;
+    }
+
+    .topbar > div:first-child{
+        padding-left:46px;
+    }
+
+    .topbar h1{
+        font-size:21px;
+    }
+
+    .top-actions .icon-btn{
+        width:38px;
+        height:38px;
+    }
+
+    .panel{
+        padding:14px;
+    }
+
+    #tablaProductos td{
+        grid-template-columns:88px minmax(0,1fr);
     }
 
 }
@@ -820,7 +1272,47 @@ table.simple tr:hover td{
 
 <body>
 
+
+<!-- =====================================================
+     BOTÓN MENÚ MÓVIL
+===================================================== -->
+
+<button
+    class="mobile-menu-btn"
+    id="mobileMenuBtn"
+    type="button"
+    aria-label="Abrir menú"
+    title="Abrir menú"
+>
+
+    <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+    >
+
+        <path d="M4 6h16"></path>
+
+        <path d="M4 12h16"></path>
+
+        <path d="M4 18h16"></path>
+
+    </svg>
+
+</button>
+
+
+<div
+    class="mobile-overlay"
+    id="mobileOverlay"
+></div>
+
+
 <div class="app">
+
 
 <!-- =====================================================
      SIDEBAR
@@ -874,297 +1366,389 @@ table.simple tr:hover td{
 
 <nav class="sb-nav" id="sbNav">
 
-    <a class="sb-link" data-view="inicio" href="inicio.html">
 
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+<a
+    class="sb-link"
+    data-view="inicio"
+    href="inicio.html"
+>
 
-            <path
-                d="M3 11l9-7 9 7"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <path
-                d="M5 10v10h14V10"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-        </svg>
-
-        Inicio
-
-    </a>
-
-
-    <a
-        class="sb-link active"
-        data-view="productos"
-        href="productos.html"
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
     >
 
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <path
-                d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <circle
-                cx="12"
-                cy="12"
-                r="2.2"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-        </svg>
-
-        Productos
-
-    </a>
-
-
-    <a class="sb-link" data-view="proveedores" href="proveedores.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <circle
-                cx="12"
-                cy="8"
-                r="3.4"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <path
-                d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-        </svg>
-
-        Proveedores
-
-    </a>
-
-
-    <a class="sb-link" data-view="recepciones" href="recepciones.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <rect
-                x="4"
-                y="7"
-                width="16"
-                height="13"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <path
-                d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-        </svg>
-
-        Recepciones
-
-    </a>
-
-
-    <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <path
-                d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-            />
-
-            <path
-                d="M9 20v-6h6v6"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-        </svg>
-
-        Almacenamiento
-
-    </a>
-
-
-    <a class="sb-link" data-view="ventas" href="ventas.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <circle
-                cx="9"
-                cy="20"
-                r="1.3"
-                fill="currentColor"
-            />
-
-            <circle
-                cx="17"
-                cy="20"
-                r="1.3"
-                fill="currentColor"
-            />
-
-            <path
-                d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-        </svg>
-
-        Ventas
-
-    </a>
-
-
-    <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <path
-                d="M3 6h18M3 12h18M3 18h12"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <circle
-                cx="20"
-                cy="18"
-                r="1.6"
-                fill="currentColor"
-            />
-
-        </svg>
-
-        Trazabilidad
-
-    </a>
-
-
-    <a class="sb-link" data-view="reportes" href="reportes.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <path
-                d="M4 20V10M12 20V4M20 20v-7"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-            />
-
-        </svg>
-
-        Reportes
-
-    </a>
-
-
-    <a class="sb-link" data-view="normas" href="normas.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <path
-                d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <path
-                d="m9 12 2 2 4-4"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-        </svg>
-
-        Normas y Calidad
-
-    </a>
-
-
-    <a class="sb-link" data-view="usuarios" href="usuarios.html">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-
-            <circle
-                cx="9"
-                cy="8"
-                r="3"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <path
-                d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-
-            <circle
-                cx="18"
-                cy="8"
-                r="2.2"
-                stroke="currentColor"
-                stroke-width="1.5"
-            />
-
-            <path
-                d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-                stroke="currentColor"
-                stroke-width="1.5"
-            />
-
-        </svg>
-
-        Usuarios
-
-    </a>
-
-
-    <a
-        class="sb-link"
-        data-view="configuracion"
-        href="configuracion.html"
+        <path
+            d="M3 11l9-7 9 7"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <path
+            d="M5 10v10h14V10"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+    </svg>
+
+    Inicio
+
+</a>
+
+
+<a
+    class="sb-link active"
+    data-view="productos"
+    href="productos.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
     >
 
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+        <path
+            d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
 
-            <circle
-                cx="12"
-                cy="12"
-                r="3"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
+        <circle
+            cx="12"
+            cy="12"
+            r="2.2"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
 
-            <path
-                d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-                stroke="currentColor"
-                stroke-width="1.3"
-                stroke-linejoin="round"
-            />
+    </svg>
 
-        </svg>
+    Productos
 
-        Configuración
+</a>
 
-    </a>
+
+<a
+    class="sb-link"
+    data-view="proveedores"
+    href="proveedores.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <circle
+            cx="12"
+            cy="8"
+            r="3.4"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <path
+            d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+    </svg>
+
+    Proveedores
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="recepciones"
+    href="recepciones.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <rect
+            x="4"
+            y="7"
+            width="16"
+            height="13"
+            rx="2"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <path
+            d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+    </svg>
+
+    Recepciones
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="almacenamiento"
+    href="almacenamiento.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <path
+            d="M3 9.5 12 4l9 5.5V20H3V9.5z"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linejoin="round"
+        />
+
+        <path
+            d="M9 20v-6h6v6"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+    </svg>
+
+    Almacenamiento
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="ventas"
+    href="ventas.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <circle
+            cx="9"
+            cy="20"
+            r="1.3"
+            fill="currentColor"
+        />
+
+        <circle
+            cx="17"
+            cy="20"
+            r="1.3"
+            fill="currentColor"
+        />
+
+        <path
+            d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+    </svg>
+
+    Ventas
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="trazabilidad"
+    href="trazabilidad.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <path
+            d="M3 6h18M3 12h18M3 18h12"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <circle
+            cx="20"
+            cy="18"
+            r="1.6"
+            fill="currentColor"
+        />
+
+    </svg>
+
+    Trazabilidad
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="reportes"
+    href="reportes.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <path
+            d="M4 20V10M12 20V4M20 20v-7"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+        />
+
+    </svg>
+
+    Reportes
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="normas"
+    href="normas.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <path
+            d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <path
+            d="m9 12 2 2 4-4"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+    </svg>
+
+    Normas y Calidad
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="usuarios"
+    href="usuarios.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <circle
+            cx="9"
+            cy="8"
+            r="3"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <path
+            d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <circle
+            cx="18"
+            cy="8"
+            r="2.2"
+            stroke="currentColor"
+            stroke-width="1.5"
+        />
+
+        <path
+            d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
+            stroke="currentColor"
+            stroke-width="1.5"
+        />
+
+    </svg>
+
+    Usuarios
+
+</a>
+
+
+<a
+    class="sb-link"
+    data-view="configuracion"
+    href="configuracion.html"
+>
+
+    <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+    >
+
+        <circle
+            cx="12"
+            cy="12"
+            r="3"
+            stroke="currentColor"
+            stroke-width="1.7"
+        />
+
+        <path
+            d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linejoin="round"
+        />
+
+    </svg>
+
+    Configuración
+
+</a>
 
 </nav>
 
@@ -1173,7 +1757,10 @@ table.simple tr:hover td{
 
     <div class="sb-user">
 
-        <div class="avatar" id="sbAvatar">
+        <div
+            class="avatar"
+            id="sbAvatar"
+        >
             C
         </div>
 
@@ -1274,7 +1861,9 @@ table.simple tr:hover td{
 </div>
 
 
-<!-- NOTIFICACIONES -->
+<!-- =====================================================
+     NOTIFICACIONES
+===================================================== -->
 
 <div
     class="notification-panel"
@@ -1287,7 +1876,10 @@ table.simple tr:hover td{
             Notificaciones
         </strong>
 
-        <button id="closeNotifications">
+        <button
+            id="closeNotifications"
+            type="button"
+        >
             ×
         </button>
 
@@ -1304,7 +1896,9 @@ table.simple tr:hover td{
 </div>
 
 
-<!-- FILTROS -->
+<!-- =====================================================
+     FILTROS
+===================================================== -->
 
 <div class="panel">
 
@@ -1322,6 +1916,7 @@ table.simple tr:hover td{
         <button
             class="btn-primary"
             id="btnNuevo"
+            type="button"
         >
 
             <svg
@@ -1351,7 +1946,7 @@ table.simple tr:hover td{
 
         <div>
 
-            <label>
+            <label for="fSearch">
                 Buscar producto
             </label>
 
@@ -1366,7 +1961,7 @@ table.simple tr:hover td{
 
         <div>
 
-            <label>
+            <label for="fCategoria">
                 Categoría
             </label>
 
@@ -1399,7 +1994,7 @@ table.simple tr:hover td{
 
         <div>
 
-            <label>
+            <label for="fEstado">
                 Estado
             </label>
 
@@ -1425,6 +2020,7 @@ table.simple tr:hover td{
         <button
             class="btn-ghost"
             id="btnLimpiar"
+            type="button"
         >
             Limpiar
         </button>
@@ -1433,6 +2029,7 @@ table.simple tr:hover td{
         <button
             class="btn-primary"
             id="btnBuscar"
+            type="button"
         >
             Buscar
         </button>
@@ -1442,7 +2039,9 @@ table.simple tr:hover td{
 </div>
 
 
-<!-- LISTADO -->
+<!-- =====================================================
+     LISTADO
+===================================================== -->
 
 <div class="panel">
 
@@ -1561,6 +2160,7 @@ table.simple tr:hover td{
         <button
             class="modal-close"
             id="modalClose"
+            type="button"
         >
 
             <svg
@@ -2236,6 +2836,7 @@ function renderTabla(lista){
             <button
                 class="action-btn"
                 title="Editar"
+                type="button"
                 onclick="editarProducto('${p.id}')"
             >
 
@@ -2266,6 +2867,7 @@ function renderTabla(lista){
             <button
                 class="action-btn danger"
                 title="Eliminar"
+                type="button"
                 onclick="eliminarProducto('${p.id}')"
             >
 
@@ -2919,11 +3521,11 @@ cargarProductos();
 </script>
 
 
-<script>
+<!-- =====================================================
+     NOTIFICACIONES
+===================================================== -->
 
-/* =====================================================
-   NOTIFICACIONES
-===================================================== */
+<script>
 
 const btnCampana =
 document.getElementById(
@@ -3047,9 +3649,9 @@ async function cargarLasNotificaciones(){
         '';
 
 
-    /* -------------------------------------------------
+    /* =================================================
        RECEPCIONES
-    ------------------------------------------------- */
+    ================================================= */
 
     const {
         data:recepciones
@@ -3151,9 +3753,9 @@ async function cargarLasNotificaciones(){
     }
 
 
-    /* -------------------------------------------------
+    /* =================================================
        PRODUCTOS INACTIVOS
-    ------------------------------------------------- */
+    ================================================= */
 
     const {
         data:productos
@@ -3248,9 +3850,9 @@ async function cargarLasNotificaciones(){
     }
 
 
-    /* -------------------------------------------------
-       MOSTRAR RESULTADO
-    ------------------------------------------------- */
+    /* =================================================
+       RESULTADO
+    ================================================= */
 
     if(
         !hayNotificaciones
@@ -3279,7 +3881,7 @@ async function cargarLasNotificaciones(){
 
 
 /* =====================================================
-   ESCAPAR HTML NOTIFICACIONES
+   ESCAPAR HTML
 ===================================================== */
 
 function escapeHTMLNotif(text){
@@ -3293,6 +3895,134 @@ function escapeHTMLNotif(text){
         text ?? '';
 
     return div.innerHTML;
+
+}
+
+</script>
+
+
+<!-- =====================================================
+     MENÚ MÓVIL
+===================================================== -->
+
+<script>
+
+const mobileMenuBtn =
+    document.getElementById(
+        'mobileMenuBtn'
+    );
+
+const mobileOverlay =
+    document.getElementById(
+        'mobileOverlay'
+    );
+
+const sidebar =
+    document.querySelector(
+        '.sidebar'
+    );
+
+
+function abrirMenuMovil(){
+
+    sidebar.classList.add(
+        'mobile-open'
+    );
+
+    mobileOverlay.classList.add(
+        'show'
+    );
+
+    document.body.style.overflow =
+        'hidden';
+
+}
+
+
+function cerrarMenuMovil(){
+
+    sidebar.classList.remove(
+        'mobile-open'
+    );
+
+    mobileOverlay.classList.remove(
+        'show'
+    );
+
+    document.body.style.overflow =
+        '';
+
+}
+
+
+if(
+    mobileMenuBtn &&
+    sidebar &&
+    mobileOverlay
+){
+
+    mobileMenuBtn.addEventListener(
+        'click',
+        function(e){
+
+            e.stopPropagation();
+
+            if(
+                sidebar.classList.contains(
+                    'mobile-open'
+                )
+            ){
+
+                cerrarMenuMovil();
+
+            }else{
+
+                abrirMenuMovil();
+
+            }
+
+        }
+    );
+
+
+    mobileOverlay.addEventListener(
+        'click',
+        cerrarMenuMovil
+    );
+
+
+    sidebar
+        .querySelectorAll('.sb-link')
+        .forEach(
+            function(link){
+
+                link.addEventListener(
+                    'click',
+                    function(){
+
+                        cerrarMenuMovil();
+
+                    }
+                );
+
+            }
+        );
+
+
+    window.addEventListener(
+        'resize',
+        function(){
+
+            if(
+                window.innerWidth > 800
+            ){
+
+                cerrarMenuMovil();
+
+            }
+
+        }
+    );
 
 }
 
