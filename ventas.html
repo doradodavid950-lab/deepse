@@ -783,6 +783,347 @@ table.simple tr:last-child td{
 }
 
 
+/* TARJETAS DE VENTAS PARA CELULAR */
+
+.sales-cards{
+  display:none;
+}
+
+.sale-card{
+  background:#fff;
+  border:1px solid var(--gris-borde);
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:12px;
+  box-shadow:0 5px 18px rgba(6,43,91,.06);
+}
+
+.sale-card:last-child{
+  margin-bottom:0;
+}
+
+.sale-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:13px;
+}
+
+.sale-card-product{
+  min-width:0;
+}
+
+.sale-card-product strong{
+  display:block;
+  font-size:14px;
+  color:var(--texto-principal);
+  line-height:1.3;
+  word-break:break-word;
+}
+
+.sale-card-product span{
+  display:block;
+  margin-top:3px;
+  font-size:11px;
+  color:var(--texto-secundario);
+}
+
+.sale-card-info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:13px;
+}
+
+.sale-card-field{
+  background:var(--gris-claro);
+  border-radius:9px;
+  padding:9px 10px;
+  min-width:0;
+}
+
+.sale-card-field small{
+  display:block;
+  font-size:10px;
+  color:var(--texto-secundario);
+  margin-bottom:3px;
+}
+
+.sale-card-field strong{
+  display:block;
+  font-size:12px;
+  color:var(--texto-principal);
+  overflow-wrap:anywhere;
+}
+
+.sale-card-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  padding-top:11px;
+  border-top:1px solid var(--gris-borde);
+}
+
+.sale-card-actions .action-btn{
+  width:100%;
+  padding:9px 8px;
+}
+
+@media(max-width:800px){
+
+  body{
+    overflow-x:hidden;
+  }
+
+  .app{
+    grid-template-columns:1fr;
+    min-width:0;
+  }
+
+  .sidebar{
+    display:flex;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:250px;
+    height:100vh;
+    z-index:1200;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+    box-shadow:10px 0 30px rgba(6,43,91,.20);
+  }
+
+  .sidebar.mobile-open{
+    transform:translateX(0);
+  }
+
+  .mobile-menu-btn{
+    display:flex;
+    position:fixed;
+    top:14px;
+    left:14px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:11px;
+    background:var(--azul-oscuro);
+    color:#fff;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:1300;
+    box-shadow:0 6px 18px rgba(6,43,91,.20);
+  }
+
+  .mobile-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(6,43,91,.42);
+    z-index:1100;
+  }
+
+  .mobile-overlay.show{
+    display:block;
+  }
+
+  main{
+    width:100%;
+    min-width:0;
+    padding:70px 16px 30px;
+  }
+
+  .topbar{
+    margin-bottom:20px;
+    gap:12px;
+    align-items:flex-start;
+  }
+
+  .topbar > div:first-child{
+    min-width:0;
+  }
+
+  .topbar h1{
+    font-size:21px;
+    line-height:1.25;
+    padding-left:48px;
+  }
+
+  .topbar .subtitle{
+    font-size:12px;
+    line-height:1.45;
+    padding-left:48px;
+  }
+
+  .top-actions{
+    gap:7px;
+    flex:0 0 auto;
+  }
+
+  .top-user{
+    display:none;
+  }
+
+  .icon-btn{
+    width:40px;
+    height:40px;
+  }
+
+  .module-header{
+    flex-direction:column;
+    align-items:stretch;
+    gap:14px;
+    margin-bottom:18px;
+  }
+
+  .module-title h2{
+    font-size:18px;
+  }
+
+  .module-title p{
+    line-height:1.45;
+  }
+
+  .btn-primary{
+    width:100%;
+    justify-content:center;
+  }
+
+  .kpi-grid{
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-bottom:16px;
+  }
+
+  .kpi-card{
+    padding:17px;
+  }
+
+  .kpi-card .value{
+    font-size:24px;
+  }
+
+  .panel{
+    padding:15px;
+    border-radius:14px;
+  }
+
+  .panel-head{
+    flex-direction:column;
+    align-items:stretch;
+    gap:11px;
+    margin-bottom:13px;
+  }
+
+  .panel-head h3{
+    font-size:15px;
+  }
+
+  .search-box{
+    width:100%;
+    height:40px;
+  }
+
+  .sales-table-wrap{
+    display:none;
+  }
+
+  .sales-cards{
+    display:block;
+  }
+
+  .notification-panel{
+    top:66px;
+    left:12px;
+    right:12px;
+    width:auto;
+    max-height:70vh;
+    overflow-y:auto;
+  }
+
+  .modal{
+    padding:10px;
+    align-items:flex-end;
+  }
+
+  .modal-content{
+    width:100%;
+    max-width:none;
+    max-height:92vh;
+    border-radius:16px 16px 12px 12px;
+  }
+
+  .modal-header{
+    padding:16px;
+  }
+
+  .modal-body{
+    padding:16px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+    gap:13px;
+  }
+
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .form-footer{
+    flex-direction:column-reverse;
+  }
+
+  .btn-secondary,
+  .btn-save{
+    width:100%;
+  }
+
+  .toast{
+    left:14px;
+    right:14px;
+    bottom:14px;
+    text-align:center;
+  }
+
+}
+
+@media(max-width:520px){
+
+  main{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .topbar h1{
+    font-size:20px;
+  }
+
+  .topbar .subtitle{
+    font-size:11.5px;
+  }
+
+  .sale-card{
+    padding:13px;
+  }
+
+  .sale-card-info{
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+
+  .sale-card-field{
+    padding:8px;
+  }
+
+  .sale-card-actions{
+    gap:7px;
+  }
+
+}
+
 /* RESPONSIVE */
 
 @media(max-width:1100px){
@@ -2564,6 +2905,12 @@ function renderSales(){
     );
 
 
+  const cards =
+    document.getElementById(
+      'salesCards'
+    );
+
+
   const empty =
     document.getElementById(
       'emptyMessage'
@@ -2571,6 +2918,10 @@ function renderSales(){
 
 
   table.innerHTML =
+    '';
+
+
+  cards.innerHTML =
     '';
 
 
@@ -2591,12 +2942,6 @@ function renderSales(){
   filtered.forEach(
     function(item){
 
-      const row =
-        document.createElement(
-          'tr'
-        );
-
-
       const productName =
         item.productos &&
         item.productos.nombre
@@ -2609,6 +2954,14 @@ function renderSales(){
         'Local'
           ? 'local'
           : 'distribucion';
+
+
+      /* TABLA PARA PC */
+
+      const row =
+        document.createElement(
+          'tr'
+        );
 
 
       row.innerHTML = `
@@ -2672,7 +3025,138 @@ function renderSales(){
       `;
 
 
-      table.appendChild(row);
+      table.appendChild(
+        row
+      );
+
+
+      /* TARJETA PARA CELULAR */
+
+      const card =
+        document.createElement(
+          'div'
+        );
+
+
+      card.className =
+        'sale-card';
+
+
+      card.innerHTML = `
+
+        <div class="sale-card-head">
+
+          <div class="sale-card-product">
+
+            <strong>
+              ${escapeHtml(productName)}
+            </strong>
+
+            <span>
+              Venta registrada el ${escapeHtml(
+                formatDate(item.fecha_venta)
+              )}
+            </span>
+
+          </div>
+
+          <span class="pill ${typeClass}">
+            ${escapeHtml(
+              item.tipo_venta || '-'
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="sale-card-info">
+
+          <div class="sale-card-field">
+
+            <small>
+              Cantidad
+            </small>
+
+            <strong>
+              ${escapeHtml(
+                Number(item.cantidad || 0)
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="sale-card-field">
+
+            <small>
+              Cliente
+            </small>
+
+            <strong>
+              ${escapeHtml(
+                item.cliente || '-'
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="sale-card-field">
+
+            <small>
+              Canal
+            </small>
+
+            <strong>
+              ${escapeHtml(
+                item.canal_venta || '-'
+              )}
+            </strong>
+
+          </div>
+
+
+          <div class="sale-card-field">
+
+            <small>
+              Destino
+            </small>
+
+            <strong>
+              ${escapeHtml(
+                item.destino || '-'
+              )}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="sale-card-actions">
+
+          <button
+            class="action-btn edit-btn"
+            onclick="editSale('${item.id}')"
+          >
+            Editar
+          </button>
+
+          <button
+            class="action-btn delete-btn"
+            onclick="deleteSale('${item.id}')"
+          >
+            Eliminar
+          </button>
+
+        </div>
+
+      `;
+
+
+      cards.appendChild(
+        card
+      );
 
     }
   );
