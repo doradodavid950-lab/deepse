@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -34,7 +35,8 @@
 box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
 margin:0;
 padding:0;
 font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -42,11 +44,19 @@ background:var(--gris-claro);
 color:var(--texto-principal);
 }
 
+body{
+min-width:0;
+}
+
 .app{
 display:grid;
 grid-template-columns:250px 1fr;
 min-height:100vh;
 }
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar{
 background:var(--azul-oscuro);
@@ -57,6 +67,7 @@ padding:22px 16px;
 position:sticky;
 top:0;
 height:100vh;
+z-index:1200;
 }
 
 .sb-brand{
@@ -190,8 +201,13 @@ cursor:pointer;
 background:rgba(229,57,53,.28);
 }
 
+/* =====================================================
+   CONTENIDO PRINCIPAL
+===================================================== */
+
 main{
 padding:26px 32px 50px;
+min-width:0;
 }
 
 .topbar{
@@ -275,6 +291,45 @@ font-size:13.5px;
 font-weight:600;
 }
 
+/* =====================================================
+   BOTÓN MENÚ MÓVIL
+===================================================== */
+
+.mobile-menu-btn{
+display:none;
+width:42px;
+height:42px;
+min-width:42px;
+border:1px solid var(--gris-borde);
+border-radius:10px;
+background:#fff;
+color:var(--azul-oscuro);
+align-items:center;
+justify-content:center;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(6,43,91,.08);
+}
+
+/* =====================================================
+   OVERLAY MÓVIL
+===================================================== */
+
+.mobile-overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+z-index:1100;
+}
+
+.mobile-overlay.show{
+display:block;
+}
+
+/* =====================================================
+   NOTIFICACIONES
+===================================================== */
+
 .notification-panel{
 position:fixed;
 top:78px;
@@ -284,7 +339,7 @@ background:var(--blanco);
 border:1px solid var(--gris-borde);
 border-radius:14px;
 box-shadow:0 15px 35px rgba(6,43,91,.16);
-z-index:1000;
+z-index:2000;
 display:none;
 overflow:hidden;
 }
@@ -363,6 +418,10 @@ font-size:12px;
 color:var(--texto-secundario);
 }
 
+/* =====================================================
+   MÓDULO
+===================================================== */
+
 .module-header{
 display:flex;
 align-items:center;
@@ -384,6 +443,7 @@ color:var(--texto-secundario);
 .btn-primary{
 display:flex;
 align-items:center;
+justify-content:center;
 gap:8px;
 background:var(--azul-medio);
 color:white;
@@ -399,6 +459,10 @@ box-shadow:0 6px 15px rgba(30,102,245,.25);
 .btn-primary:hover{
 background:#1557d5;
 }
+
+/* =====================================================
+   KPI
+===================================================== */
 
 .kpi-grid{
 display:grid;
@@ -459,11 +523,16 @@ margin-top:2px;
 --accent-soft:#B9F5C5;
 }
 
+/* =====================================================
+   PANEL
+===================================================== */
+
 .panel{
 background:var(--blanco);
 border-radius:var(--radio);
 box-shadow:var(--sombra);
 padding:20px;
+min-width:0;
 }
 
 .panel-head{
@@ -499,10 +568,21 @@ font-size:12.5px;
 color:var(--texto-principal);
 }
 
+/* =====================================================
+   TABLA
+===================================================== */
+
+.table-container{
+width:100%;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+}
+
 table.simple{
 width:100%;
 border-collapse:collapse;
 font-size:13px;
+min-width:760px;
 }
 
 table.simple th{
@@ -512,6 +592,7 @@ font-weight:600;
 font-size:11.5px;
 padding:8px 6px;
 border-bottom:1px solid var(--gris-borde);
+white-space:nowrap;
 }
 
 table.simple td{
@@ -530,6 +611,7 @@ padding:3px 10px;
 border-radius:30px;
 font-size:11px;
 font-weight:700;
+white-space:nowrap;
 }
 
 .pill.refrigerado{
@@ -555,6 +637,7 @@ font-size:11px;
 font-weight:600;
 cursor:pointer;
 margin-right:4px;
+margin-bottom:3px;
 }
 
 .edit-btn{
@@ -574,6 +657,10 @@ font-size:13px;
 color:var(--texto-secundario);
 }
 
+/* =====================================================
+   MODAL
+===================================================== */
+
 .modal{
 position:fixed;
 inset:0;
@@ -581,7 +668,7 @@ background:rgba(6,43,91,.35);
 display:none;
 align-items:center;
 justify-content:center;
-z-index:2000;
+z-index:3000;
 padding:20px;
 }
 
@@ -723,6 +810,10 @@ opacity:.6;
 cursor:not-allowed;
 }
 
+/* =====================================================
+   TOAST
+===================================================== */
+
 .toast{
 position:fixed;
 right:25px;
@@ -738,7 +829,7 @@ opacity:0;
 pointer-events:none;
 transform:translateY(10px);
 transition:.25s;
-z-index:3000;
+z-index:4000;
 }
 
 .toast.show{
@@ -754,6 +845,10 @@ background:var(--verde-txt);
 background:var(--rojo);
 }
 
+/* =====================================================
+   TABLET
+===================================================== */
+
 @media(max-width:1100px){
 
 .kpi-grid{
@@ -762,57 +857,287 @@ grid-template-columns:repeat(2,1fr);
 
 }
 
+/* =====================================================
+   CELULAR
+===================================================== */
+
 @media(max-width:800px){
 
-.app{
-grid-template-columns:1fr;
+html,
+body{
+width:100%;
+overflow-x:hidden;
 }
 
+.app{
+display:block;
+width:100%;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
 .sidebar{
+display:flex;
+position:fixed;
+top:0;
+left:0;
+width:280px;
+max-width:85vw;
+height:100vh;
+z-index:1200;
+
+transform:translateX(-110%);
+transition:transform .25s ease;
+
+overflow-y:auto;
+
+box-shadow:8px 0 30px rgba(0,0,0,.25);
+}
+
+.sidebar.mobile-open{
+transform:translateX(0);
+}
+
+/* BOTÓN */
+
+.mobile-menu-btn{
+display:flex;
+}
+
+/* MAIN */
+
+main{
+width:100%;
+min-width:0;
+padding:16px 14px 30px;
+}
+
+/* TOPBAR */
+
+.topbar{
+display:grid;
+grid-template-columns:42px minmax(0,1fr) auto;
+align-items:center;
+gap:10px;
+margin-bottom:22px;
+}
+
+.topbar h1{
+font-size:21px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.topbar .subtitle{
+font-size:11px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.top-actions{
+gap:7px;
+}
+
+.top-user{
+padding:4px;
+border-radius:50%;
+}
+
+.top-user span{
 display:none;
 }
 
-main{
-padding:18px;
+.top-user .avatar{
+width:32px;
+height:32px;
+}
+
+/* MÓDULO */
+
+.module-header{
+flex-direction:column;
+align-items:flex-start;
+gap:14px;
+margin-bottom:20px;
+}
+
+.module-title h2{
+font-size:18px;
+}
+
+.module-title p{
+font-size:12px;
+line-height:1.5;
+}
+
+.btn-primary{
+width:100%;
+justify-content:center;
+}
+
+/* KPI */
+
+.kpi-grid{
+grid-template-columns:1fr;
+gap:13px;
+margin-bottom:18px;
+}
+
+.kpi-card{
+padding:17px;
+}
+
+.kpi-card .value{
+font-size:24px;
+}
+
+/* PANEL */
+
+.panel{
+padding:15px;
+width:100%;
+overflow:hidden;
+}
+
+.panel-head{
+flex-direction:column;
+align-items:flex-start;
+gap:12px;
+}
+
+.panel-head h3{
+font-size:14px;
+}
+
+.search-box{
+width:100%;
+max-width:100%;
+}
+
+/* TABLA */
+
+.table-container{
+width:100%;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+}
+
+table.simple{
+min-width:760px;
+}
+
+/* MODAL */
+
+.modal{
+padding:10px;
+}
+
+.modal-content{
+width:100%;
+max-height:95vh;
+border-radius:14px;
+}
+
+.modal-header{
+padding:15px;
+}
+
+.modal-body{
+padding:15px;
 }
 
 .form-grid{
 grid-template-columns:1fr;
+gap:13px;
 }
 
 .form-group.full{
 grid-column:auto;
 }
 
-.module-header{
-align-items:flex-start;
-gap:15px;
+.form-footer{
 flex-direction:column;
+gap:8px;
 }
+
+.btn-secondary,
+.btn-save{
+width:100%;
+min-height:44px;
+}
+
+/* NOTIFICACIONES */
 
 .notification-panel{
-right:18px;
-left:18px;
-width:auto;
 top:70px;
+left:10px;
+right:10px;
+width:auto;
+max-height:calc(100vh - 85px);
+overflow-y:auto;
+}
+
+/* TOAST */
+
+.toast{
+left:10px;
+right:10px;
+bottom:15px;
+text-align:center;
 }
 
 }
 
-@media(max-width:600px){
+/* =====================================================
+   CELULARES PEQUEÑOS
+===================================================== */
 
-.kpi-grid{
-grid-template-columns:1fr;
+@media(max-width:480px){
+
+main{
+padding:12px 10px 25px;
 }
 
-.panel-head{
-align-items:flex-start;
-flex-direction:column;
-gap:12px;
+.mobile-menu-btn{
+width:40px;
+height:40px;
+min-width:40px;
 }
 
-.search-box{
-width:100%;
+.topbar{
+grid-template-columns:40px minmax(0,1fr) auto;
+gap:7px;
+}
+
+.topbar h1{
+font-size:18px;
+}
+
+.topbar .subtitle{
+font-size:10px;
+}
+
+.panel{
+padding:12px;
+}
+
+.kpi-card{
+padding:15px;
+}
+
+.modal-header h3{
+font-size:15px;
+}
+
+/* Evita que el teclado del celular haga zoom en inputs */
+
+input,
+select,
+textarea{
+font-size:16px !important;
 }
 
 }
@@ -823,6 +1148,10 @@ width:100%;
 <body>
 
 <div class="app">
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
 <aside class="sidebar">
 
@@ -842,8 +1171,13 @@ stroke-linejoin="round"/>
 
 <div>
 
-<div class="name">Deep <span>Sea</span></div>
-<div class="sub">Gestión de recursos marinos</div>
+<div class="name">
+Deep <span>Sea</span>
+</div>
+
+<div class="sub">
+Gestión de recursos marinos
+</div>
 
 </div>
 
@@ -1025,13 +1359,19 @@ Configuración
 
 <div class="sb-user">
 
-<div class="avatar" id="sbAvatar">C</div>
+<div class="avatar" id="sbAvatar">
+C
+</div>
 
 <div class="info">
 
-<strong id="sbUserName">Cargando...</strong>
+<strong id="sbUserName">
+Cargando...
+</strong>
 
-<span>En línea</span>
+<span>
+En línea
+</span>
 
 </div>
 
@@ -1056,23 +1396,63 @@ Cerrar sesión
 
 </aside>
 
+
+<!-- =====================================================
+     CONTENIDO
+===================================================== -->
+
 <main>
 
 <div class="topbar">
 
+<!-- BOTÓN MÓVIL -->
+
+<button
+class="mobile-menu-btn"
+id="mobileMenuBtn"
+type="button"
+aria-label="Abrir menú"
+>
+
+<svg
+width="22"
+height="22"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+>
+
+<path d="M4 6h16"></path>
+<path d="M4 12h16"></path>
+<path d="M4 18h16"></path>
+
+</svg>
+
+</button>
+
+
 <div>
 
-<h1>Almacenamiento</h1>
+<h1>
+Almacenamiento
+</h1>
 
 <div class="subtitle">
-Gestión y control de almacenamiento — <span id="todayDate"></span>
+Gestión y control de almacenamiento —
+<span id="todayDate"></span>
 </div>
 
 </div>
+
 
 <div class="top-actions">
 
-<button class="icon-btn" id="notificationBtn" title="Notificaciones">
+<button
+class="icon-btn"
+id="notificationBtn"
+title="Notificaciones"
+>
 
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
 <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
@@ -1083,15 +1463,26 @@ stroke="currentColor"
 stroke-width="1.6"/>
 </svg>
 
-<span class="dot-alert" id="notificationDot"></span>
+<span
+class="dot-alert"
+id="notificationDot"
+></span>
 
 </button>
 
+
 <div class="top-user">
 
-<div class="avatar" id="topAvatar">C</div>
+<div
+class="avatar"
+id="topAvatar"
+>
+C
+</div>
 
-<span id="topUserName">Cargando...</span>
+<span id="topUserName">
+Cargando...
+</span>
 
 </div>
 
@@ -1099,13 +1490,25 @@ stroke-width="1.6"/>
 
 </div>
 
-<div class="notification-panel" id="notificationPanel">
+
+<!-- =====================================================
+     NOTIFICACIONES
+===================================================== -->
+
+<div
+class="notification-panel"
+id="notificationPanel"
+>
 
 <div class="notification-header">
 
-<strong>Notificaciones</strong>
+<strong>
+Notificaciones
+</strong>
 
-<button id="closeNotifications">×</button>
+<button id="closeNotifications">
+×
+</button>
 
 </div>
 
@@ -1119,19 +1522,31 @@ Cargando notificaciones...
 
 </div>
 
+
+<!-- =====================================================
+     ENCABEZADO
+===================================================== -->
+
 <div class="module-header">
 
 <div class="module-title">
 
-<h2>Gestión de almacenamiento</h2>
+<h2>
+Gestión de almacenamiento
+</h2>
 
 <p>
-Registra y controla las condiciones de almacenamiento de los productos marinos.
+Registra y controla las condiciones de almacenamiento
+de los productos marinos.
 </p>
 
 </div>
 
-<button class="btn-primary" id="newStorageBtn">
+
+<button
+class="btn-primary"
+id="newStorageBtn"
+>
 
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
 <path d="M12 5v14M5 12h14"
@@ -1146,7 +1561,13 @@ Nuevo almacenamiento
 
 </div>
 
+
+<!-- =====================================================
+     KPI
+===================================================== -->
+
 <div class="kpi-grid">
+
 
 <div class="kpi-card c1">
 
@@ -1165,13 +1586,19 @@ stroke-linejoin="round"/>
 
 </div>
 
-<div class="value" id="totalCount">0</div>
+<div
+class="value"
+id="totalCount"
+>
+0
+</div>
 
 <div class="label">
 Almacenamientos registrados
 </div>
 
 </div>
+
 
 <div class="kpi-card c2">
 
@@ -1190,13 +1617,19 @@ stroke-linecap="round"/>
 
 </div>
 
-<div class="value" id="refrigeratedCount">0</div>
+<div
+class="value"
+id="refrigeratedCount"
+>
+0
+</div>
 
 <div class="label">
 Productos refrigerados
 </div>
 
 </div>
+
 
 <div class="kpi-card c3">
 
@@ -1215,7 +1648,12 @@ stroke-linecap="round"/>
 
 </div>
 
-<div class="value" id="frozenCount">0</div>
+<div
+class="value"
+id="frozenCount"
+>
+0
+</div>
 
 <div class="label">
 Productos congelados
@@ -1225,11 +1663,18 @@ Productos congelados
 
 </div>
 
+
+<!-- =====================================================
+     TABLA
+===================================================== -->
+
 <div class="panel">
 
 <div class="panel-head">
 
-<h3>Registros de almacenamiento</h3>
+<h3>
+Registros de almacenamiento
+</h3>
 
 <div class="search-box">
 
@@ -1253,7 +1698,8 @@ placeholder="Buscar producto o ubicación..."
 
 </div>
 
-<div style="overflow-x:auto;">
+
+<div class="table-container">
 
 <table class="simple">
 
@@ -1261,13 +1707,33 @@ placeholder="Buscar producto o ubicación..."
 
 <tr>
 
-<th>Producto</th>
-<th>Tipo</th>
-<th>Ubicación</th>
-<th>Temperatura</th>
-<th>Estado</th>
-<th>Fecha de almacenamiento</th>
-<th>Acciones</th>
+<th>
+Producto
+</th>
+
+<th>
+Tipo
+</th>
+
+<th>
+Ubicación
+</th>
+
+<th>
+Temperatura
+</th>
+
+<th>
+Estado
+</th>
+
+<th>
+Fecha de almacenamiento
+</th>
+
+<th>
+Acciones
+</th>
 
 </tr>
 
@@ -1278,7 +1744,12 @@ placeholder="Buscar producto o ubicación..."
 
 </table>
 
-<div id="emptyMessage" class="empty" style="display:none;">
+
+<div
+id="emptyMessage"
+class="empty"
+style="display:none;"
+>
 No hay registros de almacenamiento.
 </div>
 
@@ -1290,7 +1761,24 @@ No hay registros de almacenamiento.
 
 </div>
 
-<div class="modal" id="storageModal">
+
+<!-- OVERLAY MÓVIL -->
+
+<div
+class="mobile-overlay"
+id="mobileOverlay"
+>
+</div>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+class="modal"
+id="storageModal"
+>
 
 <div class="modal-content">
 
@@ -1300,19 +1788,28 @@ No hay registros de almacenamiento.
 Nuevo almacenamiento
 </h3>
 
-<button class="close-btn" id="closeModal">
+<button
+class="close-btn"
+id="closeModal"
+>
 ×
 </button>
 
 </div>
 
+
 <div class="modal-body">
 
 <form id="storageForm">
 
-<input type="hidden" id="storageId">
+<input
+type="hidden"
+id="storageId"
+>
+
 
 <div class="form-grid">
+
 
 <div class="form-group full">
 
@@ -1320,7 +1817,10 @@ Nuevo almacenamiento
 Producto *
 </label>
 
-<select id="producto" required>
+<select
+id="producto"
+required
+>
 
 <option value="">
 Cargando productos...
@@ -1330,13 +1830,17 @@ Cargando productos...
 
 </div>
 
+
 <div class="form-group">
 
 <label for="tipo">
 Tipo de almacenamiento *
 </label>
 
-<select id="tipo" required>
+<select
+id="tipo"
+required
+>
 
 <option value="">
 Seleccionar tipo
@@ -1354,6 +1858,7 @@ Congelado
 
 </div>
 
+
 <div class="form-group">
 
 <label for="ubicacion">
@@ -1368,6 +1873,7 @@ required
 >
 
 </div>
+
 
 <div class="form-group">
 
@@ -1384,13 +1890,17 @@ placeholder="Ej. 4"
 
 </div>
 
+
 <div class="form-group">
 
 <label for="estado">
 Estado del producto *
 </label>
 
-<select id="estado" required>
+<select
+id="estado"
+required
+>
 
 <option value="Almacenado">
 Almacenado
@@ -1412,6 +1922,7 @@ En revisión
 
 </div>
 
+
 <div class="form-group">
 
 <label for="fecha">
@@ -1425,6 +1936,7 @@ required
 >
 
 </div>
+
 
 <div class="form-group full">
 
@@ -1440,6 +1952,7 @@ placeholder="Observaciones sobre el almacenamiento..."
 </div>
 
 </div>
+
 
 <div class="form-footer">
 
@@ -1469,9 +1982,21 @@ Guardar almacenamiento
 
 </div>
 
-<div class="toast" id="toast"></div>
+
+<!-- TOAST -->
+
+<div
+class="toast"
+id="toast"
+></div>
+
+
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
@@ -1487,8 +2012,10 @@ SUPABASE_URL,
 SUPABASE_ANON_KEY
 );
 
+
 let storageData = [];
 let productsData = [];
+
 
 const storageModal =
 document.getElementById('storageModal');
@@ -1505,23 +2032,41 @@ document.getElementById('searchInput');
 const emptyMessage =
 document.getElementById('emptyMessage');
 
-function showToast(message,type=''){
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(
+message,
+type=''
+){
 
 const toast =
 document.getElementById('toast');
 
-toast.textContent = message;
+toast.textContent =
+message;
 
 toast.className =
 'toast show ' + type;
 
-setTimeout(function(){
+setTimeout(
+function(){
 
-toast.className = 'toast';
+toast.className =
+'toast';
 
-},3000);
+},
+3000
+);
 
 }
+
+
+/* =====================================================
+   INICIAL
+===================================================== */
 
 function getInitial(name){
 
@@ -1536,12 +2081,22 @@ return name
 
 }
 
+
+/* =====================================================
+   SESIÓN
+===================================================== */
+
 async function checkSession(){
 
 const {data,error} =
-await supabaseClient.auth.getSession();
+await supabaseClient
+.auth
+.getSession();
 
-if(error || !data.session){
+if(
+error ||
+!data.session
+){
 
 window.location.href =
 'login.html';
@@ -1556,32 +2111,44 @@ data.session.user;
 const fullName =
 user.user_metadata &&
 user.user_metadata.full_name
-? user.user_metadata.full_name
-: user.email;
+?
+user.user_metadata.full_name
+:
+user.email;
 
 const initial =
 getInitial(fullName);
 
+
 document.getElementById(
 'sbUserName'
-).textContent = fullName;
+).textContent =
+fullName;
+
 
 document.getElementById(
 'topUserName'
-).textContent = fullName;
+).textContent =
+fullName;
+
 
 document.getElementById(
 'sbAvatar'
-).textContent = initial;
+).textContent =
+initial;
+
 
 document.getElementById(
 'topAvatar'
-).textContent = initial;
+).textContent =
+initial;
+
 
 document.getElementById(
 'todayDate'
 ).textContent =
-new Date().toLocaleDateString(
+new Date()
+.toLocaleDateString(
 'es-CO',
 {
 day:'2-digit',
@@ -1590,21 +2157,26 @@ year:'numeric'
 }
 );
 
+
 return data.session;
 
 }
 
-/* ================================
+
+/* =====================================================
    CARGAR PRODUCTOS
-================================ */
+===================================================== */
 
 async function loadProducts(){
 
 const select =
-document.getElementById('producto');
+document.getElementById(
+'producto'
+);
 
 select.innerHTML =
 '<option value="">Cargando productos...</option>';
+
 
 const {data,error} =
 await supabaseClient
@@ -1617,6 +2189,7 @@ ascending:true
 }
 );
 
+
 console.log(
 'PRODUCTOS DEVUELTOS:',
 data
@@ -1626,6 +2199,7 @@ console.log(
 'ERROR PRODUCTOS:',
 error
 );
+
 
 if(error){
 
@@ -1646,7 +2220,11 @@ return;
 
 }
 
-if(!data || data.length === 0){
+
+if(
+!data ||
+data.length === 0
+){
 
 select.innerHTML =
 '<option value="">No hay productos registrados</option>';
@@ -1659,15 +2237,22 @@ return;
 
 }
 
-productsData = data;
+
+productsData =
+data;
+
 
 select.innerHTML =
 '<option value="">Seleccionar producto</option>';
 
-data.forEach(function(product){
+
+data.forEach(
+function(product){
 
 const option =
-document.createElement('option');
+document.createElement(
+'option'
+);
 
 option.value =
 product.id;
@@ -1675,9 +2260,13 @@ product.id;
 option.textContent =
 product.nombre;
 
-select.appendChild(option);
+select.appendChild(
+option
+);
 
-});
+}
+);
+
 
 console.log(
 'Productos cargados correctamente:',
@@ -1686,9 +2275,10 @@ data.length
 
 }
 
-/* ================================
+
+/* =====================================================
    CARGAR ALMACENAMIENTOS
-================================ */
+===================================================== */
 
 async function loadStorage(){
 
@@ -1713,6 +2303,7 @@ ascending:false
 }
 );
 
+
 if(error){
 
 console.error(
@@ -1729,8 +2320,10 @@ return;
 
 }
 
+
 storageData =
 data || [];
+
 
 updateCounters();
 
@@ -1738,31 +2331,44 @@ renderStorage();
 
 }
 
+
+/* =====================================================
+   CONTADORES
+===================================================== */
+
 function updateCounters(){
 
 const total =
 storageData.length;
 
+
 const refrigerated =
 storageData.filter(
 item =>
-item.tipo === 'Refrigerado'
+item.tipo ===
+'Refrigerado'
 ).length;
+
 
 const frozen =
 storageData.filter(
 item =>
-item.tipo === 'Congelado'
+item.tipo ===
+'Congelado'
 ).length;
+
 
 document.getElementById(
 'totalCount'
-).textContent = total;
+).textContent =
+total;
+
 
 document.getElementById(
 'refrigeratedCount'
 ).textContent =
 refrigerated;
+
 
 document.getElementById(
 'frozenCount'
@@ -1770,6 +2376,11 @@ document.getElementById(
 frozen;
 
 }
+
+
+/* =====================================================
+   FECHA
+===================================================== */
 
 function formatDate(value){
 
@@ -1780,11 +2391,17 @@ return '-';
 const date =
 new Date(value);
 
+
 if(
-isNaN(date.getTime())
+isNaN(
+date.getTime()
+)
 ){
+
 return '-';
+
 }
+
 
 return date.toLocaleDateString(
 'es-CO',
@@ -1797,20 +2414,41 @@ year:'numeric'
 
 }
 
+
+/* =====================================================
+   SEGURIDAD HTML
+===================================================== */
+
 function escapeHtml(value){
 
 return String(value)
-.replaceAll('&','&amp;')
-.replaceAll('<','&lt;')
-.replaceAll('>','&gt;')
-.replaceAll('"','&quot;')
-.replaceAll("'","&#039;");
+.replaceAll(
+'&',
+'&amp;'
+)
+.replaceAll(
+'<',
+'&lt;'
+)
+.replaceAll(
+'>',
+'&gt;'
+)
+.replaceAll(
+'"',
+'&quot;'
+)
+.replaceAll(
+"'",
+'&#039;'
+);
 
 }
 
-/* ================================
+
+/* =====================================================
    TABLA
-================================ */
+===================================================== */
 
 function renderStorage(){
 
@@ -1819,6 +2457,7 @@ searchInput.value
 .toLowerCase()
 .trim();
 
+
 const filtered =
 storageData.filter(
 function(item){
@@ -1826,42 +2465,64 @@ function(item){
 const product =
 item.productos &&
 item.productos.nombre
-? item.productos.nombre
-: '';
+?
+item.productos.nombre
+:
+'';
+
 
 const location =
-item.ubicacion || '';
+item.ubicacion ||
+'';
+
 
 const type =
-item.tipo || '';
+item.tipo ||
+'';
+
 
 const state =
-item.estado_producto || '';
+item.estado_producto ||
+'';
+
 
 return (
+
 product
 .toLowerCase()
 .includes(search)
+
 ||
+
 location
 .toLowerCase()
 .includes(search)
+
 ||
+
 type
 .toLowerCase()
 .includes(search)
+
 ||
+
 state
 .toLowerCase()
 .includes(search)
+
 );
 
 }
 );
 
-storageTable.innerHTML = '';
 
-if(filtered.length === 0){
+storageTable.innerHTML =
+'';
+
+
+if(
+filtered.length === 0
+){
 
 emptyMessage.style.display =
 'block';
@@ -1870,31 +2531,46 @@ return;
 
 }
 
+
 emptyMessage.style.display =
 'none';
+
 
 filtered.forEach(
 function(item){
 
 const row =
-document.createElement('tr');
+document.createElement(
+'tr'
+);
+
 
 const productName =
 item.productos &&
 item.productos.nombre
-? item.productos.nombre
-: 'Sin producto';
+?
+item.productos.nombre
+:
+'Sin producto';
+
 
 const typeClass =
-item.tipo === 'Refrigerado'
-? 'refrigerado'
-: 'congelado';
+item.tipo ===
+'Refrigerado'
+?
+'refrigerado'
+:
+'congelado';
+
 
 const temperature =
 item.temperatura !== null &&
 item.temperatura !== undefined
-? item.temperatura + ' °C'
-: '-';
+?
+item.temperatura + ' °C'
+:
+'-';
+
 
 row.innerHTML = `
 
@@ -1948,58 +2624,77 @@ Eliminar
 
 `;
 
-storageTable.appendChild(row);
+
+storageTable.appendChild(
+row
+);
 
 }
 );
 
 }
 
-/* ================================
-   MODAL
-================================ */
+
+/* =====================================================
+   MODAL - ABRIR
+===================================================== */
 
 function openModal(){
 
 storageForm.reset();
 
+
 document.getElementById(
 'storageId'
-).value = '';
+).value =
+'';
+
 
 document.getElementById(
 'modalTitle'
 ).textContent =
 'Nuevo almacenamiento';
 
+
 document.getElementById(
 'saveBtn'
 ).textContent =
 'Guardar almacenamiento';
 
+
 const now =
 new Date();
+
 
 now.setMinutes(
 now.getMinutes() -
 now.getTimezoneOffset()
 );
 
+
 document.getElementById(
 'fecha'
 ).value =
-now.toISOString().slice(0,16);
+now.toISOString()
+.slice(
+0,
+16
+);
+
 
 document.getElementById(
 'producto'
 ).innerHTML =
 '<option value="">Seleccionar producto</option>';
 
+
 productsData.forEach(
 function(product){
 
 const option =
-document.createElement('option');
+document.createElement(
+'option'
+);
 
 option.value =
 product.id;
@@ -2007,18 +2702,27 @@ product.id;
 option.textContent =
 product.nombre;
 
+
 document.getElementById(
 'producto'
-).appendChild(option);
+).appendChild(
+option
+);
 
 }
 );
+
 
 storageModal.classList.add(
 'show'
 );
 
 }
+
+
+/* =====================================================
+   MODAL - CERRAR
+===================================================== */
 
 function closeModal(){
 
@@ -2028,6 +2732,11 @@ storageModal.classList.remove(
 
 }
 
+
+/* =====================================================
+   EDITAR
+===================================================== */
+
 function editStorage(id){
 
 const item =
@@ -2036,34 +2745,41 @@ storage =>
 storage.id === id
 );
 
+
 if(!item){
 return;
 }
+
 
 document.getElementById(
 'storageId'
 ).value =
 item.id;
 
+
 document.getElementById(
 'producto'
 ).value =
 item.producto_id || '';
+
 
 document.getElementById(
 'tipo'
 ).value =
 item.tipo || '';
 
+
 document.getElementById(
 'ubicacion'
 ).value =
 item.ubicacion || '';
 
+
 document.getElementById(
 'temperatura'
 ).value =
 item.temperatura ?? '';
+
 
 document.getElementById(
 'estado'
@@ -2071,40 +2787,52 @@ document.getElementById(
 item.estado_producto ||
 'Almacenado';
 
+
 document.getElementById(
 'observaciones'
 ).value =
 item.observaciones || '';
 
-if(item.fecha_almacenamiento){
+
+if(
+item.fecha_almacenamiento
+){
 
 const date =
 new Date(
 item.fecha_almacenamiento
 );
 
+
 date.setMinutes(
 date.getMinutes() -
 date.getTimezoneOffset()
 );
 
+
 document.getElementById(
 'fecha'
 ).value =
 date.toISOString()
-.slice(0,16);
+.slice(
+0,
+16
+);
 
 }
+
 
 document.getElementById(
 'modalTitle'
 ).textContent =
 'Editar almacenamiento';
 
+
 document.getElementById(
 'saveBtn'
 ).textContent =
 'Actualizar almacenamiento';
+
 
 storageModal.classList.add(
 'show'
@@ -2112,53 +2840,65 @@ storageModal.classList.add(
 
 }
 
-/* ================================
+
+/* =====================================================
    GUARDAR
-================================ */
+===================================================== */
 
 async function saveStorage(event){
 
 event.preventDefault();
+
 
 const storageId =
 document.getElementById(
 'storageId'
 ).value;
 
+
 const productoId =
 document.getElementById(
 'producto'
 ).value;
+
 
 const tipo =
 document.getElementById(
 'tipo'
 ).value;
 
+
 const ubicacion =
 document.getElementById(
 'ubicacion'
-).value.trim();
+).value
+.trim();
+
 
 const temperaturaValue =
 document.getElementById(
 'temperatura'
 ).value;
 
+
 const estado =
 document.getElementById(
 'estado'
 ).value;
+
 
 const fecha =
 document.getElementById(
 'fecha'
 ).value;
 
+
 const observaciones =
 document.getElementById(
 'observaciones'
-).value.trim();
+).value
+.trim();
+
 
 if(
 !productoId ||
@@ -2177,10 +2917,16 @@ return;
 
 }
 
+
 const temperatura =
 temperaturaValue === ''
-? null
-: Number(temperaturaValue);
+?
+null
+:
+Number(
+temperaturaValue
+);
+
 
 const payload = {
 
@@ -2200,25 +2946,33 @@ estado_producto:
 estado,
 
 fecha_almacenamiento:
-new Date(fecha).toISOString(),
+new Date(
+fecha
+).toISOString(),
 
 observaciones:
-observaciones || null
+observaciones ||
+null
 
 };
+
 
 const saveButton =
 document.getElementById(
 'saveBtn'
 );
 
+
 saveButton.disabled =
 true;
+
 
 saveButton.textContent =
 'Guardando...';
 
+
 let result;
+
 
 if(storageId){
 
@@ -2226,24 +2980,34 @@ result =
 await supabaseClient
 .from('almacenamientos')
 .update(payload)
-.eq('id',storageId);
+.eq(
+'id',
+storageId
+);
 
 }else{
 
 result =
 await supabaseClient
 .from('almacenamientos')
-.insert([payload]);
+.insert([
+payload
+]);
 
 }
+
 
 saveButton.disabled =
 false;
 
+
 saveButton.textContent =
 storageId
-? 'Actualizar almacenamiento'
-: 'Guardar almacenamiento';
+?
+'Actualizar almacenamiento'
+:
+'Guardar almacenamiento';
+
 
 if(result.error){
 
@@ -2261,22 +3025,28 @@ return;
 
 }
 
+
 closeModal();
+
 
 showToast(
 storageId
-? 'Almacenamiento actualizado correctamente'
-: 'Almacenamiento registrado correctamente',
+?
+'Almacenamiento actualizado correctamente'
+:
+'Almacenamiento registrado correctamente',
 'success'
 );
+
 
 await loadStorage();
 
 }
 
-/* ================================
+
+/* =====================================================
    ELIMINAR
-================================ */
+===================================================== */
 
 async function deleteStorage(id){
 
@@ -2286,15 +3056,20 @@ storage =>
 storage.id === id
 );
 
+
 if(!item){
 return;
 }
 
+
 const productName =
 item.productos &&
 item.productos.nombre
-? item.productos.nombre
-: 'este producto';
+?
+item.productos.nombre
+:
+'este producto';
+
 
 const confirmed =
 confirm(
@@ -2303,15 +3078,21 @@ productName +
 '"?'
 );
 
+
 if(!confirmed){
 return;
 }
+
 
 const {error} =
 await supabaseClient
 .from('almacenamientos')
 .delete()
-.eq('id',id);
+.eq(
+'id',
+id
+);
+
 
 if(error){
 
@@ -2329,18 +3110,21 @@ return;
 
 }
 
+
 showToast(
 'Registro eliminado correctamente',
 'success'
 );
 
+
 await loadStorage();
 
 }
 
-/* ================================
+
+/* =====================================================
    EVENTOS
-================================ */
+===================================================== */
 
 document.getElementById(
 'newStorageBtn'
@@ -2349,12 +3133,14 @@ document.getElementById(
 openModal
 );
 
+
 document.getElementById(
 'closeModal'
 ).addEventListener(
 'click',
 closeModal
 );
+
 
 document.getElementById(
 'cancelBtn'
@@ -2363,22 +3149,26 @@ document.getElementById(
 closeModal
 );
 
+
 storageForm.addEventListener(
 'submit',
 saveStorage
 );
+
 
 searchInput.addEventListener(
 'input',
 renderStorage
 );
 
+
 storageModal.addEventListener(
 'click',
 function(event){
 
 if(
-event.target === storageModal
+event.target ===
+storageModal
 ){
 
 closeModal();
@@ -2387,6 +3177,11 @@ closeModal();
 
 }
 );
+
+
+/* =====================================================
+   CERRAR SESIÓN
+===================================================== */
 
 document.getElementById(
 'logoutBtn'
@@ -2398,30 +3193,35 @@ await supabaseClient
 .auth
 .signOut();
 
+
 window.location.href =
 'login.html';
 
 }
 );
 
-/* ================================
+
+/* =====================================================
    NOTIFICACIONES
-================================ */
+===================================================== */
 
 const btnCampana =
 document.getElementById(
 'notificationBtn'
 );
 
+
 const panelNotificaciones =
 document.getElementById(
 'notificationPanel'
 );
 
+
 const cerrarNotificaciones =
 document.getElementById(
 'closeNotifications'
 );
+
 
 if(
 btnCampana &&
@@ -2434,9 +3234,11 @@ function(e){
 
 e.stopPropagation();
 
+
 panelNotificaciones
 .classList
 .toggle('show');
+
 
 if(
 panelNotificaciones
@@ -2451,8 +3253,8 @@ cargarLasNotificaciones();
 }
 );
 
-cerrarNotificaciones
-.addEventListener(
+
+cerrarNotificaciones.addEventListener(
 'click',
 function(){
 
@@ -2462,6 +3264,7 @@ panelNotificaciones
 
 }
 );
+
 
 document.addEventListener(
 'click',
@@ -2485,6 +3288,11 @@ panelNotificaciones
 
 }
 
+
+/* =====================================================
+   CARGAR NOTIFICACIONES
+===================================================== */
+
 async function cargarLasNotificaciones(){
 
 const contenido =
@@ -2492,26 +3300,34 @@ document.getElementById(
 'notificationContent'
 );
 
+
 const punto =
 document.getElementById(
 'notificationDot'
 );
 
+
 if(
 !contenido ||
 !punto
 ){
+
 return;
+
 }
+
 
 contenido.innerHTML =
 '<div class="notification-empty">Buscando alertas...</div>';
 
+
 let hayNotificaciones =
 false;
 
+
 let htmlNotifs =
 '';
+
 
 const {
 data:recepcionesNotif
@@ -2529,6 +3345,7 @@ ascending:false
 )
 .limit(20);
 
+
 if(recepcionesNotif){
 
 recepcionesNotif.forEach(
@@ -2538,6 +3355,7 @@ const estado =
 r.estado_producto ||
 'Recibido';
 
+
 if(
 estado
 .toLowerCase() !==
@@ -2546,6 +3364,7 @@ estado
 
 hayNotificaciones =
 true;
+
 
 htmlNotifs += `
 
@@ -2580,15 +3399,18 @@ fill="currentColor"
 <div>
 
 <strong>
-Recepción: ${escapeHtml(estado)}
+Recepción:
+${escapeHtml(estado)}
 </strong>
 
 <span>
-Carga de ${Number(
+Carga de
+${Number(
 r.peso || 0
 ).toLocaleString(
 'es-CO'
-)} kg.
+)}
+kg.
 </span>
 
 </div>
@@ -2603,6 +3425,7 @@ r.peso || 0
 );
 
 }
+
 
 const {
 data:productosNotif
@@ -2620,6 +3443,7 @@ ascending:false
 )
 .limit(20);
 
+
 if(productosNotif){
 
 productosNotif.forEach(
@@ -2627,13 +3451,15 @@ p => {
 
 if(
 p.estado &&
-p.estado.toLowerCase()
+p.estado
+.toLowerCase()
 ===
 'inactivo'
 ){
 
 hayNotificaciones =
 true;
+
 
 htmlNotifs += `
 
@@ -2688,10 +3514,14 @@ ${escapeHtml(p.nombre)}
 
 }
 
-if(!hayNotificaciones){
+
+if(
+!hayNotificaciones
+){
 
 punto.style.display =
 'none';
+
 
 contenido.innerHTML =
 '<div class="notification-empty">No hay notificaciones pendientes.</div>';
@@ -2701,6 +3531,7 @@ contenido.innerHTML =
 punto.style.display =
 'block';
 
+
 contenido.innerHTML =
 htmlNotifs;
 
@@ -2708,28 +3539,268 @@ htmlNotifs;
 
 }
 
-/* ================================
+
+/* =====================================================
+   MENÚ MÓVIL
+===================================================== */
+
+const mobileMenuBtn =
+document.getElementById(
+'mobileMenuBtn'
+);
+
+
+const mobileOverlay =
+document.getElementById(
+'mobileOverlay'
+);
+
+
+const mobileSidebar =
+document.querySelector(
+'.sidebar'
+);
+
+
+/* ABRIR MENÚ */
+
+function openMobileMenu(){
+
+if(!mobileSidebar){
+return;
+}
+
+
+mobileSidebar.classList.add(
+'mobile-open'
+);
+
+
+mobileOverlay.classList.add(
+'show'
+);
+
+
+mobileMenuBtn.setAttribute(
+'aria-label',
+'Cerrar menú'
+);
+
+
+mobileMenuBtn.innerHTML = `
+
+<svg
+width="22"
+height="22"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+>
+
+<path d="M6 6l12 12"></path>
+
+<path d="M18 6L6 18"></path>
+
+</svg>
+
+`;
+
+
+document.body.style.overflow =
+'hidden';
+
+}
+
+
+/* CERRAR MENÚ */
+
+function closeMobileMenu(){
+
+if(!mobileSidebar){
+return;
+}
+
+
+mobileSidebar.classList.remove(
+'mobile-open'
+);
+
+
+mobileOverlay.classList.remove(
+'show'
+);
+
+
+mobileMenuBtn.setAttribute(
+'aria-label',
+'Abrir menú'
+);
+
+
+mobileMenuBtn.innerHTML = `
+
+<svg
+width="22"
+height="22"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+>
+
+<path d="M4 6h16"></path>
+
+<path d="M4 12h16"></path>
+
+<path d="M4 18h16"></path>
+
+</svg>
+
+`;
+
+
+document.body.style.overflow =
+'';
+
+}
+
+
+/* BOTÓN */
+
+if(mobileMenuBtn){
+
+mobileMenuBtn.addEventListener(
+'click',
+function(){
+
+if(
+mobileSidebar.classList.contains(
+'mobile-open'
+)
+){
+
+closeMobileMenu();
+
+}else{
+
+openMobileMenu();
+
+}
+
+}
+);
+
+}
+
+
+/* OVERLAY */
+
+if(mobileOverlay){
+
+mobileOverlay.addEventListener(
+'click',
+closeMobileMenu
+);
+
+}
+
+
+/* ENLACES DEL SIDEBAR */
+
+if(mobileSidebar){
+
+mobileSidebar
+.querySelectorAll('a')
+.forEach(
+function(link){
+
+link.addEventListener(
+'click',
+function(){
+
+if(
+window.innerWidth <= 800
+){
+
+closeMobileMenu();
+
+}
+
+}
+);
+
+}
+);
+
+}
+
+
+/* ESC */
+
+document.addEventListener(
+'keydown',
+function(event){
+
+if(
+event.key ===
+'Escape'
+){
+
+closeMobileMenu();
+
+}
+
+}
+);
+
+
+/* CAMBIO DE TAMAÑO */
+
+window.addEventListener(
+'resize',
+function(){
+
+if(
+window.innerWidth > 800
+){
+
+closeMobileMenu();
+
+}
+
+}
+);
+
+
+/* =====================================================
    INICIAR
-================================ */
+===================================================== */
 
 async function init(){
 
 const session =
 await checkSession();
 
+
 if(!session){
 return;
 }
 
+
 await loadProducts();
+
 
 await loadStorage();
 
 }
+
 
 init();
 
 </script>
 
 </body>
+
 </html>
+```

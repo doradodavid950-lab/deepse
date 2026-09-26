@@ -1,0 +1,313 @@
+
+/* =========================================================
+   DEEP SEA - ADAPTACIÓN GENERAL PARA CELULAR
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Botón hamburguesa */
+.mobile-menu-btn {
+    display: none;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border: 1px solid #E4E9F0;
+    border-radius: 12px;
+    background: #FFFFFF;
+    color: #062B5B;
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 12px rgba(6, 43, 91, .08);
+    z-index: 1300;
+}
+
+.mobile-menu-btn:active {
+    transform: scale(.96);
+}
+
+/* Fondo oscuro cuando se abre el menú */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .42);
+    z-index: 1150;
+}
+
+.mobile-overlay.show {
+    display: block;
+}
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .app {
+        display: block !important;
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        display: flex !important;
+        flex-direction: column;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 280px;
+        max-width: 85vw;
+        height: 100vh;
+
+        transform: translateX(-105%);
+        transition: transform .25s ease;
+
+        z-index: 1200;
+
+        overflow: hidden;
+
+        box-shadow: 8px 0 30px rgba(0, 0, 0, .20);
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    /* Navegación interna del sidebar */
+    .sb-nav {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    /* Botón móvil */
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    /* Contenido */
+    main {
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 16px 14px 30px !important;
+    }
+
+    /* Barra superior */
+    .topbar {
+        display: grid !important;
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        align-items: center;
+
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .topbar h1 {
+        min-width: 0;
+        font-size: 21px !important;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .topbar .subtitle {
+        min-width: 0;
+        font-size: 11px !important;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .top-actions {
+        gap: 7px !important;
+    }
+
+    /* Usuario */
+    .top-user {
+        padding: 4px !important;
+        border-radius: 50% !important;
+    }
+
+    .top-user span {
+        display: none !important;
+    }
+
+    .top-user .avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Tarjetas KPI */
+    .kpi-grid {
+        grid-template-columns: 1fr !important;
+        gap: 13px !important;
+    }
+
+    .kpi-card {
+        width: 100%;
+    }
+
+    /* Grids */
+    .grid-2,
+    .grid-3,
+    .config-grid,
+    .normas-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Formularios */
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .form-group.full,
+    .field.full {
+        grid-column: auto !important;
+    }
+
+    /* Encabezados */
+    .module-header,
+    .product-header,
+    .panel-head {
+        align-items: flex-start !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    /* Buscadores */
+    .search-box,
+    .search-row input {
+        width: 100% !important;
+        max-width: 100%;
+    }
+
+    /* Notificaciones */
+    .notification-panel {
+        position: fixed !important;
+
+        top: 70px !important;
+        left: 10px !important;
+        right: 10px !important;
+
+        width: auto !important;
+        max-width: none !important;
+
+        max-height: calc(100vh - 85px);
+        overflow-y: auto;
+
+        z-index: 1250;
+    }
+
+    /* Tablas */
+    .table-container,
+    .table-wrapper,
+    .table-responsive,
+    .panel-table {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 650px;
+    }
+
+    /* Botones */
+    button,
+    .btn,
+    input,
+    select,
+    textarea {
+        max-width: 100%;
+    }
+
+    /* Evita que textos largos rompan la pantalla */
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    span,
+    label {
+        overflow-wrap: break-word;
+    }
+}
+
+/* =========================================================
+   CELULARES PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    main {
+        padding: 12px 10px 25px !important;
+    }
+
+    .mobile-menu-btn {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+    }
+
+    .topbar {
+        grid-template-columns: 40px minmax(0, 1fr) auto;
+        gap: 7px;
+    }
+
+    .topbar h1 {
+        font-size: 18px !important;
+    }
+
+    .topbar .subtitle {
+        font-size: 10px !important;
+    }
+
+    .panel,
+    .card,
+    .kpi-card {
+        border-radius: 12px;
+    }
+
+    .kpi-card {
+        padding: 15px !important;
+    }
+
+    /* Formularios */
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    /* Botones grandes y fáciles de tocar */
+    button,
+    .btn {
+        min-height: 42px;
+    }
+
+}
+
