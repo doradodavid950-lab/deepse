@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/png" href="logo-emblema.png">
 <title>Deep Sea Intelligence — Crear cuenta</title>
 <style>
   :root{
@@ -35,6 +36,7 @@
 
   .layout{
     min-height:100vh;
+    min-height:100dvh;
     display:grid;
     grid-template-columns: 1.1fr 1fr;
   }
@@ -50,7 +52,7 @@
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    padding:56px 60px;
+    padding:clamp(32px,5vw,56px) clamp(32px,5vw,60px);
   }
 
   .brand{
@@ -59,11 +61,19 @@
     gap:14px;
   }
 
+  /* Insignia blanca con el emblema del logo */
   .brand-badge{
-    width:52px;height:52px;border-radius:16px;
-    background:rgba(255,255,255,.12);
+    flex:0 0 auto;
+    width:60px;height:60px;border-radius:16px;
+    background:var(--blanco);
+    padding:5px;
     display:flex;align-items:center;justify-content:center;
-    backdrop-filter: blur(4px);
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+  }
+  .brand-badge img{
+    width:100%;height:100%;
+    object-fit:contain;
+    display:block;
   }
 
   .brand-name{
@@ -83,7 +93,7 @@
     max-width:430px;
   }
   .ocean-copy h1{
-    font-size:34px;
+    font-size:clamp(26px,2.6vw,34px);
     line-height:1.25;
     margin:0 0 14px;
     font-weight:700;
@@ -133,41 +143,99 @@
   }
 
   /* ---------- PANEL DERECHO (FORMULARIO) ---------- */
+  /* Fondo suave con degradado para que la tarjeta blanca resalte */
   .form-panel{
+    position:relative;
+    z-index:2;                      /* queda por encima del panel oceano */
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:40px 32px;
-    background:var(--blanco);
-    overflow-y:auto;
+    padding:clamp(12px,3vh,32px) 32px;
+    background:
+      radial-gradient(circle at 85% 10%, rgba(30,102,245,.10), transparent 45%),
+      linear-gradient(160deg, #EAF3FF 0%, var(--gris-claro) 100%);
   }
 
+  /* TARJETA FLOTANTE */
   .form-card{
+    position:relative;
     width:100%;
-    max-width:400px;
-    padding:20px 0;
+    max-width:410px;
+    background:var(--blanco);
+    border-radius:24px;
+    padding:clamp(18px,3vh,30px) clamp(24px,3vw,36px) clamp(16px,2.8vh,26px);
+    box-shadow:
+      0 30px 70px rgba(6,43,91,.22),
+      0 8px 20px rgba(6,43,91,.10);
+    border:1px solid rgba(6,43,91,.06);
+    overflow:visible;
+    animation: cardIn .6s ease both;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  @media (hover:hover){
+    .form-card:hover{
+      transform: translateY(-4px);
+      box-shadow:
+        0 38px 80px rgba(6,43,91,.26),
+        0 10px 24px rgba(6,43,91,.12);
+    }
+  }
+
+  /* Franja de color en la parte superior de la tarjeta */
+  .form-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:6px;
+    border-radius:24px 24px 0 0;
+    background:linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio), var(--amarillo));
+  }
+
+  /* Logo oficial de Deep Sea en la parte superior de la tarjeta.
+     Su ancho se adapta al tamaño de la pantalla. */
+  .card-logo{
+    display:block;
+    width:clamp(58px, 10vh, 100px);
+    height:auto;
+    margin:0 auto 6px;
+  }
+
+  @keyframes cardIn{
+    from{ opacity:0; transform: translateY(24px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .form-card{ animation:none; transition:none; }
+    .form-card:hover{ transform:none; }
+  }
+
+  /* En pantallas grandes la tarjeta se monta un poco sobre el panel azul */
+  @media (min-width: 1100px){
+    .form-card{ margin-left:-60px; }
   }
 
   .form-card h2{
-    font-size:26px;
-    margin:0 0 6px;
+    font-size:clamp(21px,3.4vh,25px);
+    margin:0 0 4px;
     font-weight:700;
     color:var(--azul-oscuro);
+    text-align:center;
   }
   .form-card > p.lead{
-    margin:0 0 30px;
+    margin:0 0 clamp(10px,2.2vh,20px);
     color:var(--texto-secundario);
-    font-size:14.5px;
+    font-size:14px;
+    text-align:center;
   }
 
   .field{
-    margin-bottom:18px;
+    margin-bottom:clamp(6px,1.5vh,12px);
   }
   .field label{
     display:block;
-    font-size:13px;
+    font-size:12.5px;
     font-weight:600;
-    margin-bottom:7px;
+    margin-bottom:5px;
     color:var(--azul-oscuro);
   }
   .field-input{
@@ -194,7 +262,7 @@
     border:none;
     background:transparent;
     outline:none;
-    padding:13px 12px;
+    padding:9px 12px;
     font-size:14.5px;
     color:var(--texto-principal);
     min-width:0;
@@ -205,16 +273,19 @@
     cursor:pointer;
     color:var(--texto-secundario);
     padding:0 14px;
+    min-width:46px;
+    min-height:46px;
     display:flex;
     align-items:center;
+    justify-content:center;
   }
   .toggle-pass:hover{ color:var(--azul-medio); }
 
   .field-error{
     display:none;
     color:var(--rojo);
-    font-size:12.5px;
-    margin-top:6px;
+    font-size:12px;
+    margin-top:3px;
   }
   .field.invalid .field-input{
     border-color:var(--rojo);
@@ -224,11 +295,40 @@
     display:block;
   }
 
+  .row-between{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 16px;
+    align-items:center;
+    justify-content:space-between;
+    margin:0 0 clamp(10px,2vh,18px);
+    font-size:13px;
+  }
+  .checkbox-line{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--texto-secundario);
+    cursor:pointer;
+    user-select:none;
+  }
+  .checkbox-line input{
+    width:16px;height:16px;
+    accent-color:var(--azul-medio);
+  }
+  .link-muted{
+    color:var(--azul-medio);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .link-muted:hover{ text-decoration:underline; }
+
   .btn-primary{
     width:100%;
     border:none;
     border-radius:12px;
-    padding:14px;
+    padding:11px;
+    min-height:44px;
     background:var(--azul-oscuro);
     color:var(--blanco);
     font-size:15px;
@@ -238,26 +338,21 @@
     align-items:center;
     justify-content:center;
     gap:8px;
-    transition:background .15s, transform .1s;
-    margin-top:6px;
+    box-shadow:0 10px 22px rgba(6,43,91,.28);
+    transition:background .15s, transform .1s, box-shadow .15s;
   }
-  .btn-primary:hover{ background:var(--azul-medio); }
+  .btn-primary:hover{ background:var(--azul-medio); box-shadow:0 12px 26px rgba(30,102,245,.35); }
   .btn-primary:active{ transform: scale(.98); }
   .btn-primary:disabled{
     opacity:.65;
     cursor:not-allowed;
   }
 
-  .link-muted{
-    color:var(--azul-medio);
-    text-decoration:none;
-    font-weight:600;
-  }
-  .link-muted:hover{ text-decoration:underline; }
-
   .signup-line{
     text-align:center;
-    margin-top:22px;
+    margin:clamp(10px,2.2vh,20px) 0 0;
+    padding-top:clamp(8px,1.8vh,14px);
+    border-top:1px solid var(--gris-claro);
     font-size:13.5px;
     color:var(--texto-secundario);
   }
@@ -279,16 +374,88 @@
     opacity:0;
     transition: transform .35s ease, opacity .35s ease;
     z-index:50;
-    max-width:340px;
+    max-width:calc(100vw - 24px);
   }
   .toast.show{ transform: translateY(0); opacity:1; }
   .toast.error{ background:var(--rojo); }
   .toast.success{ background:#1B8A5A; }
 
+  /* ============================================================
+     RESPONSIVE (se adapta a cualquier dispositivo)
+     ============================================================ */
+
+  /* Pantallas muy grandes */
+  @media (min-width: 1600px){
+    .form-card{ max-width:480px; }
+  }
+
+  /* Laptops con poca altura: compacta el panel izquierdo */
+  @media (min-width: 881px) and (max-height: 700px){
+    .ocean-panel{ padding-top:28px; padding-bottom:28px; }
+    .ocean-copy h1{ font-size:26px; }
+    .stat-row{ margin-top:20px; }
+    .form-panel{ padding-top:24px; padding-bottom:24px; }
+  }
+
+  /* Tablets verticales y celulares:
+     se oculta el panel izquierdo y toda la pantalla toma el fondo oceano,
+     así la tarjeta blanca resalta como flotando sobre el mar. */
   @media (max-width: 880px){
     .layout{ grid-template-columns: 1fr; }
     .ocean-panel{ display:none; }
-    .form-panel{ padding:32px 20px; }
+    .form-panel{
+      padding:
+        max(14px, env(safe-area-inset-top))
+        max(20px, env(safe-area-inset-right))
+        max(14px, env(safe-area-inset-bottom))
+        max(20px, env(safe-area-inset-left));
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.12), transparent 45%),
+        linear-gradient(160deg, #041E40 0%, #062B5B 45%, #0A3E82 100%);
+    }
+    .form-card{ max-width:460px; }
+    /* 16px evita que iPhone haga zoom automático al tocar un campo */
+    .field-input input{ font-size:16px; }
+    .toast{ top:max(12px, env(safe-area-inset-top)); right:12px; left:12px; max-width:none; justify-content:center; }
+  }
+
+  /* Celulares */
+  @media (max-width: 480px){
+    .form-panel{ padding-left:14px; padding-right:14px; }
+    .form-card{ padding:18px 18px 16px; border-radius:20px; }
+    .form-card::before{ border-radius:20px 20px 0 0; }
+    .form-card > p.lead{ font-size:13.5px; }
+  }
+
+  /* Pantallas muy bajas: se oculta el subtítulo para que todo quepa */
+  @media (max-height: 600px){
+    .form-card > p.lead{ display:none; }
+    .form-card h2{ margin-bottom:10px; }
+  }
+
+  /* Celulares muy pequeños */
+  @media (max-width: 360px){
+    .form-card{ padding:16px 14px 14px; }
+    .row-between{ justify-content:flex-start; }
+  }
+
+  /* Celulares girados (horizontal): tarjeta alineada arriba con scroll */
+  @media (max-width: 880px) and (max-height: 520px){
+    .form-panel{ align-items:flex-start; }
+    .card-logo{ width:64px; margin-bottom:4px; }
+  }
+
+  /* ---- Ajustes propios del registro (tiene 4 campos, así que es más compacto) ---- */
+  .btn-primary{ margin-top:clamp(2px,.8vh,6px); }
+
+  /* Pantallas bajas: se oculta el subtítulo para que todo quepa sin deslizar */
+  @media (max-height: 620px){
+    .form-card > p.lead{ display:none; }
+    .form-card h2{ margin-bottom:8px; }
+  }
+  /* Pantallas muy bajas: el logo se reduce aún más */
+  @media (max-height: 540px){
+    .card-logo{ width:46px; margin-bottom:2px; }
   }
 </style>
 </head>
@@ -300,10 +467,7 @@
   <section class="ocean-panel">
     <div class="brand">
       <div class="brand-badge">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/>
-          <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
-        </svg>
+        <img src="logo-emblema.png" alt="Emblema Deep Sea Intelligence">
       </div>
       <div>
         <div class="brand-name">Deep Sea <span>Intelligence</span></div>
@@ -331,9 +495,13 @@
     </svg>
   </section>
 
-  <!-- PANEL DERECHO -->
+    <!-- PANEL DERECHO -->
   <section class="form-panel">
     <div class="form-card">
+
+      <!-- Logo oficial de Deep Sea -->
+      <img class="card-logo" src="logo.png" alt="Deep Sea — Gestión inteligente de recursos marinos" width="200" height="214">
+
       <h2>Crea tu cuenta</h2>
       <p class="lead">Completa tus datos para empezar a usar el sistema.</p>
 
@@ -343,7 +511,7 @@
           <label for="name">Nombre completo</label>
           <div class="field-input">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="1.6"/></svg>
-            <input type="text" id="name" placeholder="Tu nombre completo" autocomplete="name">
+            <input type="text" id="name" placeholder="Tu nombre completo" autocomplete="name" maxlength="80">
           </div>
           <div class="field-error">Ingresa tu nombre completo.</div>
         </div>
@@ -352,7 +520,7 @@
           <label for="email">Correo electrónico</label>
           <div class="field-input">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18v12H3z" stroke="currentColor" stroke-width="1.6"/><path d="m3 7 9 6 9-6" stroke="currentColor" stroke-width="1.6"/></svg>
-            <input type="email" id="email" placeholder="ejemplo@correo.com" autocomplete="email">
+            <input type="email" id="email" placeholder="ejemplo@correo.com" autocomplete="email" maxlength="120">
           </div>
           <div class="field-error">Ingresa un correo electrónico válido.</div>
         </div>
@@ -401,19 +569,19 @@
 
 <script>
 (function(){
-  const form            = document.getElementById('registerForm');
-  const nameField       = document.getElementById('nameField');
-  const emailField      = document.getElementById('emailField');
-  const passField       = document.getElementById('passField');
-  const confirmField    = document.getElementById('confirmField');
-  const nameInput       = document.getElementById('name');
-  const emailInput      = document.getElementById('email');
-  const passInput       = document.getElementById('password');
-  const confirmInput    = document.getElementById('confirmPassword');
-  const togglePass      = document.getElementById('togglePass');
-  const submitBtn       = document.getElementById('submitBtn');
-  const submitLabel     = document.getElementById('submitLabel');
-  const toast           = document.getElementById('toast');
+  const form         = document.getElementById('registerForm');
+  const nameField    = document.getElementById('nameField');
+  const emailField   = document.getElementById('emailField');
+  const passField    = document.getElementById('passField');
+  const confirmField = document.getElementById('confirmField');
+  const nameInput    = document.getElementById('name');
+  const emailInput   = document.getElementById('email');
+  const passInput    = document.getElementById('password');
+  const confirmInput = document.getElementById('confirmPassword');
+  const togglePass   = document.getElementById('togglePass');
+  const submitBtn    = document.getElementById('submitBtn');
+  const submitLabel  = document.getElementById('submitLabel');
+  const toast        = document.getElementById('toast');
 
   function showToast(message, type){
     toast.textContent = message;
@@ -423,6 +591,18 @@
 
   function isValidEmail(value){
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  // VALIDACIÓN AGREGADA: el nombre solo admite letras (con tildes y ñ),
+  // espacios, apóstrofes, puntos y guiones. Evita nombres como "123" o "@@".
+  function isValidName(value){
+    return /^\p{L}[\p{L}\s'.-]+$/u.test(value);
+  }
+
+  // Marca un campo en rojo y, si se indica, cambia el mensaje de error
+  function setInvalid(field, message){
+    field.classList.add('invalid');
+    if (message) field.querySelector('.field-error').textContent = message;
   }
 
   togglePass.addEventListener('click', function(){
@@ -446,24 +626,61 @@
     submitLabel.textContent = 'Crear cuenta';
   }
 
+  // VALIDACIÓN AGREGADA: traduce los errores de Supabase (vienen en inglés)
+  // a mensajes claros y no muestra textos técnicos al usuario.
+  function traducirError(error){
+    const msg = (error.message || '').toLowerCase();
+    if (error.code === 'user_already_exists' || msg.includes('already registered')) {
+      setInvalid(emailField, 'Este correo ya está registrado.');
+      return 'Ese correo ya tiene una cuenta. Inicia sesión.';
+    }
+    if (error.status === 429 || msg.includes('rate limit')) {
+      return 'Demasiados intentos. Espera un momento e intenta de nuevo.';
+    }
+    if (msg.includes('password')) {
+      return 'La contraseña no cumple los requisitos. Prueba con otra.';
+    }
+    if (msg.includes('email')) {
+      return 'El correo electrónico no es válido.';
+    }
+    console.warn('Error de registro:', error);
+    return 'No se pudo crear la cuenta. Intenta de nuevo.';
+  }
+
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     let valid = true;
 
-    if (nameInput.value.trim().length < 2) {
-      nameField.classList.add('invalid');
+    // Se limpian espacios repetidos del nombre: "Juan   Perez" -> "Juan Perez"
+    const fullName = nameInput.value.trim().replace(/\s+/g, ' ');
+    const email    = emailInput.value.trim().toLowerCase();
+    const pass     = passInput.value;
+
+    if (!isValidName(fullName)) {
+      setInvalid(nameField, 'Ingresa tu nombre completo (solo letras y espacios).');
       valid = false;
     }
-    if (!isValidEmail(emailInput.value.trim())) {
-      emailField.classList.add('invalid');
+    if (!isValidEmail(email)) {
+      setInvalid(emailField, 'Ingresa un correo electrónico válido.');
       valid = false;
     }
-    if (passInput.value.length < 6) {
-      passField.classList.add('invalid');
+
+    // VALIDACIÓN AGREGADA: la contraseña no puede empezar/terminar con espacios
+    // (el login las recorta, y la cuenta quedaría imposible de abrir) ni pasar
+    // de 72 caracteres (límite real de Supabase).
+    if (pass.length < 6) {
+      setInvalid(passField, 'La contraseña debe tener al menos 6 caracteres.');
+      valid = false;
+    } else if (pass !== pass.trim()) {
+      setInvalid(passField, 'La contraseña no puede empezar ni terminar con espacios.');
+      valid = false;
+    } else if (pass.length > 72) {
+      setInvalid(passField, 'La contraseña no puede superar los 72 caracteres.');
       valid = false;
     }
-    if (confirmInput.value !== passInput.value || confirmInput.value.length === 0) {
-      confirmField.classList.add('invalid');
+
+    if (confirmInput.value.length === 0 || confirmInput.value !== pass) {
+      setInvalid(confirmField, 'Las contraseñas no coinciden.');
       valid = false;
     }
 
@@ -474,29 +691,55 @@
 
     startLoading();
 
-    const { data, error } = await supabaseClient.auth.signUp({
-      email: emailInput.value.trim(),
-      password: passInput.value,
-      options: {
-        data: { full_name: nameInput.value.trim() }
-      }
-    });
-
-    stopLoading();
-
-    if (error) {
-      showToast('Error al crear la cuenta: ' + error.message, 'error');
+    // VALIDACIÓN AGREGADA: try/catch por si falla la conexión
+    let result;
+    try {
+      result = await supabaseClient.auth.signUp({
+        email: email,
+        password: pass,
+        options: { data: { full_name: fullName } }
+      });
+    } catch (err) {
+      stopLoading();
+      showToast('No se pudo conectar. Revisa tu internet e intenta de nuevo.', 'error');
       return;
     }
 
-    // Si Supabase tiene "Confirm email" activado, el usuario debe confirmar antes de entrar
-    if (data.user && !data.session) {
-      showToast('Cuenta creada. Revisa tu correo para confirmarla.', 'success');
-      setTimeout(() => { window.location.href = 'login.html'; }, 2200);
-    } else {
-      showToast('Cuenta creada correctamente. Redirigiendo...', 'success');
-      setTimeout(() => { window.location.href = 'inicio.html'; }, 1200);
+    const { data, error } = result;
+
+    if (error) {
+      stopLoading();
+      showToast(traducirError(error), 'error');
+      return;
     }
+
+    // VALIDACIÓN AGREGADA: si el correo ya existe y Supabase tiene "Confirm email"
+    // activado, NO devuelve error: responde "éxito" pero sin identidades.
+    // Sin esto, el usuario creería que se registró cuando en realidad no.
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      stopLoading();
+      setInvalid(emailField, 'Este correo ya está registrado.');
+      showToast('Ese correo ya tiene una cuenta. Inicia sesión.', 'error');
+      return;
+    }
+
+    // Si Supabase abrió sesión automáticamente (cuando "Confirm email" está
+    // desactivado), la cerramos para que el usuario pase por el inicio de sesión
+    // y no entre directo al sistema.
+    const sessionAbierta = !!data.session;
+    if (sessionAbierta) {
+      try { await supabaseClient.auth.signOut({ scope: 'local' }); } catch (err) { /* no bloquea */ }
+    }
+
+    // El botón queda bloqueado mientras se redirige (evita crear la cuenta dos veces)
+    submitLabel.textContent = 'Redirigiendo...';
+    showToast(
+      sessionAbierta
+        ? 'Cuenta creada correctamente. Ahora inicia sesión.'
+        : 'Cuenta creada. Revisa tu correo para confirmarla y luego inicia sesión.',
+      'success'
+    );
+    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
   });
 })();
 </script>

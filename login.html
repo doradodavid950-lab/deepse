@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" type="image/png" href="logo-emblema.png">
 <title>Deep Sea Intelligence — Iniciar sesión</title>
 <style>
   :root{
@@ -35,6 +36,7 @@
 
   .layout{
     min-height:100vh;
+    min-height:100dvh;
     display:grid;
     grid-template-columns: 1.1fr 1fr;
   }
@@ -50,7 +52,7 @@
     display:flex;
     flex-direction:column;
     justify-content:space-between;
-    padding:56px 60px;
+    padding:clamp(32px,5vw,56px) clamp(32px,5vw,60px);
   }
 
   .brand{
@@ -59,11 +61,19 @@
     gap:14px;
   }
 
+  /* Insignia blanca con el emblema del logo */
   .brand-badge{
-    width:52px;height:52px;border-radius:16px;
-    background:rgba(255,255,255,.12);
+    flex:0 0 auto;
+    width:60px;height:60px;border-radius:16px;
+    background:var(--blanco);
+    padding:5px;
     display:flex;align-items:center;justify-content:center;
-    backdrop-filter: blur(4px);
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+  }
+  .brand-badge img{
+    width:100%;height:100%;
+    object-fit:contain;
+    display:block;
   }
 
   .brand-name{
@@ -83,7 +93,7 @@
     max-width:430px;
   }
   .ocean-copy h1{
-    font-size:34px;
+    font-size:clamp(26px,2.6vw,34px);
     line-height:1.25;
     margin:0 0 14px;
     font-weight:700;
@@ -133,39 +143,99 @@
   }
 
   /* ---------- PANEL DERECHO (FORMULARIO) ---------- */
+  /* Fondo suave con degradado para que la tarjeta blanca resalte */
   .form-panel{
+    position:relative;
+    z-index:2;                      /* queda por encima del panel oceano */
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:40px 32px;
-    background:var(--blanco);
+    padding:clamp(12px,3vh,32px) 32px;
+    background:
+      radial-gradient(circle at 85% 10%, rgba(30,102,245,.10), transparent 45%),
+      linear-gradient(160deg, #EAF3FF 0%, var(--gris-claro) 100%);
   }
 
+  /* TARJETA FLOTANTE */
   .form-card{
+    position:relative;
     width:100%;
-    max-width:400px;
+    max-width:410px;
+    background:var(--blanco);
+    border-radius:24px;
+    padding:clamp(18px,3vh,30px) clamp(24px,3vw,36px) clamp(16px,2.8vh,26px);
+    box-shadow:
+      0 30px 70px rgba(6,43,91,.22),
+      0 8px 20px rgba(6,43,91,.10);
+    border:1px solid rgba(6,43,91,.06);
+    overflow:visible;
+    animation: cardIn .6s ease both;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  @media (hover:hover){
+    .form-card:hover{
+      transform: translateY(-4px);
+      box-shadow:
+        0 38px 80px rgba(6,43,91,.26),
+        0 10px 24px rgba(6,43,91,.12);
+    }
+  }
+
+  /* Franja de color en la parte superior de la tarjeta */
+  .form-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:6px;
+    border-radius:24px 24px 0 0;
+    background:linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio), var(--amarillo));
+  }
+
+  /* Logo oficial de Deep Sea en la parte superior de la tarjeta.
+     Su ancho se adapta al tamaño de la pantalla. */
+  .card-logo{
+    display:block;
+    width:clamp(80px, 16vh, 140px);
+    height:auto;
+    margin:0 auto 6px;
+  }
+
+  @keyframes cardIn{
+    from{ opacity:0; transform: translateY(24px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .form-card{ animation:none; transition:none; }
+    .form-card:hover{ transform:none; }
+  }
+
+  /* En pantallas grandes la tarjeta se monta un poco sobre el panel azul */
+  @media (min-width: 1100px){
+    .form-card{ margin-left:-60px; }
   }
 
   .form-card h2{
-    font-size:26px;
-    margin:0 0 6px;
+    font-size:clamp(21px,3.4vh,25px);
+    margin:0 0 4px;
     font-weight:700;
     color:var(--azul-oscuro);
+    text-align:center;
   }
   .form-card > p.lead{
-    margin:0 0 30px;
+    margin:0 0 clamp(10px,2.2vh,20px);
     color:var(--texto-secundario);
-    font-size:14.5px;
+    font-size:14px;
+    text-align:center;
   }
 
   .field{
-    margin-bottom:18px;
+    margin-bottom:clamp(8px,1.8vh,14px);
   }
   .field label{
     display:block;
-    font-size:13px;
+    font-size:12.5px;
     font-weight:600;
-    margin-bottom:7px;
+    margin-bottom:5px;
     color:var(--azul-oscuro);
   }
   .field-input{
@@ -192,7 +262,7 @@
     border:none;
     background:transparent;
     outline:none;
-    padding:13px 12px;
+    padding:10px 12px;
     font-size:14.5px;
     color:var(--texto-principal);
     min-width:0;
@@ -203,16 +273,19 @@
     cursor:pointer;
     color:var(--texto-secundario);
     padding:0 14px;
+    min-width:46px;
+    min-height:46px;
     display:flex;
     align-items:center;
+    justify-content:center;
   }
   .toggle-pass:hover{ color:var(--azul-medio); }
 
   .field-error{
     display:none;
     color:var(--rojo);
-    font-size:12.5px;
-    margin-top:6px;
+    font-size:12px;
+    margin-top:3px;
   }
   .field.invalid .field-input{
     border-color:var(--rojo);
@@ -224,9 +297,11 @@
 
   .row-between{
     display:flex;
+    flex-wrap:wrap;
+    gap:10px 16px;
     align-items:center;
     justify-content:space-between;
-    margin:2px 0 22px;
+    margin:0 0 clamp(10px,2vh,18px);
     font-size:13px;
   }
   .checkbox-line{
@@ -252,7 +327,8 @@
     width:100%;
     border:none;
     border-radius:12px;
-    padding:14px;
+    padding:11px;
+    min-height:44px;
     background:var(--azul-oscuro);
     color:var(--blanco);
     font-size:15px;
@@ -262,9 +338,10 @@
     align-items:center;
     justify-content:center;
     gap:8px;
-    transition:background .15s, transform .1s;
+    box-shadow:0 10px 22px rgba(6,43,91,.28);
+    transition:background .15s, transform .1s, box-shadow .15s;
   }
-  .btn-primary:hover{ background:var(--azul-medio); }
+  .btn-primary:hover{ background:var(--azul-medio); box-shadow:0 12px 26px rgba(30,102,245,.35); }
   .btn-primary:active{ transform: scale(.98); }
   .btn-primary:disabled{
     opacity:.65;
@@ -273,7 +350,9 @@
 
   .signup-line{
     text-align:center;
-    margin-top:26px;
+    margin:clamp(10px,2.2vh,20px) 0 0;
+    padding-top:clamp(8px,1.8vh,14px);
+    border-top:1px solid var(--gris-claro);
     font-size:13.5px;
     color:var(--texto-secundario);
   }
@@ -295,15 +374,75 @@
     opacity:0;
     transition: transform .35s ease, opacity .35s ease;
     z-index:50;
+    max-width:calc(100vw - 24px);
   }
   .toast.show{ transform: translateY(0); opacity:1; }
   .toast.error{ background:var(--rojo); }
   .toast.success{ background:#1B8A5A; }
 
+  /* ============================================================
+     RESPONSIVE (se adapta a cualquier dispositivo)
+     ============================================================ */
+
+  /* Pantallas muy grandes */
+  @media (min-width: 1600px){
+    .form-card{ max-width:480px; }
+  }
+
+  /* Laptops con poca altura: compacta el panel izquierdo */
+  @media (min-width: 881px) and (max-height: 700px){
+    .ocean-panel{ padding-top:28px; padding-bottom:28px; }
+    .ocean-copy h1{ font-size:26px; }
+    .stat-row{ margin-top:20px; }
+    .form-panel{ padding-top:24px; padding-bottom:24px; }
+  }
+
+  /* Tablets verticales y celulares:
+     se oculta el panel izquierdo y toda la pantalla toma el fondo oceano,
+     así la tarjeta blanca resalta como flotando sobre el mar. */
   @media (max-width: 880px){
     .layout{ grid-template-columns: 1fr; }
     .ocean-panel{ display:none; }
-    .form-panel{ padding:32px 20px; }
+    .form-panel{
+      padding:
+        max(14px, env(safe-area-inset-top))
+        max(20px, env(safe-area-inset-right))
+        max(14px, env(safe-area-inset-bottom))
+        max(20px, env(safe-area-inset-left));
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.12), transparent 45%),
+        linear-gradient(160deg, #041E40 0%, #062B5B 45%, #0A3E82 100%);
+    }
+    .form-card{ max-width:460px; }
+    /* 16px evita que iPhone haga zoom automático al tocar un campo */
+    .field-input input{ font-size:16px; }
+    .toast{ top:max(12px, env(safe-area-inset-top)); right:12px; left:12px; max-width:none; justify-content:center; }
+  }
+
+  /* Celulares */
+  @media (max-width: 480px){
+    .form-panel{ padding-left:14px; padding-right:14px; }
+    .form-card{ padding:18px 18px 16px; border-radius:20px; }
+    .form-card::before{ border-radius:20px 20px 0 0; }
+    .form-card > p.lead{ font-size:13.5px; }
+  }
+
+  /* Pantallas muy bajas: se oculta el subtítulo para que todo quepa */
+  @media (max-height: 600px){
+    .form-card > p.lead{ display:none; }
+    .form-card h2{ margin-bottom:10px; }
+  }
+
+  /* Celulares muy pequeños */
+  @media (max-width: 360px){
+    .form-card{ padding:16px 14px 14px; }
+    .row-between{ justify-content:flex-start; }
+  }
+
+  /* Celulares girados (horizontal): tarjeta alineada arriba con scroll */
+  @media (max-width: 880px) and (max-height: 520px){
+    .form-panel{ align-items:flex-start; }
+    .card-logo{ width:64px; margin-bottom:4px; }
   }
 </style>
 </head>
@@ -315,10 +454,7 @@
   <section class="ocean-panel">
     <div class="brand">
       <div class="brand-badge">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z" stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/>
-          <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
-        </svg>
+        <img src="logo-emblema.png" alt="Emblema Deep Sea Intelligence">
       </div>
       <div>
         <div class="brand-name">Deep Sea <span>Intelligence</span></div>
@@ -349,6 +485,10 @@
   <!-- PANEL DERECHO -->
   <section class="form-panel">
     <div class="form-card">
+
+      <!-- Logo oficial de Deep Sea -->
+      <img class="card-logo" src="logo.png" alt="Deep Sea — Gestión inteligente de recursos marinos" width="200" height="214">
+
       <h2>Bienvenido de nuevo</h2>
       <p class="lead">Ingresa tu correo y contraseña para continuar.</p>
 
@@ -417,11 +557,18 @@
   const forgotLink  = document.getElementById('forgotLink');
   const toast       = document.getElementById('toast');
 
-  // Si ya hay una sesión activa de Supabase, saltar directo al dashboard
-  const { data: { session: existingSession } } = await supabaseClient.auth.getSession();
-  if (existingSession) {
-    window.location.href = 'inicio.html';
-    return;
+  // Si ya hay una sesión activa de Supabase, saltar directo al dashboard.
+  // VALIDACIÓN AGREGADA: try/catch. Si no hay internet o Supabase falla,
+  // antes el script se detenía aquí y el formulario quedaba sin eventos
+  // (el botón recargaba la página). Ahora continúa y el login sigue funcionando.
+  try {
+    const { data: { session: existingSession } } = await supabaseClient.auth.getSession();
+    if (existingSession) {
+      window.location.href = 'inicio.html';
+      return;
+    }
+  } catch (err) {
+    console.warn('No se pudo comprobar la sesión existente:', err);
   }
 
   function showToast(message, type){
@@ -473,10 +620,20 @@
 
     startLoading();
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email: emailInput.value.trim(),
-      password: passInput.value.trim()
-    });
+    // VALIDACIÓN AGREGADA: try/catch. Si la petición falla por red,
+    // el botón se quedaba en "Verificando..." para siempre.
+    let error;
+    try {
+      const result = await supabaseClient.auth.signInWithPassword({
+        email: emailInput.value.trim(),
+        password: passInput.value.trim()
+      });
+      error = result.error;
+    } catch (err) {
+      stopLoading();
+      showToast('No se pudo conectar. Revisa tu internet e intenta de nuevo.', 'error');
+      return;
+    }
 
     stopLoading();
 
@@ -496,11 +653,15 @@
       showToast('Escribe tu correo arriba antes de recuperar la contraseña.', 'error');
       return;
     }
-    const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
-    if (error) {
-      showToast('No se pudo enviar el correo de recuperación.', 'error');
-    } else {
-      showToast('Te enviamos un enlace de recuperación a tu correo.', 'success');
+    try {
+      const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+      if (error) {
+        showToast('No se pudo enviar el correo de recuperación.', 'error');
+      } else {
+        showToast('Te enviamos un enlace de recuperación a tu correo.', 'success');
+      }
+    } catch (err) {
+      showToast('No se pudo conectar. Revisa tu internet e intenta de nuevo.', 'error');
     }
   });
 })();

@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Inicio — Deep Sea</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Conexiones anticipadas: el navegador abre la conexión al SDK y a Supabase
+     mientras carga la página, así los datos llegan antes. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <style>
-
 :root{
   --azul-oscuro:#062B5B;
   --azul-oscuro-2:#083868;
@@ -37,38 +33,43 @@
   --radio:16px;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
-html,
-body{
+/* Barra de desplazamiento de la página: delgada y discreta */
+html{ scrollbar-width:thin; scrollbar-color:#C5D0DF transparent; }
+
+html,body{
   margin:0;
   padding:0;
   font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   background:var(--gris-claro);
   color:var(--texto-principal);
+  -webkit-font-smoothing:antialiased;
 }
+body{ overflow-x:hidden; }
 
-body{
-  overflow-x:hidden;
-}
+:focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
 
 .app{
   display:grid;
   grid-template-columns:250px 1fr;
   min-height:100vh;
+  min-height:100dvh;
 }
 
+/* ===================== MENÚ LATERAL ===================== */
 .sidebar{
-  background:var(--azul-oscuro);
+  background:linear-gradient(180deg,#07326F 0%,var(--azul-oscuro) 100%);
   color:#EAF1FC;
   display:flex;
   flex-direction:column;
-  padding:22px 16px;
+  /* Los espacios se ajustan a la altura de la pantalla para que
+     todo el menú quepa sin necesidad de deslizar */
+  padding:clamp(14px,2.4vh,22px) 14px;
   position:sticky;
   top:0;
   height:100vh;
+  height:100dvh;
   z-index:1000;
 }
 
@@ -76,71 +77,57 @@ body{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:6px 10px 22px;
+  padding:4px 8px clamp(10px,2vh,20px);
   border-bottom:1px solid rgba(255,255,255,.08);
-  margin-bottom:14px;
+  margin-bottom:clamp(8px,1.6vh,14px);
 }
-
+/* Insignia blanca con el emblema oficial */
 .sb-brand .badge{
-  width:38px;
-  height:38px;
-  border-radius:11px;
-  background:rgba(255,255,255,.12);
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:var(--blanco);
+  padding:4px;
   display:flex;
   align-items:center;
   justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
 }
+.sb-brand .badge img{ width:100%; height:100%; object-fit:contain; display:block; }
+.sb-brand .name{ font-weight:700; font-size:17px; line-height:1.1; }
+.sb-brand .name span{ color:var(--amarillo); }
+.sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); margin-top:2px; }
 
-.sb-brand .name{
-  font-weight:700;
-  font-size:16px;
-  line-height:1.1;
-}
-
-.sb-brand .name span{
-  color:var(--amarillo);
-}
-
-.sb-brand .sub{
-  font-size:10.5px;
-  color:rgba(255,255,255,.55);
-}
-
+/* La lista de módulos sigue siendo desplazable en pantallas muy bajas,
+   pero la barra de desplazamiento queda oculta (se ve más limpio). */
 nav.sb-nav{
   flex:1;
+  min-height:0;
   overflow-y:auto;
   display:flex;
   flex-direction:column;
   gap:2px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
 }
+nav.sb-nav::-webkit-scrollbar{ display:none; }
 
 .sb-link{
   display:flex;
   align-items:center;
   gap:12px;
-  padding:10px 12px;
+  padding:clamp(6px,1.15vh,10px) 12px;
   border-radius:10px;
   color:rgba(255,255,255,.72);
   text-decoration:none;
-  font-size:14px;
+  font-size:13.5px;
   font-weight:500;
   cursor:pointer;
-  border:none;
-  background:none;
-  width:100%;
-  text-align:left;
+  transition:background .15s,color .15s,transform .15s;
 }
-
-.sb-link svg{
-  flex:0 0 auto;
-  opacity:.85;
-}
-
-.sb-link:hover{
-  background:rgba(255,255,255,.06);
-  color:#fff;
-}
-
+.sb-link svg{ flex:0 0 auto; opacity:.85; }
+.sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); }
 .sb-link.active{
   background:var(--azul-medio);
   color:#fff;
@@ -148,19 +135,14 @@ nav.sb-nav{
 }
 
 .sb-footer{
+  flex-shrink:0;
   border-top:1px solid rgba(255,255,255,.08);
-  padding-top:14px;
-  margin-top:10px;
+  padding-top:clamp(8px,1.6vh,14px);
+  margin-top:8px;
 }
-
-.sb-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px 8px;
-}
-
+.sb-user{ display:flex; align-items:center; gap:10px; padding:4px 4px; }
 .sb-user .avatar{
+  flex:0 0 auto;
   width:34px;
   height:34px;
   border-radius:50%;
@@ -172,45 +154,54 @@ nav.sb-nav{
   font-weight:700;
   font-size:13px;
 }
-
+.sb-user .info{ flex:1; min-width:0; }
 .sb-user .info strong{
   display:block;
   font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
+.sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+.sb-user .info span::before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4ADE80;
+  margin-right:5px;
+}
+.sb-logout{
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  border:none;
+  background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.sb-logout:hover{ background:var(--rojo); color:#fff; }
 
-.sb-user .info span{
-  font-size:11px;
-  color:rgba(255,255,255,.5);
-}
-
-main{
-  padding:26px 32px 50px;
-  min-width:0;
-}
+/* ===================== CONTENIDO ===================== */
+main{ padding:26px 32px 50px; min-width:0; }
 
 .topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:26px;
+  margin-bottom:24px;
 }
+.topbar h1{ font-size:23px; margin:0; }
+.topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
+.topbar .subtitle #saludo{ color:var(--azul-oscuro); font-weight:600; }
 
-.topbar h1{
-  font-size:23px;
-  margin:0;
-}
-
-.topbar .subtitle{
-  font-size:13px;
-  color:var(--texto-secundario);
-  margin-top:3px;
-}
-
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
+.top-actions{ display:flex; align-items:center; gap:14px; }
 
 .icon-btn{
   width:40px;
@@ -224,22 +215,29 @@ main{
   cursor:pointer;
   position:relative;
   color:var(--azul-oscuro);
+  transition:border-color .15s,box-shadow .15s;
 }
+.icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); }
 
-.icon-btn:hover{
-  border-color:var(--azul-medio);
-}
-
-.dot-alert{
+/* Globo con el número de notificaciones sin leer */
+.badge-notif{
   position:absolute;
-  top:8px;
-  right:9px;
-  width:7px;
-  height:7px;
-  border-radius:50%;
+  top:-6px;
+  right:-6px;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:10px;
   background:var(--rojo);
-  border:1.5px solid var(--blanco);
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  border:2px solid var(--gris-claro);
 }
+.badge-notif.show{ display:flex; }
 
 .top-user{
   display:flex;
@@ -252,12 +250,9 @@ main{
   text-decoration:none;
   color:inherit;
   cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
 }
-
-.top-user:hover{
-  border-color:var(--azul-medio);
-}
-
+.top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); }
 .top-user .avatar{
   width:30px;
   height:30px;
@@ -270,11 +265,7 @@ main{
   font-weight:700;
   font-size:12px;
 }
-
-.top-user span{
-  font-size:13.5px;
-  font-weight:600;
-}
+.top-user span{ font-size:13.5px; font-weight:600; }
 
 .mobile-menu-btn{
   display:none;
@@ -287,37 +278,60 @@ main{
   justify-content:center;
   box-shadow:0 4px 12px rgba(6,43,91,.06);
 }
+.mobile-menu-btn:hover{ border-color:var(--azul-medio); }
+.mobile-menu-btn:active{ transform:scale(.97); }
 
-.mobile-menu-btn:hover{
-  border-color:var(--azul-medio);
+/* Aviso cuando algo falla al cargar los datos */
+.aviso{
+  display:none;
+  align-items:center;
+  gap:12px;
+  background:#FFF4F3;
+  border:1px solid #F8C9C6;
+  color:#9B2B27;
+  padding:11px 14px;
+  border-radius:12px;
+  font-size:13px;
+  margin-bottom:18px;
+}
+.aviso.show{ display:flex; }
+.aviso button{
+  margin-left:auto;
+  flex:0 0 auto;
+  border:none;
+  background:var(--rojo);
+  color:#fff;
+  font-weight:600;
+  padding:7px 14px;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:12.5px;
 }
 
-.mobile-menu-btn:active{
-  transform:scale(.97);
-}
-
+/* ===================== TARJETAS KPI ===================== */
 .kpi-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:18px;
   margin-bottom:22px;
 }
-
 .kpi-card{
   background:var(--blanco);
   border-radius:var(--radio);
   padding:20px;
   box-shadow:var(--sombra);
   border-top:4px solid var(--accent,var(--azul-medio));
+  transition:transform .2s ease,box-shadow .2s ease;
 }
-
+@media (hover:hover){
+  .kpi-card:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(6,43,91,.13); }
+}
 .kpi-card .top-row{
   display:flex;
   align-items:center;
   justify-content:space-between;
   margin-bottom:14px;
 }
-
 .kpi-card .icon-wrap{
   width:38px;
   height:38px;
@@ -328,58 +342,37 @@ main{
   background:var(--accent-soft,var(--azul-claro));
   color:var(--accent,var(--azul-medio));
 }
+.kpi-card .value{ font-size:26px; font-weight:700; }
+.kpi-card .label{ font-size:12.5px; color:var(--texto-secundario); margin-top:2px; }
+.kpi-card .delta{ font-size:11.5px; margin-top:10px; font-weight:600; }
+.delta.up{ color:var(--verde-txt); }
+.delta.neutral{ color:var(--texto-secundario); }
 
-.kpi-card .value{
-  font-size:26px;
-  font-weight:700;
+.kpi-card.c1{ --accent:#1E66F5; --accent-soft:#D9ECFF; }
+.kpi-card.c2{ --accent:#7B5CC7; --accent-soft:#E7D7FF; }
+.kpi-card.c3{ --accent:#1B8A5A; --accent-soft:#B9F5C5; }
+.kpi-card.c4{ --accent:#FFA94D; --accent-soft:#FFE8D1; }
+
+/* Efecto de "cargando" mientras llegan los números */
+.loading-val{
+  display:inline-block;
+  min-width:64px;
+  color:transparent !important;
+  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
+  background-size:200% 100%;
+  animation:brillo 1.2s infinite linear;
+  border-radius:8px;
 }
+@keyframes brillo{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
 
-.kpi-card .label{
-  font-size:12.5px;
-  color:var(--texto-secundario);
-  margin-top:2px;
-}
-
-.kpi-card .delta{
-  font-size:11.5px;
-  margin-top:10px;
-  font-weight:600;
-}
-
-.delta.up{
-  color:var(--verde-txt);
-}
-
-.delta.neutral{
-  color:var(--texto-secundario);
-}
-
-.kpi-card.c1{
-  --accent:#1E66F5;
-  --accent-soft:#D9ECFF;
-}
-
-.kpi-card.c2{
-  --accent:#7B5CC7;
-  --accent-soft:#E7D7FF;
-}
-
-.kpi-card.c3{
-  --accent:#1B8A5A;
-  --accent-soft:#B9F5C5;
-}
-
-.kpi-card.c4{
-  --accent:#FFA94D;
-  --accent-soft:#FFE8D1;
-}
-
+/* ===================== PANELES ===================== */
 .grid-2{
   display:grid;
   grid-template-columns:1.6fr 1fr;
   gap:18px;
   margin-bottom:18px;
 }
+.grid-2.parejo{ grid-template-columns:1fr 1fr; }
 
 .panel{
   background:var(--blanco);
@@ -388,61 +381,35 @@ main{
   padding:20px;
   min-width:0;
 }
-
 .panel-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
   margin-bottom:14px;
 }
+.panel-head h3{ margin:0; font-size:15.5px; }
+.panel-head a{ font-size:12.5px; color:var(--azul-medio); text-decoration:none; font-weight:600; }
+.panel-head a:hover{ text-decoration:underline; }
 
-.panel-head h3{
-  margin:0;
-  font-size:15.5px;
-}
+.table-scroll{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
 
-.panel-head a{
-  font-size:12.5px;
-  color:var(--azul-medio);
-  text-decoration:none;
-  font-weight:600;
-}
-
-.panel-head a:hover{
-  text-decoration:underline;
-}
-
-.table-scroll{
-  width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
-
-table.simple{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-}
-
+table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
 table.simple th{
   text-align:left;
   color:var(--texto-secundario);
   font-weight:600;
   font-size:11.5px;
-  text-transform:none;
   padding:8px 6px;
   border-bottom:1px solid var(--gris-borde);
 }
-
 table.simple td{
   padding:11px 6px;
   border-bottom:1px solid #F0F3F7;
   vertical-align:middle;
 }
-
-table.simple tr:last-child td{
-  border-bottom:none;
-}
+table.simple tr:last-child td{ border-bottom:none; }
+table.simple tbody tr{ transition:background .15s; }
+table.simple tbody tr:hover{ background:#F8FAFD; }
 
 .pill{
   display:inline-block;
@@ -451,33 +418,24 @@ table.simple tr:last-child td{
   font-size:11px;
   font-weight:700;
 }
+.pill.ok{ background:var(--verde-suave); color:#146142; }
+.pill.pend{ background:var(--amarillo); color:#7A5A00; }
+.pill.warn{ background:#FFE3D1; color:#B45300; }
 
-.pill.ok{
-  background:var(--verde-suave);
-  color:#146142;
-}
-
-.pill.pend{
-  background:var(--amarillo);
-  color:#7A5A00;
-}
-
-.pill.warn{
-  background:#FFE3D1;
-  color:#B45300;
-}
-
-.alert-item{
+/* Alertas (cada una lleva al módulo correspondiente) */
+a.alert-item{
   display:flex;
   gap:12px;
-  padding:11px 0;
+  padding:11px 8px;
+  margin:0 -8px;
   border-bottom:1px solid #F0F3F7;
+  color:inherit;
+  text-decoration:none;
+  border-radius:10px;
+  transition:background .15s;
 }
-
-.alert-item:last-child{
-  border-bottom:none;
-}
-
+a.alert-item:hover{ background:#F6F9FD; }
+a.alert-item:last-child{ border-bottom:none; }
 .alert-icon{
   flex:0 0 auto;
   width:32px;
@@ -487,61 +445,25 @@ table.simple tr:last-child td{
   align-items:center;
   justify-content:center;
 }
+.alert-icon.a-warn{ background:#FFE8D1; color:var(--naranja); }
+.alert-icon.a-err{ background:#FCE1E0; color:var(--rojo); }
+.alert-icon.a-info{ background:var(--azul-claro); color:var(--azul-medio); }
+.alert-icon.a-ok{ background:var(--verde-suave); color:var(--verde-txt); }
+.alert-text{ min-width:0; }
+.alert-text strong{ display:block; font-size:13px; }
+.alert-text span{ font-size:11.5px; color:var(--texto-secundario); }
 
-.alert-icon.a-warn{
-  background:#FFE8D1;
-  color:var(--naranja);
-}
-
-.alert-icon.a-err{
-  background:#FCE1E0;
-  color:var(--rojo);
-}
-
-.alert-icon.a-info{
-  background:var(--azul-claro);
-  color:var(--azul-medio);
-}
-
-.alert-icon.a-ok{
-  background:var(--verde-suave);
-  color:var(--verde-txt);
-}
-
-.alert-text{
-  min-width:0;
-}
-
-.alert-text strong{
-  display:block;
-  font-size:13px;
-}
-
-.alert-text span{
-  font-size:11.5px;
-  color:var(--texto-secundario);
-}
-
-.donut-wrap{
-  display:flex;
-  align-items:center;
-  gap:22px;
-}
-
+/* Gráfico de distribución */
+.donut-wrap{ display:flex; align-items:center; gap:22px; }
 .donut{
   width:130px;
   height:130px;
   border-radius:50%;
-  background:conic-gradient(
-    var(--azul-medio) 0% 50%,
-    var(--verde-suave) 50% 82%,
-    var(--naranja) 82% 95%,
-    var(--morado) 95% 100%
-  );
+  background:conic-gradient(var(--azul-claro) 0 100%);
   position:relative;
   flex:0 0 auto;
+  transition:background .4s ease;
 }
-
 .donut::after{
   content:"";
   position:absolute;
@@ -549,7 +471,6 @@ table.simple tr:last-child td{
   background:var(--blanco);
   border-radius:50%;
 }
-
 .donut-center{
   position:absolute;
   inset:20px;
@@ -559,55 +480,16 @@ table.simple tr:last-child td{
   justify-content:center;
   z-index:2;
 }
+.donut-center strong{ font-size:16px; }
+.donut-center span{ font-size:10px; color:var(--texto-secundario); }
+.donut-legend{ display:flex; flex-direction:column; gap:9px; font-size:12.5px; min-width:0; }
+.donut-legend div{ display:flex; align-items:center; gap:8px; }
+.swatch{ width:10px; height:10px; border-radius:3px; flex:0 0 auto; }
 
-.donut-center strong{
-  font-size:16px;
-}
-
-.donut-center span{
-  font-size:10px;
-  color:var(--texto-secundario);
-}
-
-.donut-legend{
-  display:flex;
-  flex-direction:column;
-  gap:9px;
-  font-size:12.5px;
-}
-
-.donut-legend div{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.swatch{
-  width:10px;
-  height:10px;
-  border-radius:3px;
-  flex:0 0 auto;
-}
-
-.stepper-scroll{
-  width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-}
-
-.stepper{
-  display:flex;
-  justify-content:space-between;
-  margin-top:6px;
-  min-width:500px;
-}
-
-.step{
-  text-align:center;
-  flex:1;
-  position:relative;
-}
-
+/* Flujo del sistema (sin barra de desplazamiento en pantallas normales) */
+.stepper-scroll{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.stepper{ display:flex; justify-content:space-between; margin-top:6px; min-width:260px; }
+.step{ text-align:center; flex:1; position:relative; text-decoration:none; color:inherit; }
 .step::before{
   content:"";
   position:absolute;
@@ -618,11 +500,7 @@ table.simple tr:last-child td{
   background:var(--gris-borde);
   z-index:0;
 }
-
-.step:first-child::before{
-  display:none;
-}
-
+.step:first-child::before{ display:none; }
 .step .circle{
   width:32px;
   height:32px;
@@ -636,25 +514,19 @@ table.simple tr:last-child td{
   position:relative;
   z-index:1;
   font-size:14px;
+  transition:transform .15s,box-shadow .15s;
 }
+.step:hover .circle{ transform:scale(1.1); box-shadow:0 6px 14px rgba(30,102,245,.35); }
+.step span{ font-size:11.5px; color:var(--texto-secundario); }
 
-.step span{
-  font-size:11.5px;
-  color:var(--texto-secundario);
-}
+.empty{ text-align:center; padding:22px 10px; color:var(--texto-secundario); font-size:12px; }
 
-.empty{
-  text-align:center;
-  padding:22px 10px;
-  color:var(--texto-secundario);
-  font-size:12px;
-}
-
+/* ===================== NOTIFICACIONES ===================== */
 .notification-panel{
   position:fixed;
   top:78px;
   right:32px;
-  width:330px;
+  width:350px;
   background:var(--blanco);
   border:1px solid var(--gris-borde);
   border-radius:14px;
@@ -663,108 +535,87 @@ table.simple tr:last-child td{
   display:none;
   overflow:hidden;
 }
-
-.notification-panel.show{
-  display:block;
-}
+.notification-panel.show{ display:block; animation:caer .18s ease; }
+@keyframes caer{ from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:none; } }
 
 .notification-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:15px 17px;
+  gap:8px;
+  padding:14px 16px;
   border-bottom:1px solid var(--gris-borde);
 }
-
-.notification-header strong{
-  font-size:14px;
-}
-
+.notification-header strong{ font-size:14px; }
+.nh-actions{ display:flex; align-items:center; gap:6px; }
 .notification-header button{
   border:none;
   background:none;
-  font-size:22px;
   color:var(--texto-secundario);
   cursor:pointer;
 }
+#markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
+#markAllRead:hover{ background:var(--azul-claro); }
+#closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
 
-.notification-item{
+.notification-list{ max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
+
+a.notification-item{
   display:flex;
+  align-items:flex-start;
   gap:10px;
   padding:13px 16px;
   border-bottom:1px solid #F0F3F7;
+  color:inherit;
+  text-decoration:none;
+  transition:background .15s,opacity .18s,transform .18s;
 }
+a.notification-item:last-child{ border-bottom:none; }
+a.notification-item:hover{ background:#F6F9FD; }
+a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
-.notification-item:last-child{
-  border-bottom:none;
-}
-
-.notification-item .ni-icon{
+.ni-icon{
+  flex:0 0 auto;
   width:32px;
   height:32px;
   border-radius:9px;
-  background:var(--azul-claro);
-  color:var(--azul-medio);
   display:flex;
   align-items:center;
   justify-content:center;
-  flex:0 0 auto;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+}
+.ni-icon.t-warn{ background:#FCE1E0; color:var(--rojo); }
+.ni-icon.t-pend{ background:#FFF1C9; color:#B8860B; }
+.ni-body{ min-width:0; flex:1; }
+.ni-body strong{ display:block; font-size:12.5px; margin-bottom:2px; }
+.ni-body span{ display:block; font-size:11.5px; color:var(--texto-secundario); line-height:1.4; }
+.ni-body em{ display:block; font-style:normal; font-size:10.5px; color:#8A9BB1; margin-top:3px; }
+.ni-go{ align-self:center; color:#A9B7CA; font-size:18px; }
+
+.notification-empty{ padding:26px 16px; text-align:center; font-size:12.5px; color:var(--texto-secundario); }
+
+.mobile-overlay{ display:none; }
+
+/* ===================== ANIMACIÓN DE ENTRADA ===================== */
+@keyframes subir{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+.kpi-card,.panel{ animation:subir .45s ease backwards; }
+.kpi-card:nth-child(2){ animation-delay:.05s; }
+.kpi-card:nth-child(3){ animation-delay:.1s; }
+.kpi-card:nth-child(4){ animation-delay:.15s; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
 }
 
-.notification-item strong{
-  display:block;
-  font-size:12.5px;
-  margin-bottom:2px;
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:1100px){
+  .kpi-grid{ grid-template-columns:repeat(2,1fr); }
 }
 
-.notification-item span{
-  display:block;
-  font-size:11px;
-  color:var(--texto-secundario);
-  line-height:1.4;
-}
+@media (max-width:800px){
 
-.notification-empty{
-  padding:22px 16px;
-  text-align:center;
-  font-size:12px;
-  color:var(--texto-secundario);
-}
-
-.mobile-overlay{
-  display:none;
-}
-
-@media (max-width:800px) {
-
-  .sidebar {
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-  }
-
-  nav.sb-nav {
-    flex:1;
-    min-height:0;
-    overflow-y:auto;
-    overflow-x:hidden;
-    padding-bottom:10px;
-  }
-
-  .sb-footer {
-    flex-shrink:0;
-    background:var(--azul-oscuro);
-  }
-
-  body{
-    overflow-x:hidden;
-  }
-
-  .app{
-    display:block;
-    min-height:100vh;
-    width:100%;
-  }
+  .app{ display:block; min-height:100vh; width:100%; }
 
   .sidebar{
     position:fixed;
@@ -773,16 +624,15 @@ table.simple tr:last-child td{
     width:270px;
     max-width:85vw;
     height:100vh;
+    height:100dvh;
     transform:translateX(-105%);
     transition:transform .25s ease;
     z-index:1200;
     box-shadow:8px 0 30px rgba(0,0,0,.20);
-    overflow:hidden;
+    padding-top:max(14px,env(safe-area-inset-top));
+    padding-bottom:max(14px,env(safe-area-inset-bottom));
   }
-
-  .sidebar.mobile-open{
-    transform:translateX(0);
-  }
+  .sidebar.mobile-open{ transform:translateX(0); }
 
   .mobile-overlay{
     display:none;
@@ -791,16 +641,9 @@ table.simple tr:last-child td{
     background:rgba(0,0,0,.42);
     z-index:1150;
   }
+  .mobile-overlay.show{ display:block; }
 
-  .mobile-overlay.show{
-    display:block;
-  }
-
-  main{
-    width:100%;
-    min-width:0;
-    padding:16px 14px 30px;
-  }
+  main{ width:100%; min-width:0; padding:16px 14px 30px; }
 
   .topbar{
     display:grid;
@@ -809,2645 +652,918 @@ table.simple tr:last-child td{
     gap:10px;
     margin-bottom:20px;
   }
+  .mobile-menu-btn{ display:flex; width:42px; height:42px; }
+  .topbar h1{ font-size:21px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar .subtitle{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sync-wrap{ display:none; }
 
-  .mobile-menu-btn{
-    display:flex;
-    width:42px;
-    height:42px;
-  }
-
-  .topbar h1{
-    font-size:21px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
-  .topbar .subtitle{
-    font-size:11px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
-  .top-actions{
-    gap:7px;
-  }
-
-  .top-user{
-    padding:4px;
-    border-radius:50%;
-  }
-
-  .top-user span{
-    display:none;
-  }
-
-  .top-user .avatar{
-    width:32px;
-    height:32px;
-  }
-
-  .icon-btn{
-    width:40px;
-    height:40px;
-  }
+  .top-actions{ gap:8px; }
+  .top-user{ padding:4px; border-radius:50%; }
+  .top-user span{ display:none; }
+  .top-user .avatar{ width:32px; height:32px; }
 
   .notification-panel{
-    position:fixed;
     top:70px;
     left:10px;
     right:10px;
     width:auto;
     max-width:none;
-    max-height:calc(100vh - 85px);
-    overflow-y:auto;
   }
 
-  .kpi-grid{
-    grid-template-columns:1fr;
-    gap:13px;
-    margin-bottom:18px;
-  }
+  .kpi-grid{ grid-template-columns:1fr; gap:13px; margin-bottom:18px; }
+  .kpi-card{ width:100%; padding:17px; border-radius:14px; }
+  .kpi-card .value{ font-size:24px; }
 
-  .kpi-card{
-    width:100%;
-    padding:17px;
-    border-radius:14px;
-  }
+  .grid-2,.grid-2.parejo{ display:flex; flex-direction:column; gap:14px; margin-bottom:14px; }
 
-  .kpi-card .value{
-    font-size:24px;
-  }
+  .panel{ width:100%; min-width:0; padding:16px; border-radius:14px; overflow:hidden; }
+  .panel-head h3{ font-size:15px; }
 
-  .grid-2{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-    margin-bottom:14px;
-  }
+  table.simple{ min-width:480px; font-size:12px; }
+  table.simple th{ padding:8px 7px; font-size:11px; }
+  table.simple td{ padding:10px 7px; }
 
-  .panel{
-    width:100%;
-    min-width:0;
-    padding:16px;
-    border-radius:14px;
-    overflow:hidden;
-  }
+  .donut-wrap{ flex-direction:column; align-items:center; justify-content:center; gap:20px; padding-top:5px; }
+  .donut{ width:150px; height:150px; }
+  .donut::after,.donut-center{ inset:22px; }
+  .donut-center strong{ font-size:18px; }
+  .donut-legend{ width:100%; gap:8px; }
+  .donut-legend div{ width:100%; background:#F8FAFC; border-radius:8px; padding:8px 10px; }
 
-  .panel-head h3{
-    font-size:15px;
-  }
-
-  .table-scroll{
-    width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-
-  table.simple{
-    min-width:540px;
-    font-size:12px;
-  }
-
-  table.simple th{
-    padding:8px 7px;
-    font-size:11px;
-  }
-
-  table.simple td{
-    padding:10px 7px;
-  }
-
-  .donut-wrap{
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:20px;
-    padding-top:5px;
-  }
-
-  .donut{
-    width:150px;
-    height:150px;
-  }
-
-  .donut::after{
-    inset:22px;
-  }
-
-  .donut-center{
-    inset:22px;
-  }
-
-  .donut-center strong{
-    font-size:18px;
-  }
-
-  .donut-legend{
-    width:100%;
-    gap:8px;
-  }
-
-  .donut-legend div{
-    width:100%;
-    background:#F8FAFC;
-    border-radius:8px;
-    padding:8px 10px;
-  }
-
-  .alert-item{
-    gap:10px;
-    padding:11px 0;
-  }
-
-  .alert-text{
-    min-width:0;
-  }
-
-  .alert-text strong{
-    font-size:12.5px;
-  }
-
-  .alert-text span{
-    font-size:11px;
-    line-height:1.4;
-  }
-
-  .stepper-scroll{
-    width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    padding-bottom:4px;
-  }
-
-  .stepper{
-    width:520px;
-    min-width:520px;
-    padding:5px 5px 8px;
-  }
-
-  .sb-link{
-    padding:11px 12px;
-  }
+  .sb-link{ padding:11px 12px; }
 }
 
-@media(max-width:400px){
-
-  main{
-    padding:13px 10px 25px;
-  }
-
-  .topbar{
-    grid-template-columns:39px minmax(0,1fr) auto;
-    gap:7px;
-  }
-
-  .mobile-menu-btn{
-    width:39px;
-    height:39px;
-  }
-
-  .topbar h1{
-    font-size:19px;
-  }
-
-  .topbar .subtitle{
-    font-size:10px;
-  }
-
-  .icon-btn{
-    width:39px;
-    height:39px;
-  }
-
-  .top-user .avatar{
-    width:30px;
-    height:30px;
-  }
-
-  .kpi-card{
-    padding:14px;
-  }
-
-  .kpi-card .value{
-    font-size:21px;
-  }
-
-  .panel{
-    padding:14px;
-  }
-
-  .notification-panel{
-    left:8px;
-    right:8px;
-  }
-
-  .donut{
-    width:140px;
-    height:140px;
-  }
-
-  .donut::after{
-    inset:20px;
-  }
-
-  .donut-center{
-    inset:20px;
-  }
-
+@media (max-width:400px){
+  main{ padding:13px 10px 25px; }
+  .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
+  .mobile-menu-btn{ width:39px; height:39px; }
+  .topbar h1{ font-size:19px; }
+  .topbar .subtitle{ font-size:10px; }
+  .icon-btn{ width:39px; height:39px; }
+  .top-user .avatar{ width:30px; height:30px; }
+  .kpi-card{ padding:14px; }
+  .kpi-card .value{ font-size:21px; }
+  .panel{ padding:14px; }
+  .notification-panel{ left:8px; right:8px; }
+  .donut{ width:140px; height:140px; }
+  .donut::after,.donut-center{ inset:20px; }
 }
-
 </style>
-
 </head>
 
 <body>
 
 <div class="app">
 
-<aside class="sidebar">
+  <!-- ===================== MENÚ LATERAL ===================== -->
+  <aside class="sidebar">
 
-  <div class="sb-brand">
-
-    <div class="badge">
-
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-          stroke="#FFD76A"
-          stroke-width="1.6"
-          stroke-linejoin="round"
-        />
-
-        <circle
-          cx="16"
-          cy="10.3"
-          r=".9"
-          fill="#FFD76A"
-        />
-
-      </svg>
-
+    <div class="sb-brand">
+      <div class="badge">
+        <img src="logo-emblema.png" alt="Deep Sea Intelligence">
+      </div>
+      <div>
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
+      </div>
     </div>
 
-    <div>
+    <nav class="sb-nav" id="sbNav">
 
-      <div class="name">
-        Deep <span>Sea</span>
-      </div>
-
-      <div class="sub">
-        Gestión de recursos marinos
-      </div>
-
-    </div>
-
-  </div>
-
-  <nav
-    class="sb-nav"
-    id="sbNav"
-  >
-
-    <a
-      class="sb-link active"
-      data-view="inicio"
-      href="inicio.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M3 11l9-7 9 7"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <path
-          d="M5 10v10h14V10"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-      </svg>
-
-      Inicio
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="productos"
-      href="productos.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <circle
-          cx="12"
-          cy="12"
-          r="2.2"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-      </svg>
-
-      Productos
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="proveedores"
-      href="proveedores.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <circle
-          cx="12"
-          cy="8"
-          r="3.4"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <path
-          d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-      </svg>
-
-      Proveedores
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="recepciones"
-      href="recepciones.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <rect
-          x="4"
-          y="7"
-          width="16"
-          height="13"
-          rx="2"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <path
-          d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-      </svg>
-
-      Recepciones
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="almacenamiento"
-      href="almacenamiento.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linejoin="round"
-        />
-
-        <path
-          d="M9 20v-6h6v6"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-      </svg>
-
-      Almacenamiento
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="ventas"
-      href="ventas.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <circle
-          cx="9"
-          cy="20"
-          r="1.3"
-          fill="currentColor"
-        />
-
-        <circle
-          cx="17"
-          cy="20"
-          r="1.3"
-          fill="currentColor"
-        />
-
-        <path
-          d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-      </svg>
-
-      Ventas
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="trazabilidad"
-      href="trazabilidad.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M3 6h18M3 12h18M3 18h12"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <circle
-          cx="20"
-          cy="18"
-          r="1.6"
-          fill="currentColor"
-        />
-
-      </svg>
-
-      Trazabilidad
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="reportes"
-      href="reportes.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M4 20V10M12 20V4M20 20v-7"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-      Reportes
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="normas"
-      href="normas.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <path
-          d="m9 12 2 2 4-4"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-      </svg>
-
-      Normas y Calidad
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="usuarios"
-      href="usuarios.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <circle
-          cx="9"
-          cy="8"
-          r="3"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <path
-          d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <circle
-          cx="18"
-          cy="8"
-          r="2.2"
-          stroke="currentColor"
-          stroke-width="1.5"
-        />
-
-        <path
-          d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-          stroke="currentColor"
-          stroke-width="1.5"
-        />
-
-      </svg>
-
-      Usuarios
-
-    </a>
-
-    <a
-      class="sb-link"
-      data-view="configuracion"
-      href="configuracion.html"
-    >
-
-      <svg
-        width="17"
-        height="17"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <circle
-          cx="12"
-          cy="12"
-          r="3"
-          stroke="currentColor"
-          stroke-width="1.7"
-        />
-
-        <path
-          d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-          stroke="currentColor"
-          stroke-width="1.3"
-          stroke-linejoin="round"
-        />
-
-      </svg>
-
-      Configuración
-
-    </a>
-
-  </nav>
-
-  <div class="sb-footer">
-
-    <div class="sb-user">
-
-      <div
-        class="avatar"
-        id="sbAvatar"
-      >
-        C
-      </div>
-
-      <div class="info">
-
-        <strong id="sbUserName">
-          Cargando...
-        </strong>
-
-        <span>
-          En línea
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</aside>
-
-<div
-  class="mobile-overlay"
-  id="mobileOverlay"
-></div>
-
-<main>
-
-  <div class="topbar">
-
-    <button
-      class="mobile-menu-btn"
-      id="mobileMenuBtn"
-      type="button"
-      aria-label="Abrir menú"
-      title="Abrir menú"
-    >
-
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-
-        <path
-          d="M4 6h16M4 12h16M4 18h16"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-        />
-
-      </svg>
-
-    </button>
-
-    <div>
-
-      <h1>
+      <a class="sb-link active" data-view="inicio" href="inicio.html" aria-current="page">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
         Inicio
-      </h1>
-
-      <div class="subtitle">
-
-        Vista general del sistema —
-        <span id="todayDate"></span>
-
-      </div>
-
-    </div>
-
-    <div class="top-actions">
-
-      <button
-        class="icon-btn"
-        id="notificationBtn"
-        title="Notificaciones"
-        type="button"
-      >
-
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-
-          <path
-            d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-            stroke="currentColor"
-            stroke-width="1.6"
-          />
-
-          <path
-            d="M10 20a2 2 0 0 0 4 0"
-            stroke="currentColor"
-            stroke-width="1.6"
-          />
-
-        </svg>
-
-        <span
-          class="dot-alert"
-          id="notificationDot"
-        ></span>
-
-      </button>
-
-      <a
-        href="configuracion.html"
-        class="top-user"
-        title="Ir a configuración"
-      >
-
-        <div
-          class="avatar"
-          id="topAvatar"
-        >
-          C
-        </div>
-
-        <span id="topUserName">
-          Cargando...
-        </span>
-
       </a>
 
+      <a class="sb-link" data-view="productos" href="productos.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Productos
+      </a>
+
+      <a class="sb-link" data-view="proveedores" href="proveedores.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Proveedores
+      </a>
+
+      <a class="sb-link" data-view="recepciones" href="recepciones.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Recepciones
+      </a>
+
+      <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Almacenamiento
+      </a>
+
+      <a class="sb-link" data-view="ventas" href="ventas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Ventas
+      </a>
+
+      <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
+        Trazabilidad
+      </a>
+
+      <a class="sb-link" data-view="reportes" href="reportes.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Reportes
+      </a>
+
+      <a class="sb-link" data-view="normas" href="normas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
+        Normas y Calidad
+      </a>
+
+      <a class="sb-link" data-view="usuarios" href="usuarios.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
+        Usuarios
+      </a>
+
+      <a class="sb-link" data-view="configuracion" href="configuracion.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Configuración
+      </a>
+
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="avatar" id="sbAvatar">C</div>
+        <div class="info">
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
+        </div>
+        <!-- Botón para cerrar sesión -->
+        <button class="sb-logout" id="logoutBtn" type="button" title="Cerrar sesión" aria-label="Cerrar sesión">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
 
-  </div>
+  </aside>
 
-  <div
-    class="notification-panel"
-    id="notificationPanel"
-  >
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
-    <div class="notification-header">
+  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
+  <main>
 
-      <strong>
-        Notificaciones
-      </strong>
+    <div class="topbar">
 
-      <button
-        id="closeNotifications"
-        type="button"
-      >
-        ×
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
 
-    </div>
-
-    <div id="notificationContent">
-
-      <div class="notification-empty">
-        Abre las notificaciones para consultar.
-      </div>
-
-    </div>
-
-  </div>
-
-  <section class="kpi-grid">
-
-    <div class="kpi-card c1">
-
-      <div class="top-row">
-
-        <div>
-
-          <div
-            class="value"
-            id="totalProductos"
-          >
-            0
-          </div>
-
-          <div class="label">
-            Productos registrados
-          </div>
-
+      <div>
+        <h1>Inicio</h1>
+        <div class="subtitle">
+          <span id="saludo">Vista general del sistema</span> —
+          <span id="todayDate"></span>
+          <span class="sync-wrap">· <span id="syncEstado"></span></span>
         </div>
-
-        <div class="icon-wrap">
-
-          <svg
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-
-            <path
-              d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-            <circle
-              cx="12"
-              cy="12"
-              r="2.2"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-          </svg>
-
-        </div>
-
       </div>
 
-      <div class="delta up">
-        Información actualizada
-      </div>
+      <div class="top-actions">
 
-    </div>
+        <button class="icon-btn" id="notificationBtn" title="Notificaciones" type="button" aria-label="Notificaciones" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="badge-notif" id="notificationBadge"></span>
+        </button>
 
-    <div class="kpi-card c2">
-
-      <div class="top-row">
-
-        <div>
-
-          <div
-            class="value"
-            id="totalProveedores"
-          >
-            0
-          </div>
-
-          <div class="label">
-            Proveedores
-          </div>
-
-        </div>
-
-        <div class="icon-wrap">
-
-          <svg
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-
-            <circle
-              cx="12"
-              cy="8"
-              r="3.4"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-            <path
-              d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-          </svg>
-
-        </div>
-
-      </div>
-
-      <div class="delta up">
-        Proveedores registrados
-      </div>
-
-    </div>
-
-    <div class="kpi-card c3">
-
-      <div class="top-row">
-
-        <div>
-
-          <div
-            class="value"
-            id="totalRecepciones"
-          >
-            0
-          </div>
-
-          <div class="label">
-            Recepciones
-          </div>
-
-        </div>
-
-        <div class="icon-wrap">
-
-          <svg
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-
-            <rect
-              x="4"
-              y="7"
-              width="16"
-              height="13"
-              rx="2"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-            <path
-              d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-          </svg>
-
-        </div>
-
-      </div>
-
-      <div class="delta up">
-        Registros de entrada
-      </div>
-
-    </div>
-
-    <div class="kpi-card c4">
-
-      <div class="top-row">
-
-        <div>
-
-          <div
-            class="value"
-            id="pesoTotal"
-          >
-            0 kg
-          </div>
-
-          <div class="label">
-            Peso recibido
-          </div>
-
-        </div>
-
-        <div class="icon-wrap">
-
-          <svg
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-
-            <path
-              d="M6 8h12l1 12H5L6 8z"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-            <path
-              d="M9 8a3 3 0 0 1 6 0"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-          </svg>
-
-        </div>
-
-      </div>
-
-      <div class="delta neutral">
-        Total acumulado
-      </div>
-
-    </div>
-
-  </section>
-
-  <div class="grid-2">
-
-    <section class="panel">
-
-      <div class="panel-head">
-
-        <h3>
-          Actividad reciente
-        </h3>
-
-        <a href="recepciones.html">
-          Ver todas
+        <a href="configuracion.html" class="top-user" title="Ir a configuración">
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
         </a>
 
       </div>
+    </div>
 
-      <div class="table-scroll">
-
-        <table class="simple">
-
-          <thead>
-
-            <tr>
-
-              <th>
-                Producto
-              </th>
-
-              <th>
-                Peso
-              </th>
-
-              <th>
-                Estado
-              </th>
-
-              <th>
-                Fecha
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody id="recentTable">
-
-            <tr>
-
-              <td
-                colspan="4"
-                class="empty"
-              >
-                Cargando información...
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-    <section class="panel">
-
-      <div class="panel-head">
-
-        <h3>
-          Alertas del sistema
-        </h3>
-
-      </div>
-
-      <div id="alertsContainer">
-
-        <div class="alert-item">
-
-          <div class="alert-icon a-info">
-
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <path
-                d="M12 10v6"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <circle
-                cx="12"
-                cy="7"
-                r=".8"
-                fill="currentColor"
-              />
-
-            </svg>
-
-          </div>
-
-          <div class="alert-text">
-
-            <strong>
-              Cargando información
-            </strong>
-
-            <span>
-              Consultando los datos del sistema.
-            </span>
-
-          </div>
-
+    <!-- Panel de notificaciones -->
+    <div class="notification-panel" id="notificationPanel">
+      <div class="notification-header">
+        <strong>Notificaciones</strong>
+        <div class="nh-actions">
+          <button id="markAllRead" type="button" style="display:none">Marcar todas como leídas</button>
+          <button id="closeNotifications" type="button" aria-label="Cerrar">×</button>
         </div>
-
       </div>
-
-    </section>
-
-  </div>
-
-  <div class="grid-2">
-
-    <section class="panel">
-
-      <div class="panel-head">
-
-        <h3>
-          Distribución de productos
-        </h3>
-
+      <div class="notification-list" id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
       </div>
+    </div>
 
-      <div class="donut-wrap">
+    <!-- Aviso de error de carga -->
+    <div class="aviso" id="aviso" role="alert">
+      <span id="avisoTexto"></span>
+      <button id="avisoBtn" type="button">Reintentar</button>
+    </div>
 
-        <div
-          class="donut"
-          id="productDonut"
-        >
+    <!-- Tarjetas de resumen -->
+    <section class="kpi-grid">
 
-          <div class="donut-center">
-
-            <strong id="donutTotal">
-              0
-            </strong>
-
-            <span>
-              productos
-            </span>
-
-          </div>
-
-        </div>
-
-        <div
-          class="donut-legend"
-          id="donutLegend"
-        >
-
+      <div class="kpi-card c1">
+        <div class="top-row">
           <div>
-
-            <span
-              class="swatch"
-              style="background:#1E66F5"
-            ></span>
-
-            <span>
-              Cargando...
-            </span>
-
+            <div class="value loading-val" id="totalProductos">0000</div>
+            <div class="label">Productos registrados</div>
           </div>
-
+          <div class="icon-wrap">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
         </div>
+        <div class="delta up">Información actualizada</div>
+      </div>
 
+      <div class="kpi-card c2">
+        <div class="top-row">
+          <div>
+            <div class="value loading-val" id="totalProveedores">0000</div>
+            <div class="label">Proveedores</div>
+          </div>
+          <div class="icon-wrap">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+        </div>
+        <div class="delta up">Proveedores registrados</div>
+      </div>
+
+      <div class="kpi-card c3">
+        <div class="top-row">
+          <div>
+            <div class="value loading-val" id="totalRecepciones">0000</div>
+            <div class="label">Recepciones</div>
+          </div>
+          <div class="icon-wrap">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+        </div>
+        <div class="delta up">Registros de entrada</div>
+      </div>
+
+      <div class="kpi-card c4">
+        <div class="top-row">
+          <div>
+            <div class="value loading-val" id="pesoTotal">0000</div>
+            <div class="label">Peso recibido</div>
+          </div>
+          <div class="icon-wrap">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 8h12l1 12H5L6 8z" stroke="currentColor" stroke-width="1.7"/><path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+        </div>
+        <div class="delta neutral">Total acumulado</div>
       </div>
 
     </section>
 
-    <section class="panel">
+    <div class="grid-2">
 
-      <div class="panel-head">
-
-        <h3>
-          Flujo del sistema
-        </h3>
-
-      </div>
-
-      <div class="stepper-scroll">
-
-        <div class="stepper">
-
-          <div class="step">
-
-            <div class="circle">
-              1
-            </div>
-
-            <span>
-              Productos
-            </span>
-
-          </div>
-
-          <div class="step">
-
-            <div class="circle">
-              2
-            </div>
-
-            <span>
-              Recepción
-            </span>
-
-          </div>
-
-          <div class="step">
-
-            <div class="circle">
-              3
-            </div>
-
-            <span>
-              Control
-            </span>
-
-          </div>
-
-          <div class="step">
-
-            <div class="circle">
-              4
-            </div>
-
-            <span>
-              Venta
-            </span>
-
-          </div>
-
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Actividad reciente</h3>
+          <a href="recepciones.html">Ver todas</a>
         </div>
+        <div class="table-scroll">
+          <table class="simple">
+            <thead>
+              <tr><th>Producto</th><th>Peso</th><th>Estado</th><th>Fecha</th></tr>
+            </thead>
+            <tbody id="recentTable">
+              <tr><td colspan="4" class="empty">Cargando información...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-      </div>
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Alertas del sistema</h3>
+        </div>
+        <div id="alertsContainer">
+          <div class="empty">Consultando los datos del sistema...</div>
+        </div>
+      </section>
 
-    </section>
+    </div>
 
-  </div>
+    <div class="grid-2 parejo">
 
-</main>
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Distribución de productos</h3>
+        </div>
+        <div class="donut-wrap">
+          <div class="donut" id="productDonut">
+            <div class="donut-center">
+              <strong id="donutTotal">–</strong>
+              <span>productos</span>
+            </div>
+          </div>
+          <div class="donut-legend" id="donutLegend">
+            <div><span class="swatch" style="background:#D9ECFF"></span><span>Cargando...</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h3>Flujo del sistema</h3>
+        </div>
+        <div class="stepper-scroll">
+          <div class="stepper">
+            <a class="step" href="productos.html"><div class="circle">1</div><span>Productos</span></a>
+            <a class="step" href="recepciones.html"><div class="circle">2</div><span>Recepción</span></a>
+            <a class="step" href="normas.html"><div class="circle">3</div><span>Control</span></a>
+            <a class="step" href="ventas.html"><div class="circle">4</div><span>Venta</span></a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
 
 </div>
 
+<!-- El SDK se carga al final: así la página se dibuja primero y no queda
+     bloqueada esperando la descarga del script. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+(function(){
+  'use strict';
 
-const SUPABASE_URL =
-'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const $ = id => document.getElementById(id);
 
-const SUPABASE_ANON_KEY =
-'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  // ---------------------------------------------------------------
+  // Si el SDK de Supabase no cargó (sin internet), se avisa y se
+  // ofrece recargar, en vez de dejar la pantalla a medias.
+  // ---------------------------------------------------------------
+  if (typeof supabase === 'undefined') {
+    $('avisoTexto').textContent = 'No se pudo cargar el sistema. Revisa tu conexión e intenta de nuevo.';
+    $('aviso').classList.add('show');
+    $('avisoBtn').addEventListener('click', () => window.location.reload());
+    return;
+  }
 
-const supabaseClient =
-supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const notificationBtn =
-document.getElementById(
-  'notificationBtn'
-);
+  const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const notificationPanel =
-document.getElementById(
-  'notificationPanel'
-);
+  // ---------------------------------------------------------------
+  // ESTADO DE LA PÁGINA
+  // ---------------------------------------------------------------
+  let usuarioActual = null;
+  let datos = { productos: [], proveedores: [], recepciones: [], totalRecepciones: 0 };
+  let datosListos = false;        // ya hay algo que mostrar (caché o datos frescos)
+  let errorCarga = false;
+  let cargando = false;
+  let ultimaActualizacion = 0;
+  let notifsActuales = [];
 
-const closeNotifications =
-document.getElementById(
-  'closeNotifications'
-);
+  // ---------------------------------------------------------------
+  // UTILIDADES
+  // ---------------------------------------------------------------
 
-const mobileMenuBtn =
-document.getElementById(
-  'mobileMenuBtn'
-);
+  // Evita que texto de la base de datos se interprete como HTML
+  function escapeHTML(texto){
+    return String(texto ?? '').replace(/[&<>"']/g, c => (
+      { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+    ));
+  }
 
-const mobileOverlay =
-document.getElementById(
-  'mobileOverlay'
-);
+  // Quita tildes y pasa a minúsculas para comparar textos sin errores
+  function normalizar(texto){
+    return String(texto ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
 
-const sidebar =
-document.querySelector(
-  '.sidebar'
-);
+  function capitalizar(texto){
+    const t = String(texto || '').trim();
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
 
-notificationBtn.addEventListener(
-  'click',
-  async function(e){
+  const fmtNumero = n => Math.round(n).toLocaleString('es-CO');
+  const fmtPeso   = n => (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg';
 
-    e.stopPropagation();
-
-    const abierto =
-      notificationPanel.classList.contains(
-        'show'
-      );
-
-    notificationPanel.classList.toggle(
-      'show'
-    );
-
-    if(!abierto){
-
-      await cargarNotificaciones();
-
+  // Interpreta fechas. Si llega solo "2026-09-23" se toma como fecha LOCAL;
+  // de lo contrario, en Colombia se mostraría un día antes.
+  function parsearFecha(valor){
+    if (!valor) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      const [a, m, d] = valor.split('-').map(Number);
+      return new Date(a, m - 1, d);
     }
-
+    const f = new Date(valor);
+    return isNaN(f.getTime()) ? null : f;
   }
-);
-
-closeNotifications.addEventListener(
-  'click',
-  function(){
-
-    notificationPanel.classList.remove(
-      'show'
-    );
-
+  function formatearFecha(valor){
+    const f = parsearFecha(valor);
+    return f ? f.toLocaleDateString('es-CO') : '-';
   }
-);
 
-document.addEventListener(
-  'click',
-  function(e){
+  // ---------------------------------------------------------------
+  // CLASIFICACIÓN DE ESTADOS (se usa en la tabla, alertas y notificaciones)
+  //   'warn' = problema (rechazado, dañado...)
+  //   'pend' = requiere revisión (pendiente, en evaluación...)
+  //   'ok'   = normal (recibido, aceptado, fresco...)
+  // Si tu base de datos usa otras palabras, agrégalas en estas listas.
+  // ---------------------------------------------------------------
+  const PALABRAS_PROBLEMA  = ['rechaz', 'dano', 'danad', 'deterior', 'vencid', 'cancelad', 'inactiv', 'no apto'];
+  const PALABRAS_PENDIENTE = ['pendiente', 'evaluacion', 'revision', 'observ'];
 
-    if(
-      !notificationPanel.contains(e.target) &&
-      !notificationBtn.contains(e.target)
-    ){
-
-      notificationPanel.classList.remove(
-        'show'
-      );
-
-    }
-
+  function clasificarEstado(estado){
+    const e = normalizar(estado);
+    if (PALABRAS_PROBLEMA.some(p => e.includes(p)))  return 'warn';
+    if (PALABRAS_PENDIENTE.some(p => e.includes(p))) return 'pend';
+    return 'ok';
   }
-);
 
-function abrirMenuMovil(){
-
-  sidebar.classList.add(
-    'mobile-open'
-  );
-
-  mobileOverlay.classList.add(
-    'show'
-  );
-
-  mobileMenuBtn.setAttribute(
-    'aria-label',
-    'Cerrar menú'
-  );
-
-  document.body.style.overflow =
-    'hidden';
-
-}
-
-function cerrarMenuMovil(){
-
-  sidebar.classList.remove(
-    'mobile-open'
-  );
-
-  mobileOverlay.classList.remove(
-    'show'
-  );
-
-  mobileMenuBtn.setAttribute(
-    'aria-label',
-    'Abrir menú'
-  );
-
-  document.body.style.overflow =
-    '';
-
-}
-
-mobileMenuBtn.addEventListener(
-  'click',
-  function(){
-
-    const abierto =
-      sidebar.classList.contains(
-        'mobile-open'
-      );
-
-    if(abierto){
-
-      cerrarMenuMovil();
-
-    }else{
-
-      abrirMenuMovil();
-
-    }
-
+  // Número que sube suavemente hasta su valor final
+  function animarNumero(el, destino, formato){
+    el.classList.remove('loading-val');
+    const inicio = Number(el.dataset.v ?? 0);
+    el.dataset.v = destino;
+    const id = (el._anim = (el._anim || 0) + 1);
+    if (reducirMovimiento || inicio === destino) { el.textContent = formato(destino); return; }
+    const duracion = 600, t0 = performance.now();
+    (function paso(t){
+      if (el._anim !== id) return;
+      const p = Math.min((t - t0) / duracion, 1);
+      const suave = 1 - Math.pow(1 - p, 3);
+      el.textContent = formato(inicio + (destino - inicio) * suave);
+      if (p < 1) requestAnimationFrame(paso);
+    })(t0);
   }
-);
 
-mobileOverlay.addEventListener(
-  'click',
-  cerrarMenuMovil
-);
-
-document.querySelectorAll(
-  '.sb-link'
-).forEach(
-  enlace => {
-
-    enlace.addEventListener(
-      'click',
-      function(){
-
-        cerrarMenuMovil();
-
-      }
-    );
-
+  // ---------------------------------------------------------------
+  // USUARIO Y ENCABEZADO
+  // ---------------------------------------------------------------
+  function saludar(){
+    const h = new Date().getHours();
+    return h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
   }
-);
 
-window.addEventListener(
-  'resize',
-  function(){
-
-    if(
-      window.innerWidth > 800
-    ){
-
-      cerrarMenuMovil();
-
-    }
-
+  function colocarFecha(){
+    $('todayDate').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
   }
-);
 
-async function cargarUsuario(){
+  function pintarUsuario(){
+    const u = usuarioActual;
+    const nombre = (u.user_metadata?.full_name || u.user_metadata?.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario';
+    const inicial = nombre.charAt(0).toUpperCase();
+    $('sbUserName').textContent  = nombre;
+    $('topUserName').textContent = nombre;
+    $('sbAvatar').textContent    = inicial;
+    $('topAvatar').textContent   = inicial;
+    $('saludo').textContent      = saludar() + ', ' + nombre.split(/\s+/)[0];
+  }
 
-  const {
-    data:{session}
-  } =
-  await supabaseClient.auth.getSession();
+  // ---------------------------------------------------------------
+  // CACHÉ LOCAL: al volver a la página se muestra al instante lo último
+  // que se vio, y en segundo plano se piden los datos nuevos.
+  // ---------------------------------------------------------------
+  const claveCache = () => 'dsi_dash_' + usuarioActual.id;
 
-  if(!session){
-
-    window.location.href =
-      'login.html';
-
+  function leerCache(){
+    try {
+      const c = JSON.parse(localStorage.getItem(claveCache()) || 'null');
+      if (c && Array.isArray(c.productos) && Array.isArray(c.proveedores) && Array.isArray(c.recepciones)) return c;
+    } catch (e) { /* caché dañada: se ignora */ }
     return null;
-
+  }
+  function guardarCache(){
+    try { localStorage.setItem(claveCache(), JSON.stringify(datos)); } catch (e) { /* sin espacio: no pasa nada */ }
   }
 
-  const user =
-    session.user;
-
-  const nombre =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    user.email?.split('@')[0] ||
-    'Usuario';
-
-  const inicial =
-    nombre
-      .trim()
-      .charAt(0)
-      .toUpperCase();
-
-  document.getElementById(
-    'sbUserName'
-  ).textContent =
-    nombre;
-
-  document.getElementById(
-    'topUserName'
-  ).textContent =
-    nombre;
-
-  document.getElementById(
-    'sbAvatar'
-  ).textContent =
-    inicial;
-
-  document.getElementById(
-    'topAvatar'
-  ).textContent =
-    inicial;
-
-  return session;
-
-}
-
-function colocarFecha(){
-
-  const fecha =
-    new Date();
-
-  const opciones = {
-
-    day:'2-digit',
-
-    month:'long',
-
-    year:'numeric'
-
-  };
-
-  document.getElementById(
-    'todayDate'
-  ).textContent =
-    fecha.toLocaleDateString(
-      'es-ES',
-      opciones
-    );
-
-}
-
-async function cargarDashboard(){
-
-  try{
-
-    const [
-
-      productosResult,
-
-      proveedoresResult,
-
-      pesoResult,
-
-      recientesResult
-
-    ] =
-    await Promise.all([
-
-      supabaseClient
-        .from('productos')
-        .select(
-          'id,nombre,categoria,estado'
-        ),
-
-      supabaseClient
-        .from('proveedores')
-        .select(
-          'id,estado'
-        ),
-
-      supabaseClient
-        .from('recepciones')
-        .select(
-          'peso'
-        ),
-
-      supabaseClient
-        .from('recepciones')
-        .select(`
-          id,
-          producto_id,
-          peso,
-          estado_producto,
-          fecha_recepcion,
-          productos (
-            nombre
-          )
-        `)
-        .order(
-          'fecha_recepcion',
-          {
-            ascending:false
-          }
-        )
-        .limit(5)
-
-    ]);
-
-    if(productosResult.error){
-
-      console.error(
-        'Error productos:',
-        productosResult.error
-      );
-
-    }
-
-    if(proveedoresResult.error){
-
-      console.error(
-        'Error proveedores:',
-        proveedoresResult.error
-      );
-
-    }
-
-    if(pesoResult.error){
-
-      console.error(
-        'Error peso:',
-        pesoResult.error
-      );
-
-    }
-
-    if(recientesResult.error){
-
-      console.error(
-        'Error recepciones:',
-        recientesResult.error
-      );
-
-    }
-
-    const productos =
-      productosResult.data || [];
-
-    const proveedores =
-      proveedoresResult.data || [];
-
-    const pesos =
-      pesoResult.data || [];
-
-    const recientes =
-      recientesResult.data || [];
-
-    document.getElementById(
-      'totalProductos'
-    ).textContent =
-      productos.length;
-
-    document.getElementById(
-      'totalProveedores'
-    ).textContent =
-      proveedores.length;
-
-    document.getElementById(
-      'totalRecepciones'
-    ).textContent =
-      pesos.length;
-
-    const peso =
-      pesos.reduce(
-        (
-          total,
-          registro
-        ) => {
-
-          return total +
-            Number(
-              registro.peso || 0
-            );
-
-        },
-        0
-      );
-
-    document.getElementById(
-      'pesoTotal'
-    ).textContent =
-      peso.toLocaleString(
-        'es-CO',
-        {
-          minimumFractionDigits:0,
-          maximumFractionDigits:2
-        }
-      ) + ' kg';
-
-    cargarActividad(
-      recientes
-    );
-
-    cargarDistribucion(
-      productos
-    );
-
-    cargarAlertas(
-      productos,
-      proveedores,
-      pesos
-    );
-
-  }catch(error){
-
-    console.error(
-      'Error cargando dashboard:',
-      error
-    );
-
+  // ---------------------------------------------------------------
+  // AVISO DE ERROR
+  // ---------------------------------------------------------------
+  function mostrarAviso(texto){
+    $('avisoTexto').textContent = texto;
+    $('aviso').classList.add('show');
   }
+  function ocultarAviso(){ $('aviso').classList.remove('show'); }
 
-}
+  // ---------------------------------------------------------------
+  // CARGA DE DATOS
+  // Antes eran 4 consultas (recepciones se pedía dos veces) más 2 cada
+  // vez que se abrían las notificaciones. Ahora son solo 3, en paralelo,
+  // y todo lo demás (peso, recientes, alertas, notificaciones) se calcula
+  // con esos mismos datos.
+  // ---------------------------------------------------------------
+  async function actualizarDatos(){
+    if (cargando) return;
+    cargando = true;
+    $('syncEstado').textContent = 'Actualizando…';
+    let hayError = false;
 
-function cargarActividad(
-  recepciones
-){
+    try {
+      const [prod, prov, rec] = await Promise.all([
+        supabaseClient.from('productos').select('id,nombre,categoria,estado'),
+        supabaseClient.from('proveedores').select('id,estado'),
+        supabaseClient
+          .from('recepciones')
+          .select('id,producto_id,peso,estado_producto,fecha_recepcion,productos(nombre)', { count: 'exact' })
+          // nullsFirst:false → las recepciones sin fecha no aparecen como "las más recientes"
+          .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+      ]);
 
-  const tabla =
-    document.getElementById(
-      'recentTable'
-    );
+      if (prod.error) { hayError = true; console.error('Error productos:', prod.error); }
+      else datos.productos = prod.data || [];
 
-  if(!recepciones.length){
+      if (prov.error) { hayError = true; console.error('Error proveedores:', prov.error); }
+      else datos.proveedores = prov.data || [];
 
-    tabla.innerHTML = `
-
-      <tr>
-
-        <td
-          colspan="4"
-          class="empty"
-        >
-          No hay recepciones registradas.
-        </td>
-
-      </tr>
-
-    `;
-
-    return;
-
-  }
-
-  tabla.innerHTML = '';
-
-  recepciones.forEach(
-    r => {
-
-      const nombre =
-        r.productos?.nombre ||
-        'Producto';
-
-      let clase =
-        'ok';
-
-      const estado =
-        r.estado_producto ||
-        'Recibido';
-
-      const estadoLower =
-        estado.toLowerCase();
-
-      if(
-        estadoLower.includes(
-          'pendiente'
-        )
-      ){
-
-        clase =
-          'pend';
-
+      if (rec.error) { hayError = true; console.error('Error recepciones:', rec.error); }
+      else {
+        datos.recepciones = rec.data || [];
+        datos.totalRecepciones = rec.count ?? datos.recepciones.length;
       }
-
-      if(
-        estadoLower.includes(
-          'rechaz'
-        ) ||
-
-        estadoLower.includes(
-          'dañado'
-        ) ||
-
-        estadoLower.includes(
-          'inactivo'
-        )
-      ){
-
-        clase =
-          'warn';
-
-      }
-
-      const fecha =
-        r.fecha_recepcion
-
-          ? new Date(
-              r.fecha_recepcion
-            ).toLocaleDateString(
-              'es-CO'
-            )
-
-          : '-';
-
-      tabla.innerHTML += `
-
-        <tr>
-
-          <td>
-            ${escapeHTML(nombre)}
-          </td>
-
-          <td>
-            ${Number(
-              r.peso || 0
-            ).toLocaleString(
-              'es-CO'
-            )} kg
-          </td>
-
-          <td>
-
-            <span
-              class="pill ${clase}"
-            >
-              ${escapeHTML(estado)}
-            </span>
-
-          </td>
-
-          <td>
-            ${fecha}
-          </td>
-
-        </tr>
-
-      `;
-
+    } catch (err) {
+      hayError = true;
+      console.error('Error cargando dashboard:', err);
     }
-  );
 
-}
+    cargando = false;
+    errorCarga = hayError;
+    datosListos = true;
 
-function cargarDistribucion(
-  productos
-){
-
-  const total =
-    productos.length;
-
-  document.getElementById(
-    'donutTotal'
-  ).textContent =
-    total;
-
-  const categorias = {};
-
-  productos.forEach(
-    producto => {
-
-      const categoria =
-        producto.categoria ||
-        'Otros';
-
-      categorias[categoria] =
-        (
-          categorias[categoria] ||
-          0
-        ) + 1;
-
+    if (hayError) {
+      mostrarAviso('No se pudieron actualizar algunos datos. Revisa tu conexión.');
+      $('syncEstado').textContent = 'Sin actualizar';
+    } else {
+      ocultarAviso();
+      podarLeidas();          // limpia notificaciones leídas que ya no existen
+      guardarCache();
+      ultimaActualizacion = Date.now();
+      $('syncEstado').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
     }
-  );
 
-  const orden =
-    Object.entries(
-      categorias
-    )
-    .sort(
-      (a,b) =>
-        b[1] - a[1]
-    )
-    .slice(0,4);
+    pintarDashboard();
+  }
 
-  const colores = [
+  // ---------------------------------------------------------------
+  // PINTAR LA PANTALLA
+  // ---------------------------------------------------------------
+  function pintarDashboard(){
+    if (!datosListos) return;
+    const { productos, proveedores, recepciones } = datos;
 
-    '#1E66F5',
+    animarNumero($('totalProductos'),   productos.length,   fmtNumero);
+    animarNumero($('totalProveedores'), proveedores.length, fmtNumero);
+    animarNumero($('totalRecepciones'), datos.totalRecepciones || recepciones.length, fmtNumero);
 
-    '#1B8A5A',
+    const peso = recepciones.reduce((t, r) => t + (Number(r.peso) || 0), 0);
+    animarNumero($('pesoTotal'), peso, fmtPeso);
 
-    '#FFA94D',
+    pintarActividad();
+    pintarDistribucion();
+    pintarAlertas();
+    renderNotificaciones();
+  }
 
-    '#7B5CC7'
+  function pintarActividad(){
+    const tabla = $('recentTable');
+    const filas = datos.recepciones.slice(0, 5).map(r => {
+      const estado = r.estado_producto || 'Recibido';
+      const prod = Array.isArray(r.productos) ? r.productos[0] : r.productos;
+      return `<tr>
+        <td>${escapeHTML(prod?.nombre || 'Producto')}</td>
+        <td>${fmtPeso(Number(r.peso) || 0)}</td>
+        <td><span class="pill ${clasificarEstado(estado)}">${escapeHTML(estado)}</span></td>
+        <td>${formatearFecha(r.fecha_recepcion)}</td>
+      </tr>`;
+    }).join('');
 
-  ];
+    const vacio = errorCarga ? 'No se pudo cargar la información.' : 'No hay recepciones registradas.';
+    tabla.innerHTML = filas || `<tr><td colspan="4" class="empty">${vacio}</td></tr>`;
+  }
 
-  const donut =
-    document.getElementById(
-      'productDonut'
-    );
+  function pintarDistribucion(){
+    const productos = datos.productos;
+    const total = productos.length;
+    $('donutTotal').textContent = fmtNumero(total);
 
-  const legend =
-    document.getElementById(
-      'donutLegend'
-    );
+    const donut  = $('productDonut');
+    const legend = $('donutLegend');
 
-  if(!orden.length){
+    if (!total) {
+      donut.style.background = '#D9ECFF';
+      legend.innerHTML = '<div><span class="swatch" style="background:#1E66F5"></span><span>Sin productos registrados</span></div>';
+      return;
+    }
 
-    donut.style.background =
-      '#D9ECFF';
+    // Se agrupa sin importar mayúsculas ni tildes ("Peces" = "peces")
+    const grupos = new Map();
+    productos.forEach(p => {
+      const nombre = (p.categoria || '').trim() || 'Otros';
+      const clave = normalizar(nombre);
+      const g = grupos.get(clave);
+      if (g) g.n++; else grupos.set(clave, { nombre: capitalizar(nombre), n: 1 });
+    });
 
-    legend.innerHTML = `
+    const ordenados = [...grupos.values()].sort((a, b) => b.n - a.n);
+    const principales = ordenados.slice(0, 4);
+    const resto = ordenados.slice(4).reduce((s, g) => s + g.n, 0);
+    if (resto > 0) principales.push({ nombre: 'Otras categorías', n: resto });
 
+    const colores = ['#1E66F5', '#1B8A5A', '#FFA94D', '#7B5CC7', '#9AA8BD'];
+
+    let acumulado = 0;
+    const tramos = principales.map((g, i) => {
+      const inicio = acumulado;
+      acumulado += (g.n / total) * 100;
+      return `${colores[i]} ${inicio}% ${acumulado}%`;
+    });
+    donut.style.background = `conic-gradient(${tramos.join(',')})`;
+
+    legend.innerHTML = principales.map((g, i) => `
       <div>
-
-        <span
-          class="swatch"
-          style="background:#1E66F5"
-        ></span>
-
-        <span>
-          Sin productos registrados
-        </span>
-
-      </div>
-
-    `;
-
-    return;
-
+        <span class="swatch" style="background:${colores[i]}"></span>
+        <span>${escapeHTML(g.nombre)} — ${Math.round((g.n / total) * 100)}%</span>
+      </div>`).join('');
   }
 
-  let acumulado =
-    0;
-
-  const partes = [];
-
-  orden.forEach(
-    (
-      [categoria,cantidad],
-      index
-    ) => {
-
-      const porcentaje =
-        (
-          cantidad /
-          total
-        ) * 100;
-
-      const inicio =
-        acumulado;
-
-      acumulado +=
-        porcentaje;
-
-      partes.push(
-        `${colores[index]} ${inicio}% ${acumulado}%`
-      );
-
+  function iconoAlerta(tipo){
+    if (tipo === 'ok') {
+      return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     }
-  );
-
-  if(acumulado < 100){
-
-    partes.push(
-      `#E7D7FF ${acumulado}% 100%`
-    );
-
+    return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10v6" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="7" r=".8" fill="currentColor"/></svg>';
   }
 
-  donut.style.background =
-    `conic-gradient(${partes.join(',')})`;
+  function pintarAlertas(){
+    const { productos, proveedores, recepciones } = datos;
+    const alertas = [];
 
-  legend.innerHTML =
-    '';
+    const problemas   = recepciones.filter(r => clasificarEstado(r.estado_producto) === 'warn').length;
+    const pendientes  = recepciones.filter(r => clasificarEstado(r.estado_producto) === 'pend').length;
+    const prodInact   = productos.filter(p => normalizar(p.estado) === 'inactivo').length;
+    const provInact   = proveedores.filter(p => normalizar(p.estado) === 'inactivo').length;
 
-  orden.forEach(
-    (
-      [categoria,cantidad],
-      index
-    ) => {
+    if (problemas)  alertas.push({ tipo: 'err',  titulo: 'Recepciones con problemas', texto: `${problemas} recepción(es) rechazada(s) o dañada(s).`, href: 'recepciones.html' });
+    if (pendientes) alertas.push({ tipo: 'warn', titulo: 'Recepciones pendientes',    texto: `${pendientes} recepción(es) requieren revisión.`,       href: 'recepciones.html' });
+    if (prodInact)  alertas.push({ tipo: 'warn', titulo: 'Productos inactivos',       texto: `${prodInact} producto(s) están marcados como inactivos.`, href: 'productos.html' });
+    if (provInact)  alertas.push({ tipo: 'info', titulo: 'Proveedores inactivos',     texto: `${provInact} proveedor(es) están marcados como inactivos.`, href: 'proveedores.html' });
 
-      const porcentaje =
-        Math.round(
-          (
-            cantidad /
-            total
-          ) * 100
-        );
+    if (!alertas.length) {
+      if (!productos.length && !proveedores.length && !recepciones.length) {
+        alertas.push({ tipo: 'info', titulo: 'Sistema listo', texto: 'Todavía no hay registros. Puedes comenzar desde Productos.', href: 'productos.html' });
+      } else {
+        alertas.push({ tipo: 'ok', titulo: 'Sistema funcionando', texto: 'No hay alertas pendientes en los registros actuales.', href: 'inicio.html' });
+      }
+    }
 
-      legend.innerHTML += `
-
-        <div>
-
-          <span
-            class="swatch"
-            style="background:${colores[index]}"
-          ></span>
-
-          <span>
-
-            ${escapeHTML(
-              categoria
-            )}
-
-            — ${porcentaje}%
-
-          </span>
-
+    $('alertsContainer').innerHTML = alertas.slice(0, 4).map(a => `
+      <a class="alert-item" href="${escapeHTML(a.href)}">
+        <div class="alert-icon a-${a.tipo}">${iconoAlerta(a.tipo)}</div>
+        <div class="alert-text">
+          <strong>${escapeHTML(a.titulo)}</strong>
+          <span>${escapeHTML(a.texto)}</span>
         </div>
+      </a>`).join('');
+  }
 
-      `;
+  // ---------------------------------------------------------------
+  // NOTIFICACIONES
+  // Se calculan con los datos que ya están cargados (se abren al instante).
+  // Al hacer clic en una: se marca como leída (desaparece, y se recuerda
+  // en este navegador) y se abre el módulo de donde viene.
+  // ---------------------------------------------------------------
+  const claveLeidas = () => 'dsi_notif_leidas_' + usuarioActual.id;
 
+  function leerLeidas(){
+    try { return new Set(JSON.parse(localStorage.getItem(claveLeidas()) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function guardarLeidas(set){
+    try { localStorage.setItem(claveLeidas(), JSON.stringify([...set].slice(-300))); } catch (e) {}
+  }
+
+  function construirNotificaciones(){
+    const lista = [];
+
+    datos.recepciones.forEach(r => {
+      const estado = r.estado_producto || 'Recibido';
+      const clase = clasificarEstado(estado);
+      if (clase === 'ok') return;                       // solo lo que requiere atención
+      const prod = Array.isArray(r.productos) ? r.productos[0] : r.productos;
+      lista.push({
+        key: `rec:${r.id}:${normalizar(estado)}`,
+        tipo: clase,
+        titulo: `Recepción ${estado.toLowerCase()}`,
+        texto: `${prod?.nombre || 'Producto'} — ${fmtPeso(Number(r.peso) || 0)}`,
+        fecha: formatearFecha(r.fecha_recepcion),
+        href: 'recepciones.html?id=' + encodeURIComponent(r.id)
+      });
+    });
+
+    datos.productos.forEach(p => {
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: `prod:${p.id}`,
+        tipo: 'info',
+        titulo: 'Producto inactivo',
+        texto: p.nombre || 'Producto',
+        fecha: '',
+        href: 'productos.html?id=' + encodeURIComponent(p.id)
+      });
+    });
+
+    return lista;
+  }
+
+  // Elimina de la lista de "leídas" las que ya no existen (mantiene el registro corto)
+  function podarLeidas(){
+    const vigentes = new Set(construirNotificaciones().map(n => n.key));
+    const leidas = leerLeidas();
+    const nuevas = new Set([...leidas].filter(k => vigentes.has(k)));
+    if (nuevas.size !== leidas.size) guardarLeidas(nuevas);
+  }
+
+  function actualizarGlobo(){
+    const leidas = leerLeidas();
+    const total = notifsActuales.filter(n => !leidas.has(n.key)).length;
+    const globo = $('notificationBadge');
+    globo.textContent = total > 9 ? '9+' : String(total);
+    globo.classList.toggle('show', total > 0);
+    $('notificationBtn').setAttribute('aria-label', total ? `Notificaciones (${total} sin leer)` : 'Notificaciones');
+    $('markAllRead').style.display = total ? '' : 'none';
+  }
+
+  function iconoNotif(tipo){
+    return tipo === 'info'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="8" r=".9" fill="currentColor"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>';
+  }
+
+  function renderNotificaciones(){
+    if (!usuarioActual) return;
+    const leidas = leerLeidas();
+    notifsActuales = construirNotificaciones().filter(n => !leidas.has(n.key)).slice(0, 30);
+    actualizarGlobo();
+
+    const cont = $('notificationContent');
+    if (!notifsActuales.length) {
+      cont.innerHTML = '<div class="notification-empty">No tienes notificaciones nuevas.</div>';
+      return;
     }
-  );
 
-}
-
-function cargarAlertas(
-  productos,
-  proveedores,
-  recepciones
-){
-
-  const container =
-    document.getElementById(
-      'alertsContainer'
-    );
-
-  const alertas = [];
-
-  const productosInactivos =
-    productos.filter(
-      p =>
-
-        p.estado &&
-
-        p.estado
-          .toLowerCase() ===
-          'inactivo'
-    );
-
-  if(
-    productosInactivos.length
-  ){
-
-    alertas.push({
-
-      tipo:'warn',
-
-      titulo:
-        'Productos inactivos',
-
-      texto:
-        `${productosInactivos.length} producto(s) están marcados como inactivos.`
-
-    });
-
-  }
-
-  const proveedoresInactivos =
-    proveedores.filter(
-      p =>
-
-        p.estado &&
-
-        p.estado
-          .toLowerCase() ===
-          'inactivo'
-    );
-
-  if(
-    proveedoresInactivos.length
-  ){
-
-    alertas.push({
-
-      tipo:'info',
-
-      titulo:
-        'Proveedores inactivos',
-
-      texto:
-        `${proveedoresInactivos.length} proveedor(es) están marcados como inactivos.`
-
-    });
-
-  }
-
-  const recepcionesPendientes =
-    recepciones.filter(
-      r => {
-
-        const estado =
-          (
-            r.estado_producto ||
-            ''
-          ).toLowerCase();
-
-        return estado.includes(
-          'pendiente'
-        );
-
-      }
-    );
-
-  if(
-    recepcionesPendientes.length
-  ){
-
-    alertas.push({
-
-      tipo:'warn',
-
-      titulo:
-        'Recepciones pendientes',
-
-      texto:
-        `${recepcionesPendientes.length} recepción(es) requieren revisión.`
-
-    });
-
-  }
-
-  if(
-
-    productos.length === 0 &&
-
-    proveedores.length === 0 &&
-
-    recepciones.length === 0
-
-  ){
-
-    alertas.push({
-
-      tipo:'info',
-
-      titulo:
-        'Sistema listo',
-
-      texto:
-        'Todavía no hay registros. Puedes comenzar desde Productos.'
-
-    });
-
-  }
-
-  if(!alertas.length){
-
-    alertas.push({
-
-      tipo:'ok',
-
-      titulo:
-        'Sistema funcionando',
-
-      texto:
-        'No hay alertas pendientes en los registros actuales.'
-
-    });
-
-  }
-
-  container.innerHTML =
-    '';
-
-  alertas
-    .slice(0,4)
-    .forEach(
-      alerta => {
-
-        let icono = `
-
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-            <path
-              d="M12 10v6"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-
-            <circle
-              cx="12"
-              cy="7"
-              r=".8"
-              fill="currentColor"
-            />
-
-          </svg>
-
-        `;
-
-        if(
-          alerta.tipo ===
-          'ok'
-        ){
-
-          icono = `
-
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <path
-                d="m5 12 4 4L19 6"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-
-            </svg>
-
-          `;
-
-        }
-
-        container.innerHTML += `
-
-          <div class="alert-item">
-
-            <div
-              class="alert-icon a-${alerta.tipo}"
-            >
-
-              ${icono}
-
-            </div>
-
-            <div class="alert-text">
-
-              <strong>
-                ${escapeHTML(
-                  alerta.titulo
-                )}
-              </strong>
-
-              <span>
-                ${escapeHTML(
-                  alerta.texto
-                )}
-              </span>
-
-            </div>
-
-          </div>
-
-        `;
-
-      }
-    );
-
-}
-
-async function cargarNotificaciones(){
-
-  const contenido =
-    document.getElementById(
-      'notificationContent'
-    );
-
-  const punto =
-    document.getElementById(
-      'notificationDot'
-    );
-
-  contenido.innerHTML = `
-
-    <div class="notification-empty">
-      Cargando notificaciones...
-    </div>
-
-  `;
-
-  try{
-
-    const [
-
-      recepcionesResult,
-
-      productosResult
-
-    ] =
-    await Promise.all([
-
-      supabaseClient
-        .from('recepciones')
-        .select(
-          'id,peso,estado_producto,fecha_recepcion'
-        )
-        .order(
-          'fecha_recepcion',
-          {
-            ascending:false
-          }
-        )
-        .limit(20),
-
-      supabaseClient
-        .from('productos')
-        .select(
-          'id,nombre,estado'
-        )
-        .order(
-          'created_at',
-          {
-            ascending:false
-          }
-        )
-        .limit(20)
-
-    ]);
-
-    const recepciones =
-      recepcionesResult.data || [];
-
-    const productos =
-      productosResult.data || [];
-
-    let html =
-      '';
-
-    let hayNotificaciones =
-      false;
-
-    recepciones.forEach(
-      r => {
-
-        const estado =
-          r.estado_producto ||
-          'Recibido';
-
-        const estadoLower =
-          estado.toLowerCase();
-
-        if(
-          estadoLower !==
-          'recibido'
-        ){
-
-          hayNotificaciones =
-            true;
-
-          html += `
-
-            <div class="notification-item">
-
-              <div class="ni-icon">
-
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-
-                  <path
-                    d="M12 3v12"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  />
-
-                  <circle
-                    cx="12"
-                    cy="19"
-                    r="1"
-                    fill="currentColor"
-                  />
-
-                </svg>
-
-              </div>
-
-              <div>
-
-                <strong>
-
-                  Recepción con estado
-                  ${escapeHTML(
-                    estado
-                  )}
-
-                </strong>
-
-                <span>
-
-                  Se registró una recepción de
-                  ${Number(
-                    r.peso || 0
-                  ).toLocaleString(
-                    'es-CO'
-                  )} kg.
-
-                </span>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-
-      }
-    );
-
-    productos.forEach(
-      p => {
-
-        if(
-
-          p.estado &&
-
-          p.estado
-            .toLowerCase() ===
-            'inactivo'
-
-        ){
-
-          hayNotificaciones =
-            true;
-
-          html += `
-
-            <div class="notification-item">
-
-              <div class="ni-icon">
-
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-
-                  <path
-                    d="M12 3v11"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  />
-
-                  <circle
-                    cx="12"
-                    cy="18.5"
-                    r="1"
-                    fill="currentColor"
-                  />
-
-                </svg>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Producto inactivo
-                </strong>
-
-                <span>
-                  ${escapeHTML(
-                    p.nombre
-                  )}
-                </span>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-
-      }
-    );
-
-    if(!hayNotificaciones){
-
-      punto.style.display =
-        'none';
-
-      contenido.innerHTML = `
-
-        <div class="notification-empty">
-          No hay notificaciones pendientes.
+    cont.innerHTML = notifsActuales.map((n, i) => `
+      <a class="notification-item" href="${escapeHTML(n.href)}" data-i="${i}">
+        <div class="ni-icon t-${n.tipo}">${iconoNotif(n.tipo)}</div>
+        <div class="ni-body">
+          <strong>${escapeHTML(n.titulo)}</strong>
+          <span>${escapeHTML(n.texto)}</span>
+          ${n.fecha && n.fecha !== '-' ? `<em>${escapeHTML(n.fecha)}</em>` : ''}
         </div>
+        <span class="ni-go">›</span>
+      </a>`).join('');
+  }
 
-      `;
+  // Clic en una notificación: se marca como leída, desaparece y se abre el módulo
+  $('notificationContent').addEventListener('click', function(e){
+    const item = e.target.closest('.notification-item');
+    if (!item) return;
+    e.preventDefault();
 
-    }else{
+    const n = notifsActuales[Number(item.dataset.i)];
+    if (!n) return;
 
-      punto.style.display =
-        'block';
+    const leidas = leerLeidas();
+    leidas.add(n.key);
+    guardarLeidas(leidas);
+    actualizarGlobo();
 
-      contenido.innerHTML =
-        html;
+    item.classList.add('removing');
+    setTimeout(function(){
+      item.remove();
+      if (!$('notificationContent').querySelector('.notification-item')) renderNotificaciones();
+      window.location.href = n.href;
+    }, 170);
+  });
 
+  $('markAllRead').addEventListener('click', function(){
+    const leidas = leerLeidas();
+    construirNotificaciones().forEach(n => leidas.add(n.key));
+    guardarLeidas(leidas);
+    renderNotificaciones();
+  });
+
+  // Abrir / cerrar el panel
+  const panel = $('notificationPanel');
+  const btnNotif = $('notificationBtn');
+
+  function cerrarPanel(){
+    panel.classList.remove('show');
+    btnNotif.setAttribute('aria-expanded', 'false');
+  }
+
+  btnNotif.addEventListener('click', function(e){
+    e.stopPropagation();
+    const abierto = panel.classList.toggle('show');
+    btnNotif.setAttribute('aria-expanded', String(abierto));
+  });
+  $('closeNotifications').addEventListener('click', cerrarPanel);
+  document.addEventListener('click', function(e){
+    if (!panel.contains(e.target) && !btnNotif.contains(e.target)) cerrarPanel();
+  });
+
+  // ---------------------------------------------------------------
+  // MENÚ MÓVIL
+  // ---------------------------------------------------------------
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = $('mobileOverlay');
+  const btnMenu = $('mobileMenuBtn');
+
+  function abrirMenuMovil(){
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('show');
+    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarMenuMovil(){
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    btnMenu.setAttribute('aria-label', 'Abrir menú');
+    document.body.style.overflow = '';
+  }
+
+  btnMenu.addEventListener('click', () => sidebar.classList.contains('mobile-open') ? cerrarMenuMovil() : abrirMenuMovil());
+  overlay.addEventListener('click', cerrarMenuMovil);
+  document.querySelectorAll('.sb-link').forEach(l => l.addEventListener('click', cerrarMenuMovil));
+  window.addEventListener('resize', () => { if (window.innerWidth > 800) cerrarMenuMovil(); });
+
+  // Tecla Escape: cierra el panel de notificaciones y el menú móvil
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') { cerrarPanel(); cerrarMenuMovil(); }
+  });
+
+  // ---------------------------------------------------------------
+  // CERRAR SESIÓN
+  // ---------------------------------------------------------------
+  $('logoutBtn').addEventListener('click', async function(){
+    try { await supabaseClient.auth.signOut({ scope: 'local' }); } catch (e) { console.warn(e); }
+    try { if (usuarioActual) localStorage.removeItem(claveCache()); } catch (e) {}
+    window.location.replace('login.html');
+  });
+
+  // Si la sesión se cierra (en esta u otra pestaña), se vuelve al login
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'SIGNED_OUT') window.location.replace('login.html');
+  });
+
+  // Botón "Reintentar" del aviso
+  $('avisoBtn').addEventListener('click', actualizarDatos);
+
+  // ---------------------------------------------------------------
+  // REFRESCO AUTOMÁTICO
+  // Al volver a la pestaña, al volver desde otro módulo o al recuperar
+  // internet, los datos y las notificaciones se actualizan solos.
+  // ---------------------------------------------------------------
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted && usuarioActual) { renderNotificaciones(); actualizarDatos(); }
+  });
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && usuarioActual && Date.now() - ultimaActualizacion > 30000) actualizarDatos();
+  });
+  window.addEventListener('online', function(){ if (usuarioActual) actualizarDatos(); });
+
+  // ---------------------------------------------------------------
+  // INICIO
+  // ---------------------------------------------------------------
+  async function iniciar(){
+    colocarFecha();
+
+    // La sesión se lee del navegador (rápido). Sin sesión → login.
+    let session = null;
+    try {
+      const res = await supabaseClient.auth.getSession();
+      session = res.data.session;
+    } catch (err) {
+      console.error('No se pudo leer la sesión:', err);
     }
 
-  }catch(error){
+    if (!session) { window.location.replace('login.html'); return; }
 
-    console.error(
-      'Error cargando notificaciones:',
-      error
-    );
+    usuarioActual = session.user;
+    pintarUsuario();
 
-    contenido.innerHTML = `
+    // 1) Se muestra al instante lo último guardado (si existe)
+    const cache = leerCache();
+    if (cache) {
+      datos = cache;
+      datosListos = true;
+      pintarDashboard();
+    }
 
-      <div class="notification-empty">
-        No fue posible cargar las notificaciones.
-      </div>
-
-    `;
-
+    // 2) Se piden los datos frescos en segundo plano
+    await actualizarDatos();
   }
 
-}
-
-function escapeHTML(
-  text
-){
-
-  const div =
-    document.createElement(
-      'div'
-    );
-
-  div.textContent =
-    text ?? '';
-
-  return div.innerHTML;
-
-}
-
-async function iniciar(){
-
-  colocarFecha();
-
-  const session =
-    await cargarUsuario();
-
-  if(!session){
-
-    return;
-
-  }
-
-  await cargarDashboard();
-
-}
-
-iniciar();
-
+  iniciar();
+})();
 </script>
 
 </body>
-
 </html>
