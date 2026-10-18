@@ -2,13 +2,16 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deep Sea Intelligence — Trazabilidad</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Trazabilidad — Deep Sea</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <style>
 :root{
   --azul-oscuro:#062B5B;
-  --azul-oscuro-2:#083868;
   --azul-medio:#1E66F5;
   --azul-claro:#D9ECFF;
   --verde-suave:#B9F5C5;
@@ -27,1861 +30,1619 @@
   --radio:16px;
 }
 
-*{box-sizing:border-box}
-
+*{ box-sizing:border-box; }
+html{ scrollbar-width:thin; scrollbar-color:#C5D0DF transparent; }
 html,body{
-  margin:0;
-  padding:0;
+  margin:0; padding:0;
   font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   background:var(--gris-claro);
   color:var(--texto-principal);
+  -webkit-font-smoothing:antialiased;
 }
+body{ overflow-x:hidden; }
+:focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
+a,button{ touch-action:manipulation; }
 
-.app{
-  display:grid;
-  grid-template-columns:250px 1fr;
-  min-height:100vh;
-}
+.app{ display:grid; grid-template-columns:250px 1fr; min-height:100vh; min-height:100dvh; }
 
-/* SIDEBAR */
-
+/* ===================== MENÚ LATERAL ===================== */
 .sidebar{
-  background:var(--azul-oscuro);
+  background:linear-gradient(180deg,#07326F 0%,var(--azul-oscuro) 100%);
   color:#EAF1FC;
-  display:flex;
-  flex-direction:column;
-  padding:22px 16px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  z-index:1001;
+  display:flex; flex-direction:column;
+  padding:18px 14px;
+  padding:clamp(14px,2.4vh,22px) 14px;
+  position:sticky; top:0;
+  height:100vh; height:100dvh;
+  z-index:1000;
 }
-
 .sb-brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:6px 10px 22px;
+  display:flex; align-items:center; gap:10px;
+  padding:4px 8px 16px;
+  padding:4px 8px clamp(10px,2vh,20px);
   border-bottom:1px solid rgba(255,255,255,.08);
-  margin-bottom:14px;
+  margin-bottom:12px;
+  margin-bottom:clamp(8px,1.6vh,14px);
 }
-
 .sb-brand .badge{
-  width:38px;
-  height:38px;
-  border-radius:11px;
-  background:rgba(255,255,255,.12);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  flex:0 0 auto; width:44px; height:44px; border-radius:12px;
+  background:var(--blanco); padding:4px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
 }
-
-.sb-brand .name{
-  font-weight:700;
-  font-size:16px;
-  line-height:1.1;
-}
-
-.sb-brand .name span{color:var(--amarillo)}
-.sb-brand .sub{
-  font-size:10.5px;
-  color:rgba(255,255,255,.55);
-}
+.sb-brand .badge img{ width:100%; height:100%; object-fit:contain; display:block; }
+.sb-brand .name{ font-weight:700; font-size:17px; line-height:1.1; }
+.sb-brand .name span{ color:var(--amarillo); }
+.sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); margin-top:2px; }
 
 nav.sb-nav{
-  flex:1;
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:2px;
+  flex:1; min-height:0; overflow-y:auto;
+  display:flex; flex-direction:column; gap:2px;
+  scrollbar-width:none; -ms-overflow-style:none;
 }
+nav.sb-nav::-webkit-scrollbar{ display:none; }
 
 .sb-link{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:10px 12px;
+  display:flex; align-items:center; gap:12px;
+  padding:8px 12px;
+  padding:clamp(6px,1.15vh,10px) 12px;
   border-radius:10px;
   color:rgba(255,255,255,.72);
-  text-decoration:none;
-  font-size:14px;
-  font-weight:500;
-  cursor:pointer;
-  border:none;
-  background:none;
-  width:100%;
-  text-align:left;
+  text-decoration:none; font-size:13.5px; font-weight:500; cursor:pointer;
+  transition:background .15s,color .15s,transform .15s;
 }
-
-.sb-link svg{
-  flex:0 0 auto;
-  opacity:.85;
-}
-
-.sb-link:hover{
-  background:rgba(255,255,255,.06);
-  color:#fff;
-}
-
-.sb-link.active{
-  background:var(--azul-medio);
-  color:#fff;
-  box-shadow:0 6px 16px rgba(30,102,245,.35);
-}
+.sb-link svg{ flex:0 0 auto; opacity:.85; }
+@media (hover:hover){ .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); } }
+.sb-link:active{ background:rgba(255,255,255,.12); }
+.sb-link.active{ background:var(--azul-medio); color:#fff; box-shadow:0 6px 16px rgba(30,102,245,.35); }
 
 .sb-footer{
-  border-top:1px solid rgba(255,255,255,.08);
-  padding-top:14px;
-  margin-top:10px;
+  flex-shrink:0; border-top:1px solid rgba(255,255,255,.08);
+  padding-top:12px; padding-top:clamp(8px,1.6vh,14px); margin-top:8px;
 }
-
-.sb-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px;
-}
-
+.sb-user{ display:flex; align-items:center; gap:10px; padding:4px; }
 .sb-user .avatar{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:var(--verde-suave);
-  color:var(--azul-oscuro);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:13px;
+  flex:0 0 auto; width:34px; height:34px; border-radius:50%;
+  background:var(--verde-suave); color:var(--azul-oscuro);
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px;
+}
+.sb-user .info{ flex:1; min-width:0; }
+.sb-user .info strong{ display:block; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+.sb-user .info span::before{
+  content:""; display:inline-block; width:7px; height:7px; border-radius:50%;
+  background:#4ADE80; margin-right:5px;
 }
 
-.sb-user .info strong{
-  display:block;
-  font-size:13px;
-}
+/* ===================== CONTENIDO ===================== */
+main{ padding:26px 32px 50px; min-width:0; }
 
-.sb-user .info span{
-  font-size:11px;
-  color:rgba(255,255,255,.5);
-}
-
-/* MAIN */
-
-main{
-  padding:26px 32px 50px;
-  min-width:0;
-}
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:26px;
-}
-
-.topbar h1{
-  font-size:23px;
-  margin:0;
-}
-
-.topbar .subtitle{
-  font-size:13px;
-  color:var(--texto-secundario);
-  margin-top:3px;
-}
-
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
+.topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+.topbar h1{ font-size:23px; margin:0; }
+.topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
+.top-actions{ display:flex; align-items:center; gap:14px; }
 
 .icon-btn{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  position:relative;
-  color:var(--azul-oscuro);
+  width:40px; height:40px; border-radius:12px;
+  background:var(--blanco); border:1px solid var(--gris-borde);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; position:relative; color:var(--azul-oscuro);
+  transition:border-color .15s,box-shadow .15s;
 }
+@media (hover:hover){ .icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 
-.icon-btn:hover{border-color:var(--azul-medio)}
-
-.dot-alert{
-  position:absolute;
-  top:8px;
-  right:9px;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--rojo);
-  border:1.5px solid var(--blanco);
+.badge-notif{
+  position:absolute; top:-6px; right:-6px;
+  min-width:19px; height:19px; padding:0 5px; border-radius:10px;
+  background:var(--rojo); color:#fff; font-size:10.5px; font-weight:700;
+  display:none; align-items:center; justify-content:center;
+  border:2px solid var(--gris-claro);
 }
+.badge-notif.show{ display:flex; animation:pop .3s ease; }
+@keyframes pop{ 0%{ transform:scale(.4); } 70%{ transform:scale(1.15); } 100%{ transform:scale(1); } }
 
 .top-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  padding:6px 14px 6px 6px;
-  border-radius:30px;
+  display:flex; align-items:center; gap:10px;
+  background:var(--blanco); border:1px solid var(--gris-borde);
+  padding:6px 14px 6px 6px; border-radius:30px;
+  text-decoration:none; color:inherit; cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
 }
-
+@media (hover:hover){ .top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 .top-user .avatar{
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  background:var(--azul-claro);
-  color:var(--azul-oscuro);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:12px;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--azul-claro); color:var(--azul-oscuro);
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px;
 }
-
-.top-user span{
-  font-size:13.5px;
-  font-weight:600;
-}
-
-/* BUSCADOR */
-
-.search-panel,
-.product-header,
-.panel{
-  background:var(--blanco);
-  border-radius:var(--radio);
-  box-shadow:var(--sombra);
-}
-
-.search-panel{
-  padding:20px;
-  margin-bottom:18px;
-}
-
-.search-panel h3{
-  margin:0 0 5px;
-  font-size:15.5px;
-}
-
-.search-panel p{
-  margin:0 0 16px;
-  font-size:12px;
-  color:var(--texto-secundario);
-}
-
-.search-row{
-  display:flex;
-  gap:10px;
-}
-
-.search-box{
-  flex:1;
-  position:relative;
-}
-
-.search-box svg{
-  position:absolute;
-  left:12px;
-  top:50%;
-  transform:translateY(-50%);
-  color:var(--texto-secundario);
-}
-
-.search-box input{
-  width:100%;
-  padding:11px 12px 11px 38px;
-  border:1px solid var(--gris-borde);
-  border-radius:10px;
-  font-family:inherit;
-  font-size:13px;
-  outline:none;
-}
-
-.search-box input:focus{border-color:var(--azul-medio)}
-
-.btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 16px;
-  font-family:inherit;
-  font-size:12.5px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-.btn-primary{
-  background:var(--azul-medio);
-  color:#fff;
-}
-
-.btn-primary:hover{background:#1558d6}
-
-/* PRODUCTO */
-
-.product-header{
-  padding:20px;
-  margin-bottom:18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.product-info{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.product-icon{
-  width:48px;
-  height:48px;
-  border-radius:13px;
-  background:var(--azul-claro);
-  color:var(--azul-medio);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.product-info h2{
-  margin:0;
-  font-size:17px;
-}
-
-.product-info p{
-  margin:4px 0 0;
-  color:var(--texto-secundario);
-  font-size:12px;
-}
-
-.product-status{
-  padding:6px 12px;
-  border-radius:30px;
-  background:var(--verde-suave);
-  color:#146142;
-  font-size:11px;
-  font-weight:700;
-}
-
-/* TIMELINE */
-
-.panel{padding:20px}
-
-.panel-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:20px;
-}
-
-.panel-head h3{
-  margin:0;
-  font-size:15.5px;
-}
-
-.timeline{
-  position:relative;
-  padding:5px 0 5px 30px;
-}
-
-.timeline::before{
-  content:"";
-  position:absolute;
-  left:14px;
-  top:20px;
-  bottom:20px;
-  width:2px;
-  background:var(--gris-borde);
-}
-
-.timeline-item{
-  position:relative;
-  display:flex;
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.timeline-item:last-child{margin-bottom:0}
-
-.timeline-circle{
-  position:absolute;
-  left:-30px;
-  top:0;
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:2;
-}
-
-.timeline-circle.done{
-  background:var(--verde-suave);
-  color:var(--verde-txt);
-}
-
-.timeline-circle.current{
-  background:var(--azul-medio);
-  color:#fff;
-}
-
-.timeline-circle.pending{
-  background:var(--gris-claro);
-  color:var(--texto-secundario);
-  border:1px solid var(--gris-borde);
-}
-
-.timeline-content{
-  flex:1;
-  border:1px solid var(--gris-borde);
-  border-radius:12px;
-  padding:13px 15px;
-  min-width:0;
-}
-
-.timeline-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.timeline-content h4{
-  margin:0;
-  font-size:13.5px;
-}
-
-.timeline-content p{
-  margin:5px 0 0;
-  color:var(--texto-secundario);
-  font-size:11.5px;
-  line-height:1.5;
-}
-
-.timeline-date{
-  font-size:10.5px;
-  color:var(--texto-secundario);
-  white-space:nowrap;
-}
-
-/* TABLA */
-
-.table-panel{margin-top:18px}
-
-.recepciones-table-wrap{overflow-x:auto}
-
-table.simple{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-}
-
-table.simple th{
-  text-align:left;
-  color:var(--texto-secundario);
-  font-weight:600;
-  font-size:11.5px;
-  padding:8px 6px;
-  border-bottom:1px solid var(--gris-borde);
-}
-
-table.simple td{
-  padding:11px 6px;
-  border-bottom:1px solid #F0F3F7;
-  vertical-align:middle;
-}
-
-table.simple tr:last-child td{border-bottom:none}
-
-.pill{
-  display:inline-block;
-  padding:3px 10px;
-  border-radius:30px;
-  font-size:11px;
-  font-weight:700;
-}
-
-.pill.ok{
-  background:var(--verde-suave);
-  color:#146142;
-}
-
-.pill.pend{
-  background:var(--amarillo);
-  color:#7A5A00;
-}
-
-.pill.info{
-  background:var(--azul-claro);
-  color:#1454B8;
-}
-
-.empty{
-  text-align:center;
-  color:var(--texto-secundario);
-  padding:25px;
-  font-size:13px;
-}
-
-/* TARJETAS MÓVILES */
-
-.recepciones-cards{display:none}
-
-.recepcion-card{
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:12px;
-  box-shadow:0 5px 16px rgba(6,43,91,.06);
-}
-
-.recepcion-card:last-child{margin-bottom:0}
-
-.recepcion-card-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:13px;
-}
-
-.recepcion-card-product{
-  font-size:14px;
-  font-weight:700;
-  color:var(--texto-principal);
-  line-height:1.35;
-  min-width:0;
-  word-break:break-word;
-}
-
-.recepcion-card-info{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.recepcion-card-field{
-  background:var(--gris-claro);
-  border-radius:10px;
-  padding:9px 10px;
-  min-width:0;
-}
-
-.recepcion-card-field.full{grid-column:1/-1}
-
-.recepcion-card-field span{
-  display:block;
-  font-size:10px;
-  color:var(--texto-secundario);
-  margin-bottom:3px;
-}
-
-.recepcion-card-field strong{
-  display:block;
-  font-size:12px;
-  color:var(--texto-principal);
-  word-break:break-word;
-}
-
-/* NOTIFICACIONES */
-
-.notification-panel{
-  position:fixed;
-  top:78px;
-  right:32px;
-  width:330px;
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  border-radius:14px;
-  box-shadow:0 15px 35px rgba(6,43,91,.16);
-  z-index:1000;
-  display:none;
-  overflow:hidden;
-}
-
-.notification-panel.show{display:block}
-
-.notification-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:15px 17px;
-  border-bottom:1px solid var(--gris-borde);
-}
-
-.notification-header strong{
-  font-size:14px;
-  color:var(--texto-principal);
-}
-
-.notification-header button{
-  border:none;
-  background:none;
-  font-size:22px;
-  color:var(--texto-secundario);
-  cursor:pointer;
-  padding:0 5px;
-}
-
-.notification-header button:hover{color:var(--rojo)}
-
-.notification-item{
-  display:flex;
-  gap:10px;
-  padding:13px 16px;
-  border-bottom:1px solid #F0F3F7;
-}
-
-.notification-item:last-child{border-bottom:none}
-
-.notification-item .ni-icon{
-  width:32px;
-  height:32px;
-  border-radius:9px;
-  background:var(--azul-claro);
-  color:var(--azul-medio);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 auto;
-}
-
-.notification-item strong{
-  display:block;
-  font-size:12.5px;
-  margin-bottom:2px;
-  color:var(--texto-principal);
-}
-
-.notification-item span{
-  display:block;
-  font-size:11px;
-  color:var(--texto-secundario);
-  line-height:1.4;
-}
-
-.notification-empty{
-  padding:22px 16px;
-  text-align:center;
-  font-size:12px;
-  color:var(--texto-secundario);
-}
-
-/* BOTÓN MENÚ MÓVIL — IGUAL QUE INICIO */
+.top-user span{ font-size:13.5px; font-weight:600; }
 
 .mobile-menu-btn{
-  display:none;
-  border:1px solid var(--gris-borde);
-  background:var(--blanco);
-  color:var(--azul-oscuro);
-  border-radius:12px;
-  cursor:pointer;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 12px rgba(6,43,91,.06);
+  display:none; border:1px solid var(--gris-borde); background:var(--blanco);
+  color:var(--azul-oscuro); border-radius:12px; cursor:pointer;
+  align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(6,43,91,.06);
+}
+@media (hover:hover){ .mobile-menu-btn:hover{ border-color:var(--azul-medio); } }
+.mobile-menu-btn:active{ transform:scale(.97); }
+
+.aviso{
+  display:none; align-items:center; gap:12px;
+  background:#FFF4F3; border:1px solid #F8C9C6; color:#9B2B27;
+  padding:11px 14px; border-radius:12px; font-size:13px; margin-bottom:18px;
+}
+.aviso.show{ display:flex; animation:subir .3s ease; }
+.aviso button{
+  margin-left:auto; flex:0 0 auto; border:none; background:var(--rojo); color:#fff;
+  font-weight:600; padding:7px 14px; border-radius:9px; cursor:pointer; font-size:12.5px;
 }
 
-.mobile-menu-btn:hover{
-  border-color:var(--azul-medio);
+.search-panel,.product-header,.panel{
+  background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); min-width:0;
+  animation:subir .45s ease backwards;
+}
+.product-header{ animation-delay:.05s; }
+.panel{ animation-delay:.1s; }
+@keyframes subir{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+
+/* ===================== BUSCADOR ===================== */
+.search-panel{ padding:20px; margin-bottom:18px; }
+.search-panel h3{ margin:0 0 5px; font-size:15.5px; }
+.search-panel p{ margin:0 0 16px; font-size:12px; color:var(--texto-secundario); }
+.search-row{ display:flex; gap:10px; }
+.search-box{ flex:1; position:relative; min-width:0; }
+.search-box > svg{
+  position:absolute; left:12px; top:50%; transform:translateY(-50%);
+  color:var(--texto-secundario); pointer-events:none;
+}
+.search-box input{
+  width:100%; padding:11px 12px 11px 38px;
+  border:1px solid var(--gris-borde); border-radius:10px;
+  font-family:inherit; font-size:13px; outline:none; background:#fff; color:var(--texto-principal);
+  transition:border-color .15s,box-shadow .15s;
+}
+.search-box input:focus{ border-color:var(--azul-medio); box-shadow:0 0 0 3px rgba(30,102,245,.08); }
+
+.btn{
+  border:none; border-radius:10px; padding:10px 18px;
+  font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer;
+  transition:background .15s,transform .15s,box-shadow .15s;
+}
+.btn-primary{ background:var(--azul-medio); color:#fff; box-shadow:0 6px 15px rgba(30,102,245,.25); }
+@media (hover:hover){ .btn-primary:hover{ background:#1557d5; transform:translateY(-1px); } }
+.btn-primary:active{ transform:scale(.98); }
+
+.sugerencias{
+  position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:60;
+  background:var(--blanco); border:1px solid var(--gris-borde); border-radius:12px;
+  box-shadow:0 15px 35px rgba(6,43,91,.16); display:none; overflow:hidden;
+  max-height:310px; overflow-y:auto;
+}
+.sugerencias.show{ display:block; animation:caer .15s ease; }
+@keyframes caer{ from{ opacity:0; transform:translateY(-6px); } to{ opacity:1; transform:none; } }
+.sug-item{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 14px; cursor:pointer; border-bottom:1px solid #F0F3F7;
+}
+.sug-item:last-child{ border-bottom:none; }
+.sug-item.activo{ background:#F0F6FF; }
+.sug-item strong{ font-size:13px; font-weight:600; }
+.sug-item span{ font-size:11px; color:var(--texto-secundario); white-space:nowrap; }
+.sug-msg{ padding:14px; font-size:12.5px; color:var(--texto-secundario); text-align:center; }
+
+.recientes{ display:none; align-items:center; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.recientes.show{ display:flex; }
+.recientes small{ font-size:11.5px; color:var(--texto-secundario); font-weight:600; }
+.chip{
+  border:1px solid var(--gris-borde); background:#F7F9FC; color:var(--texto-principal);
+  border-radius:30px; padding:5px 12px; font-size:12px; font-weight:600; cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s;
+}
+@media (hover:hover){ .chip:hover{ background:var(--azul-claro); border-color:var(--azul-medio); color:var(--azul-medio); } }
+
+/* ===================== PRODUCTO ===================== */
+.product-header{
+  padding:20px; margin-bottom:18px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+}
+.product-info{ display:flex; align-items:center; gap:14px; min-width:0; }
+.product-icon{
+  flex:0 0 auto; width:48px; height:48px; border-radius:13px;
+  background:var(--azul-claro); color:var(--azul-medio);
+  display:flex; align-items:center; justify-content:center;
+}
+.product-info h2{ margin:0; font-size:17px; overflow-wrap:anywhere; }
+.product-info p{ margin:4px 0 0; color:var(--texto-secundario); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.product-status{
+  flex:0 0 auto; padding:6px 12px; border-radius:30px;
+  background:var(--gris-claro); color:var(--texto-secundario); font-size:11px; font-weight:700;
+  white-space:nowrap;
+}
+.product-status.ok{ background:var(--verde-suave); color:#146142; }
+.product-status.warn{ background:#FFE3D1; color:#B45300; }
+
+/* ===================== LÍNEA DE TIEMPO ===================== */
+.panel{ padding:20px; }
+.panel-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:18px; }
+.panel-head h3{ margin:0; font-size:15.5px; }
+
+.timeline{ position:relative; padding:5px 0 5px 30px; }
+.timeline::before{
+  content:""; position:absolute; left:14px; top:20px; bottom:20px; width:2px; background:var(--gris-borde);
+}
+.timeline-item{ position:relative; display:flex; gap:15px; margin-bottom:22px; animation:entrar .35s ease backwards; }
+.timeline-item:nth-child(2){ animation-delay:.05s; }
+.timeline-item:nth-child(3){ animation-delay:.1s; }
+.timeline-item:nth-child(4){ animation-delay:.15s; }
+.timeline-item:last-child{ margin-bottom:0; }
+@keyframes entrar{ from{ opacity:0; transform:translateX(-10px); } to{ opacity:1; transform:none; } }
+
+.timeline-circle{
+  position:absolute; left:-30px; top:0; width:30px; height:30px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; z-index:2;
+  transition:background .25s,color .25s;
+}
+.timeline-circle.done{ background:var(--verde-suave); color:var(--verde-txt); }
+.timeline-circle.current{ background:var(--azul-medio); color:#fff; box-shadow:0 0 0 5px rgba(30,102,245,.15); }
+.timeline-circle.pending{ background:var(--gris-claro); color:var(--texto-secundario); border:1px solid var(--gris-borde); }
+
+.timeline-content{
+  flex:1; border:1px solid var(--gris-borde); border-radius:12px; padding:13px 15px; min-width:0;
+  transition:border-color .2s,box-shadow .2s;
+}
+@media (hover:hover){ .timeline-content:hover{ border-color:#C9D8EE; box-shadow:0 6px 16px rgba(6,43,91,.06); } }
+.timeline-top{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.timeline-content h4{ margin:0; font-size:13.5px; }
+.timeline-content p{ margin:5px 0 0; color:var(--texto-secundario); font-size:11.5px; line-height:1.5; overflow-wrap:anywhere; }
+.timeline-date{ font-size:10.5px; color:var(--texto-secundario); white-space:nowrap; }
+.etapa-actual{
+  display:inline-block; margin-left:8px; padding:2px 8px; border-radius:30px;
+  background:var(--azul-claro); color:var(--azul-medio); font-size:10px; font-weight:700; vertical-align:1px;
+}
+.timeline.cargando .timeline-content{ animation:pulso 1s ease-in-out infinite; }
+@keyframes pulso{ 0%,100%{ opacity:1; } 50%{ opacity:.45; } }
+
+/* ===================== PESTAÑAS Y TABLA ===================== */
+.table-panel{ margin-top:18px; }
+.tabs{
+  display:flex; gap:4px; border-bottom:1px solid var(--gris-borde); margin-bottom:12px;
+  overflow-x:auto; scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{ display:none; }
+.tab{
+  border:none; background:none; padding:9px 14px; font-family:inherit; font-size:12.5px; font-weight:600;
+  color:var(--texto-secundario); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap;
+  margin-bottom:-1px; transition:color .15s,border-color .15s;
+}
+@media (hover:hover){ .tab:hover{ color:var(--azul-medio); } }
+.tab.activa{ color:var(--azul-medio); border-bottom-color:var(--azul-medio); }
+.tab .count{
+  display:inline-block; min-width:20px; margin-left:5px; padding:1px 7px; border-radius:10px;
+  background:var(--gris-claro); font-size:10.5px; text-align:center;
+}
+.tab.activa .count{ background:var(--azul-claro); }
+
+.table-wrap{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+table.simple{ width:100%; border-collapse:collapse; font-size:13px; min-width:620px; }
+table.simple th{
+  text-align:left; color:var(--texto-secundario); font-weight:600; font-size:11.5px;
+  padding:8px 6px; border-bottom:1px solid var(--gris-borde); white-space:nowrap;
+}
+table.simple td{ padding:11px 6px; border-bottom:1px solid #F0F3F7; vertical-align:middle; }
+table.simple tr:last-child td{ border-bottom:none; }
+@media (hover:hover){ table.simple tbody tr:hover{ background:#F8FAFD; } }
+table.simple tbody tr.row-in{ animation:entrar .3s ease backwards; }
+.td-fecha small{ display:block; color:var(--texto-secundario); font-size:11px; }
+
+.pill{ display:inline-block; padding:3px 10px; border-radius:30px; font-size:11px; font-weight:700; white-space:nowrap; }
+.pill.ok{ background:var(--verde-suave); color:#146142; }
+.pill.pend{ background:var(--amarillo); color:#7A5A00; }
+.pill.warn{ background:#FFE3D1; color:#B45300; }
+.pill.refrigerado,.pill.local{ background:var(--azul-claro); color:var(--azul-medio); }
+.pill.congelado,.pill.distribucion{ background:var(--morado); color:var(--morado-txt); }
+
+.empty{ text-align:center; color:var(--texto-secundario); padding:26px 10px; font-size:13px; }
+
+/* ===================== NOTIFICACIONES ===================== */
+.notification-panel{
+  position:fixed; top:78px; right:32px; width:350px;
+  background:var(--blanco); border:1px solid var(--gris-borde); border-radius:14px;
+  box-shadow:0 15px 35px rgba(6,43,91,.16); z-index:1100; display:none; overflow:hidden;
+}
+.notification-panel.show{ display:block; animation:caer .18s ease; }
+.notification-header{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:14px 16px; border-bottom:1px solid var(--gris-borde);
+}
+.notification-header strong{ font-size:14px; }
+.nh-actions{ display:flex; align-items:center; gap:6px; }
+.notification-header button{ border:none; background:none; color:var(--texto-secundario); cursor:pointer; }
+#markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
+@media (hover:hover){ #markAllRead:hover{ background:var(--azul-claro); } }
+#closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
+.notification-list{ max-height:420px; max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
+a.notification-item{
+  display:flex; align-items:flex-start; gap:10px; padding:13px 16px;
+  border-bottom:1px solid #F0F3F7; color:inherit; text-decoration:none;
+  transition:background .15s,opacity .18s,transform .18s;
+}
+a.notification-item:active{ background:#EEF4FF; }
+a.notification-item:last-child{ border-bottom:none; }
+@media (hover:hover){ a.notification-item:hover{ background:#F6F9FD; } }
+a.notification-item.removing{ opacity:0; transform:translateX(26px); }
+.ni-icon{
+  flex:0 0 auto; width:32px; height:32px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--azul-claro); color:var(--azul-medio);
+}
+.ni-icon.t-warn{ background:#FCE1E0; color:var(--rojo); }
+.ni-icon.t-pend{ background:#FFF1C9; color:#B8860B; }
+.ni-body{ min-width:0; flex:1; }
+.ni-body strong{ display:block; font-size:12.5px; margin-bottom:2px; }
+.ni-body span{ display:block; font-size:11.5px; color:var(--texto-secundario); line-height:1.4; }
+.ni-body em{ display:block; font-style:normal; font-size:10.5px; color:#8A9BB1; margin-top:3px; }
+.ni-go{ align-self:center; color:#A9B7CA; font-size:18px; }
+.notification-empty{ padding:26px 16px; text-align:center; font-size:12.5px; color:var(--texto-secundario); }
+
+.mobile-overlay{ display:none; }
+
+/* ===================== TOAST ===================== */
+.toast{
+  position:fixed; right:25px; bottom:25px; background:var(--azul-oscuro); color:#fff;
+  padding:12px 16px; border-radius:10px; font-size:12.5px; font-weight:600;
+  box-shadow:0 10px 25px rgba(6,43,91,.2);
+  opacity:0; pointer-events:none; transform:translateY(10px); transition:.25s; z-index:4000;
+}
+.toast.show{ opacity:1; transform:translateY(0); }
+.toast.error{ background:var(--rojo); }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
 }
 
-.mobile-menu-btn:active{
-  transform:scale(.97);
-}
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:1100px){ .product-header{ align-items:flex-start; } }
 
-.mobile-overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(3,22,45,.45);
-  z-index:1100;
-}
-
-.mobile-overlay.show{display:block}
-
-/* RESPONSIVE */
-
-@media(max-width:1100px){
-  .product-header{align-items:flex-start}
-}
-
-@media(max-width:800px){
-
-  .app{grid-template-columns:1fr}
-
+@media (max-width:800px){
+  .app{ display:block; min-height:100vh; width:100%; }
   .sidebar{
-    display:flex;
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    width:250px;
-    height:100vh;
-    z-index:1200;
-    transform:translateX(-100%);
-    transition:transform .25s ease;
-    overflow-y:auto;
-    box-shadow:8px 0 25px rgba(0,0,0,.15);
+    position:fixed; top:0; left:0; width:270px; max-width:85vw;
+    height:100vh; height:100dvh; transform:translateX(-105%);
+    transition:transform .25s ease; z-index:1200; box-shadow:8px 0 30px rgba(0,0,0,.20);
+    padding-top:max(14px,env(safe-area-inset-top)); padding-bottom:max(14px,env(safe-area-inset-bottom));
   }
-
-  .sidebar.mobile-open{transform:translateX(0)}
+  .sidebar.mobile-open{ transform:translateX(0); }
+  .mobile-overlay{ display:none; position:fixed; top:0; right:0; bottom:0; left:0; background:rgba(0,0,0,.42); z-index:1150; }
+  .mobile-overlay.show{ display:block; }
 
   main{
-    padding:16px 14px 30px;
-    width:100%;
-    overflow:hidden;
+    width:100%; min-width:0; padding:16px 14px 30px;
+    padding-left:max(14px,env(safe-area-inset-left)); padding-right:max(14px,env(safe-area-inset-right));
+    padding-bottom:max(30px,env(safe-area-inset-bottom));
   }
+  .topbar{ display:grid; grid-template-columns:42px minmax(0,1fr) auto; align-items:center; gap:10px; margin-bottom:20px; }
+  .mobile-menu-btn{ display:flex; width:42px; height:42px; }
+  .topbar h1{ font-size:21px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar .subtitle{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sync-wrap{ display:none; }
+  .top-actions{ gap:8px; }
+  .top-user{ padding:4px; border-radius:50%; }
+  .top-user span{ display:none; }
+  .top-user .avatar{ width:32px; height:32px; }
 
-  .topbar{
-    display:grid;
-    grid-template-columns:42px minmax(0,1fr) auto;
-    align-items:center;
-    gap:10px;
-    margin-bottom:20px;
+  .notification-panel{ top:70px; left:10px; right:10px; width:auto; max-width:none; }
+
+  .search-panel,.product-header,.panel{ padding:16px; border-radius:14px; }
+  .search-row{ flex-direction:column; gap:10px; }
+  .search-box input{ min-height:44px; }
+  .search-row .btn{ width:100%; min-height:44px; }
+
+  .product-header{ flex-direction:column; align-items:flex-start; gap:14px; }
+  .product-info{ width:100%; align-items:flex-start; }
+  .product-status{ align-self:flex-start; }
+
+  .timeline-top{ align-items:flex-start; flex-direction:column; gap:4px; }
+  .timeline-date{ white-space:normal; }
+  .timeline-content{ padding:12px; }
+
+  /* TABLA → TARJETAS EN CELULAR (sin duplicar el contenido en el DOM) */
+  .table-wrap{ overflow:visible; }
+  table.simple{ width:100%; min-width:0; display:block; border-collapse:separate; }
+  table.simple thead{ display:none; }
+  table.simple tbody{ display:block; width:100%; }
+  table.simple tbody tr{
+    display:block; width:100%; background:#fff; border:1px solid var(--gris-borde);
+    border-radius:13px; padding:10px 12px; margin-bottom:10px;
+    box-shadow:0 5px 16px rgba(6,43,91,.05);
   }
-
-  .mobile-menu-btn{
-    display:flex;
-    width:42px;
-    height:42px;
+  table.simple tbody tr.vacio{ border:none; box-shadow:none; background:none; padding:0; }
+  table.simple td{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    width:100%; padding:8px 0; border-bottom:1px solid #F0F3F7;
+    text-align:right; line-height:1.35; overflow-wrap:anywhere;
   }
-
-  .topbar h1{
-    font-size:21px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+  table.simple td::before{
+    content:attr(data-label); color:var(--texto-secundario);
+    font-size:11px; font-weight:600; text-align:left; flex:0 0 92px;
   }
+  table.simple td.empty{ display:block; text-align:center; }
+  table.simple td.empty::before{ display:none; }
+  table.simple td:last-child{ border-bottom:none; padding-bottom:2px; }
+  .td-fecha small{ display:inline; margin-left:6px; }
 
-  .topbar .subtitle{
-    font-size:11px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
-  .top-actions{
-    gap:7px;
-    flex:0 0 auto;
-  }
-
-  .top-user{display:none}
-
-  .search-row{
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .search-box{width:100%}
-
-  .search-box input{
-    width:100%;
-    min-height:44px;
-    font-size:13px;
-  }
-
-  .search-row .btn{
-    width:100%;
-    min-height:44px;
-  }
-
-  .product-header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:14px;
-  }
-
-  .product-info{
-    width:100%;
-    align-items:flex-start;
-  }
-
-  .product-status{align-self:flex-start}
-
-  .timeline{padding-left:30px}
-
-  .timeline-top{
-    align-items:flex-start;
-    flex-direction:column;
-    gap:4px;
-  }
-
-  .timeline-date{white-space:normal}
-
-  .timeline-content{padding:12px}
-
-  .panel,
-  .search-panel,
-  .product-header{
-    padding:16px;
-  }
-
-  .notification-panel{
-    right:18px;
-    left:18px;
-    width:auto;
-    top:70px;
-  }
-
-  .recepciones-table-wrap{display:none}
-
-  .recepciones-cards{display:block}
+  .toast{ left:10px; right:10px; bottom:15px; text-align:center; }
+  .sb-link{ padding:11px 12px; }
 }
 
-@media(max-width:400px){
-
-  main{padding:13px 10px 25px}
-
-  .topbar{
-    grid-template-columns:39px minmax(0,1fr) auto;
-    gap:7px;
-  }
-
-  .mobile-menu-btn{
-    width:39px;
-    height:39px;
-  }
-
-  .topbar h1{font-size:19px}
-
-  .topbar .subtitle{
-    font-size:10px;
-  }
-
-  .icon-btn{
-    width:39px;
-    height:39px;
-  }
-
-  .search-panel h3{font-size:15px}
-
-  .product-info{align-items:flex-start}
-
-  .product-icon{
-    width:44px;
-    height:44px;
-    flex:0 0 auto;
-  }
-
-  .product-info h2{font-size:16px}
-
-  .product-info p{
-    font-size:11px;
-    line-height:1.5;
-  }
-
-  .timeline{padding-left:28px}
-
-  .timeline::before{left:13px}
-
-  .timeline-circle{
-    width:28px;
-    height:28px;
-    left:-28px;
-  }
-
-  .timeline-item{margin-bottom:20px}
-
-  .timeline-content{padding:11px}
-
-  .timeline-content p{font-size:11px}
-
-  .recepcion-card{padding:13px}
-
-  .recepcion-card-info{grid-template-columns:1fr}
-
-  .recepcion-card-field.full{grid-column:auto}
+@media (max-width:480px){
+  main{ padding:13px 10px 25px; }
+  .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
+  .mobile-menu-btn{ width:39px; height:39px; }
+  .icon-btn{ width:39px; height:39px; }
+  .topbar h1{ font-size:19px; }
+  .topbar .subtitle{ font-size:10px; }
+  .product-icon{ width:44px; height:44px; }
+  .product-info h2{ font-size:16px; }
+  .product-info p{ font-size:11px; }
+  .timeline{ padding-left:28px; }
+  .timeline::before{ left:13px; }
+  .timeline-circle{ width:28px; height:28px; left:-28px; }
+  .timeline-item{ margin-bottom:18px; }
+  table.simple td::before{ flex-basis:80px; }
+  /* Evita el zoom automático del teclado en iPhone */
+  input{ font-size:16px !important; }
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
-<aside class="sidebar" id="sidebar">
-
-  <div class="sb-brand">
-    <div class="badge">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-          stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/>
-        <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
-      </svg>
-    </div>
-
-    <div>
-      <div class="name">Deep <span>Sea</span></div>
-      <div class="sub">Gestión de recursos marinos</div>
-    </div>
-  </div>
-
-  <nav class="sb-nav">
-
-    <a class="sb-link" href="inicio.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/>
-        <path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Inicio
-    </a>
-
-    <a class="sb-link" href="productos.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-          stroke="currentColor" stroke-width="1.7"/>
-        <circle cx="12" cy="12" r="2.2"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Productos
-    </a>
-
-    <a class="sb-link" href="proveedores.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="3.4"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Proveedores
-    </a>
-
-    <a class="sb-link" href="recepciones.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <rect x="4" y="7" width="16" height="13" rx="2"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Recepciones
-    </a>
-
-    <a class="sb-link" href="almacenamiento.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-          stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-        <path d="M9 20v-6h6v6"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Almacenamiento
-    </a>
-
-    <a class="sb-link" href="ventas.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="9" cy="20" r="1.3" fill="currentColor"/>
-        <circle cx="17" cy="20" r="1.3" fill="currentColor"/>
-        <path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Ventas
-    </a>
-
-    <a class="sb-link active" href="trazabilidad.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 6h18M3 12h18M3 18h12"
-          stroke="currentColor" stroke-width="1.7"/>
-        <circle cx="20" cy="18" r="1.6" fill="currentColor"/>
-      </svg>
-      Trazabilidad
-    </a>
-
-    <a class="sb-link" href="reportes.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M4 20V10M12 20V4M20 20v-7"
-          stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-      </svg>
-      Reportes
-    </a>
-
-    <a class="sb-link" href="normas.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="m9 12 2 2 4-4"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Normas y Calidad
-    </a>
-
-    <a class="sb-link" href="usuarios.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="9" cy="8" r="3"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-          stroke="currentColor" stroke-width="1.7"/>
-        <circle cx="18" cy="8" r="2.2"
-          stroke="currentColor" stroke-width="1.5"/>
-        <path d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-          stroke="currentColor" stroke-width="1.5"/>
-      </svg>
-      Usuarios
-    </a>
-
-    <a class="sb-link" href="configuracion.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="3"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5 2-1.5c-.1-.4-.1-.8-.1-1.2z"
-          stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
-      </svg>
-      Configuración
-    </a>
-
-  </nav>
-
-  <div class="sb-footer">
-    <div class="sb-user">
-      <div class="avatar" id="sbAvatar">C</div>
-      <div class="info">
-        <strong id="sbUserName">Cargando...</strong>
-        <span>En línea</span>
-      </div>
-    </div>
-  </div>
-
-</aside>
-
-<div class="mobile-overlay" id="mobileOverlay"></div>
-
-<main>
-
-  <div class="topbar">
-
-    <button
-      class="mobile-menu-btn"
-      id="mobileMenuBtn"
-      type="button"
-      aria-label="Abrir menú"
-      title="Abrir menú"
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M4 6h16M4 12h16M4 18h16"
-          stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-    </button>
-
-    <div>
-      <h1>Trazabilidad</h1>
-      <div class="subtitle">
-        Seguimiento del producto desde su captura hasta su comercialización —
-        <span id="todayDate"></span>
+  <!-- ===================== MENÚ LATERAL ===================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="badge"><img src="logo-emblema.png" alt="Deep Sea Intelligence"></div>
+      <div>
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
       </div>
     </div>
 
-    <div class="top-actions">
+    <nav class="sb-nav" id="sbNav">
+      <a class="sb-link" data-view="inicio" href="inicio.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
+        Inicio
+      </a>
+      <a class="sb-link" data-view="productos" href="productos.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Productos
+      </a>
+      <a class="sb-link" data-view="proveedores" href="proveedores.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Proveedores
+      </a>
+      <a class="sb-link" data-view="recepciones" href="recepciones.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Recepciones
+      </a>
+      <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Almacenamiento
+      </a>
+      <a class="sb-link" data-view="ventas" href="ventas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Ventas
+      </a>
+      <a class="sb-link active" data-view="trazabilidad" href="trazabilidad.html" aria-current="page">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
+        Trazabilidad
+      </a>
+      <a class="sb-link" data-view="reportes" href="reportes.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Reportes
+      </a>
+      <a class="sb-link" data-view="normas" href="normas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
+        Normas y Calidad
+      </a>
+      <a class="sb-link" data-view="usuarios" href="usuarios.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
+        Usuarios
+      </a>
+      <a class="sb-link" data-view="configuracion" href="configuracion.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Configuración
+      </a>
+    </nav>
 
-      <button class="icon-btn" id="notificationBtn" title="Notificaciones">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-            stroke="currentColor" stroke-width="1.6"/>
-          <path d="M10 20a2 2 0 0 0 4 0"
-            stroke="currentColor" stroke-width="1.6"/>
-        </svg>
-        <span class="dot-alert" id="notificationDot"></span>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="avatar" id="sbAvatar">C</div>
+        <div class="info">
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- ===================== CONTENIDO ===================== -->
+  <main>
+
+    <div class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
-
-      <div class="top-user">
-        <div class="avatar" id="topAvatar">C</div>
-        <span id="topUserName">Cargando...</span>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="notification-panel" id="notificationPanel">
-
-    <div class="notification-header">
-      <strong>Notificaciones</strong>
-      <button id="closeNotifications">×</button>
-    </div>
-
-    <div id="notificationContent">
-      <div class="notification-empty">Cargando notificaciones...</div>
-    </div>
-
-  </div>
-
-  <!-- BUSCADOR -->
-
-  <div class="search-panel">
-
-    <h3>Consultar trazabilidad</h3>
-
-    <p>
-      Busca un producto para consultar su recorrido dentro del sistema.
-    </p>
-
-    <div class="search-row">
-
-      <div class="search-box">
-
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <circle cx="11" cy="11" r="7"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="m16 16 4 4"
-            stroke="currentColor" stroke-width="1.7"
-            stroke-linecap="round"/>
-        </svg>
-
-        <input
-          type="text"
-          id="buscarProducto"
-          placeholder="Buscar por nombre del producto..."
-        >
-
-      </div>
-
-      <button class="btn btn-primary" id="btnBuscar" type="button">
-        Consultar
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- PRODUCTO -->
-
-  <div class="product-header">
-
-    <div class="product-info">
-
-      <div class="product-icon">
-        <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-            stroke="currentColor" stroke-width="1.7"/>
-          <circle cx="12" cy="12" r="2.2"
-            stroke="currentColor" stroke-width="1.7"/>
-        </svg>
-      </div>
 
       <div>
-        <h2 id="productoNombre">Selecciona un producto</h2>
-        <p id="productoDetalle">
-          La información de trazabilidad aparecerá aquí.
-        </p>
+        <h1>Trazabilidad</h1>
+        <div class="subtitle">
+          Seguimiento del producto desde su captura hasta su comercialización — <span id="todayDate"></span>
+          <span class="sync-wrap">· <span id="syncEstado"></span></span>
+        </div>
       </div>
 
-    </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="notificationBtn" title="Notificaciones" type="button" aria-label="Notificaciones" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="badge-notif" id="notificationBadge"></span>
+        </button>
 
-    <span class="product-status" id="productoEstado">
-      Sin seleccionar
-    </span>
-
-  </div>
-
-  <!-- TIMELINE -->
-
-  <div class="panel">
-
-    <div class="panel-head">
-      <h3>Historial de trazabilidad</h3>
-    </div>
-
-    <div class="timeline" id="timeline">
-
-      <div class="timeline-item">
-
-        <div class="timeline-circle pending">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-            <path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z"
-              stroke="currentColor" stroke-width="1.8"/>
-          </svg>
-        </div>
-
-        <div class="timeline-content">
-
-          <div class="timeline-top">
-            <h4>Captura</h4>
-            <span class="timeline-date">Pendiente</span>
-          </div>
-
-          <p>Información de captura y origen del producto.</p>
-
-        </div>
-
-      </div>
-
-      <div class="timeline-item">
-
-        <div class="timeline-circle pending">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-            <rect x="4" y="7" width="16" height="13" rx="2"
-              stroke="currentColor" stroke-width="1.8"/>
-          </svg>
-        </div>
-
-        <div class="timeline-content">
-
-          <div class="timeline-top">
-            <h4>Recepción</h4>
-            <span class="timeline-date">Pendiente</span>
-          </div>
-
-          <p>
-            Registro del ingreso, proveedor, peso y estado del producto.
-          </p>
-
-        </div>
-
-      </div>
-
-      <div class="timeline-item">
-
-        <div class="timeline-circle pending">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-            <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-              stroke="currentColor" stroke-width="1.8"
-              stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="timeline-content">
-
-          <div class="timeline-top">
-            <h4>Almacenamiento</h4>
-            <span class="timeline-date">Pendiente</span>
-          </div>
-
-          <p>
-            Seguimiento de la ubicación y condiciones de almacenamiento.
-          </p>
-
-        </div>
-
-      </div>
-
-      <div class="timeline-item">
-
-        <div class="timeline-circle pending">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-
-            <circle cx="9" cy="20" r="1.2" fill="currentColor"/>
-            <circle cx="17" cy="20" r="1.2" fill="currentColor"/>
-
-            <path d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-              stroke="currentColor" stroke-width="1.8"/>
-
-          </svg>
-        </div>
-
-        <div class="timeline-content">
-
-          <div class="timeline-top">
-            <h4>Venta</h4>
-            <span class="timeline-date">Pendiente</span>
-          </div>
-
-          <p>Registro de la venta y salida del producto.</p>
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-
-  <!-- RECEPCIONES -->
-
-  <div class="panel table-panel">
-
-    <div class="panel-head">
-      <h3>Recepciones relacionadas</h3>
-    </div>
-
-    <div class="recepciones-table-wrap">
-
-      <table class="simple">
-
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Proveedor</th>
-            <th>Peso (kg)</th>
-            <th>Estado</th>
-            <th>Fecha de recepción</th>
-          </tr>
-        </thead>
-
-        <tbody id="tablaRecepciones">
-
-          <tr>
-            <td colspan="5" class="empty">
-              Selecciona un producto para consultar su información.
-            </td>
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-    <div class="recepciones-cards" id="recepcionesCards">
-      <div class="empty">
-        Selecciona un producto para consultar su información.
+        <a href="configuracion.html" class="top-user" title="Ir a configuración">
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
+        </a>
       </div>
     </div>
 
-  </div>
+    <!-- Panel de notificaciones -->
+    <div class="notification-panel" id="notificationPanel">
+      <div class="notification-header">
+        <strong>Notificaciones</strong>
+        <div class="nh-actions">
+          <button id="markAllRead" type="button" style="display:none">Marcar todas como leídas</button>
+          <button id="closeNotifications" type="button" aria-label="Cerrar">×</button>
+        </div>
+      </div>
+      <div class="notification-list" id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
+      </div>
+    </div>
 
-</main>
+    <!-- Aviso de error de carga -->
+    <div class="aviso" id="aviso" role="alert">
+      <span id="avisoTexto"></span>
+      <button id="avisoBtn" type="button">Reintentar</button>
+    </div>
+
+    <!-- BUSCADOR -->
+    <section class="search-panel">
+      <h3>Consultar trazabilidad</h3>
+      <p>Busca un producto para consultar su recorrido dentro del sistema.</p>
+
+      <div class="search-row">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input type="text" id="buscarProducto" data-filtro="busqueda" maxlength="60" autocomplete="off"
+                 role="combobox" aria-expanded="false" aria-controls="sugerencias" aria-autocomplete="list"
+                 placeholder="Buscar por nombre del producto...">
+          <div class="sugerencias" id="sugerencias" role="listbox"></div>
+        </div>
+        <button class="btn btn-primary" id="btnBuscar" type="button">Consultar</button>
+      </div>
+
+      <div class="recientes" id="recientes"></div>
+    </section>
+
+    <!-- PRODUCTO -->
+    <section class="product-header">
+      <div class="product-info">
+        <div class="product-icon">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        </div>
+        <div>
+          <h2 id="productoNombre">Selecciona un producto</h2>
+          <p id="productoDetalle">La información de trazabilidad aparecerá aquí.</p>
+        </div>
+      </div>
+      <span class="product-status" id="productoEstado">Sin seleccionar</span>
+    </section>
+
+    <!-- LÍNEA DE TIEMPO -->
+    <section class="panel">
+      <div class="panel-head"><h3>Historial de trazabilidad</h3></div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <!-- REGISTROS RELACIONADOS -->
+    <section class="panel table-panel">
+      <div class="panel-head"><h3>Registros relacionados</h3></div>
+
+      <div class="tabs" role="tablist" id="tabs">
+        <button class="tab activa" type="button" role="tab" data-vista="recepciones">Recepciones<span class="count" data-count="recepciones"></span></button>
+        <button class="tab" type="button" role="tab" data-vista="almacenamientos">Almacenamiento<span class="count" data-count="almacenamientos"></span></button>
+        <button class="tab" type="button" role="tab" data-vista="ventas">Ventas<span class="count" data-count="ventas"></span></button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="simple">
+          <thead id="tablaHead"></thead>
+          <tbody id="tablaBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
 </div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL='https://lohxgdeuohhczejyxwgr.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+(function(){
+  'use strict';
 
-const supabaseClient=supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+  const $ = id => document.getElementById(id);
 
-let productos=[];
-
-/* SESIÓN */
-
-(async()=>{
-  const {data:{session}}=await supabaseClient.auth.getSession();
-
-  if(!session){
-    location.href='login.html';
+  if (typeof supabase === 'undefined') {
+    $('avisoTexto').textContent = 'No se pudo cargar el sistema. Revisa tu conexión e intenta de nuevo.';
+    $('aviso').classList.add('show');
+    $('avisoBtn').addEventListener('click', () => window.location.reload());
     return;
   }
 
-  const nombre=session.user.user_metadata?.full_name||session.user.email;
-  const inicial=nombre.charAt(0).toUpperCase();
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  document.getElementById('sbUserName').textContent=nombre;
-  document.getElementById('topUserName').textContent=nombre;
-  document.getElementById('sbAvatar').textContent=inicial;
-  document.getElementById('topAvatar').textContent=inicial;
+  const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  document.getElementById('todayDate').textContent=
-    new Date().toLocaleDateString('es-CO',{
-      day:'2-digit',
-      month:'long',
-      year:'numeric'
+  // ---------------------------------------------------------------
+  // CONFIGURACIÓN
+  // ---------------------------------------------------------------
+  const LIMITE = 100;            // máximo de registros por etapa (mantiene las consultas livianas)
+  const FRESCO_MS = 15000;       // un resultado en caché más nuevo que esto no se vuelve a pedir
+  const MAX_SUGERENCIAS = 6;
+  const MAX_RECIENTES = 5;
+  const MAX_TRAZAS_GUARDADAS = 10;
+
+  // ---------------------------------------------------------------
+  // ESTADO
+  // ---------------------------------------------------------------
+  let usuarioActual = null;
+  let productos = [];
+  let indice = [];                // productos con el texto ya normalizado (búsqueda instantánea)
+  let recepcionesNotif = [];      // solo para notificaciones
+  let baseLista = false;
+  let cargandoBase = false;
+  let ultimaActualizacion = 0;
+  let notifsActuales = [];
+
+  let seleccionado = null;        // producto que se está mostrando
+  let tokenSel = 0;               // descarta respuestas de selecciones anteriores
+  let vistaActual = 'recepciones';
+  let datosTraza = null;
+  let firmaTraza = '';
+  let sugerenciasActuales = [];
+  let sugActiva = -1;
+  let urlAbierta = false;
+
+  const memoria = new Map();      // id → { t, d }   (caché en memoria)
+  const enVuelo = new Map();      // id → Promise    (evita pedir lo mismo dos veces)
+
+  // ---------------------------------------------------------------
+  // UTILIDADES
+  // ---------------------------------------------------------------
+  function escapeHTML(texto){
+    return String(texto ?? '').replace(/[&<>"']/g, c => (
+      { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+    ));
+  }
+  function normalizar(texto){
+    return String(texto ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+
+  const fmtNumero = n => Math.round(n).toLocaleString('es-CO');
+  const fmtPeso   = n => (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg';
+
+  function parsearFecha(valor){
+    if (!valor) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      const [a, m, d] = valor.split('-').map(Number);
+      return new Date(a, m - 1, d);
+    }
+    const f = new Date(valor);
+    return isNaN(f.getTime()) ? null : f;
+  }
+  function formatearFecha(valor){
+    const f = parsearFecha(valor);
+    return f ? f.toLocaleDateString('es-CO') : '-';
+  }
+  function formatearHora(valor){
+    const f = parsearFecha(valor);
+    if (!f || (typeof valor === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(valor))) return '';
+    return f.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+  }
+  function celdaFecha(valor){
+    const hora = formatearHora(valor);
+    return `<span class="td-fecha">${formatearFecha(valor)}${hora ? `<small>${hora}</small>` : ''}</span>`;
+  }
+
+  const PALABRAS_PROBLEMA  = ['rechaz', 'dano', 'danad', 'deterior', 'vencid', 'cancelad', 'inactiv', 'no apto'];
+  const PALABRAS_PENDIENTE = ['pendiente', 'evaluacion', 'revision', 'observ'];
+
+  function clasificarEstado(estado){
+    const e = normalizar(estado);
+    if (PALABRAS_PROBLEMA.some(p => e.includes(p)))  return 'warn';
+    if (PALABRAS_PENDIENTE.some(p => e.includes(p))) return 'pend';
+    return 'ok';
+  }
+  const pillEstado = estado => `<span class="pill ${clasificarEstado(estado)}">${escapeHTML(estado)}</span>`;
+
+  let temporizadorToast;
+  function mostrarToast(mensaje, tipo){
+    const t = $('toast');
+    t.textContent = mensaje;
+    t.className = 'toast show ' + (tipo || '');
+    clearTimeout(temporizadorToast);
+    temporizadorToast = setTimeout(() => { t.className = 'toast'; }, 3000);
+  }
+
+  function mostrarAviso(texto){ $('avisoTexto').textContent = texto; $('aviso').classList.add('show'); }
+  function ocultarAviso(){ $('aviso').classList.remove('show'); }
+
+  // Promesa que falla si algo tarda más de 15 s
+  function conLimite(promesa, ms){
+    let id;
+    const limite = new Promise((_, rechazar) => { id = setTimeout(() => rechazar(new Error('Tiempo de espera agotado')), ms || 15000); });
+    return Promise.race([promesa, limite]).finally(() => clearTimeout(id));
+  }
+
+  // ---------------------------------------------------------------
+  // FILTRO DE ESCRITURA DEL BUSCADOR
+  // (solo letras, números, espacios y guion; no deja escribir símbolos raros)
+  // ---------------------------------------------------------------
+  const L = 'A-Za-zÁÉÍÓÚÜÑáéíóúüñ';
+  const RE_BUSQUEDA = new RegExp('[^' + L + '0-9\\s\\-]', 'g');
+
+  function filtrarBusqueda(campo){
+    const antes = campo.value;
+    const despues = antes.replace(RE_BUSQUEDA, '').replace(/\s{2,}/g, ' ').replace(/^\s+/, '');
+    if (despues === antes) return;
+    const pos = campo.selectionStart;
+    campo.value = despues;
+    if (pos !== null) {
+      const nueva = Math.max(0, pos - (antes.length - despues.length));
+      try { campo.setSelectionRange(nueva, nueva); } catch (e) {}
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // USUARIO Y ENCABEZADO
+  // ---------------------------------------------------------------
+  function pintarUsuario(){
+    const u = usuarioActual;
+    const nombre = (u.user_metadata?.full_name || u.user_metadata?.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario';
+    const inicial = nombre.charAt(0).toUpperCase();
+    $('sbUserName').textContent  = nombre;
+    $('topUserName').textContent = nombre;
+    $('sbAvatar').textContent    = inicial;
+    $('topAvatar').textContent   = inicial;
+  }
+  function colocarFecha(){
+    $('todayDate').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  // ---------------------------------------------------------------
+  // CACHÉ LOCAL (la página abre al instante con lo último visto)
+  // ---------------------------------------------------------------
+  const claveBase    = () => 'dsi_traza_base_' + usuarioActual.id;
+  const claveTrazas  = () => 'dsi_traza_cache_' + usuarioActual.id;
+  const claveRecient = () => 'dsi_traza_rec_' + usuarioActual.id;
+
+  function leerJSON(clave, defecto){
+    try { const v = JSON.parse(localStorage.getItem(clave) || 'null'); return v ?? defecto; }
+    catch (e) { return defecto; }
+  }
+  function guardarJSON(clave, valor){
+    try { localStorage.setItem(clave, JSON.stringify(valor)); } catch (e) {}
+  }
+
+  function obtenerCacheTraza(id){
+    const k = String(id);
+    if (memoria.has(k)) return memoria.get(k);
+    const guardadas = leerJSON(claveTrazas(), {});
+    const e = guardadas[k];
+    if (e && e.d) { memoria.set(k, e); return e; }
+    return null;
+  }
+  function guardarCacheTraza(id, d){
+    const k = String(id);
+    const entrada = { t: Date.now(), d: d };
+    memoria.set(k, entrada);
+    const guardadas = leerJSON(claveTrazas(), {});
+    guardadas[k] = entrada;
+    // Se conservan solo las más recientes para no llenar el almacenamiento
+    const claves = Object.keys(guardadas).sort((a, b) => guardadas[b].t - guardadas[a].t);
+    claves.slice(MAX_TRAZAS_GUARDADAS).forEach(c => delete guardadas[c]);
+    guardarJSON(claveTrazas(), guardadas);
+  }
+
+  // ---------------------------------------------------------------
+  // CARGA BASE: lista de productos (+ recepciones para notificaciones)
+  // Dos consultas en paralelo y solo las columnas que se usan.
+  // ---------------------------------------------------------------
+  function construirIndice(){
+    indice = productos.map(p => ({ p: p, n: normalizar(p.nombre), c: normalizar(p.nombre_cientifico) }));
+  }
+
+  async function cargarBase(){
+    if (cargandoBase) return;
+    cargandoBase = true;
+    $('syncEstado').textContent = 'Actualizando…';
+    let hayError = false;
+
+    try {
+      const [prod, rec] = await conLimite(Promise.all([
+        supabaseClient.from('productos')
+          .select('id,nombre,nombre_cientifico,categoria,fecha_captura,origen,estado')
+          .order('nombre'),
+        supabaseClient.from('recepciones')
+          .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
+          .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+          .limit(100)
+      ]));
+
+      if (prod.error) { hayError = true; console.error('Error productos:', prod.error); }
+      else { productos = prod.data || []; construirIndice(); }
+
+      if (rec.error) console.error('Error recepciones (notificaciones):', rec.error);
+      else recepcionesNotif = rec.data || [];
+    } catch (err) {
+      hayError = true;
+      console.error('Error cargando base:', err);
+    }
+
+    cargandoBase = false;
+    baseLista = baseLista || productos.length > 0 || !hayError;
+
+    if (hayError) {
+      mostrarAviso('No se pudieron actualizar algunos datos. Revisa tu conexión.');
+      $('syncEstado').textContent = 'Sin actualizar';
+    } else {
+      if (!seleccionado) ocultarAviso();
+      guardarJSON(claveBase(), { productos: productos, recepciones: recepcionesNotif });
+      ultimaActualizacion = Date.now();
+      $('syncEstado').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    pintarRecientes();
+    renderNotificaciones();
+    if ($('buscarProducto') === document.activeElement) mostrarSugerencias();
+    abrirDesdeUrl();
+  }
+
+  // ---------------------------------------------------------------
+  // BÚSQUEDA INSTANTÁNEA (todo local, sin ir al servidor)
+  // ---------------------------------------------------------------
+  function buscarCoincidencias(texto){
+    const q = normalizar(texto);
+    if (!q) return [];
+    const exactos = [], inicio = [], contiene = [], cientifico = [];
+    for (const e of indice) {
+      if (e.n === q) exactos.push(e.p);
+      else if (e.n.startsWith(q)) inicio.push(e.p);
+      else if (e.n.includes(q)) contiene.push(e.p);
+      else if (e.c && e.c.includes(q)) cientifico.push(e.p);
+    }
+    return exactos.concat(inicio, contiene, cientifico);
+  }
+
+  const campo = $('buscarProducto');
+  const cajaSug = $('sugerencias');
+
+  function mostrarSugerencias(){
+    const texto = campo.value.trim();
+    if (!texto) { cerrarSugerencias(); return; }
+
+    if (!baseLista) {
+      cajaSug.innerHTML = '<div class="sug-msg">Cargando productos...</div>';
+      cajaSug.classList.add('show');
+      campo.setAttribute('aria-expanded', 'true');
+      return;
+    }
+
+    sugerenciasActuales = buscarCoincidencias(texto).slice(0, MAX_SUGERENCIAS);
+    sugActiva = sugerenciasActuales.length ? 0 : -1;
+
+    if (!sugerenciasActuales.length) {
+      cajaSug.innerHTML = '<div class="sug-msg">No hay productos con ese nombre.</div>';
+    } else {
+      cajaSug.innerHTML = sugerenciasActuales.map((p, i) => `
+        <div class="sug-item${i === sugActiva ? ' activo' : ''}" role="option" id="sug-${i}" data-i="${i}">
+          <strong>${escapeHTML(p.nombre)}</strong>
+          <span>${escapeHTML(p.categoria || '')}</span>
+        </div>`).join('');
+    }
+    cajaSug.classList.add('show');
+    campo.setAttribute('aria-expanded', 'true');
+  }
+
+  function cerrarSugerencias(){
+    cajaSug.classList.remove('show');
+    campo.setAttribute('aria-expanded', 'false');
+    campo.removeAttribute('aria-activedescendant');
+  }
+
+  function marcarSugerencia(i){
+    if (!sugerenciasActuales.length) return;
+    sugActiva = (i + sugerenciasActuales.length) % sugerenciasActuales.length;
+    cajaSug.querySelectorAll('.sug-item').forEach((el, idx) => el.classList.toggle('activo', idx === sugActiva));
+    const el = $('sug-' + sugActiva);
+    if (el) { campo.setAttribute('aria-activedescendant', el.id); el.scrollIntoView({ block: 'nearest' }); }
+    programarPrecarga(sugerenciasActuales[sugActiva]);
+  }
+
+  campo.addEventListener('input', function(){
+    filtrarBusqueda(campo);
+    mostrarSugerencias();
+  });
+  campo.addEventListener('focus', mostrarSugerencias);
+
+  campo.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowDown') { e.preventDefault(); if (!cajaSug.classList.contains('show')) mostrarSugerencias(); else marcarSugerencia(sugActiva + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); marcarSugerencia(sugActiva - 1); }
+    else if (e.key === 'Enter') { e.preventDefault(); consultar(); }
+    else if (e.key === 'Escape') { cerrarSugerencias(); }
+  });
+
+  // mousedown (y no click) para elegir antes de que el campo pierda el foco
+  cajaSug.addEventListener('mousedown', function(e){
+    const item = e.target.closest('.sug-item');
+    if (!item) return;
+    e.preventDefault();
+    const p = sugerenciasActuales[Number(item.dataset.i)];
+    if (p) seleccionar(p.id);
+  });
+  cajaSug.addEventListener('mouseover', function(e){
+    const item = e.target.closest('.sug-item');
+    if (!item) return;
+    const p = sugerenciasActuales[Number(item.dataset.i)];
+    if (p) programarPrecarga(p);
+  });
+  document.addEventListener('click', function(e){
+    if (!cajaSug.contains(e.target) && e.target !== campo) cerrarSugerencias();
+  });
+
+  function consultar(){
+    const texto = campo.value.trim();
+    if (!texto) { mostrarToast('Escribe el nombre de un producto.', 'error'); campo.focus(); return; }
+    if (!baseLista) { mostrarToast('Aún se están cargando los productos...', 'error'); return; }
+
+    const lista = buscarCoincidencias(texto);
+    if (!lista.length) { mostrarNoEncontrado(); return; }
+    const elegido = sugerenciasActuales[sugActiva] && cajaSug.classList.contains('show') ? sugerenciasActuales[sugActiva] : lista[0];
+    seleccionar(elegido.id, true);
+  }
+  $('btnBuscar').addEventListener('click', consultar);
+
+  // ---------------------------------------------------------------
+  // PRECARGA: mientras el usuario recorre las sugerencias, los datos del
+  // producto ya se van pidiendo, así al elegirlo se muestran al instante.
+  // ---------------------------------------------------------------
+  let temporizadorPrecarga;
+  function programarPrecarga(producto){
+    clearTimeout(temporizadorPrecarga);
+    if (!producto) return;
+    const previo = obtenerCacheTraza(producto.id);
+    if (previo && Date.now() - previo.t < FRESCO_MS) return;
+    temporizadorPrecarga = setTimeout(() => { pedirTraza(producto.id); }, 180);
+  }
+
+  // ---------------------------------------------------------------
+  // RECIENTES
+  // ---------------------------------------------------------------
+  function recordarReciente(id){
+    const lista = leerJSON(claveRecient(), []).filter(x => String(x) !== String(id));
+    lista.unshift(id);
+    guardarJSON(claveRecient(), lista.slice(0, MAX_RECIENTES));
+  }
+  function pintarRecientes(){
+    const cont = $('recientes');
+    if (!usuarioActual || !baseLista) return;
+    const ids = leerJSON(claveRecient(), []);
+    const items = ids.map(id => productos.find(p => String(p.id) === String(id))).filter(Boolean);
+    if (!items.length) { cont.classList.remove('show'); cont.innerHTML = ''; return; }
+    cont.innerHTML = '<small>Recientes:</small>' + items.map(p =>
+      `<button class="chip" type="button" data-id="${escapeHTML(p.id)}">${escapeHTML(p.nombre)}</button>`).join('');
+    cont.classList.add('show');
+  }
+  $('recientes').addEventListener('click', function(e){
+    const chip = e.target.closest('.chip');
+    if (chip) seleccionar(chip.dataset.id);
+  });
+  $('recientes').addEventListener('mouseover', function(e){
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    const p = productos.find(x => String(x.id) === chip.dataset.id);
+    if (p) programarPrecarga(p);
+  });
+
+  // ---------------------------------------------------------------
+  // TRAZABILIDAD: 3 consultas en paralelo, solo el producto elegido
+  // ---------------------------------------------------------------
+  function pedirTraza(id){
+    const k = String(id);
+    if (enVuelo.has(k)) return enVuelo.get(k);
+
+    const promesa = (async () => {
+      try {
+        const [rec, alm, ven] = await conLimite(Promise.all([
+          supabaseClient.from('recepciones')
+            .select('id,peso,estado_producto,fecha_recepcion,proveedores(nombre)')
+            .eq('producto_id', id)
+            .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+            .limit(LIMITE),
+          supabaseClient.from('almacenamientos')
+            .select('id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento')
+            .eq('producto_id', id)
+            .order('fecha_almacenamiento', { ascending: false, nullsFirst: false })
+            .limit(LIMITE),
+          supabaseClient.from('ventas')
+            .select('id,cantidad,cliente,tipo_venta,canal_venta,destino,fecha_venta')
+            .eq('producto_id', id)
+            .order('fecha_venta', { ascending: false, nullsFirst: false })
+            .limit(LIMITE)
+        ]));
+
+        const fallos = [];
+        if (rec.error) { fallos.push('recepciones'); console.error('Error recepciones:', rec.error); }
+        if (alm.error) { fallos.push('almacenamiento'); console.error('Error almacenamientos:', alm.error); }
+        if (ven.error) { fallos.push('ventas'); console.error('Error ventas:', ven.error); }
+
+        const d = { recepciones: rec.data || [], almacenamientos: alm.data || [], ventas: ven.data || [] };
+        if (!fallos.length) guardarCacheTraza(id, d);
+        return { d: d, fallos: fallos };
+      } catch (err) {
+        console.error('Error cargando trazabilidad:', err);
+        return { d: null, fallos: ['todo'] };
+      }
+    })();
+
+    enVuelo.set(k, promesa);
+    promesa.then(() => enVuelo.delete(k));
+    return promesa;
+  }
+
+  async function seleccionar(id, forzar){
+    const prod = productos.find(p => String(p.id) === String(id));
+    if (!prod) return;
+
+    const token = ++tokenSel;
+    const mismo = seleccionado && String(seleccionado.id) === String(prod.id);
+    seleccionado = prod;
+
+    campo.value = prod.nombre;
+    cerrarSugerencias();
+    campo.blur();
+    pintarCabecera(prod);
+    recordarReciente(prod.id);
+    pintarRecientes();
+    try { history.replaceState(null, '', '?producto=' + encodeURIComponent(prod.id)); } catch (e) {}
+    ocultarAviso();
+
+    // 1) Si ya se había consultado, se muestra al instante lo guardado
+    const previo = obtenerCacheTraza(prod.id);
+    firmaTraza = '';
+    if (previo) {
+      if (!mismo) vistaActual = primeraVistaConDatos(previo.d);
+      pintarTraza(prod, previo.d);
+    } else {
+      vistaActual = 'recepciones';
+      pintarCargando();
+    }
+
+    // 2) Si es reciente, no hace falta volver a pedirlo
+    if (previo && !forzar && Date.now() - previo.t < FRESCO_MS) return;
+
+    // 3) Se piden los datos frescos
+    const r = await pedirTraza(prod.id);
+    if (token !== tokenSel) return;   // el usuario ya eligió otro producto
+
+    if (r.d === null) {
+      if (!previo) pintarErrorTraza();
+      mostrarAviso('No se pudo consultar la trazabilidad. Revisa tu conexión.');
+      return;
+    }
+    if (r.fallos.length) mostrarAviso('No se pudieron cargar: ' + r.fallos.join(', ') + '.');
+    else ocultarAviso();
+
+    if (!previo && !mismo) vistaActual = primeraVistaConDatos(r.d);
+    pintarTraza(prod, r.d);
+  }
+
+  function primeraVistaConDatos(d){
+    return ['recepciones', 'almacenamientos', 'ventas'].find(v => d[v].length) || 'recepciones';
+  }
+
+  function mostrarNoEncontrado(){
+    tokenSel++;
+    seleccionado = null;
+    datosTraza = null;
+    firmaTraza = '';
+    $('productoNombre').textContent = 'Producto no encontrado';
+    $('productoDetalle').textContent = 'No existe un producto registrado con ese nombre.';
+    const est = $('productoEstado');
+    est.textContent = 'Sin resultados';
+    est.className = 'product-status';
+    cerrarSugerencias();
+    pintarTimeline(null);
+    pintarContadores(null);
+    pintarTabla();
+  }
+
+  // ---------------------------------------------------------------
+  // PINTAR: cabecera, línea de tiempo y tabla
+  // ---------------------------------------------------------------
+  function pintarCabecera(prod){
+    $('productoNombre').textContent = prod.nombre;
+    let detalle = 'Categoría: ' + (prod.categoria || 'Sin categoría');
+    if (prod.origen) detalle += ' · Origen: ' + prod.origen;
+    if (prod.nombre_cientifico) detalle += ' · Nombre científico: ' + prod.nombre_cientifico;
+    $('productoDetalle').textContent = detalle;
+
+    const estado = prod.estado || 'Activo';
+    const est = $('productoEstado');
+    est.textContent = estado;
+    est.className = 'product-status ' + (clasificarEstado(estado) === 'warn' ? 'warn' : 'ok');
+  }
+
+  const ICONOS = {
+    captura: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z" stroke="currentColor" stroke-width="1.8"/></svg>',
+    recepcion: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>',
+    almacenamiento: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+    venta: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.2" fill="currentColor"/><circle cx="17" cy="20" r="1.2" fill="currentColor"/><path d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.8"/></svg>'
+  };
+
+  const TEXTO_PENDIENTE = {
+    captura: 'Información de captura y origen del producto.',
+    recepcion: 'Registro del ingreso, proveedor, peso y estado del producto.',
+    almacenamiento: 'Seguimiento de la ubicación y condiciones de almacenamiento.',
+    venta: 'Registro de la venta y salida del producto.'
+  };
+
+  function conteo(n){ return n >= LIMITE ? LIMITE + ' o más' : String(n); }
+
+  function construirEtapas(prod, d){
+    const rec = d.recepciones, alm = d.almacenamientos, ven = d.ventas;
+    const etapas = [];
+
+    // Captura
+    const tieneCaptura = !!prod.fecha_captura;
+    etapas.push({
+      icono: ICONOS.captura, titulo: 'Captura', hecho: tieneCaptura,
+      fecha: tieneCaptura ? formatearFecha(prod.fecha_captura) : 'Sin registro',
+      texto: 'Producto registrado con origen: ' + (prod.origen || 'sin información de origen') + '.'
     });
 
-  cargarProductos();
+    // Recepción
+    if (rec.length) {
+      const total = rec.reduce((s, r) => s + (Number(r.peso) || 0), 0);
+      const prov = rec[0].proveedores;
+      const nombreProv = (Array.isArray(prov) ? prov[0] : prov)?.nombre || 'sin proveedor';
+      etapas.push({
+        icono: ICONOS.recepcion, titulo: 'Recepción', hecho: true,
+        fecha: formatearFecha(rec[0].fecha_recepcion),
+        texto: `${conteo(rec.length)} recepción(es) · ${fmtPeso(total)} recibidos · Última: ${nombreProv}, ${rec[0].estado_producto || 'Recibido'}.`
+      });
+    } else {
+      etapas.push({ icono: ICONOS.recepcion, titulo: 'Recepción', hecho: false, fecha: 'Pendiente', texto: 'El producto todavía no tiene una recepción registrada.' });
+    }
+
+    // Almacenamiento
+    if (alm.length) {
+      const a = alm[0];
+      const temp = (a.temperatura !== null && a.temperatura !== undefined && a.temperatura !== '')
+        ? ' a ' + Number(a.temperatura).toLocaleString('es-CO', { maximumFractionDigits: 1 }) + ' °C' : '';
+      etapas.push({
+        icono: ICONOS.almacenamiento, titulo: 'Almacenamiento', hecho: true,
+        fecha: formatearFecha(a.fecha_almacenamiento),
+        texto: `${conteo(alm.length)} registro(s) · Último: ${a.tipo || 'sin tipo'} en ${a.ubicacion || 'ubicación sin registrar'}${temp}.`
+      });
+    } else {
+      etapas.push({ icono: ICONOS.almacenamiento, titulo: 'Almacenamiento', hecho: false, fecha: 'Pendiente', texto: 'Todavía no hay registros de almacenamiento para este producto.' });
+    }
+
+    // Venta
+    if (ven.length) {
+      const unidades = ven.reduce((s, v) => s + (Number(v.cantidad) || 0), 0);
+      etapas.push({
+        icono: ICONOS.venta, titulo: 'Venta', hecho: true,
+        fecha: formatearFecha(ven[0].fecha_venta),
+        texto: `${conteo(ven.length)} venta(s) · ${fmtNumero(unidades)} unidades · Último cliente: ${ven[0].cliente || 'sin nombre'}.`
+      });
+    } else {
+      etapas.push({ icono: ICONOS.venta, titulo: 'Venta', hecho: false, fecha: 'Pendiente', texto: 'Todavía no hay ventas registradas para este producto.' });
+    }
+
+    return etapas;
+  }
+
+  // etapas = null → muestra la línea de tiempo vacía (sin producto)
+  function pintarTimeline(etapas, cargando){
+    const tl = $('timeline');
+    tl.classList.toggle('cargando', !!cargando);
+
+    const base = [
+      { icono: ICONOS.captura, titulo: 'Captura', clave: 'captura' },
+      { icono: ICONOS.recepcion, titulo: 'Recepción', clave: 'recepcion' },
+      { icono: ICONOS.almacenamiento, titulo: 'Almacenamiento', clave: 'almacenamiento' },
+      { icono: ICONOS.venta, titulo: 'Venta', clave: 'venta' }
+    ];
+    const lista = etapas || base.map(b => ({ icono: b.icono, titulo: b.titulo, hecho: false, fecha: 'Pendiente', texto: TEXTO_PENDIENTE[b.clave] }));
+
+    // La última etapa completada se marca como "actual"
+    let actual = -1;
+    lista.forEach((e, i) => { if (e.hecho) actual = i; });
+
+    tl.innerHTML = lista.map((e, i) => {
+      const estado = !e.hecho ? 'pending' : (i === actual ? 'current' : 'done');
+      return `<div class="timeline-item">
+        <div class="timeline-circle ${estado}">${e.icono}</div>
+        <div class="timeline-content">
+          <div class="timeline-top">
+            <h4>${escapeHTML(e.titulo)}${estado === 'current' ? '<span class="etapa-actual">Etapa actual</span>' : ''}</h4>
+            <span class="timeline-date">${escapeHTML(e.fecha)}</span>
+          </div>
+          <p>${escapeHTML(e.texto)}</p>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function pintarCargando(){
+    datosTraza = null;
+    pintarTimeline(null, true);
+    pintarContadores(null);
+    $('tablaHead').innerHTML = '';
+    $('tablaBody').innerHTML = '<tr class="vacio"><td colspan="6" class="empty">Cargando información...</td></tr>';
+  }
+
+  function pintarErrorTraza(){
+    datosTraza = null;
+    pintarTimeline(null);
+    pintarContadores(null);
+    $('tablaHead').innerHTML = '';
+    $('tablaBody').innerHTML = '<tr class="vacio"><td colspan="6" class="empty">No se pudo cargar la información de este producto.</td></tr>';
+  }
+
+  function pintarTraza(prod, d){
+    // Si los datos son idénticos a los ya dibujados, no se repite el trabajo
+    const firma = prod.id + '|' + vistaActual + '|' + JSON.stringify(d);
+    if (firma === firmaTraza) return;
+    firmaTraza = firma;
+
+    datosTraza = d;
+    pintarTimeline(construirEtapas(prod, d));
+    pintarContadores(d);
+    pintarTabla(true);
+  }
+
+  // ---------------------------------------------------------------
+  // PESTAÑAS Y TABLA (una sola tabla; en celular se ve como tarjetas)
+  // ---------------------------------------------------------------
+  const proveedorDe = r => (Array.isArray(r.proveedores) ? r.proveedores[0] : r.proveedores)?.nombre || 'Sin proveedor';
+
+  const VISTAS = {
+    recepciones: {
+      vacio: 'Este producto no tiene recepciones registradas.',
+      cols: [
+        { t: 'Proveedor', v: r => escapeHTML(proveedorDe(r)) },
+        { t: 'Peso', v: r => fmtPeso(Number(r.peso) || 0) },
+        { t: 'Estado', v: r => pillEstado(r.estado_producto || 'Recibido') },
+        { t: 'Fecha de recepción', v: r => celdaFecha(r.fecha_recepcion) }
+      ]
+    },
+    almacenamientos: {
+      vacio: 'Este producto no tiene registros de almacenamiento.',
+      cols: [
+        { t: 'Tipo', v: r => `<span class="pill ${normalizar(r.tipo) === 'refrigerado' ? 'refrigerado' : 'congelado'}">${escapeHTML(r.tipo || '-')}</span>` },
+        { t: 'Ubicación', v: r => escapeHTML(r.ubicacion || '-') },
+        { t: 'Temperatura', v: r => (r.temperatura !== null && r.temperatura !== undefined && r.temperatura !== '')
+            ? escapeHTML(Number(r.temperatura).toLocaleString('es-CO', { maximumFractionDigits: 1 }) + ' °C') : '-' },
+        { t: 'Estado', v: r => pillEstado(r.estado_producto || '-') },
+        { t: 'Fecha', v: r => celdaFecha(r.fecha_almacenamiento) }
+      ]
+    },
+    ventas: {
+      vacio: 'Este producto no tiene ventas registradas.',
+      cols: [
+        { t: 'Cantidad', v: r => fmtNumero(Number(r.cantidad) || 0) },
+        { t: 'Cliente', v: r => escapeHTML(r.cliente || '-') },
+        { t: 'Tipo', v: r => `<span class="pill ${normalizar(r.tipo_venta) === 'local' ? 'local' : 'distribucion'}">${escapeHTML(r.tipo_venta || '-')}</span>` },
+        { t: 'Canal', v: r => escapeHTML(r.canal_venta || '-') },
+        { t: 'Destino', v: r => escapeHTML(r.destino || '-') },
+        { t: 'Fecha', v: r => celdaFecha(r.fecha_venta) }
+      ]
+    }
+  };
+
+  function pintarContadores(d){
+    document.querySelectorAll('[data-count]').forEach(el => {
+      el.textContent = d ? (d[el.dataset.count].length >= LIMITE ? LIMITE + '+' : d[el.dataset.count].length) : '';
+    });
+    document.querySelectorAll('.tab').forEach(t => {
+      const activa = t.dataset.vista === vistaActual;
+      t.classList.toggle('activa', activa);
+      t.setAttribute('aria-selected', String(activa));
+    });
+  }
+
+  function pintarTabla(animar){
+    const vista = VISTAS[vistaActual];
+    const head = $('tablaHead'), body = $('tablaBody');
+
+    if (!datosTraza) {
+      head.innerHTML = '';
+      body.innerHTML = '<tr class="vacio"><td colspan="6" class="empty">' +
+        (seleccionado ? 'Cargando información...' : 'Selecciona un producto para consultar su información.') + '</td></tr>';
+      return;
+    }
+
+    const filas = datosTraza[vistaActual];
+    if (!filas.length) {
+      head.innerHTML = '';
+      body.innerHTML = `<tr class="vacio"><td colspan="6" class="empty">${vista.vacio}</td></tr>`;
+      return;
+    }
+
+    head.innerHTML = '<tr>' + vista.cols.map(c => `<th>${c.t}</th>`).join('') + '</tr>';
+    body.innerHTML = filas.map((r, i) => {
+      const anim = animar && !reducirMovimiento ? ` class="row-in" style="animation-delay:${Math.min(i, 10) * 25}ms"` : '';
+      return `<tr${anim}>` + vista.cols.map(c => `<td data-label="${c.t}">${c.v(r)}</td>`).join('') + '</tr>';
+    }).join('');
+  }
+
+  $('tabs').addEventListener('click', function(e){
+    const tab = e.target.closest('.tab');
+    if (!tab || tab.dataset.vista === vistaActual) return;
+    vistaActual = tab.dataset.vista;
+    firmaTraza = '';           // la vista cambió: se vuelve a dibujar la tabla
+    pintarContadores(datosTraza);
+    pintarTabla(true);
+    if (datosTraza) firmaTraza = (seleccionado ? seleccionado.id : '') + '|' + vistaActual + '|' + JSON.stringify(datosTraza);
+  });
+
+  // ---------------------------------------------------------------
+  // NOTIFICACIONES (comparten el estado de "leídas" con las demás páginas)
+  // ---------------------------------------------------------------
+  const claveLeidas = () => 'dsi_notif_leidas_' + usuarioActual.id;
+
+  function leerLeidas(){
+    try { return new Set(JSON.parse(localStorage.getItem(claveLeidas()) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function guardarLeidas(set){
+    try { localStorage.setItem(claveLeidas(), JSON.stringify([...set].slice(-300))); } catch (e) {}
+  }
+
+  function construirNotificaciones(){
+    const lista = [];
+
+    recepcionesNotif.forEach(r => {
+      const estado = r.estado_producto || 'Recibido';
+      const clase = clasificarEstado(estado);
+      if (clase === 'ok') return;
+      const prod = Array.isArray(r.productos) ? r.productos[0] : r.productos;
+      lista.push({
+        key: `rec:${r.id}:${normalizar(estado)}`,
+        tipo: clase,
+        titulo: `Recepción ${estado.toLowerCase()}`,
+        texto: `${prod?.nombre || 'Producto'} — ${fmtPeso(Number(r.peso) || 0)}`,
+        fecha: formatearFecha(r.fecha_recepcion),
+        href: 'recepciones.html?id=' + encodeURIComponent(r.id)
+      });
+    });
+
+    productos.forEach(p => {
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: `prod:${p.id}`,
+        tipo: 'info',
+        titulo: 'Producto inactivo',
+        texto: p.nombre || 'Producto',
+        fecha: '',
+        href: 'productos.html?id=' + encodeURIComponent(p.id)
+      });
+    });
+
+    return lista;
+  }
+
+  function actualizarGlobo(){
+    const leidas = leerLeidas();
+    const total = notifsActuales.filter(n => !leidas.has(n.key)).length;
+    const globo = $('notificationBadge');
+    globo.textContent = total > 9 ? '9+' : String(total);
+    globo.classList.toggle('show', total > 0);
+    $('notificationBtn').setAttribute('aria-label', total ? `Notificaciones (${total} sin leer)` : 'Notificaciones');
+    $('markAllRead').style.display = total ? '' : 'none';
+  }
+
+  function iconoNotif(tipo){
+    return tipo === 'info'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="8" r=".9" fill="currentColor"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>';
+  }
+
+  function renderNotificaciones(){
+    if (!usuarioActual) return;
+    const leidas = leerLeidas();
+    notifsActuales = construirNotificaciones().filter(n => !leidas.has(n.key)).slice(0, 30);
+    actualizarGlobo();
+
+    const cont = $('notificationContent');
+    if (!notifsActuales.length) {
+      cont.innerHTML = '<div class="notification-empty">No tienes notificaciones nuevas.</div>';
+      return;
+    }
+
+    cont.innerHTML = notifsActuales.map((n, i) => `
+      <a class="notification-item" href="${escapeHTML(n.href)}" data-i="${i}">
+        <div class="ni-icon t-${n.tipo}">${iconoNotif(n.tipo)}</div>
+        <div class="ni-body">
+          <strong>${escapeHTML(n.titulo)}</strong>
+          <span>${escapeHTML(n.texto)}</span>
+          ${n.fecha && n.fecha !== '-' ? `<em>${escapeHTML(n.fecha)}</em>` : ''}
+        </div>
+        <span class="ni-go">›</span>
+      </a>`).join('');
+  }
+
+  $('notificationContent').addEventListener('click', function(e){
+    const item = e.target.closest('.notification-item');
+    if (!item) return;
+    e.preventDefault();
+
+    const n = notifsActuales[Number(item.dataset.i)];
+    if (!n) return;
+
+    const leidas = leerLeidas();
+    leidas.add(n.key);
+    guardarLeidas(leidas);
+    actualizarGlobo();
+
+    item.classList.add('removing');
+    setTimeout(function(){ window.location.href = n.href; }, 170);
+  });
+
+  $('markAllRead').addEventListener('click', function(){
+    const leidas = leerLeidas();
+    construirNotificaciones().forEach(n => leidas.add(n.key));
+    guardarLeidas(leidas);
+    renderNotificaciones();
+  });
+
+  const panel = $('notificationPanel');
+  const btnNotif = $('notificationBtn');
+
+  function cerrarPanel(){
+    panel.classList.remove('show');
+    btnNotif.setAttribute('aria-expanded', 'false');
+  }
+  btnNotif.addEventListener('click', function(e){
+    e.stopPropagation();
+    const abierto = panel.classList.toggle('show');
+    btnNotif.setAttribute('aria-expanded', String(abierto));
+  });
+  $('closeNotifications').addEventListener('click', cerrarPanel);
+  document.addEventListener('click', function(e){
+    if (!panel.contains(e.target) && !btnNotif.contains(e.target)) cerrarPanel();
+  });
+
+  // ---------------------------------------------------------------
+  // MENÚ MÓVIL
+  // ---------------------------------------------------------------
+  const sidebar = $('sidebar');
+  const overlay = $('mobileOverlay');
+  const btnMenu = $('mobileMenuBtn');
+
+  function abrirMenuMovil(){
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('show');
+    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarMenuMovil(){
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    btnMenu.setAttribute('aria-label', 'Abrir menú');
+    document.body.style.overflow = '';
+  }
+
+  btnMenu.addEventListener('click', () => sidebar.classList.contains('mobile-open') ? cerrarMenuMovil() : abrirMenuMovil());
+  overlay.addEventListener('click', cerrarMenuMovil);
+  document.querySelectorAll('.sb-link').forEach(l => l.addEventListener('click', cerrarMenuMovil));
+  window.addEventListener('resize', () => { if (window.innerWidth > 800) cerrarMenuMovil(); });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    cerrarPanel();
+    cerrarMenuMovil();
+  });
+
+  // ---------------------------------------------------------------
+  // SESIÓN Y REFRESCO AUTOMÁTICO
+  // ---------------------------------------------------------------
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'SIGNED_OUT') window.location.replace('login.html');
+  });
+
+  $('avisoBtn').addEventListener('click', function(){
+    if (seleccionado) seleccionar(seleccionado.id, true);
+    else cargarBase();
+  });
+
+  function refrescarTodo(){
+    if (!usuarioActual) return;
+    cargarBase();
+    if (seleccionado) seleccionar(seleccionado.id, true);
+  }
+  window.addEventListener('pageshow', function(e){ if (e.persisted) { renderNotificaciones(); refrescarTodo(); } });
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && usuarioActual && Date.now() - ultimaActualizacion > 30000) refrescarTodo();
+  });
+  window.addEventListener('online', refrescarTodo);
+
+  // Permite abrir directamente un producto con trazabilidad.html?producto=ID
+  function abrirDesdeUrl(){
+    if (urlAbierta || !baseLista || !productos.length) return;
+    urlAbierta = true;
+    const id = new URLSearchParams(window.location.search).get('producto');
+    if (id && productos.some(p => String(p.id) === id)) seleccionar(id);
+  }
+
+  // ---------------------------------------------------------------
+  // INICIO
+  // ---------------------------------------------------------------
+  async function iniciar(){
+    colocarFecha();
+    pintarTimeline(null);
+    pintarTabla();
+    pintarContadores(null);
+
+    let session = null;
+    try {
+      const res = await supabaseClient.auth.getSession();
+      session = res.data.session;
+    } catch (err) {
+      console.error('No se pudo leer la sesión:', err);
+    }
+
+    if (!session) { window.location.replace('login.html'); return; }
+
+    usuarioActual = session.user;
+    pintarUsuario();
+
+    // 1) Se usa al instante lo último guardado: el buscador ya funciona
+    const cache = leerJSON(claveBase(), null);
+    if (cache && Array.isArray(cache.productos)) {
+      productos = cache.productos;
+      recepcionesNotif = Array.isArray(cache.recepciones) ? cache.recepciones : [];
+      construirIndice();
+      baseLista = true;
+      pintarRecientes();
+      renderNotificaciones();
+      abrirDesdeUrl();
+    }
+
+    // 2) Se piden los datos frescos en segundo plano
+    await cargarBase();
+  }
+
+  iniciar();
 })();
-
-/* PRODUCTOS */
-
-async function cargarProductos(){
-
-  const {data,error}=await supabaseClient
-    .from('productos')
-    .select('id,nombre,nombre_cientifico,categoria,proveedor,proveedor_id,fecha_captura,origen,estado')
-    .order('nombre');
-
-  if(error){
-    console.error(error);
-    return;
-  }
-
-  productos=data||[];
-}
-
-/* BÚSQUEDA */
-
-document.getElementById('btnBuscar').addEventListener('click',buscarProducto);
-
-document.getElementById('buscarProducto').addEventListener('keydown',e=>{
-  if(e.key==='Enter') buscarProducto();
-});
-
-async function buscarProducto(){
-
-  const texto=document.getElementById('buscarProducto').value
-    .toLowerCase()
-    .trim();
-
-  if(!texto){
-    alert('Escribe el nombre de un producto.');
-    return;
-  }
-
-  const producto=productos.find(p=>
-    p.nombre.toLowerCase().includes(texto)
-  );
-
-  if(!producto){
-    document.getElementById('productoNombre').textContent='Producto no encontrado';
-    document.getElementById('productoDetalle').textContent=
-      'No existe un producto registrado con ese nombre.';
-    document.getElementById('productoEstado').textContent='Sin resultados';
-
-    limpiarTimeline();
-
-    document.getElementById('tablaRecepciones').innerHTML=
-      '<tr><td colspan="5" class="empty">No se encontraron registros.</td></tr>';
-
-    document.getElementById('recepcionesCards').innerHTML=
-      '<div class="empty">No se encontraron registros.</div>';
-
-    return;
-  }
-
-  mostrarProducto(producto);
-}
-
-/* PRODUCTO */
-
-async function mostrarProducto(producto){
-
-  document.getElementById('productoNombre').textContent=producto.nombre;
-
-  let detalle='Categoría: '+(producto.categoria||'Sin categoría');
-
-  if(producto.origen) detalle+=' · Origen: '+producto.origen;
-  if(producto.nombre_cientifico)
-    detalle+=' · Nombre científico: '+producto.nombre_cientifico;
-
-  document.getElementById('productoDetalle').textContent=detalle;
-  document.getElementById('productoEstado').textContent=producto.estado||'Activo';
-
-  await cargarTrazabilidad(producto);
-}
-
-/* TRAZABILIDAD */
-
-async function cargarTrazabilidad(producto){
-
-  const {data:recepciones,error}=await supabaseClient
-    .from('recepciones')
-    .select('id,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,observaciones,proveedores(nombre)')
-    .eq('producto_id',producto.id)
-    .order('fecha_recepcion',{ascending:false});
-
-  if(error){
-    console.error(error);
-    limpiarTimeline();
-    return;
-  }
-
-  const tiene=recepciones?.length>0;
-
-  construirTimeline(producto,recepciones||[],tiene);
-  mostrarRecepciones(recepciones||[]);
-}
-
-/* TIMELINE */
-
-function construirTimeline(producto,recepciones,tiene){
-
-  const fechaCaptura=producto.fecha_captura
-    ? formatearFecha(producto.fecha_captura)
-    : 'Sin registro';
-
-  const fechaRecepcion=tiene
-    ? formatearFecha(recepciones[0].fecha_recepcion)
-    : 'Pendiente';
-
-  const capturaEstado=producto.fecha_captura?'done':'pending';
-  const recepcionEstado=tiene?'done':'pending';
-
-  document.getElementById('timeline').innerHTML=`
-
-    <div class="timeline-item">
-
-      <div class="timeline-circle ${capturaEstado}">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z"
-            stroke="currentColor" stroke-width="1.8"/>
-        </svg>
-      </div>
-
-      <div class="timeline-content">
-
-        <div class="timeline-top">
-          <h4>Captura</h4>
-          <span class="timeline-date">${fechaCaptura}</span>
-        </div>
-
-        <p>
-          Producto registrado con origen:
-          ${escapar(producto.origen||'Sin información de origen')}.
-        </p>
-
-      </div>
-    </div>
-
-    <div class="timeline-item">
-
-      <div class="timeline-circle ${recepcionEstado}">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <rect x="4" y="7" width="16" height="13" rx="2"
-            stroke="currentColor" stroke-width="1.8"/>
-        </svg>
-      </div>
-
-      <div class="timeline-content">
-
-        <div class="timeline-top">
-          <h4>Recepción</h4>
-          <span class="timeline-date">${fechaRecepcion}</span>
-        </div>
-
-        <p>
-          ${
-            tiene
-              ? `Se encontraron ${recepciones.length} recepción(es) relacionada(s) con este producto.`
-              : 'El producto todavía no tiene una recepción registrada.'
-          }
-        </p>
-
-      </div>
-    </div>
-
-    <div class="timeline-item">
-
-      <div class="timeline-circle pending">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-            stroke="currentColor" stroke-width="1.8"
-            stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <div class="timeline-content">
-
-        <div class="timeline-top">
-          <h4>Almacenamiento</h4>
-          <span class="timeline-date">Pendiente</span>
-        </div>
-
-        <p>
-          El seguimiento del almacenamiento se completará
-          cuando existan registros de almacenamiento.
-        </p>
-
-      </div>
-    </div>
-
-    <div class="timeline-item">
-
-      <div class="timeline-circle pending">
-
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <circle cx="9" cy="20" r="1.2" fill="currentColor"/>
-          <circle cx="17" cy="20" r="1.2" fill="currentColor"/>
-          <path d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-            stroke="currentColor" stroke-width="1.8"/>
-        </svg>
-
-      </div>
-
-      <div class="timeline-content">
-
-        <div class="timeline-top">
-          <h4>Venta</h4>
-          <span class="timeline-date">Pendiente</span>
-        </div>
-
-        <p>
-          El seguimiento de la venta se completará
-          cuando existan registros de ventas.
-        </p>
-
-      </div>
-
-    </div>
-  `;
-}
-
-/* RECEPCIONES */
-
-function mostrarRecepciones(recepciones){
-
-  const tbody=document.getElementById('tablaRecepciones');
-  const cards=document.getElementById('recepcionesCards');
-
-  if(!recepciones.length){
-
-    const mensaje='Este producto no tiene recepciones registradas.';
-
-    tbody.innerHTML=
-      `<tr><td colspan="5" class="empty">${mensaje}</td></tr>`;
-
-    cards.innerHTML=`<div class="empty">${mensaje}</div>`;
-
-    return;
-  }
-
-  tbody.innerHTML='';
-  cards.innerHTML='';
-
-  const nombre=document.getElementById('productoNombre').textContent;
-
-  recepciones.forEach(r=>{
-
-    const proveedor=r.proveedores?.nombre||'Sin proveedor';
-    const fecha=r.fecha_recepcion
-      ? formatearFecha(r.fecha_recepcion)
-      : '-';
-    const estado=r.estado_producto||'Recibido';
-
-    const tr=document.createElement('tr');
-
-    tr.innerHTML=`
-      <td>${escapar(nombre)}</td>
-      <td>${escapar(proveedor)}</td>
-      <td>${r.peso||'-'}</td>
-      <td><span class="pill info">${escapar(estado)}</span></td>
-      <td>${fecha}</td>
-    `;
-
-    tbody.appendChild(tr);
-
-    const card=document.createElement('div');
-
-    card.className='recepcion-card';
-
-    card.innerHTML=`
-      <div class="recepcion-card-head">
-
-        <div class="recepcion-card-product">
-          ${escapar(nombre)}
-        </div>
-
-        <span class="pill info">
-          ${escapar(estado)}
-        </span>
-
-      </div>
-
-      <div class="recepcion-card-info">
-
-        <div class="recepcion-card-field">
-          <span>Proveedor</span>
-          <strong>${escapar(proveedor)}</strong>
-        </div>
-
-        <div class="recepcion-card-field">
-          <span>Peso</span>
-          <strong>${r.peso||'-'} kg</strong>
-        </div>
-
-        <div class="recepcion-card-field full">
-          <span>Fecha de recepción</span>
-          <strong>${fecha}</strong>
-        </div>
-
-      </div>
-    `;
-
-    cards.appendChild(card);
-  });
-}
-
-/* UTILIDADES */
-
-function limpiarTimeline(){
-  document.getElementById('timeline').innerHTML=
-    '<div class="empty">No hay información de trazabilidad para mostrar.</div>';
-}
-
-function formatearFecha(fecha){
-  return new Date(fecha).toLocaleDateString('es-CO',{
-    day:'2-digit',
-    month:'2-digit',
-    year:'numeric'
-  });
-}
-
-function escapar(texto){
-  return String(texto)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
-}
-
-/* NOTIFICACIONES */
-
-const btnCampana=document.getElementById('notificationBtn');
-const panelNotificaciones=document.getElementById('notificationPanel');
-const cerrarNotificaciones=document.getElementById('closeNotifications');
-
-btnCampana.addEventListener('click',e=>{
-
-  e.stopPropagation();
-
-  panelNotificaciones.classList.toggle('show');
-
-  if(panelNotificaciones.classList.contains('show')){
-    cargarLasNotificaciones();
-  }
-});
-
-cerrarNotificaciones.addEventListener('click',()=>{
-  panelNotificaciones.classList.remove('show');
-});
-
-document.addEventListener('click',e=>{
-
-  if(
-    !panelNotificaciones.contains(e.target)&&
-    !btnCampana.contains(e.target)
-  ){
-    panelNotificaciones.classList.remove('show');
-  }
-});
-
-async function cargarLasNotificaciones(){
-
-  const contenido=document.getElementById('notificationContent');
-  const punto=document.getElementById('notificationDot');
-
-  contenido.innerHTML=
-    '<div class="notification-empty">Buscando alertas...</div>';
-
-  let hay=false;
-  let html='';
-
-  const {data:recepciones}=await supabaseClient
-    .from('recepciones')
-    .select('id,peso,estado_producto,fecha_recepcion')
-    .order('fecha_recepcion',{ascending:false})
-    .limit(20);
-
-  recepciones?.forEach(r=>{
-
-    const estado=r.estado_producto||'Recibido';
-
-    if(estado.toLowerCase()!=='recibido'){
-
-      hay=true;
-
-      html+=`
-        <div class="notification-item">
-
-          <div class="ni-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v12"
-                stroke="currentColor" stroke-width="1.8"/>
-              <circle cx="12" cy="19" r="1"
-                fill="currentColor"/>
-            </svg>
-          </div>
-
-          <div>
-            <strong>Recepción: ${escapar(estado)}</strong>
-            <span>
-              Carga de ${Number(r.peso||0).toLocaleString('es-CO')} kg.
-            </span>
-          </div>
-
-        </div>
-      `;
-    }
-  });
-
-  const {data:productosNotif}=await supabaseClient
-    .from('productos')
-    .select('id,nombre,estado')
-    .order('created_at',{ascending:false})
-    .limit(20);
-
-  productosNotif?.forEach(p=>{
-
-    if(p.estado?.toLowerCase()==='inactivo'){
-
-      hay=true;
-
-      html+=`
-        <div class="notification-item">
-
-          <div class="ni-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3v11"
-                stroke="currentColor" stroke-width="1.8"/>
-              <circle cx="12" cy="18.5" r="1"
-                fill="currentColor"/>
-            </svg>
-          </div>
-
-          <div>
-            <strong>Producto inactivo</strong>
-            <span>${escapar(p.nombre)}</span>
-          </div>
-
-        </div>
-      `;
-    }
-  });
-
-  punto.style.display=hay?'block':'none';
-
-  contenido.innerHTML=hay
-    ? html
-    : '<div class="notification-empty">No hay notificaciones pendientes.</div>';
-}
-
-/* MENÚ MÓVIL — MISMO FUNCIONAMIENTO DE INICIO */
-
-const mobileMenuBtn=document.getElementById('mobileMenuBtn');
-const mobileOverlay=document.getElementById('mobileOverlay');
-const mobileSidebar=document.getElementById('sidebar');
-
-function abrirMenuMobile(){
-
-  mobileSidebar.classList.add('mobile-open');
-  mobileOverlay.classList.add('show');
-
-  mobileMenuBtn.setAttribute('aria-label','Cerrar menú');
-
-  document.body.style.overflow='hidden';
-}
-
-function cerrarMenuMobile(){
-
-  mobileSidebar.classList.remove('mobile-open');
-  mobileOverlay.classList.remove('show');
-
-  mobileMenuBtn.setAttribute('aria-label','Abrir menú');
-
-  document.body.style.overflow='';
-}
-
-mobileMenuBtn.addEventListener('click',()=>{
-
-  mobileSidebar.classList.contains('mobile-open')
-    ? cerrarMenuMobile()
-    : abrirMenuMobile();
-
-});
-
-mobileOverlay.addEventListener('click',cerrarMenuMobile);
-
-mobileSidebar.querySelectorAll('a').forEach(link=>{
-  link.addEventListener('click',()=>{
-    if(window.innerWidth<=800) cerrarMenuMobile();
-  });
-});
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') cerrarMenuMobile();
-});
-
-window.addEventListener('resize',()=>{
-  if(window.innerWidth>800) cerrarMenuMobile();
-});
 </script>
 
 </body>

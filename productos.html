@@ -2,1175 +2,863 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Deep Sea Intelligence — Productos</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
+
+<!-- Conexiones anticipadas: ahorran tiempo al cargar el SDK y los datos -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <style>
-
 :root{
-    --azul-oscuro:#062B5B;
-    --azul-oscuro-2:#083868;
-    --azul-medio:#1E66F5;
-    --azul-claro:#D9ECFF;
-    --verde-suave:#B9F5C5;
-    --verde-txt:#1B8A5A;
-    --rojo:#E53935;
-    --naranja:#FFA94D;
-    --amarillo:#FFD76A;
-    --morado:#E7D7FF;
-    --morado-txt:#7B5CC7;
-    --gris-claro:#F3F5F9;
-    --gris-borde:#E4E9F0;
-    --blanco:#FFFFFF;
-    --texto-principal:#0F2540;
-    --texto-secundario:#5B7089;
-    --sombra:0 10px 30px rgba(6,43,91,.08);
-    --radio:16px;
+  --azul-oscuro:#062B5B;
+  --azul-oscuro-2:#083868;
+  --azul-medio:#1E66F5;
+  --azul-claro:#D9ECFF;
+  --verde-suave:#B9F5C5;
+  --verde-txt:#1B8A5A;
+  --rojo:#E53935;
+  --naranja:#FFA94D;
+  --amarillo:#FFD76A;
+  --morado:#E7D7FF;
+  --morado-txt:#7B5CC7;
+  --gris-claro:#F3F5F9;
+  --gris-borde:#E4E9F0;
+  --blanco:#FFFFFF;
+  --texto-principal:#0F2540;
+  --texto-secundario:#5B7089;
+  --sombra:0 10px 30px rgba(6,43,91,.08);
+  --radio:16px;
 }
 
-*{
-    box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
 
-html,
-body{
-    margin:0;
-    padding:0;
-    width:100%;
-    min-height:100%;
-    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:var(--gris-claro);
-    color:var(--texto-principal);
-    overflow-x:hidden;
-}
+html{ scrollbar-width:thin; scrollbar-color:#C5D0DF transparent; }
 
-button,
-input,
-select,
-textarea{
-    font-family:inherit;
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--gris-claro);
+  color:var(--texto-principal);
+  -webkit-font-smoothing:antialiased;
 }
+body{ overflow-x:hidden; }
+body.sin-scroll{ overflow:hidden; }
+
+button,input,select,textarea{ font-family:inherit; }
+:focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
+a,button{ touch-action:manipulation; }
 
 .app{
-    display:grid;
-    grid-template-columns:250px 1fr;
-    min-height:100vh;
+  display:grid;
+  grid-template-columns:250px 1fr;
+  min-height:100vh;
+  min-height:100dvh;
 }
 
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
+/* ===================== MENÚ LATERAL ===================== */
 .sidebar{
-    background:var(--azul-oscuro);
-    color:#EAF1FC;
-    display:flex;
-    flex-direction:column;
-    padding:22px 16px;
-    position:sticky;
-    top:0;
-    height:100vh;
-    z-index:1200;
+  background:linear-gradient(180deg,#07326F 0%,var(--azul-oscuro) 100%);
+  color:#EAF1FC;
+  display:flex;
+  flex-direction:column;
+  /* Los espacios se ajustan a la altura de la pantalla para que
+     el menú quepa completo sin tener que deslizar */
+  padding:18px 14px;
+  padding:clamp(14px,2.4vh,22px) 14px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  height:100dvh;
+  z-index:1000;
 }
 
 .sb-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:6px 10px 22px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:4px 8px 16px;
+  padding:4px 8px clamp(10px,2vh,20px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:12px;
+  margin-bottom:clamp(8px,1.6vh,14px);
 }
-
+/* Insignia blanca con el emblema oficial */
 .sb-brand .badge{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:rgba(255,255,255,.12);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:var(--blanco);
+  padding:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
 }
+.sb-brand .badge img{ width:100%; height:100%; object-fit:contain; display:block; }
+.sb-brand .name{ font-weight:700; font-size:17px; line-height:1.1; }
+.sb-brand .name span{ color:var(--amarillo); }
+.sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); margin-top:2px; }
 
-.sb-brand .name{
-    font-weight:700;
-    font-size:16px;
-    line-height:1.1;
-}
-
-.sb-brand .name span{
-    color:var(--amarillo);
-}
-
-.sb-brand .sub{
-    font-size:10.5px;
-    color:rgba(255,255,255,.55);
-}
-
+/* La lista sigue siendo desplazable en pantallas muy bajas, pero la barra
+   de desplazamiento queda oculta (se ve más limpio). */
 nav.sb-nav{
-    flex:1;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:2px;
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
 }
+nav.sb-nav::-webkit-scrollbar{ display:none; }
 
 .sb-link{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
-    border-radius:10px;
-    color:rgba(255,255,255,.72);
-    text-decoration:none;
-    font-size:14px;
-    font-weight:500;
-    cursor:pointer;
-    border:none;
-    background:none;
-    width:100%;
-    text-align:left;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px 12px;
+  padding:clamp(6px,1.15vh,10px) 12px;
+  border-radius:10px;
+  color:rgba(255,255,255,.72);
+  text-decoration:none;
+  font-size:13.5px;
+  font-weight:500;
+  cursor:pointer;
+  transition:background .15s,color .15s,transform .15s;
 }
-
-.sb-link svg{
-    flex:0 0 auto;
-    opacity:.85;
-}
-
-.sb-link:hover{
-    background:rgba(255,255,255,.06);
-    color:#fff;
-}
-
+.sb-link svg{ flex:0 0 auto; opacity:.85; }
+@media (hover:hover){ .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); } }
+.sb-link:active{ background:rgba(255,255,255,.12); }
 .sb-link.active{
-    background:var(--azul-medio);
-    color:#fff;
-    box-shadow:0 6px 16px rgba(30,102,245,.35);
+  background:var(--azul-medio);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(30,102,245,.35);
 }
 
 .sb-footer{
-    border-top:1px solid rgba(255,255,255,.08);
-    padding-top:14px;
-    margin-top:10px;
+  flex-shrink:0;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:12px;
+  padding-top:clamp(8px,1.6vh,14px);
+  margin-top:8px;
 }
-
-.sb-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px;
-}
-
+.sb-user{ display:flex; align-items:center; gap:10px; padding:4px 4px; }
 .sb-user .avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:var(--verde-suave);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:13px;
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--verde-suave);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:13px;
 }
-
+.sb-user .info{ flex:1; min-width:0; }
 .sb-user .info strong{
-    display:block;
-    font-size:13px;
+  display:block;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+.sb-user .info span::before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4ADE80;
+  margin-right:5px;
 }
 
-.sb-user .info span{
-    font-size:11px;
-    color:rgba(255,255,255,.5);
-}
-
-
-/* =====================================================
-   BOTÓN MENÚ MÓVIL — IGUAL QUE INICIO
-===================================================== */
-
+/* ===================== MENÚ MÓVIL ===================== */
 .mobile-menu-btn{
-    display:none;
-    border:1px solid var(--gris-borde);
-    background:var(--blanco);
-    color:var(--azul-oscuro);
-    border-radius:12px;
-    cursor:pointer;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 4px 12px rgba(6,43,91,.06);
+  display:none;
+  border:1px solid var(--gris-borde);
+  background:var(--blanco);
+  color:var(--azul-oscuro);
+  border-radius:12px;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(6,43,91,.06);
 }
+@media (hover:hover){ .mobile-menu-btn:hover{ border-color:var(--azul-medio); } }
+.mobile-menu-btn:active{ transform:scale(.97); }
 
-.mobile-menu-btn:hover{
-    border-color:var(--azul-medio);
-}
+.mobile-overlay{ display:none; }
 
-.mobile-menu-btn:active{
-    transform:scale(.97);
-}
-
-.mobile-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(3,22,45,.45);
-    z-index:1100;
-    opacity:0;
-    visibility:hidden;
-    transition:.25s ease;
-}
-
-.mobile-overlay.show{
-    opacity:1;
-    visibility:visible;
-}
-
-
-/* =====================================================
-   MAIN
-===================================================== */
-
-main{
-    padding:26px 32px 50px;
-    min-width:0;
-}
+/* ===================== CONTENIDO ===================== */
+main{ padding:26px 32px 50px; min-width:0; }
 
 .topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:26px;
-    gap:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:24px;
+  gap:20px;
 }
+.topbar h1{ font-size:23px; margin:0; }
+.topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
 
-.topbar h1{
-    font-size:23px;
-    margin:0;
-}
-
-.topbar .subtitle{
-    font-size:13px;
-    color:var(--texto-secundario);
-    margin-top:3px;
-}
-
-.top-actions{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    flex-shrink:0;
-}
+.top-actions{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
 
 .icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:relative;
-    color:var(--azul-oscuro);
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative;
+  color:var(--azul-oscuro);
+  transition:border-color .15s,box-shadow .15s;
 }
+@media (hover:hover){ .icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 
-.icon-btn:hover{
-    border-color:var(--azul-medio);
+/* Globo con el número de notificaciones sin leer */
+.badge-notif{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:10px;
+  background:var(--rojo);
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  border:2px solid var(--gris-claro);
 }
-
-.dot-alert{
-    position:absolute;
-    top:8px;
-    right:9px;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--rojo);
-    border:1.5px solid var(--blanco);
-}
+.badge-notif.show{ display:flex; }
 
 .top-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    padding:6px 14px 6px 6px;
-    border-radius:30px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  padding:6px 14px 6px 6px;
+  border-radius:30px;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
 }
-
+@media (hover:hover){ .top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 .top-user .avatar{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:12px;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:12px;
+}
+.top-user span{ font-size:13.5px; font-weight:600; }
+
+/* Aviso cuando algo falla al cargar los datos */
+.aviso{
+  display:none;
+  align-items:center;
+  gap:12px;
+  background:#FFF4F3;
+  border:1px solid #F8C9C6;
+  color:#9B2B27;
+  padding:11px 14px;
+  border-radius:12px;
+  font-size:13px;
+  margin-bottom:18px;
+}
+.aviso.show{ display:flex; }
+.aviso button{
+  margin-left:auto;
+  flex:0 0 auto;
+  border:none;
+  background:var(--rojo);
+  color:#fff;
+  font-weight:600;
+  padding:7px 14px;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:12.5px;
 }
 
-.top-user span{
-    font-size:13.5px;
-    font-weight:600;
-}
-
-
-/* =====================================================
-   PANEL
-===================================================== */
-
+/* ===================== PANELES ===================== */
 .panel{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    box-shadow:var(--sombra);
-    padding:20px;
-    margin-bottom:18px;
-    min-width:0;
+  background:var(--blanco);
+  border-radius:var(--radio);
+  box-shadow:var(--sombra);
+  padding:20px;
+  margin-bottom:18px;
+  min-width:0;
+  animation:subir .45s ease backwards;
 }
+.panel + .panel{ animation-delay:.06s; }
+
+@keyframes subir{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
 
 .panel-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-    flex-wrap:wrap;
-    gap:10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+  gap:10px;
 }
-
-.panel-head h3{
-    margin:0;
-    font-size:15.5px;
-}
-
-.panel-head p{
-    margin:2px 0 0;
-    font-size:12.5px;
-    color:var(--texto-secundario);
-}
+.panel-head h3{ margin:0; font-size:15.5px; }
 
 .btn-primary{
-    border:none;
-    border-radius:10px;
-    padding:10px 18px;
-    background:var(--azul-oscuro);
-    color:var(--blanco);
-    font-size:13.5px;
-    font-weight:700;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    transition:background .15s;
+  border:none;
+  border-radius:10px;
+  padding:10px 18px;
+  background:var(--azul-oscuro);
+  color:var(--blanco);
+  font-size:13.5px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:background .15s,box-shadow .15s,transform .1s;
 }
+@media (hover:hover){ .btn-primary:hover{ background:var(--azul-medio); box-shadow:0 8px 18px rgba(30,102,245,.28); } }
+.btn-primary:active{ transform:scale(.98); }
+.btn-primary:disabled{ opacity:.6; cursor:not-allowed; }
 
-.btn-primary:hover{
-    background:var(--azul-medio);
-}
-
-.btn-primary:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
+.btn-danger{ background:var(--rojo); }
+@media (hover:hover){ .btn-danger:hover{ background:#C62D2A; box-shadow:0 8px 18px rgba(229,57,53,.3); } }
 
 .btn-ghost{
-    border:1.5px solid var(--gris-borde);
-    border-radius:10px;
-    padding:9px 16px;
-    background:var(--blanco);
-    color:var(--texto-principal);
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
+  border:1.5px solid var(--gris-borde);
+  border-radius:10px;
+  padding:9px 16px;
+  background:var(--blanco);
+  color:var(--texto-principal);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:border-color .15s;
 }
+@media (hover:hover){ .btn-ghost:hover{ border-color:var(--azul-medio); } }
 
-.btn-ghost:hover{
-    border-color:var(--azul-medio);
-}
-
-
-/* =====================================================
-   FILTROS
-===================================================== */
-
+/* ===================== FILTROS ===================== */
 .filters{
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr auto auto;
-    gap:10px;
-    margin-bottom:0;
-    align-items:end;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr auto;
+  gap:10px;
+  align-items:end;
 }
+.f-actions{ display:flex; gap:10px; }
 
 .filters label{
-    display:block;
-    font-size:11.5px;
-    font-weight:600;
-    color:var(--texto-secundario);
-    margin-bottom:5px;
+  display:block;
+  font-size:11.5px;
+  font-weight:600;
+  color:var(--texto-secundario);
+  margin-bottom:5px;
 }
-
 .filters input,
 .filters select{
-    width:100%;
-    min-width:0;
-    padding:9px 10px;
-    border:1.5px solid var(--gris-borde);
-    border-radius:9px;
-    background:var(--gris-claro);
-    font-size:13px;
-    color:var(--texto-principal);
+  width:100%;
+  min-width:0;
+  padding:9px 10px;
+  border:1.5px solid var(--gris-borde);
+  border-radius:9px;
+  background:var(--gris-claro);
+  font-size:13px;
+  color:var(--texto-principal);
+  transition:border-color .15s,background .15s;
 }
-
 .filters input:focus,
-.filters select:focus{
-    outline:none;
-    border-color:var(--azul-medio);
-    background:var(--blanco);
-}
+.filters select:focus{ outline:none; border-color:var(--azul-medio); background:var(--blanco); }
 
 .count-badge{
-    display:inline-block;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    font-size:12px;
-    font-weight:700;
-    padding:4px 12px;
-    border-radius:30px;
-    margin-left:8px;
+  display:inline-block;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  font-size:12px;
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:30px;
+  margin-left:8px;
+  vertical-align:middle;
 }
 
+/* ===================== TABLA ===================== */
+.table-wrap{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
 
-/* =====================================================
-   TABLA
-===================================================== */
-
-.table-wrap{
-    width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-}
-
-table.simple{
-    width:100%;
-    border-collapse:collapse;
-    font-size:13px;
-}
-
+table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
 table.simple th{
-    text-align:left;
-    color:var(--texto-secundario);
-    font-weight:600;
-    font-size:11.5px;
-    padding:10px 8px;
-    border-bottom:1.5px solid var(--gris-borde);
-    white-space:nowrap;
+  text-align:left;
+  color:var(--texto-secundario);
+  font-weight:600;
+  font-size:11.5px;
+  padding:10px 8px;
+  border-bottom:1.5px solid var(--gris-borde);
+  white-space:nowrap;
 }
-
 table.simple td{
-    padding:12px 8px;
-    border-bottom:1px solid #F0F3F7;
-    vertical-align:middle;
+  padding:12px 8px;
+  border-bottom:1px solid #F0F3F7;
+  vertical-align:middle;
 }
+table.simple tr:last-child td{ border-bottom:none; }
+@media (hover:hover){ table.simple tbody tr:hover td{ background:#F8FAFD; } }
 
-table.simple tr:last-child td{
-    border-bottom:none;
-}
-
-table.simple tr:hover td{
-    background:#FAFBFD;
-}
+/* Fila que se resalta al llegar desde una notificación o al guardar */
+@keyframes destello{ 0%,55%{ background-color:#FFF1B8; } 100%{ background-color:transparent; } }
+table.simple tr.resaltado td{ animation:destello 3.4s ease; }
 
 .pill{
-    display:inline-block;
-    padding:3px 10px;
-    border-radius:30px;
-    font-size:11px;
-    font-weight:700;
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:700;
 }
-
-.pill.activo{
-    background:var(--verde-suave);
-    color:#146142;
-}
-
-.pill.inactivo{
-    background:#F0F0F0;
-    color:#666;
-}
+.pill.activo{ background:var(--verde-suave); color:#146142; }
+.pill.inactivo{ background:#ECEEF1; color:#5F6773; }
 
 .cat-tag{
-    display:inline-block;
-    padding:3px 10px;
-    border-radius:30px;
-    font-size:11px;
-    font-weight:700;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:700;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
 }
 
-.row-actions{
-    display:flex;
-    gap:6px;
-}
-
+.row-actions{ display:flex; gap:6px; }
 .action-btn{
-    width:30px;
-    height:30px;
-    border:1px solid var(--gris-borde);
-    border-radius:8px;
-    background:var(--blanco);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    color:var(--texto-secundario);
+  width:30px;
+  height:30px;
+  border:1px solid var(--gris-borde);
+  border-radius:8px;
+  background:var(--blanco);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  color:var(--texto-secundario);
+  transition:border-color .15s,color .15s;
 }
-
-.action-btn:hover{
-    border-color:var(--azul-medio);
-    color:var(--azul-medio);
+@media (hover:hover){
+  .action-btn:hover{ border-color:var(--azul-medio); color:var(--azul-medio); }
+  .action-btn.danger:hover{ border-color:var(--rojo); color:var(--rojo); }
 }
+.action-btn:active{ background:#EEF4FF; }
 
-.action-btn.danger:hover{
-    border-color:var(--rojo);
-    color:var(--rojo);
+.empty-state{
+  text-align:center;
+  padding:46px 20px;
+  color:var(--texto-secundario);
+  font-size:13.5px;
+  line-height:1.5;
 }
+.empty-state .icon{ font-size:36px; margin-bottom:10px; }
+.empty-state .btn-ghost{ margin-top:14px; }
 
-.empty-state,
-.loading-state{
-    text-align:center;
-    padding:50px 20px;
-    color:var(--texto-secundario);
-    font-size:13.5px;
+.mas-wrap{ text-align:center; padding-top:14px; }
+
+/* Efecto de "cargando" (esqueleto) */
+.sk-row{
+  height:46px;
+  margin-bottom:10px;
+  border-radius:10px;
+  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
+  background-size:200% 100%;
+  animation:brillo 1.2s infinite linear;
 }
+@keyframes brillo{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
 
-.empty-state div.icon{
-    font-size:36px;
-    margin-bottom:10px;
-}
-
-
-/* =====================================================
-   MODAL
-===================================================== */
-
+/* ===================== VENTANAS (MODAL) ===================== */
 .modal-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(6,20,45,.55);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:1500;
+  position:fixed;
+  top:0;right:0;bottom:0;left:0;
+  background:rgba(6,20,45,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:1500;
 }
-
-.modal-overlay.show{
-    display:flex;
-}
+.modal-overlay.show{ display:flex; animation:aparecer .18s ease; }
+@keyframes aparecer{ from{ opacity:0; } to{ opacity:1; } }
 
 .modal-card{
-    background:var(--blanco);
-    border-radius:18px;
-    width:100%;
-    max-width:560px;
-    max-height:90vh;
-    overflow-y:auto;
-    padding:26px;
+  background:var(--blanco);
+  border-radius:18px;
+  width:100%;
+  max-width:560px;
+  max-height:90vh;
+  max-height:90dvh;
+  overflow-y:auto;
+  padding:26px;
+  box-shadow:0 30px 70px rgba(6,20,45,.35);
+  animation:subir .25s ease;
 }
+.modal-card.pequeno{ max-width:420px; }
 
 .modal-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
 }
-
-.modal-head h3{
-    margin:0;
-    font-size:18px;
-    color:var(--azul-oscuro);
-}
-
+.modal-head h3{ margin:0; font-size:18px; color:var(--azul-oscuro); }
 .modal-close{
-    border:none;
-    background:none;
-    cursor:pointer;
-    color:var(--texto-secundario);
-    width:32px;
-    height:32px;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  border:none;
+  background:none;
+  cursor:pointer;
+  color:var(--texto-secundario);
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
+@media (hover:hover){ .modal-close:hover{ background:var(--gris-claro); } }
 
-.modal-close:hover{
-    background:var(--gris-claro);
-}
+.confirm-texto{ margin:0; font-size:14px; line-height:1.55; color:var(--texto-secundario); }
 
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-}
-
-.form-grid .full{
-    grid-column:1 / -1;
-}
-
-.field{
-    margin-bottom:0;
-}
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-grid .full{ grid-column:1 / -1; }
 
 .field label{
-    display:block;
-    font-size:12.5px;
-    font-weight:600;
-    color:var(--azul-oscuro);
-    margin-bottom:6px;
+  display:block;
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--azul-oscuro);
+  margin-bottom:6px;
 }
-
 .field input,
 .field select,
 .field textarea{
-    width:100%;
-    padding:10px 12px;
-    border:1.5px solid var(--gris-borde);
-    border-radius:10px;
-    background:var(--gris-claro);
-    font-size:13.5px;
-    color:var(--texto-principal);
-    font-family:inherit;
+  width:100%;
+  padding:10px 12px;
+  border:1.5px solid var(--gris-borde);
+  border-radius:10px;
+  background:var(--gris-claro);
+  font-size:13.5px;
+  color:var(--texto-principal);
+  transition:border-color .15s,background .15s,box-shadow .15s;
 }
-
 .field input:focus,
 .field select:focus,
 .field textarea:focus{
-    outline:none;
-    border-color:var(--azul-medio);
-    background:var(--blanco);
+  outline:none;
+  border-color:var(--azul-medio);
+  background:var(--blanco);
+  box-shadow:0 0 0 4px rgba(30,102,245,.12);
 }
+.field textarea{ resize:vertical; min-height:70px; }
 
-.field textarea{
-    resize:vertical;
-    min-height:70px;
-}
-
-.field-error{
-    color:var(--rojo);
-    font-size:11.5px;
-    margin-top:5px;
-    display:none;
-}
-
+.field-error{ color:var(--rojo); font-size:11.5px; margin-top:5px; display:none; }
 .field.invalid input,
-.field.invalid select{
-    border-color:var(--rojo);
-    background:#FFF4F3;
-}
-
-.field.invalid .field-error{
-    display:block;
-}
+.field.invalid select{ border-color:var(--rojo); background:#FFF4F3; }
+.field.invalid .field-error{ display:block; }
 
 .modal-footer{
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
-    margin-top:22px;
-    padding-top:18px;
-    border-top:1px solid var(--gris-borde);
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid var(--gris-borde);
 }
 
-
-/* =====================================================
-   TOAST
-===================================================== */
-
+/* ===================== AVISO EMERGENTE (TOAST) ===================== */
 .toast{
-    position:fixed;
-    top:22px;
-    right:22px;
-    background:var(--azul-oscuro);
-    color:#fff;
-    padding:14px 20px;
-    border-radius:12px;
-    font-size:14px;
-    box-shadow:0 18px 45px rgba(6,43,91,.18);
-    display:flex;
-    align-items:center;
-    gap:10px;
-    transform:translateY(-140%);
-    opacity:0;
-    transition:transform .35s ease,opacity .35s ease;
-    z-index:2000;
+  position:fixed;
+  top:22px;
+  right:22px;
+  background:var(--azul-oscuro);
+  color:#fff;
+  padding:14px 20px;
+  border-radius:12px;
+  font-size:14px;
+  box-shadow:0 18px 45px rgba(6,43,91,.18);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transform:translateY(-140%);
+  opacity:0;
+  transition:transform .35s ease,opacity .35s ease;
+  z-index:2000;
+  max-width:calc(100vw - 24px);
 }
+.toast.show{ transform:translateY(0); opacity:1; }
+.toast.error{ background:var(--rojo); }
+.toast.success{ background:#1B8A5A; }
 
-.toast.show{
-    transform:translateY(0);
-    opacity:1;
-}
-
-.toast.error{
-    background:var(--rojo);
-}
-
-.toast.success{
-    background:#1B8A5A;
-}
-
-
-/* =====================================================
-   NOTIFICACIONES
-===================================================== */
-
+/* ===================== NOTIFICACIONES ===================== */
 .notification-panel{
-    position:fixed;
-    top:78px;
-    right:32px;
-    width:330px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    border-radius:14px;
-    box-shadow:0 15px 35px rgba(6,43,91,.16);
-    z-index:1300;
-    display:none;
-    overflow:hidden;
+  position:fixed;
+  top:78px;
+  right:32px;
+  width:350px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  border-radius:14px;
+  box-shadow:0 15px 35px rgba(6,43,91,.16);
+  z-index:1300;
+  display:none;
+  overflow:hidden;
 }
-
-.notification-panel.show{
-    display:block;
-}
+.notification-panel.show{ display:block; animation:caer .18s ease; }
+@keyframes caer{ from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:none; } }
 
 .notification-header{
-    display:flex;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--gris-borde);
+}
+.notification-header strong{ font-size:14px; }
+.nh-actions{ display:flex; align-items:center; gap:6px; }
+.notification-header button{ border:none; background:none; color:var(--texto-secundario); cursor:pointer; }
+#markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
+@media (hover:hover){ #markAllRead:hover{ background:var(--azul-claro); } }
+#closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
+
+.notification-list{ max-height:420px; max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
+
+a.notification-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  border-bottom:1px solid #F0F3F7;
+  color:inherit;
+  text-decoration:none;
+  transition:background .15s,opacity .18s,transform .18s;
+}
+a.notification-item:active{ background:#EEF4FF; }
+a.notification-item:last-child{ border-bottom:none; }
+@media (hover:hover){ a.notification-item:hover{ background:#F6F9FD; } }
+a.notification-item.removing{ opacity:0; transform:translateX(26px); }
+
+.ni-icon{
+  flex:0 0 auto;
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+}
+.ni-icon.t-warn{ background:#FCE1E0; color:var(--rojo); }
+.ni-icon.t-pend{ background:#FFF1C9; color:#B8860B; }
+.ni-body{ min-width:0; flex:1; }
+.ni-body strong{ display:block; font-size:12.5px; margin-bottom:2px; }
+.ni-body span{ display:block; font-size:11.5px; color:var(--texto-secundario); line-height:1.4; }
+.ni-body em{ display:block; font-style:normal; font-size:10.5px; color:#8A9BB1; margin-top:3px; }
+.ni-go{ align-self:center; color:#A9B7CA; font-size:18px; }
+
+.notification-empty{ padding:26px 16px; text-align:center; font-size:12.5px; color:var(--texto-secundario); }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+
+/* ===================== TABLET ===================== */
+@media (max-width:1100px){
+  .filters{ grid-template-columns:1fr 1fr; }
+  .filters .f-search,
+  .filters .f-actions{ grid-column:1 / -1; }
+  .f-actions .btn-ghost,
+  .f-actions .btn-primary{ flex:1; }
+}
+
+/* ===================== CELULAR ===================== */
+@media (max-width:800px){
+
+  .app{ display:block; min-height:100vh; }
+
+  .sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:270px;
+    max-width:85vw;
+    height:100vh;
+    height:100dvh;
+    transform:translateX(-105%);
+    transition:transform .25s ease;
+    z-index:1200;
+    box-shadow:8px 0 30px rgba(0,0,0,.20);
+    padding-top:max(14px,env(safe-area-inset-top));
+    padding-bottom:max(14px,env(safe-area-inset-bottom));
+  }
+  .sidebar.mobile-open{ transform:translateX(0); }
+
+  .mobile-overlay{
+    display:none;
+    position:fixed;
+    top:0;right:0;bottom:0;left:0;
+    background:rgba(0,0,0,.42);
+    z-index:1150;
+  }
+  .mobile-overlay.show{ display:block; }
+
+  main{
+    width:100%;
+    min-width:0;
+    padding:16px 14px 30px;
+    padding-left:max(14px,env(safe-area-inset-left));
+    padding-right:max(14px,env(safe-area-inset-right));
+    padding-bottom:max(30px,env(safe-area-inset-bottom));
+  }
+
+  .topbar{
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr) auto;
     align-items:center;
-    justify-content:space-between;
-    padding:15px 17px;
-    border-bottom:1px solid var(--gris-borde);
-}
-
-.notification-header strong{
-    font-size:14px;
-    color:var(--texto-principal);
-}
-
-.notification-header button{
-    border:none;
-    background:none;
-    font-size:22px;
-    color:var(--texto-secundario);
-    cursor:pointer;
-    padding:0 5px;
-}
-
-.notification-header button:hover{
-    color:var(--rojo);
-}
-
-.notification-item{
-    display:flex;
     gap:10px;
-    padding:13px 16px;
-    border-bottom:1px solid #F0F3F7;
-}
+    margin-bottom:20px;
+  }
+  .mobile-menu-btn{ display:flex; width:42px; height:42px; }
+  .topbar h1{ font-size:21px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar .subtitle{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-.notification-item:last-child{
-    border-bottom:none;
-}
+  .top-actions{ gap:8px; }
+  .top-user{ padding:4px; border-radius:50%; }
+  .top-user span{ display:none; }
+  .top-user .avatar{ width:32px; height:32px; }
 
-.notification-item .ni-icon{
-    width:32px;
-    height:32px;
-    border-radius:9px;
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-    display:flex;
+  .panel{ width:100%; padding:16px; border-radius:14px; margin-bottom:14px; }
+  .panel-head h3{ font-size:15px; }
+  .panel-head .btn-primary{ width:100%; min-height:46px; }
+
+  .filters{ grid-template-columns:1fr; gap:14px; }
+  .filters label{ font-size:13px; margin-bottom:7px; }
+  .filters input,
+  .filters select{
+    min-height:48px;
+    padding:11px 13px;
+    font-size:16px;           /* evita el zoom automático en iPhone */
+    border-radius:11px;
+  }
+  .f-actions .btn-ghost,
+  .f-actions .btn-primary{ min-height:48px; font-size:14px; }
+
+  /* La tabla se convierte en tarjetas */
+  .table-wrap{ overflow-x:visible; }
+  table.simple{ border-collapse:separate; border-spacing:0 10px; font-size:14px; }
+  table.simple thead{ display:none; }
+  table.simple tbody{ display:block; width:100%; }
+
+  table.simple tr{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:
+      "nombre cat"
+      "cient  cient"
+      "prov   fecha"
+      "estado acciones";
+    gap:6px 12px;
     align-items:center;
+    background:#fff;
+    border:1px solid var(--gris-borde);
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 4px 14px rgba(6,43,91,.05);
+  }
+  table.simple td{ display:block; padding:0; border:none; min-width:0; }
+  table.simple tbody tr:hover td{ background:transparent; }
+  table.simple tr.resaltado td{ animation:none; }
+  table.simple tr.resaltado{ animation:destello 3.4s ease; }
+
+  table.simple td:nth-child(1){ grid-area:nombre; font-size:15px; font-weight:700; line-height:1.25; }
+  table.simple td:nth-child(2){ grid-area:cient; font-size:12.5px; font-style:italic; color:var(--texto-secundario); }
+  table.simple td:nth-child(3){ grid-area:cat; text-align:right; }
+  table.simple td:nth-child(4){ grid-area:prov; font-size:12.5px; color:var(--texto-secundario); }
+  table.simple td:nth-child(5){ grid-area:fecha; font-size:12.5px; color:var(--texto-secundario); text-align:right; }
+  table.simple td:nth-child(6){ grid-area:estado; }
+  table.simple td:nth-child(7){ grid-area:acciones; }
+  table.simple td.sin-dato{ display:none; }
+  table.simple td[data-label]::before{ content:attr(data-label) ": "; font-weight:600; }
+
+  .row-actions{ justify-content:flex-end; }
+  .action-btn{ width:38px; height:38px; border-radius:10px; }
+  .cat-tag,.pill{ padding:5px 10px; }
+  .count-badge{ padding:5px 11px; }
+
+  .modal-overlay{ padding:0; align-items:flex-end; }
+  .modal-card{
+    max-height:92vh;
+    max-height:92dvh;
+    border-radius:20px 20px 0 0;
+    padding:20px;
+    padding-bottom:max(20px,env(safe-area-inset-bottom));
+  }
+  .modal-card.pequeno{ max-width:none; }
+  .form-grid{ grid-template-columns:1fr; gap:14px; }
+  .form-grid .full{ grid-column:auto; }
+  .field input,
+  .field select,
+  .field textarea{ min-height:46px; font-size:16px; }
+  .modal-footer{ flex-direction:column-reverse; }
+  .modal-footer button{ width:100%; min-height:46px; }
+
+  .notification-panel{ top:70px; left:10px; right:10px; width:auto; max-width:none; }
+
+  .toast{
+    top:auto;
+    bottom:max(18px,env(safe-area-inset-bottom));
+    left:14px;
+    right:14px;
     justify-content:center;
-    flex:0 0 auto;
-}
-
-.notification-item strong{
-    display:block;
-    font-size:12.5px;
-    margin-bottom:2px;
-    color:var(--texto-principal);
-}
-
-.notification-item span{
-    display:block;
-    font-size:11px;
-    color:var(--texto-secundario);
-    line-height:1.4;
-}
-
-.notification-empty{
-    padding:22px 16px;
     text-align:center;
-    font-size:12px;
-    color:var(--texto-secundario);
+  }
 }
 
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media(max-width:1100px){
-
-    .filters{
-        grid-template-columns:1fr 1fr;
-    }
-
+@media (max-width:400px){
+  main{
+    padding:13px 10px 25px;
+    padding-left:max(10px,env(safe-area-inset-left));
+    padding-right:max(10px,env(safe-area-inset-right));
+    padding-bottom:max(25px,env(safe-area-inset-bottom));
+  }
+  .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
+  .mobile-menu-btn{ width:39px; height:39px; }
+  .topbar h1{ font-size:19px; }
+  .topbar .subtitle{ font-size:10px; }
+  .icon-btn{ width:39px; height:39px; }
+  .top-user .avatar{ width:30px; height:30px; }
+  .panel{ padding:14px; }
+  .notification-panel{ left:8px; right:8px; }
 }
-
-
-/* =====================================================
-   CELULAR
-===================================================== */
-
-@media(max-width:800px){
-
-    html,
-    body{
-        width:100%;
-        overflow-x:hidden;
-    }
-
-    body.menu-open{
-        overflow:hidden;
-    }
-
-    .app{
-        display:block;
-        min-height:100vh;
-    }
-
-    .sidebar{
-        position:fixed;
-        left:0;
-        top:0;
-        bottom:0;
-        width:250px;
-        height:100vh;
-        z-index:1200;
-        transform:translateX(-100%);
-        transition:transform .25s ease;
-        display:flex;
-    }
-
-    .sidebar.mobile-open{
-        transform:translateX(0);
-    }
-
-    main{
-        width:100%;
-        min-width:0;
-        padding:16px 14px 30px;
-    }
-
-    .topbar{
-        display:grid;
-        grid-template-columns:42px minmax(0,1fr) auto;
-        align-items:center;
-        gap:10px;
-        margin-bottom:20px;
-    }
-
-    .mobile-menu-btn{
-        display:flex;
-        width:42px;
-        height:42px;
-    }
-
-    .topbar h1{
-        font-size:21px;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-    }
-
-    .topbar .subtitle{
-        font-size:11px;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-    }
-
-    .top-actions{
-        gap:7px;
-    }
-
-    .top-user{
-        display:none;
-    }
-
-    .icon-btn{
-        width:40px;
-        height:40px;
-    }
-
-    .panel{
-        width:100%;
-        padding:16px;
-        border-radius:14px;
-        margin-bottom:14px;
-    }
-
-    .panel-head{
-        margin-bottom:14px;
-    }
-
-    .panel-head h3{
-        font-size:15px;
-    }
-
-    .panel-head .btn-primary{
-        width:100%;
-    }
-
-    .filters{
-        grid-template-columns:1fr;
-        gap:14px;
-    }
-
-    .filters > div{
-        width:100%;
-    }
-
-    .filters label{
-        font-size:13px;
-        margin-bottom:7px;
-    }
-
-    .filters input,
-    .filters select{
-        min-height:48px;
-        padding:11px 13px;
-        font-size:15px;
-        border-radius:11px;
-    }
-
-    .filters .btn-ghost,
-    .filters .btn-primary{
-        width:100%;
-        min-height:48px;
-        font-size:14px;
-    }
-
-    .table-wrap{
-        width:100%;
-        overflow-x:visible;
-    }
-
-    table.simple{
-        width:100%;
-        min-width:0;
-        border-collapse:separate;
-        border-spacing:0 10px;
-        font-size:14px;
-    }
-
-    table.simple thead{
-        display:none;
-    }
-
-    table.simple tbody{
-        display:block;
-        width:100%;
-    }
-
-    table.simple tr{
-        display:grid;
-        grid-template-columns:1fr auto;
-        gap:8px 12px;
-        width:100%;
-        background:#fff;
-        border:1px solid var(--gris-borde);
-        border-radius:14px;
-        padding:14px;
-        box-shadow:0 4px 14px rgba(6,43,91,.05);
-    }
-
-    table.simple tr:hover td{
-        background:transparent;
-    }
-
-    table.simple td{
-        display:none;
-        padding:0;
-        border:none;
-        min-width:0;
-    }
-
-    table.simple td:nth-child(1){
-        display:block;
-        grid-column:1;
-        font-size:15px;
-        font-weight:700;
-        color:var(--texto-principal);
-        align-self:center;
-    }
-
-    table.simple td:nth-child(3){
-        display:block;
-        grid-column:2;
-        grid-row:1;
-        text-align:right;
-        align-self:center;
-    }
-
-    table.simple td:nth-child(6){
-        display:block;
-        grid-column:1;
-        grid-row:2;
-        align-self:center;
-    }
-
-    table.simple td:nth-child(7){
-        display:block;
-        grid-column:2;
-        grid-row:2;
-        align-self:center;
-    }
-
-    table.simple td:nth-child(1) strong{
-        display:block;
-        line-height:1.25;
-    }
-
-    .row-actions{
-        justify-content:flex-end;
-    }
-
-    .action-btn{
-        width:34px;
-        height:34px;
-        border-radius:9px;
-    }
-
-    .cat-tag{
-        font-size:11px;
-        padding:5px 10px;
-    }
-
-    .pill{
-        font-size:11px;
-        padding:5px 10px;
-    }
-
-    .count-badge{
-        padding:5px 11px;
-    }
-
-    .modal-overlay{
-        padding:12px;
-        align-items:flex-end;
-    }
-
-    .modal-card{
-        max-height:92vh;
-        border-radius:20px 20px 0 0;
-        padding:20px;
-    }
-
-    .form-grid{
-        grid-template-columns:1fr;
-        gap:14px;
-    }
-
-    .form-grid .full{
-        grid-column:auto;
-    }
-
-    .field input,
-    .field select,
-    .field textarea{
-        min-height:46px;
-        font-size:14px;
-    }
-
-    .modal-footer{
-        flex-direction:column-reverse;
-    }
-
-    .modal-footer button{
-        width:100%;
-        min-height:46px;
-    }
-
-    .notification-panel{
-        top:70px;
-        left:10px;
-        right:10px;
-        width:auto;
-        max-width:none;
-        max-height:calc(100vh - 85px);
-        overflow-y:auto;
-    }
-
-    .toast{
-        top:auto;
-        bottom:18px;
-        left:14px;
-        right:14px;
-        justify-content:center;
-        text-align:center;
-    }
-
-}
-
-
-/* =====================================================
-   CELULAR PEQUEÑO
-===================================================== */
-
-@media(max-width:400px){
-
-    main{
-        padding:13px 10px 25px;
-    }
-
-    .topbar{
-        grid-template-columns:39px minmax(0,1fr) auto;
-        gap:7px;
-    }
-
-    .mobile-menu-btn{
-        width:39px;
-        height:39px;
-    }
-
-    .topbar h1{
-        font-size:19px;
-    }
-
-    .topbar .subtitle{
-        font-size:10px;
-    }
-
-    .icon-btn{
-        width:39px;
-        height:39px;
-    }
-
-    .panel{
-        padding:14px;
-    }
-
-    .notification-panel{
-        left:8px;
-        right:8px;
-    }
-
-}
-
 </style>
 </head>
 
@@ -1178,2473 +866,1291 @@ table.simple tr:hover td{
 
 <div class="app">
 
-<aside class="sidebar" id="sidebar">
+  <!-- ===================== MENÚ LATERAL ===================== -->
+  <aside class="sidebar" id="sidebar">
 
-<div class="sb-brand">
-
-    <div class="badge">
-
-        <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-        >
-            <path
-                d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-                stroke="#FFD76A"
-                stroke-width="1.6"
-                stroke-linejoin="round"
-            />
-
-            <circle
-                cx="16"
-                cy="10.3"
-                r=".9"
-                fill="#FFD76A"
-            />
-        </svg>
-
+    <div class="sb-brand">
+      <div class="badge">
+        <img src="logo-emblema.png" alt="Deep Sea Intelligence">
+      </div>
+      <div>
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
+      </div>
     </div>
 
-    <div>
+    <nav class="sb-nav" id="sbNav">
 
-        <div class="name">
-            Deep <span>Sea</span>
-        </div>
-
-        <div class="sub">
-            Gestión de recursos marinos
-        </div>
-
-    </div>
-
-</div>
-
-
-<nav class="sb-nav" id="sbNav">
-
-    <a class="sb-link" data-view="inicio" href="inicio.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M3 11l9-7 9 7"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <path
-                d="M5 10v10h14V10"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-        </svg>
+      <a class="sb-link" data-view="inicio" href="inicio.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
         Inicio
-    </a>
+      </a>
 
-
-    <a
-        class="sb-link active"
-        data-view="productos"
-        href="productos.html"
-    >
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <circle
-                cx="12"
-                cy="12"
-                r="2.2"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-        </svg>
+      <a class="sb-link active" data-view="productos" href="productos.html" aria-current="page">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
         Productos
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="proveedores" href="proveedores.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <circle
-                cx="12"
-                cy="8"
-                r="3.4"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <path
-                d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-        </svg>
+      <a class="sb-link" data-view="proveedores" href="proveedores.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
         Proveedores
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="recepciones" href="recepciones.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <rect
-                x="4"
-                y="7"
-                width="16"
-                height="13"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <path
-                d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-        </svg>
+      <a class="sb-link" data-view="recepciones" href="recepciones.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
         Recepciones
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M9 20v-6h6v6"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-        </svg>
+      <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
         Almacenamiento
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="ventas" href="ventas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <circle
-                cx="9"
-                cy="20"
-                r="1.3"
-                fill="currentColor"
-            />
-            <circle
-                cx="17"
-                cy="20"
-                r="1.3"
-                fill="currentColor"
-            />
-            <path
-                d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-        </svg>
+      <a class="sb-link" data-view="ventas" href="ventas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
         Ventas
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M3 6h18M3 12h18M3 18h12"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <circle
-                cx="20"
-                cy="18"
-                r="1.6"
-                fill="currentColor"
-            />
-        </svg>
+      <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
         Trazabilidad
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="reportes" href="reportes.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M4 20V10M12 20V4M20 20v-7"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-            />
-        </svg>
+      <a class="sb-link" data-view="reportes" href="reportes.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         Reportes
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="normas" href="normas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <path
-                d="m9 12 2 2 4-4"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-        </svg>
+      <a class="sb-link" data-view="normas" href="normas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
         Normas y Calidad
-    </a>
+      </a>
 
-
-    <a class="sb-link" data-view="usuarios" href="usuarios.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <circle
-                cx="9"
-                cy="8"
-                r="3"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <path
-                d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <circle
-                cx="18"
-                cy="8"
-                r="2.2"
-                stroke="currentColor"
-                stroke-width="1.5"
-            />
-            <path
-                d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-                stroke="currentColor"
-                stroke-width="1.5"
-            />
-        </svg>
+      <a class="sb-link" data-view="usuarios" href="usuarios.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
         Usuarios
-    </a>
+      </a>
 
-
-    <a
-        class="sb-link"
-        data-view="configuracion"
-        href="configuracion.html"
-    >
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <circle
-                cx="12"
-                cy="12"
-                r="3"
-                stroke="currentColor"
-                stroke-width="1.7"
-            />
-            <path
-                d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-                stroke="currentColor"
-                stroke-width="1.3"
-                stroke-linejoin="round"
-            />
-        </svg>
+      <a class="sb-link" data-view="configuracion" href="configuracion.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         Configuración
-    </a>
+      </a>
 
-</nav>
+    </nav>
 
-
-<div class="sb-footer">
-
-    <div class="sb-user">
-
-        <div class="avatar" id="sbAvatar">
-            C
-        </div>
-
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="avatar" id="sbAvatar">C</div>
         <div class="info">
-
-            <strong id="sbUserName">
-                Cargando...
-            </strong>
-
-            <span>
-                En línea
-            </span>
-
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
         </div>
-
+      </div>
     </div>
 
-</div>
+  </aside>
 
-</aside>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
-<div
-    class="mobile-overlay"
-    id="mobileOverlay"
-></div>
+  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
+  <main>
 
-<main>
+    <div class="topbar">
 
-<div class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
 
-    <button
-        class="mobile-menu-btn"
-        id="mobileMenuBtn"
-        type="button"
-        aria-label="Abrir menú"
-        title="Abrir menú"
-    >
-        <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-        >
-            <path
-                d="M4 6h16M4 12h16M4 18h16"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-            />
-        </svg>
-    </button>
+      <div>
+        <h1>Productos</h1>
+        <div class="subtitle">Gestiona y consulta los productos marinos registrados</div>
+      </div>
 
-    <div>
+      <div class="top-actions">
 
-        <h1>
-            Productos
-        </h1>
-
-        <div class="subtitle">
-            Gestiona y consulta los productos marinos registrados
-        </div>
-
-    </div>
-
-
-    <div class="top-actions">
-
-        <button
-            class="icon-btn"
-            id="notificationBtn"
-            title="Notificaciones"
-        >
-
-            <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-            >
-
-                <path
-                    d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                />
-
-                <path
-                    d="M10 20a2 2 0 0 0 4 0"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                />
-
-            </svg>
-
-            <span
-                class="dot-alert"
-                id="notificationDot"
-            ></span>
-
+        <button class="icon-btn" id="notificationBtn" title="Notificaciones" type="button" aria-label="Notificaciones" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="badge-notif" id="notificationBadge"></span>
         </button>
 
+        <a href="configuracion.html" class="top-user" title="Ir a configuración">
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
+        </a>
 
-        <div class="top-user">
-
-            <div
-                class="avatar"
-                id="topAvatar"
-            >
-                C
-            </div>
-
-            <span id="topUserName">
-                Cargando...
-            </span>
-
-        </div>
-
+      </div>
     </div>
 
-</div>
+    <!-- Panel de notificaciones -->
+    <div class="notification-panel" id="notificationPanel">
+      <div class="notification-header">
+        <strong>Notificaciones</strong>
+        <div class="nh-actions">
+          <button id="markAllRead" type="button" style="display:none">Marcar todas como leídas</button>
+          <button id="closeNotifications" type="button" aria-label="Cerrar">×</button>
+        </div>
+      </div>
+      <div class="notification-list" id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
+      </div>
+    </div>
 
+    <!-- Aviso de error de carga -->
+    <div class="aviso" id="aviso" role="alert">
+      <span id="avisoTexto"></span>
+      <button id="avisoBtn" type="button">Reintentar</button>
+    </div>
 
-<div
-    class="notification-panel"
-    id="notificationPanel"
->
+    <!-- Filtros -->
+    <div class="panel">
 
-    <div class="notification-header">
+      <div class="panel-head">
+        <h3>Filtros de búsqueda</h3>
 
-        <strong>
-            Notificaciones
-        </strong>
-
-        <button id="closeNotifications">
-            ×
+        <button class="btn-primary" id="btnNuevo" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Nuevo producto
         </button>
+      </div>
 
-    </div>
+      <div class="filters">
 
-    <div id="notificationContent">
-
-        <div class="notification-empty">
-            Cargando notificaciones...
+        <div class="f-search">
+          <label for="fSearch">Buscar producto</label>
+          <input type="search" id="fSearch" placeholder="Nombre, científico o proveedor" autocomplete="off" maxlength="100">
         </div>
-
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-    <div class="panel-head">
 
         <div>
-
-            <h3>
-                Filtros de búsqueda
-            </h3>
-
+          <label for="fCategoria">Categoría</label>
+          <select id="fCategoria">
+            <option value="">Todas las categorías</option>
+            <option value="Peces">Peces</option>
+            <option value="Mariscos">Mariscos</option>
+            <option value="Moluscos">Moluscos</option>
+            <option value="Otros">Otros</option>
+          </select>
         </div>
 
+        <div>
+          <label for="fEstado">Estado</label>
+          <select id="fEstado">
+            <option value="">Todos los estados</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
 
-        <button
-            class="btn-primary"
-            id="btnNuevo"
-        >
+        <div class="f-actions">
+          <button class="btn-ghost" id="btnLimpiar" type="button">Limpiar</button>
+          <button class="btn-primary" id="btnBuscar" type="button">Buscar</button>
+        </div>
 
-            <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-            >
-
-                <path
-                    d="M12 5v14M5 12h14"
-                    stroke="currentColor"
-                    stroke-width="2.2"
-                    stroke-linecap="round"
-                />
-
-            </svg>
-
-            Nuevo producto
-
-        </button>
-
+      </div>
     </div>
 
+    <!-- Lista -->
+    <div class="panel">
 
-    <div class="filters">
-
-        <div>
-
-            <label>
-                Buscar producto
-            </label>
-
-            <input
-                type="text"
-                id="fSearch"
-                placeholder="Nombre común o científico"
-            >
-
-        </div>
-
-
-        <div>
-
-            <label>
-                Categoría
-            </label>
-
-            <select id="fCategoria">
-
-                <option value="">
-                    Todas las categorías
-                </option>
-
-                <option value="Peces">
-                    Peces
-                </option>
-
-                <option value="Mariscos">
-                    Mariscos
-                </option>
-
-                <option value="Moluscos">
-                    Moluscos
-                </option>
-
-                <option value="Otros">
-                    Otros
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div>
-
-            <label>
-                Estado
-            </label>
-
-            <select id="fEstado">
-
-                <option value="">
-                    Todos los estados
-                </option>
-
-                <option value="Activo">
-                    Activo
-                </option>
-
-                <option value="Inactivo">
-                    Inactivo
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <button
-            class="btn-ghost"
-            id="btnLimpiar"
-        >
-            Limpiar
-        </button>
-
-
-        <button
-            class="btn-primary"
-            id="btnBuscar"
-        >
-            Buscar
-        </button>
-
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-    <div class="panel-head">
-
+      <div class="panel-head">
         <h3>
-
-            Lista de productos
-
-            <span
-                class="count-badge"
-                id="countBadge"
-            >
-                0
-            </span>
-
+          Lista de productos
+          <span class="count-badge" id="countBadge" aria-live="polite">0</span>
         </h3>
+      </div>
 
-    </div>
+      <!-- Esqueleto mientras carga -->
+      <div id="loadingState" aria-busy="true">
+        <div class="sk-row"></div>
+        <div class="sk-row"></div>
+        <div class="sk-row"></div>
+        <div class="sk-row"></div>
+      </div>
 
+      <div id="emptyState" class="empty-state" hidden></div>
 
-    <div
-        id="loadingState"
-        class="loading-state"
-    >
-        Cargando productos...
-    </div>
-
-
-    <div
-        id="emptyState"
-        class="empty-state"
-        style="display:none;"
-    >
-
-        <div class="icon">
-            🐟
-        </div>
-
-        No hay productos registrados todavía.
-        Crea el primero con "Nuevo producto".
-
-    </div>
-
-
-    <div class="table-wrap">
-
-        <table
-            class="simple"
-            id="tablaProductos"
-            style="display:none;"
-        >
-
-            <thead>
-
-                <tr>
-
-                    <th>Nombre</th>
-                    <th>Nombre científico</th>
-                    <th>Categoría</th>
-                    <th>Proveedor</th>
-                    <th>Fecha captura</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="tbodyProductos"></tbody>
-
+      <div class="table-wrap">
+        <table class="simple" id="tablaProductos" hidden>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Nombre científico</th>
+              <th>Categoría</th>
+              <th>Proveedor</th>
+              <th>Fecha captura</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyProductos"></tbody>
         </table>
+      </div>
+
+      <div class="mas-wrap" id="masWrap" hidden>
+        <button class="btn-ghost" id="btnMas" type="button">Mostrar más</button>
+      </div>
 
     </div>
 
-</div>
-
-</main>
+  </main>
 
 </div>
 
-
-<div
-    class="modal-overlay"
-    id="modalOverlay"
->
-
-<div class="modal-card">
+<!-- ===================== VENTANA: NUEVO / EDITAR ===================== -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
 
     <div class="modal-head">
-
-        <h3 id="modalTitle">
-            Nuevo producto
-        </h3>
-
-        <button
-            class="modal-close"
-            id="modalClose"
-        >
-
-            <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-            >
-
-                <path
-                    d="m6 6 12 12M18 6 6 18"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                />
-
-            </svg>
-
-        </button>
-
+      <h3 id="modalTitle">Nuevo producto</h3>
+      <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
 
+    <form id="formProducto" novalidate>
 
-    <form
-        id="formProducto"
-        novalidate
-    >
+      <input type="hidden" id="productoId">
 
-        <input
-            type="hidden"
-            id="productoId"
-        >
+      <div class="form-grid">
 
-
-        <div class="form-grid">
-
-            <div
-                class="field full"
-                id="fieldNombre"
-            >
-
-                <label for="pNombre">
-                    Nombre del producto *
-                </label>
-
-                <input
-                    type="text"
-                    id="pNombre"
-                    placeholder="Ej. Pargo Rojo"
-                >
-
-                <div class="field-error">
-                    El nombre es obligatorio.
-                </div>
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="pCientifico">
-                    Nombre científico
-                </label>
-
-                <input
-                    type="text"
-                    id="pCientifico"
-                    placeholder="Ej. Lutjanus campechanus"
-                >
-
-            </div>
-
-
-            <div
-                class="field"
-                id="fieldCategoria"
-            >
-
-                <label for="pCategoria">
-                    Categoría *
-                </label>
-
-                <select id="pCategoria">
-
-                    <option value="">
-                        Seleccione
-                    </option>
-
-                    <option value="Peces">
-                        Peces
-                    </option>
-
-                    <option value="Mariscos">
-                        Mariscos
-                    </option>
-
-                    <option value="Moluscos">
-                        Moluscos
-                    </option>
-
-                    <option value="Otros">
-                        Otros
-                    </option>
-
-                </select>
-
-                <div class="field-error">
-                    Selecciona una categoría.
-                </div>
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="pProveedor">
-                    Proveedor
-                </label>
-
-                <input
-                    type="text"
-                    id="pProveedor"
-                    placeholder="Nombre del proveedor"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="pFecha">
-                    Fecha de captura
-                </label>
-
-                <input
-                    type="date"
-                    id="pFecha"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="pOrigen">
-                    Lugar de origen
-                </label>
-
-                <input
-                    type="text"
-                    id="pOrigen"
-                    placeholder="Ej. Bahía de Cartagena"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="pEstado">
-                    Estado
-                </label>
-
-                <select id="pEstado">
-
-                    <option value="Activo">
-                        Activo
-                    </option>
-
-                    <option value="Inactivo">
-                        Inactivo
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="field full">
-
-                <label for="pDescripcion">
-                    Descripción
-                </label>
-
-                <textarea
-                    id="pDescripcion"
-                    placeholder="Descripción del producto (opcional)"
-                ></textarea>
-
-            </div>
-
-
-            <div class="field full">
-
-                <label for="pObservaciones">
-                    Observaciones
-                </label>
-
-                <textarea
-                    id="pObservaciones"
-                    placeholder="Observaciones (opcional)"
-                ></textarea>
-
-            </div>
-
+        <div class="field full" id="fieldNombre">
+          <label for="pNombre">Nombre del producto *</label>
+          <input type="text" id="pNombre" placeholder="Ej. Pargo Rojo" maxlength="100" autocomplete="off">
+          <div class="field-error">El nombre es obligatorio.</div>
         </div>
 
-
-        <div class="modal-footer">
-
-            <button
-                type="button"
-                class="btn-ghost"
-                id="btnCancelar"
-            >
-                Cancelar
-            </button>
-
-            <button
-                type="submit"
-                class="btn-primary"
-                id="btnGuardar"
-            >
-
-                <span id="btnGuardarLabel">
-                    Guardar producto
-                </span>
-
-            </button>
-
+        <div class="field" id="fieldCientifico">
+          <label for="pCientifico">Nombre científico</label>
+          <input type="text" id="pCientifico" placeholder="Ej. Lutjanus campechanus" maxlength="120" autocomplete="off">
+          <div class="field-error">Usa solo letras y espacios.</div>
         </div>
+
+        <div class="field" id="fieldCategoria">
+          <label for="pCategoria">Categoría *</label>
+          <select id="pCategoria">
+            <option value="">Seleccione</option>
+            <option value="Peces">Peces</option>
+            <option value="Mariscos">Mariscos</option>
+            <option value="Moluscos">Moluscos</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <div class="field-error">Selecciona una categoría.</div>
+        </div>
+
+        <div class="field">
+          <label for="pProveedor">Proveedor</label>
+          <input type="text" id="pProveedor" placeholder="Nombre del proveedor" maxlength="100" list="listaProveedores" autocomplete="off">
+          <datalist id="listaProveedores"></datalist>
+        </div>
+
+        <div class="field" id="fieldFecha">
+          <label for="pFecha">Fecha de captura</label>
+          <input type="date" id="pFecha">
+          <div class="field-error">Ingresa una fecha válida.</div>
+        </div>
+
+        <div class="field">
+          <label for="pOrigen">Lugar de origen</label>
+          <input type="text" id="pOrigen" placeholder="Ej. Bahía de Cartagena" maxlength="100" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="pEstado">Estado</label>
+          <select id="pEstado">
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label for="pDescripcion">Descripción</label>
+          <textarea id="pDescripcion" placeholder="Descripción del producto (opcional)" maxlength="500"></textarea>
+        </div>
+
+        <div class="field full">
+          <label for="pObservaciones">Observaciones</label>
+          <textarea id="pObservaciones" placeholder="Observaciones (opcional)" maxlength="500"></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-ghost" id="btnCancelar">Cancelar</button>
+        <button type="submit" class="btn-primary" id="btnGuardar">
+          <span id="btnGuardarLabel">Guardar producto</span>
+        </button>
+      </div>
 
     </form>
 
+  </div>
 </div>
 
+<!-- ===================== VENTANA: CONFIRMAR ELIMINAR ===================== -->
+<div class="modal-overlay" id="confirmOverlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitulo">
+  <div class="modal-card pequeno">
+    <div class="modal-head">
+      <h3 id="confirmTitulo">Eliminar producto</h3>
+    </div>
+    <p class="confirm-texto" id="confirmTexto"></p>
+    <div class="modal-footer">
+      <button type="button" class="btn-ghost" id="confirmCancelar">Cancelar</button>
+      <button type="button" class="btn-primary btn-danger" id="confirmOk">Eliminar</button>
+    </div>
+  </div>
 </div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<div
-    class="toast"
-    id="toast"
-></div>
-
-
+<!-- El SDK se carga al final: la página se dibuja primero y no queda
+     bloqueada esperando la descarga del script. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+(function(){
+  'use strict';
 
-const SUPABASE_URL =
-'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const $ = function(id){ return document.getElementById(id); };
 
-const SUPABASE_ANON_KEY =
-'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-
-const supabaseClient =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
-
-</script>
-
-
-<script>
-
-(async function(){
-
-const {
-    data:{
-        session
-    }
-} = await supabaseClient.auth.getSession();
-
-
-if(!session){
-
-    window.location.href =
-        'login.html';
-
+  // Si el SDK no cargó (sin internet) se avisa y se ofrece recargar
+  if (typeof supabase === 'undefined') {
+    $('avisoTexto').textContent = 'No se pudo cargar el sistema. Revisa tu conexión e intenta de nuevo.';
+    $('avisoBtn').textContent = 'Recargar';
+    $('aviso').classList.add('show');
+    $('avisoBtn').addEventListener('click', function(){ window.location.reload(); });
+    $('loadingState').hidden = true;
     return;
+  }
 
-}
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  const COLUMNAS   = 'id,nombre,nombre_cientifico,categoria,proveedor,fecha_captura,origen,estado,descripcion,observaciones,created_at';
+  const CATEGORIAS = ['Peces', 'Mariscos', 'Moluscos', 'Otros'];
+  const TAM_PAGINA = 25;        // filas que se dibujan por tanda (mantiene la página ligera)
+  const LIMITE_MS  = 15000;     // tiempo máximo de espera por una consulta
 
-const fullName =
-session.user.user_metadata &&
-session.user.user_metadata.full_name
-    ? session.user.user_metadata.full_name
-    : session.user.email;
+  const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ---------------------------------------------------------------
+  // ESTADO DE LA PÁGINA
+  // ---------------------------------------------------------------
+  let usuarioActual = null;
+  let productos = [];            // todos los productos
+  let filtrados = [];            // los que cumplen los filtros
+  let recepcionesNotif = [];     // últimas recepciones (solo para las notificaciones)
+  let limiteMostrar = TAM_PAGINA;
+  let datosListos = false;
+  let errorCarga = false;
+  let cargando = false;
+  let guardando = false;
+  let eliminando = false;
+  let formSucio = false;
+  let idPorEliminar = null;
+  let idPendiente = null;        // producto a resaltar (viene de una notificación)
+  let firmaDatos = '';
+  let ultimaActualizacion = 0;
+  let notifsActuales = [];
+  let menuAbierto = false;
+  let toastTimer = null;
+  let debounceTimer = null;
+  const indice = new WeakMap();  // texto normalizado de cada producto para buscar rápido
 
-const initial =
-fullName
-    .charAt(0)
-    .toUpperCase();
+  // ---------------------------------------------------------------
+  // UTILIDADES
+  // ---------------------------------------------------------------
+  function escapeHTML(texto){
+    return String(texto == null ? '' : texto).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
 
+  // Quita tildes y pasa a minúsculas (buscar "pelagico" encuentra "Pelágico")
+  function normalizar(texto){
+    return String(texto == null ? '' : texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
 
-document.getElementById(
-    'sbUserName'
-).textContent = fullName;
+  // Quita espacios de más: "  Pargo   Rojo " -> "Pargo Rojo"
+  function colapsar(texto){
+    return String(texto == null ? '' : texto).replace(/\s+/g, ' ').trim();
+  }
 
+  const fmtPeso = function(n){ return (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg'; };
 
-document.getElementById(
-    'topUserName'
-).textContent = fullName;
-
-
-document.getElementById(
-    'sbAvatar'
-).textContent = initial;
-
-
-document.getElementById(
-    'topAvatar'
-).textContent = initial;
-
-
-/* =====================================================
-   MENÚ MÓVIL — MISMO FUNCIONAMIENTO DE INICIO
-===================================================== */
-
-const mobileMenuBtn =
-document.getElementById(
-    'mobileMenuBtn'
-);
-
-const mobileOverlay =
-document.getElementById(
-    'mobileOverlay'
-);
-
-const sidebar =
-document.querySelector(
-    '.sidebar'
-);
-
-
-function abrirMenuMobile(){
-
-    sidebar.classList.add(
-        'mobile-open'
-    );
-
-    mobileOverlay.classList.add(
-        'show'
-    );
-
-    mobileMenuBtn.setAttribute(
-        'aria-label',
-        'Cerrar menú'
-    );
-
-    document.body.style.overflow =
-        'hidden';
-
-}
-
-
-function cerrarMenuMobile(){
-
-    sidebar.classList.remove(
-        'mobile-open'
-    );
-
-    mobileOverlay.classList.remove(
-        'show'
-    );
-
-    mobileMenuBtn.setAttribute(
-        'aria-label',
-        'Abrir menú'
-    );
-
-    document.body.style.overflow =
-        '';
-
-}
-
-
-mobileMenuBtn.addEventListener(
-    'click',
-    function(){
-
-        const abierto =
-            sidebar.classList.contains(
-                'mobile-open'
-            );
-
-        if(abierto){
-
-            cerrarMenuMobile();
-
-        }else{
-
-            abrirMenuMobile();
-
-        }
-
+  // Si llega solo "2026-09-23" se toma como fecha LOCAL (si no, en Colombia se vería un día antes)
+  function parsearFecha(valor){
+    if (!valor) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      const p = valor.split('-').map(Number);
+      return new Date(p[0], p[1] - 1, p[2]);
     }
-);
+    const f = new Date(valor);
+    return isNaN(f.getTime()) ? null : f;
+  }
+  function formatearFecha(valor){
+    const f = parsearFecha(valor);
+    return f ? f.toLocaleDateString('es-CO') : '-';
+  }
 
+  function hoyISO(){
+    const d = new Date();
+    const p = function(n){ return String(n).padStart(2, '0'); };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
 
-mobileOverlay.addEventListener(
-    'click',
-    cerrarMenuMobile
-);
+  // Cancela la espera si la conexión se cuelga
+  function conTiempo(promesa){
+    let t;
+    const limite = new Promise(function(_, rechazar){
+      t = setTimeout(function(){ rechazar(new Error('Tiempo de espera agotado')); }, LIMITE_MS);
+    });
+    return Promise.race([promesa, limite]).finally(function(){ clearTimeout(t); });
+  }
 
-
-document
-    .querySelectorAll('.sb-link')
-    .forEach(
-        function(link){
-
-            link.addEventListener(
-                'click',
-                cerrarMenuMobile
-            );
-
-        }
-    );
-
-
-window.addEventListener(
-    'resize',
-    function(){
-
-        if(window.innerWidth > 800){
-
-            cerrarMenuMobile();
-
-        }
-
+  // Convierte los errores técnicos de Supabase en mensajes claros
+  function mensajeError(error, accion){
+    const msg = String((error && error.message) || '').toLowerCase();
+    const code = error && error.code;
+    if (accion === 'eliminar' && (code === '23503' || msg.indexOf('foreign key') !== -1)) {
+      return 'No se puede eliminar: el producto está asociado a otros registros (por ejemplo, recepciones). Puedes marcarlo como Inactivo.';
     }
-);
+    if (code === '42501' || msg.indexOf('row-level security') !== -1 || msg.indexOf('permission') !== -1) {
+      return 'No tienes permiso para realizar esta acción.';
+    }
+    if (code === '23505' || msg.indexOf('duplicate') !== -1) return 'Ya existe un registro con esos datos.';
+    if (code === '23502') return 'Falta un dato obligatorio.';
+    if (msg.indexOf('failed to fetch') !== -1 || msg.indexOf('network') !== -1 || msg.indexOf('tiempo de espera') !== -1) {
+      return 'No se pudo conectar. Revisa tu internet e intenta de nuevo.';
+    }
+    console.warn('Error al ' + accion + ':', error);
+    return 'No se pudo ' + accion + ' el producto. Intenta de nuevo.';
+  }
 
+  function showToast(mensaje, tipo){
+    const t = $('toast');
+    t.textContent = mensaje;
+    t.className = 'toast show' + (tipo ? ' ' + tipo : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.className = 'toast'; }, 3400);
+  }
 
-/* =====================================================
-   REFERENCIAS
-===================================================== */
+  function mostrarAviso(texto){ $('avisoTexto').textContent = texto; $('aviso').classList.add('show'); }
+  function ocultarAviso(){ $('aviso').classList.remove('show'); }
 
-const tbody =
-document.getElementById(
-    'tbodyProductos'
-);
+  // Bloquea el scroll de la página cuando hay una ventana o el menú abierto
+  function actualizarScroll(){
+    const bloquear = menuAbierto ||
+      $('modalOverlay').classList.contains('show') ||
+      $('confirmOverlay').classList.contains('show');
+    document.body.classList.toggle('sin-scroll', bloquear);
+  }
 
-const tabla =
-document.getElementById(
-    'tablaProductos'
-);
+  // ---------------------------------------------------------------
+  // CLASIFICACIÓN DE ESTADOS DE RECEPCIÓN (igual que en Inicio)
+  // ---------------------------------------------------------------
+  const PALABRAS_PROBLEMA  = ['rechaz', 'dano', 'danad', 'deterior', 'vencid', 'cancelad', 'inactiv', 'no apto'];
+  const PALABRAS_PENDIENTE = ['pendiente', 'evaluacion', 'revision', 'observ'];
 
-const loadingState =
-document.getElementById(
-    'loadingState'
-);
+  function clasificarEstado(estado){
+    const e = normalizar(estado);
+    if (PALABRAS_PROBLEMA.some(function(p){ return e.indexOf(p) !== -1; }))  return 'warn';
+    if (PALABRAS_PENDIENTE.some(function(p){ return e.indexOf(p) !== -1; })) return 'pend';
+    return 'ok';
+  }
 
-const emptyState =
-document.getElementById(
-    'emptyState'
-);
+  // ---------------------------------------------------------------
+  // USUARIO
+  // ---------------------------------------------------------------
+  function pintarUsuario(){
+    const u = usuarioActual;
+    const meta = u.user_metadata || {};
+    const nombre = (meta.full_name || meta.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario';
+    const inicial = nombre.charAt(0).toUpperCase();
+    $('sbUserName').textContent  = nombre;
+    $('topUserName').textContent = nombre;
+    $('sbAvatar').textContent    = inicial;
+    $('topAvatar').textContent   = inicial;
+  }
 
-const countBadge =
-document.getElementById(
-    'countBadge'
-);
+  // ---------------------------------------------------------------
+  // CACHÉ LOCAL: al volver a la página se ve al instante lo último
+  // guardado y en segundo plano se piden los datos nuevos.
+  // ---------------------------------------------------------------
+  const claveCache = function(){ return 'dsi_prod_' + usuarioActual.id; };
 
-const fSearch =
-document.getElementById(
-    'fSearch'
-);
+  function leerCache(){
+    try {
+      const c = JSON.parse(localStorage.getItem(claveCache()) || 'null');
+      if (Array.isArray(c)) return c;
+    } catch (e) { /* caché dañada: se ignora */ }
+    return null;
+  }
+  function guardarCache(){
+    try { localStorage.setItem(claveCache(), JSON.stringify(productos)); } catch (e) { /* sin espacio */ }
+  }
 
-const fCategoria =
-document.getElementById(
-    'fCategoria'
-);
+  // ---------------------------------------------------------------
+  // BÚSQUEDA Y FILTROS
+  // ---------------------------------------------------------------
+  function indexar(){
+    productos.forEach(function(p){
+      indice.set(p, normalizar([p.nombre, p.nombre_cientifico, p.proveedor].join(' ')));
+    });
+  }
 
-const fEstado =
-document.getElementById(
-    'fEstado'
-);
+  // Sugerencias de proveedor (los ya usados) para escribir más rápido y sin variaciones
+  function actualizarProveedores(){
+    const vistos = {};
+    const lista = [];
+    productos.forEach(function(p){
+      const v = colapsar(p.proveedor);
+      const k = normalizar(v);
+      if (v && !vistos[k]) { vistos[k] = true; lista.push(v); }
+    });
+    lista.sort(function(a, b){ return a.localeCompare(b, 'es'); });
+    $('listaProveedores').innerHTML = lista.slice(0, 60).map(function(v){
+      return '<option value="' + escapeHTML(v) + '"></option>';
+    }).join('');
+  }
 
-const modalOverlay =
-document.getElementById(
-    'modalOverlay'
-);
+  function hayFiltros(){
+    return !!(colapsar($('fSearch').value) || $('fCategoria').value || $('fEstado').value);
+  }
 
-const modalTitle =
-document.getElementById(
-    'modalTitle'
-);
+  function aplicarFiltros(reiniciar){
+    const q   = normalizar($('fSearch').value);
+    const cat = $('fCategoria').value;
+    const est = normalizar($('fEstado').value);
 
-const form =
-document.getElementById(
-    'formProducto'
-);
+    filtrados = productos.filter(function(p){
+      if (q && (indice.get(p) || '').indexOf(q) === -1) return false;
+      if (cat && (p.categoria || 'Otros') !== cat) return false;
+      if (est && normalizar(p.estado || 'Activo') !== est) return false;
+      return true;
+    });
 
-const productoId =
-document.getElementById(
-    'productoId'
-);
+    if (reiniciar) limiteMostrar = TAM_PAGINA;
+    renderTabla();
+  }
 
-const btnGuardarLabel =
-document.getElementById(
-    'btnGuardarLabel'
-);
+  // ---------------------------------------------------------------
+  // TABLA
+  // ---------------------------------------------------------------
+  function filaHTML(p){
+    const id = escapeHTML(p.id);
+    const nombre = escapeHTML(p.nombre);
+    const estadoClase = normalizar(p.estado) === 'inactivo' ? 'inactivo' : 'activo';
+    const cient = p.nombre_cientifico ? escapeHTML(p.nombre_cientifico) : '—';
+    const prov  = p.proveedor ? escapeHTML(p.proveedor) : '—';
+    const fecha = formatearFecha(p.fecha_captura);
 
-const btnGuardar =
-document.getElementById(
-    'btnGuardar'
-);
+    return '<tr data-id="' + id + '">' +
+      '<td><strong>' + nombre + '</strong></td>' +
+      '<td class="' + (p.nombre_cientifico ? '' : 'sin-dato') + '">' + cient + '</td>' +
+      '<td><span class="cat-tag">' + escapeHTML(p.categoria || 'Otros') + '</span></td>' +
+      '<td data-label="Proveedor" class="' + (p.proveedor ? '' : 'sin-dato') + '">' + prov + '</td>' +
+      '<td data-label="Captura" class="' + (fecha === '-' ? 'sin-dato' : '') + '">' + (fecha === '-' ? '—' : fecha) + '</td>' +
+      '<td><span class="pill ' + estadoClase + '">' + escapeHTML(p.estado || 'Activo') + '</span></td>' +
+      '<td><div class="row-actions">' +
+        '<button class="action-btn" type="button" data-action="editar" data-id="' + id + '" title="Editar" aria-label="Editar ' + nombre + '">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 20h9" stroke="currentColor" stroke-width="1.8"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" stroke="currentColor" stroke-width="1.8"/></svg>' +
+        '</button>' +
+        '<button class="action-btn danger" type="button" data-action="eliminar" data-id="' + id + '" title="Eliminar" aria-label="Eliminar ' + nombre + '">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" stroke="currentColor" stroke-width="1.8"/></svg>' +
+        '</button>' +
+      '</div></td>' +
+    '</tr>';
+  }
 
-const pNombre =
-document.getElementById(
-    'pNombre'
-);
+  function renderTabla(){
+    const total = productos.length;
+    const tabla = $('tablaProductos');
+    const vacio = $('emptyState');
 
-const pCientifico =
-document.getElementById(
-    'pCientifico'
-);
+    $('countBadge').textContent = (filtrados.length === total) ? String(total) : (filtrados.length + ' de ' + total);
 
-const pCategoria =
-document.getElementById(
-    'pCategoria'
-);
+    if (!total) {
+      tabla.hidden = true;
+      $('masWrap').hidden = true;
+      vacio.hidden = false;
+      vacio.innerHTML = errorCarga
+        ? '<div class="icon">⚠️</div>No se pudo cargar la información.'
+        : '<div class="icon">🐟</div>No hay productos registrados todavía.<br>Crea el primero con "Nuevo producto".';
+      return;
+    }
 
-const pProveedor =
-document.getElementById(
-    'pProveedor'
-);
+    if (!filtrados.length) {
+      tabla.hidden = true;
+      $('masWrap').hidden = true;
+      vacio.hidden = false;
+      vacio.innerHTML = '<div class="icon">🔎</div>No se encontraron productos con esos filtros.' +
+        '<br><button class="btn-ghost" type="button" data-action="limpiar">Limpiar filtros</button>';
+      return;
+    }
 
-const pFecha =
-document.getElementById(
-    'pFecha'
-);
+    vacio.hidden = true;
+    tabla.hidden = false;
 
-const pOrigen =
-document.getElementById(
-    'pOrigen'
-);
+    $('tbodyProductos').innerHTML = filtrados.slice(0, limiteMostrar).map(filaHTML).join('');
 
-const pEstado =
-document.getElementById(
-    'pEstado'
-);
+    const restantes = filtrados.length - limiteMostrar;
+    $('masWrap').hidden = restantes <= 0;
+    if (restantes > 0) $('btnMas').textContent = 'Mostrar más (' + restantes + ' restantes)';
+  }
 
-const pDescripcion =
-document.getElementById(
-    'pDescripcion'
-);
+  // Resalta una fila (al llegar desde una notificación o al guardar)
+  function resaltarProducto(id){
+    const sid = String(id);
+    let idx = filtrados.findIndex(function(p){ return String(p.id) === sid; });
 
-const pObservaciones =
-document.getElementById(
-    'pObservaciones'
-);
-
-const toast =
-document.getElementById(
-    'toast'
-);
-
-
-let productosCache = [];
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-function showToast(
-    message,
-    type
-){
-
-    toast.textContent =
-        message;
-
-    toast.className =
-        'toast show' +
-        (
-            type
-            ? ' ' + type
-            : ''
-        );
-
-    setTimeout(
-        function(){
-
-            toast.className =
-                'toast';
-
-        },
-        3200
-    );
-
-}
-
-
-/* =====================================================
-   CARGAR PRODUCTOS
-===================================================== */
-
-async function cargarProductos(){
-
-    loadingState.style.display =
-        'block';
-
-    tabla.style.display =
-        'none';
-
-    emptyState.style.display =
-        'none';
-
-
-    const {
-        data,
-        error
-    } = await supabaseClient
-        .from('productos')
-        .select('*')
-        .order(
-            'created_at',
-            {
-                ascending:false
-            }
-        );
-
-
-    loadingState.style.display =
-        'none';
-
-
-    if(error){
-
-        console.error(
-            'ERROR AL CARGAR PRODUCTOS:',
-            error
-        );
-
-        showToast(
-            'No se pudieron cargar los productos: ' +
-            error.message,
-            'error'
-        );
-
-        emptyState.style.display =
-            'block';
-
+    if (idx === -1) {
+      if (!productos.some(function(p){ return String(p.id) === sid; })) {
+        showToast('Ese producto ya no existe.', 'error');
         return;
-
+      }
+      // Estaba oculto por los filtros: se limpian para mostrarlo
+      $('fSearch').value = ''; $('fCategoria').value = ''; $('fEstado').value = '';
+      aplicarFiltros(true);
+      idx = filtrados.findIndex(function(p){ return String(p.id) === sid; });
     }
 
+    if (idx >= limiteMostrar) { limiteMostrar = idx + 1; renderTabla(); }
 
-    productosCache =
-        data || [];
+    const fila = Array.prototype.find.call($('tbodyProductos').children, function(tr){ return tr.dataset.id === sid; });
+    if (!fila) return;
 
+    fila.scrollIntoView({ behavior: reducirMovimiento ? 'auto' : 'smooth', block: 'center' });
+    fila.classList.remove('resaltado');
+    void fila.offsetWidth;                       // reinicia la animación
+    fila.classList.add('resaltado');
+    setTimeout(function(){ fila.classList.remove('resaltado'); }, 3600);
+  }
 
-    renderTabla(
-        productosCache
-    );
+  // ---------------------------------------------------------------
+  // CARGA DE DATOS
+  // Productos y recepciones (solo para notificaciones) se piden en
+  // paralelo. Si los datos no cambiaron, no se vuelve a dibujar nada.
+  // ---------------------------------------------------------------
+  async function cargarProductos(){
+    if (cargando) return;
+    cargando = true;
+    if (!datosListos) $('loadingState').hidden = false;
 
-}
+    let hayError = false;
+    try {
+      const res = await conTiempo(Promise.all([
+        supabaseClient.from('productos').select(COLUMNAS).order('created_at', { ascending: false }),
+        supabaseClient
+          .from('recepciones')
+          .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
+          .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+          .limit(200)
+      ]));
 
+      if (res[0].error) { hayError = true; console.error('Error productos:', res[0].error); }
+      else productos = res[0].data || [];
 
-/* =====================================================
-   RENDER TABLA
-===================================================== */
-
-function renderTabla(lista){
-
-    countBadge.textContent =
-        lista.length;
-
-
-    if(lista.length === 0){
-
-        tabla.style.display =
-            'none';
-
-        emptyState.style.display =
-            'block';
-
-        return;
-
+      // Si fallan las recepciones solo se pierden esas notificaciones; no bloquea la página
+      if (!res[1].error) recepcionesNotif = res[1].data || [];
+      else console.warn('Error recepciones (notificaciones):', res[1].error);
+    } catch (err) {
+      hayError = true;
+      console.error('Error cargando productos:', err);
     }
 
-
-    emptyState.style.display =
-        'none';
-
-    tabla.style.display =
-        'table';
-
-
-    tbody.innerHTML =
-        lista
-            .map(
-                function(p){
-
-                    const fecha =
-                        p.fecha_captura
-                        ? new Date(
-                            p.fecha_captura +
-                            'T00:00:00'
-                        ).toLocaleDateString(
-                            'es-CO'
-                        )
-                        : '—';
-
-
-                    const estadoClass =
-                        p.estado === 'Inactivo'
-                        ? 'inactivo'
-                        : 'activo';
-
-
-                    return `
-
-<tr>
-
-    <td>
-        <strong>
-            ${escapeHtml(p.nombre)}
-        </strong>
-    </td>
-
-    <td>
-        ${escapeHtml(
-            p.nombre_cientifico || '—'
-        )}
-    </td>
-
-    <td>
-
-        <span class="cat-tag">
-
-            ${escapeHtml(
-                p.categoria || 'Otros'
-            )}
-
-        </span>
-
-    </td>
-
-    <td>
-        ${escapeHtml(
-            p.proveedor || '—'
-        )}
-    </td>
-
-    <td>
-        ${fecha}
-    </td>
-
-    <td>
-
-        <span class="pill ${estadoClass}">
-
-            ${escapeHtml(
-                p.estado || 'Activo'
-            )}
-
-        </span>
-
-    </td>
-
-    <td>
-
-        <div class="row-actions">
-
-            <button
-                class="action-btn"
-                title="Editar"
-                onclick="editarProducto('${p.id}')"
-            >
-
-                <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                >
-
-                    <path
-                        d="M12 20h9"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    />
-
-                    <path
-                        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    />
-
-                </svg>
-
-            </button>
-
-
-            <button
-                class="action-btn danger"
-                title="Eliminar"
-                onclick="eliminarProducto('${p.id}')"
-            >
-
-                <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                >
-
-                    <path
-                        d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    />
-
-                </svg>
-
-            </button>
-
-        </div>
-
-    </td>
-
-</tr>
-
-`;
-
-                }
-            )
-            .join('');
-
-}
-
-
-/* =====================================================
-   ESCAPAR HTML
-===================================================== */
-
-function escapeHtml(str){
-
-    const div =
-        document.createElement(
-            'div'
-        );
-
-    div.textContent =
-        str ?? '';
-
-    return div.innerHTML;
-
-}
-
-
-/* =====================================================
-   FILTROS
-===================================================== */
-
-function aplicarFiltros(){
-
-    const texto =
-        fSearch.value
-            .trim()
-            .toLowerCase();
-
-    const cat =
-        fCategoria.value;
-
-    const est =
-        fEstado.value;
-
-
-    const filtrados =
-        productosCache.filter(
-            function(p){
-
-                const coincideTexto =
-                    !texto ||
-
-                    (
-                        p.nombre &&
-                        p.nombre
-                            .toLowerCase()
-                            .includes(texto)
-                    ) ||
-
-                    (
-                        p.nombre_cientifico &&
-                        p.nombre_cientifico
-                            .toLowerCase()
-                            .includes(texto)
-                    );
-
-
-                const coincideCat =
-                    !cat ||
-                    p.categoria === cat;
-
-
-                const coincideEstado =
-                    !est ||
-                    p.estado === est;
-
-
-                return (
-                    coincideTexto &&
-                    coincideCat &&
-                    coincideEstado
-                );
-
-            }
-        );
-
-
-    renderTabla(
-        filtrados
-    );
-
-}
-
-
-document.getElementById(
-    'btnBuscar'
-).addEventListener(
-    'click',
-    aplicarFiltros
-);
-
-
-fSearch.addEventListener(
-    'keyup',
-    function(e){
-
-        if(e.key === 'Enter'){
-
-            aplicarFiltros();
-
-        }
-
+    cargando = false;
+    $('loadingState').hidden = true;
+    errorCarga = hayError;
+
+    if (hayError) {
+      mostrarAviso('No se pudieron actualizar los productos. Revisa tu conexión.');
+      if (!datosListos) { datosListos = true; renderTabla(); }
+      return;
     }
-);
 
+    ocultarAviso();
+    datosListos = true;
+    ultimaActualizacion = Date.now();
 
-document.getElementById(
-    'btnLimpiar'
-).addEventListener(
-    'click',
-    function(){
-
-        fSearch.value = '';
-        fCategoria.value = '';
-        fEstado.value = '';
-
-        renderTabla(
-            productosCache
-        );
-
+    const firma = JSON.stringify([productos, recepcionesNotif]);
+    if (firma !== firmaDatos) {
+      firmaDatos = firma;
+      guardarCache();
+      indexar();
+      actualizarProveedores();
+      aplicarFiltros(false);
+      renderNotificaciones();
     }
-);
 
+    if (idPendiente) { const id = idPendiente; idPendiente = null; resaltarProducto(id); }
+  }
 
-/* =====================================================
-   MODAL
-===================================================== */
+  // Después de crear/editar/eliminar: se actualiza la lista al instante
+  // sin volver a pedirlo todo al servidor.
+  function despuesDeCambio(){
+    firmaDatos = JSON.stringify([productos, recepcionesNotif]);
+    indexar();
+    actualizarProveedores();
+    guardarCache();
+    aplicarFiltros(false);
+    renderNotificaciones();
+  }
 
-function abrirModal(
-    modo,
-    producto
-){
+  // ---------------------------------------------------------------
+  // NOTIFICACIONES (mismo comportamiento que en Inicio)
+  // Al hacer clic: se marca como leída (desaparece, y se recuerda en este
+  // navegador) y se abre el módulo de donde viene.
+  // ---------------------------------------------------------------
+  const claveLeidas = function(){ return 'dsi_notif_leidas_' + usuarioActual.id; };
 
+  function leerLeidas(){
+    try { return new Set(JSON.parse(localStorage.getItem(claveLeidas()) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function guardarLeidas(set){
+    try { localStorage.setItem(claveLeidas(), JSON.stringify(Array.from(set).slice(-300))); } catch (e) {}
+  }
+
+  function construirNotificaciones(){
+    const lista = [];
+
+    recepcionesNotif.forEach(function(r){
+      const estado = r.estado_producto || 'Recibido';
+      const clase = clasificarEstado(estado);
+      if (clase === 'ok') return;                         // solo lo que requiere atención
+      const prod = Array.isArray(r.productos) ? r.productos[0] : r.productos;
+      lista.push({
+        key: 'rec:' + r.id + ':' + normalizar(estado),
+        tipo: clase,
+        titulo: 'Recepción ' + estado.toLowerCase(),
+        texto: ((prod && prod.nombre) || 'Producto') + ' — ' + fmtPeso(Number(r.peso) || 0),
+        fecha: formatearFecha(r.fecha_recepcion),
+        href: 'recepciones.html?id=' + encodeURIComponent(r.id),
+        refId: null
+      });
+    });
+
+    productos.forEach(function(p){
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: 'prod:' + p.id,
+        tipo: 'info',
+        titulo: 'Producto inactivo',
+        texto: p.nombre || 'Producto',
+        fecha: '',
+        href: 'productos.html?id=' + encodeURIComponent(p.id),
+        refId: p.id
+      });
+    });
+
+    return lista;
+  }
+
+  function actualizarGlobo(){
+    const leidas = leerLeidas();
+    const total = notifsActuales.filter(function(n){ return !leidas.has(n.key); }).length;
+    const globo = $('notificationBadge');
+    globo.textContent = total > 9 ? '9+' : String(total);
+    globo.classList.toggle('show', total > 0);
+    $('notificationBtn').setAttribute('aria-label', total ? 'Notificaciones (' + total + ' sin leer)' : 'Notificaciones');
+    $('markAllRead').style.display = total ? '' : 'none';
+  }
+
+  function iconoNotif(tipo){
+    return tipo === 'info'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="8" r=".9" fill="currentColor"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>';
+  }
+
+  function renderNotificaciones(){
+    if (!usuarioActual) return;
+    const leidas = leerLeidas();
+    notifsActuales = construirNotificaciones().filter(function(n){ return !leidas.has(n.key); }).slice(0, 30);
+    actualizarGlobo();
+
+    const cont = $('notificationContent');
+    if (!notifsActuales.length) {
+      cont.innerHTML = '<div class="notification-empty">No tienes notificaciones nuevas.</div>';
+      return;
+    }
+
+    cont.innerHTML = notifsActuales.map(function(n, i){
+      return '<a class="notification-item" href="' + escapeHTML(n.href) + '" data-i="' + i + '">' +
+        '<div class="ni-icon t-' + n.tipo + '">' + iconoNotif(n.tipo) + '</div>' +
+        '<div class="ni-body">' +
+          '<strong>' + escapeHTML(n.titulo) + '</strong>' +
+          '<span>' + escapeHTML(n.texto) + '</span>' +
+          ((n.fecha && n.fecha !== '-') ? '<em>' + escapeHTML(n.fecha) + '</em>' : '') +
+        '</div>' +
+        '<span class="ni-go">›</span>' +
+      '</a>';
+    }).join('');
+  }
+
+  const panelNotif = $('notificationPanel');
+  const btnNotif = $('notificationBtn');
+
+  function cerrarPanel(){
+    panelNotif.classList.remove('show');
+    btnNotif.setAttribute('aria-expanded', 'false');
+  }
+
+  btnNotif.addEventListener('click', function(e){
+    e.stopPropagation();
+    const abierto = panelNotif.classList.toggle('show');
+    btnNotif.setAttribute('aria-expanded', String(abierto));
+  });
+  $('closeNotifications').addEventListener('click', cerrarPanel);
+  document.addEventListener('click', function(e){
+    if (!panelNotif.contains(e.target) && !btnNotif.contains(e.target)) cerrarPanel();
+  });
+
+  // Clic en una notificación
+  $('notificationContent').addEventListener('click', function(e){
+    const item = e.target.closest('.notification-item');
+    if (!item) return;
+    e.preventDefault();
+
+    const n = notifsActuales[Number(item.dataset.i)];
+    if (!n) return;
+
+    const leidas = leerLeidas();
+    leidas.add(n.key);
+    guardarLeidas(leidas);
+    actualizarGlobo();
+
+    item.classList.add('removing');
+    setTimeout(function(){
+      item.remove();
+      if (!$('notificationContent').querySelector('.notification-item')) renderNotificaciones();
+
+      // Si la notificación es de un producto, ya estamos en su módulo:
+      // se resalta en la lista sin recargar la página.
+      if (n.refId !== null && n.refId !== undefined) {
+        cerrarPanel();
+        resaltarProducto(n.refId);
+      } else {
+        window.location.href = n.href;
+      }
+    }, 170);
+  });
+
+  $('markAllRead').addEventListener('click', function(){
+    const leidas = leerLeidas();
+    construirNotificaciones().forEach(function(n){ leidas.add(n.key); });
+    guardarLeidas(leidas);
+    renderNotificaciones();
+  });
+
+  // ---------------------------------------------------------------
+  // VENTANA NUEVO / EDITAR
+  // ---------------------------------------------------------------
+  const form = $('formProducto');
+  const CAMPOS_ERROR = ['fieldNombre', 'fieldCientifico', 'fieldCategoria', 'fieldFecha'];
+
+  function limpiarErrores(){
+    CAMPOS_ERROR.forEach(function(id){ $(id).classList.remove('invalid'); });
+  }
+
+  function ponerError(idCampo, mensaje){
+    const f = $(idCampo);
+    f.classList.add('invalid');
+    if (mensaje) f.querySelector('.field-error').textContent = mensaje;
+  }
+
+  // Al escribir en un campo se le quita el error
+  CAMPOS_ERROR.forEach(function(id){
+    const el = $(id).querySelector('input,select');
+    el.addEventListener('input',  function(){ $(id).classList.remove('invalid'); });
+    el.addEventListener('change', function(){ $(id).classList.remove('invalid'); });
+  });
+  form.addEventListener('input', function(){ formSucio = true; });
+
+  function abrirModal(modo, producto){
     form.reset();
+    limpiarErrores();
+    formSucio = false;
+    $('pFecha').max = hoyISO();            // no se puede capturar en el futuro
 
-
-    [
-        document.getElementById(
-            'fieldNombre'
-        ),
-
-        document.getElementById(
-            'fieldCategoria'
-        )
-
-    ].forEach(
-        function(f){
-
-            f.classList.remove(
-                'invalid'
-            );
-
-        }
-    );
-
-
-    if(
-        modo === 'editar' &&
-        producto
-    ){
-
-        modalTitle.textContent =
-            'Editar producto';
-
-        btnGuardarLabel.textContent =
-            'Guardar cambios';
-
-        productoId.value =
-            producto.id;
-
-        pNombre.value =
-            producto.nombre || '';
-
-        pCientifico.value =
-            producto.nombre_cientifico || '';
-
-        pCategoria.value =
-            producto.categoria || '';
-
-        pProveedor.value =
-            producto.proveedor || '';
-
-        pFecha.value =
-            producto.fecha_captura || '';
-
-        pOrigen.value =
-            producto.origen || '';
-
-        pEstado.value =
-            producto.estado || 'Activo';
-
-        pDescripcion.value =
-            producto.descripcion || '';
-
-        pObservaciones.value =
-            producto.observaciones || '';
-
-    }else{
-
-        modalTitle.textContent =
-            'Nuevo producto';
-
-        btnGuardarLabel.textContent =
-            'Guardar producto';
-
-        productoId.value =
-            '';
-
-        pEstado.value =
-            'Activo';
-
+    if (modo === 'editar' && producto) {
+      $('modalTitle').textContent = 'Editar producto';
+      $('btnGuardarLabel').textContent = 'Guardar cambios';
+      $('productoId').value     = producto.id;
+      $('pNombre').value        = producto.nombre || '';
+      $('pCientifico').value    = producto.nombre_cientifico || '';
+      $('pCategoria').value     = producto.categoria || '';
+      $('pProveedor').value     = producto.proveedor || '';
+      $('pFecha').value         = producto.fecha_captura ? String(producto.fecha_captura).slice(0, 10) : '';
+      $('pOrigen').value        = producto.origen || '';
+      $('pEstado').value        = producto.estado || 'Activo';
+      $('pDescripcion').value   = producto.descripcion || '';
+      $('pObservaciones').value = producto.observaciones || '';
+    } else {
+      $('modalTitle').textContent = 'Nuevo producto';
+      $('btnGuardarLabel').textContent = 'Guardar producto';
+      $('productoId').value = '';
+      $('pEstado').value = 'Activo';
     }
 
+    $('modalOverlay').classList.add('show');
+    actualizarScroll();
 
-    modalOverlay.classList.add(
-        'show'
-    );
+    // En computador se enfoca el primer campo; en celular no (evita abrir el teclado solo)
+    if (window.matchMedia('(pointer:fine)').matches) setTimeout(function(){ $('pNombre').focus(); }, 60);
+  }
 
-}
+  function cerrarModal(){
+    $('modalOverlay').classList.remove('show');
+    actualizarScroll();
+  }
 
+  $('btnNuevo').addEventListener('click', function(){ abrirModal('nuevo'); });
+  $('modalClose').addEventListener('click', cerrarModal);
+  $('btnCancelar').addEventListener('click', cerrarModal);
 
-function cerrarModal(){
+  // Tocar fuera de la ventana la cierra, salvo que ya haya datos escritos
+  // (así no se pierde lo digitado por un toque accidental).
+  $('modalOverlay').addEventListener('click', function(e){
+    if (e.target === $('modalOverlay') && !formSucio) cerrarModal();
+  });
 
-    modalOverlay.classList.remove(
-        'show'
-    );
+  // ---------------------------------------------------------------
+  // VALIDACIÓN DEL FORMULARIO
+  // ---------------------------------------------------------------
+  function validarFormulario(){
+    limpiarErrores();
+    let ok = true;
+    let primero = null;
 
-}
-
-
-document.getElementById(
-    'btnNuevo'
-).addEventListener(
-    'click',
-    function(){
-
-        abrirModal(
-            'nuevo'
-        );
-
-    }
-);
-
-
-document.getElementById(
-    'modalClose'
-).addEventListener(
-    'click',
-    cerrarModal
-);
-
-
-document.getElementById(
-    'btnCancelar'
-).addEventListener(
-    'click',
-    cerrarModal
-);
-
-
-modalOverlay.addEventListener(
-    'click',
-    function(e){
-
-        if(
-            e.target ===
-            modalOverlay
-        ){
-
-            cerrarModal();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   EDITAR
-===================================================== */
-
-window.editarProducto =
-function(id){
-
-    const producto =
-        productosCache.find(
-            p => p.id === id
-        );
-
-
-    if(producto){
-
-        abrirModal(
-            'editar',
-            producto
-        );
-
+    function fallo(idCampo, mensaje, input){
+      ponerError(idCampo, mensaje);
+      ok = false;
+      if (!primero) primero = input;
     }
 
-};
-
-
-/* =====================================================
-   ELIMINAR
-===================================================== */
-
-window.eliminarProducto =
-async function(id){
-
-    const producto =
-        productosCache.find(
-            p => p.id === id
-        );
-
-
-    const nombre =
-        producto
-        ? producto.nombre
-        : 'este producto';
-
-
-    if(
-        !confirm(
-            `¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`
-        )
-    ){
-
-        return;
-
+    const nombre = colapsar($('pNombre').value);
+    if (nombre.length < 2) {
+      fallo('fieldNombre', 'El nombre es obligatorio (mínimo 2 caracteres).', $('pNombre'));
+    } else if (!/\p{L}/u.test(nombre)) {
+      fallo('fieldNombre', 'El nombre debe contener letras.', $('pNombre'));
     }
 
-
-    const {
-        error
-    } = await supabaseClient
-        .from('productos')
-        .delete()
-        .eq('id', id);
-
-
-    if(error){
-
-        showToast(
-            'No se pudo eliminar: ' +
-            error.message,
-            'error'
-        );
-
-        return;
-
+    // El nombre científico solo lleva letras, espacios, puntos, guiones y paréntesis
+    const cient = colapsar($('pCientifico').value);
+    if (cient && !/^\p{L}[\p{L}\s.'()\-×]*$/u.test(cient)) {
+      fallo('fieldCientifico', 'Usa solo letras y espacios (ej. Lutjanus campechanus).', $('pCientifico'));
     }
 
-
-    showToast(
-        'Producto eliminado.',
-        'success'
-    );
-
-
-    cargarProductos();
-
-};
-
-
-/* =====================================================
-   GUARDAR PRODUCTO
-===================================================== */
-
-form.addEventListener(
-    'submit',
-    async function(e){
-
-        e.preventDefault();
-
-
-        let valid = true;
-
-
-        if(!pNombre.value.trim()){
-
-            document
-                .getElementById(
-                    'fieldNombre'
-                )
-                .classList
-                .add('invalid');
-
-            valid = false;
-
-        }else{
-
-            document
-                .getElementById(
-                    'fieldNombre'
-                )
-                .classList
-                .remove('invalid');
-
-        }
-
-
-        if(!pCategoria.value){
-
-            document
-                .getElementById(
-                    'fieldCategoria'
-                )
-                .classList
-                .add('invalid');
-
-            valid = false;
-
-        }else{
-
-            document
-                .getElementById(
-                    'fieldCategoria'
-                )
-                .classList
-                .remove('invalid');
-
-        }
-
-
-        if(!valid){
-
-            showToast(
-                'Completa los campos obligatorios.',
-                'error'
-            );
-
-            return;
-
-        }
-
-
-        const payload = {
-
-            nombre:
-                pNombre.value.trim(),
-
-            nombre_cientifico:
-                pCientifico.value.trim()
-                || null,
-
-            categoria:
-                pCategoria.value,
-
-            proveedor:
-                pProveedor.value.trim()
-                || null,
-
-            fecha_captura:
-                pFecha.value
-                || null,
-
-            origen:
-                pOrigen.value.trim()
-                || null,
-
-            estado:
-                pEstado.value,
-
-            descripcion:
-                pDescripcion.value.trim()
-                || null,
-
-            observaciones:
-                pObservaciones.value.trim()
-                || null
-
-        };
-
-
-        btnGuardar.disabled =
-            true;
-
-        btnGuardarLabel.textContent =
-            'Guardando...';
-
-
-        let error;
-
-
-        if(productoId.value){
-
-            ({
-                error
-            } =
-                await supabaseClient
-                    .from('productos')
-                    .update(payload)
-                    .eq(
-                        'id',
-                        productoId.value
-                    )
-            );
-
-        }else{
-
-            ({
-                error
-            } =
-                await supabaseClient
-                    .from('productos')
-                    .insert(
-                        payload
-                    )
-            );
-
-        }
-
-
-        btnGuardar.disabled =
-            false;
-
-
-        btnGuardarLabel.textContent =
-            productoId.value
-            ? 'Guardar cambios'
-            : 'Guardar producto';
-
-
-        if(error){
-
-            showToast(
-                'Error al guardar: ' +
-                error.message,
-                'error'
-            );
-
-            return;
-
-        }
-
-
-        showToast(
-            productoId.value
-            ? 'Producto actualizado.'
-            : 'Producto creado.',
-            'success'
-        );
-
-
-        cerrarModal();
-
-
-        cargarProductos();
-
+    if (CATEGORIAS.indexOf($('pCategoria').value) === -1) {
+      fallo('fieldCategoria', 'Selecciona una categoría.', $('pCategoria'));
     }
-);
 
+    const fecha = $('pFecha').value;
+    if (fecha) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha) || fecha < '1990-01-01') {
+        fallo('fieldFecha', 'Ingresa una fecha válida.', $('pFecha'));
+      } else if (fecha > hoyISO()) {
+        fallo('fieldFecha', 'La fecha de captura no puede ser futura.', $('pFecha'));
+      }
+    }
 
-/* =====================================================
-   NAVEGACIÓN
-===================================================== */
+    // Evita registros idénticos (mismo nombre + proveedor + fecha de captura),
+    // por ejemplo al tocar "Guardar" dos veces. Productos con el mismo nombre
+    // pero otro proveedor o fecha SÍ se permiten.
+    if (ok) {
+      const idEditando = $('productoId').value;
+      const clave = normalizar(nombre) + '|' + normalizar(colapsar($('pProveedor').value)) + '|' + (fecha || '');
+      const repetido = productos.some(function(p){
+        return String(p.id) !== String(idEditando) &&
+          (normalizar(colapsar(p.nombre)) + '|' + normalizar(colapsar(p.proveedor)) + '|' + String(p.fecha_captura || '').slice(0, 10)) === clave;
+      });
+      if (repetido) {
+        fallo('fieldNombre', 'Ya existe un registro con el mismo nombre, proveedor y fecha de captura.', $('pNombre'));
+      }
+    }
 
-document
-    .querySelectorAll(
-        '.sb-link'
-    )
-    .forEach(
-        function(link){
+    if (primero) primero.focus();
+    return ok;
+  }
 
-            link.addEventListener(
-                'click',
-                function(){
+  // ---------------------------------------------------------------
+  // GUARDAR (crear / actualizar)
+  // ---------------------------------------------------------------
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    if (guardando) return;
 
-                    document
-                        .querySelectorAll(
-                            '.sb-link'
-                        )
-                        .forEach(
-                            l =>
-                                l.classList
-                                .remove(
-                                    'active'
-                                )
-                        );
+    if (!validarFormulario()) {
+      showToast('Revisa los campos marcados en rojo.', 'error');
+      return;
+    }
 
+    const idEditando = $('productoId').value;
+    const payload = {
+      nombre:            colapsar($('pNombre').value),
+      nombre_cientifico: colapsar($('pCientifico').value) || null,
+      categoria:         $('pCategoria').value,
+      proveedor:         colapsar($('pProveedor').value) || null,
+      fecha_captura:     $('pFecha').value || null,
+      origen:            colapsar($('pOrigen').value) || null,
+      estado:            $('pEstado').value,
+      descripcion:       $('pDescripcion').value.trim() || null,
+      observaciones:     $('pObservaciones').value.trim() || null
+    };
 
-                    link.classList.add(
-                        'active'
-                    );
+    guardando = true;
+    $('btnGuardar').disabled = true;
+    $('btnGuardarLabel').textContent = 'Guardando...';
 
-                }
-            );
+    let resultado;
+    try {
+      resultado = idEditando
+        ? await conTiempo(supabaseClient.from('productos').update(payload).eq('id', idEditando).select(COLUMNAS))
+        : await conTiempo(supabaseClient.from('productos').insert(payload).select(COLUMNAS));
+    } catch (err) {
+      resultado = { error: err };
+    }
 
-        }
-    );
+    guardando = false;
+    $('btnGuardar').disabled = false;
+    $('btnGuardarLabel').textContent = idEditando ? 'Guardar cambios' : 'Guardar producto';
 
+    if (resultado.error) {
+      showToast(mensajeError(resultado.error, 'guardar'), 'error');
+      return;
+    }
 
-/* =====================================================
-   CARGA INICIAL
-===================================================== */
+    const fila = resultado.data && resultado.data[0];
 
-cargarProductos();
+    if (idEditando && !fila) {
+      // La actualización no afectó ninguna fila (fue eliminada o no hay permiso)
+      showToast('No se pudo actualizar: el producto ya no existe o no tienes permiso.', 'error');
+      cerrarModal();
+      cargarProductos();
+      return;
+    }
 
+    cerrarModal();
+    showToast(idEditando ? 'Producto actualizado.' : 'Producto creado.', 'success');
+
+    if (fila) {
+      if (idEditando) {
+        const i = productos.findIndex(function(p){ return String(p.id) === String(idEditando); });
+        if (i > -1) productos[i] = fila; else productos.unshift(fila);
+      } else {
+        productos.unshift(fila);
+      }
+      despuesDeCambio();
+      resaltarProducto(fila.id);
+    } else {
+      firmaDatos = '';
+      cargarProductos();      // se insertó pero el servidor no devolvió la fila: se recarga la lista
+    }
+  });
+
+  // ---------------------------------------------------------------
+  // ELIMINAR (con ventana de confirmación)
+  // ---------------------------------------------------------------
+  function pedirEliminar(id){
+    const p = productos.find(function(x){ return String(x.id) === String(id); });
+    if (!p) return;
+    idPorEliminar = p.id;
+    $('confirmTexto').textContent = '¿Eliminar "' + p.nombre + '"? Esta acción no se puede deshacer.';
+    $('confirmOverlay').classList.add('show');
+    actualizarScroll();
+  }
+
+  function cerrarConfirmacion(){
+    $('confirmOverlay').classList.remove('show');
+    idPorEliminar = null;
+    actualizarScroll();
+  }
+
+  $('confirmCancelar').addEventListener('click', cerrarConfirmacion);
+  $('confirmOverlay').addEventListener('click', function(e){
+    if (e.target === $('confirmOverlay')) cerrarConfirmacion();
+  });
+
+  $('confirmOk').addEventListener('click', async function(){
+    if (eliminando || idPorEliminar === null) return;
+    eliminando = true;
+    const id = idPorEliminar;
+    $('confirmOk').disabled = true;
+    $('confirmOk').textContent = 'Eliminando...';
+
+    let resultado;
+    try {
+      resultado = await conTiempo(supabaseClient.from('productos').delete().eq('id', id).select('id'));
+    } catch (err) {
+      resultado = { error: err };
+    }
+
+    eliminando = false;
+    $('confirmOk').disabled = false;
+    $('confirmOk').textContent = 'Eliminar';
+    cerrarConfirmacion();
+
+    if (resultado.error) {
+      showToast(mensajeError(resultado.error, 'eliminar'), 'error');
+      return;
+    }
+    if (!resultado.data || !resultado.data.length) {
+      showToast('No se pudo eliminar: el producto ya no existe o no tienes permiso.', 'error');
+      cargarProductos();
+      return;
+    }
+
+    productos = productos.filter(function(p){ return String(p.id) !== String(id); });
+    despuesDeCambio();
+    showToast('Producto eliminado.', 'success');
+  });
+
+  // ---------------------------------------------------------------
+  // EVENTOS DE LA LISTA Y LOS FILTROS
+  // ---------------------------------------------------------------
+  $('tbodyProductos').addEventListener('click', function(e){
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    if (btn.dataset.action === 'editar') {
+      const p = productos.find(function(x){ return String(x.id) === String(btn.dataset.id); });
+      if (p) abrirModal('editar', p);
+    } else if (btn.dataset.action === 'eliminar') {
+      pedirEliminar(btn.dataset.id);
+    }
+  });
+
+  $('emptyState').addEventListener('click', function(e){
+    if (e.target.closest('[data-action="limpiar"]')) limpiarFiltros();
+  });
+
+  $('btnMas').addEventListener('click', function(){
+    limiteMostrar += TAM_PAGINA;
+    renderTabla();
+  });
+
+  function limpiarFiltros(){
+    $('fSearch').value = '';
+    $('fCategoria').value = '';
+    $('fEstado').value = '';
+    aplicarFiltros(true);
+  }
+
+  $('btnBuscar').addEventListener('click', function(){ aplicarFiltros(true); });
+  $('btnLimpiar').addEventListener('click', limpiarFiltros);
+
+  // Búsqueda mientras se escribe (con una pequeña pausa para no trabajar de más)
+  $('fSearch').addEventListener('input', function(){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function(){ aplicarFiltros(true); }, 200);
+  });
+  $('fSearch').addEventListener('keyup', function(e){
+    if (e.key === 'Enter') { clearTimeout(debounceTimer); aplicarFiltros(true); }
+  });
+  $('fCategoria').addEventListener('change', function(){ aplicarFiltros(true); });
+  $('fEstado').addEventListener('change', function(){ aplicarFiltros(true); });
+
+  $('avisoBtn').addEventListener('click', cargarProductos);
+
+  // ---------------------------------------------------------------
+  // MENÚ MÓVIL
+  // ---------------------------------------------------------------
+  const sidebar = $('sidebar');
+  const overlay = $('mobileOverlay');
+  const btnMenu = $('mobileMenuBtn');
+
+  function abrirMenuMovil(){
+    menuAbierto = true;
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('show');
+    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+    actualizarScroll();
+  }
+  function cerrarMenuMovil(){
+    menuAbierto = false;
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    btnMenu.setAttribute('aria-label', 'Abrir menú');
+    actualizarScroll();
+  }
+
+  btnMenu.addEventListener('click', function(){ menuAbierto ? cerrarMenuMovil() : abrirMenuMovil(); });
+  overlay.addEventListener('click', cerrarMenuMovil);
+  document.querySelectorAll('.sb-link').forEach(function(l){ l.addEventListener('click', cerrarMenuMovil); });
+  window.addEventListener('resize', function(){ if (window.innerWidth > 800 && menuAbierto) cerrarMenuMovil(); });
+
+  // Tecla Escape: cierra lo último que se abrió
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    if ($('confirmOverlay').classList.contains('show')) { cerrarConfirmacion(); return; }
+    if ($('modalOverlay').classList.contains('show'))   { cerrarModal(); return; }
+    cerrarPanel();
+    cerrarMenuMovil();
+  });
+
+  // ---------------------------------------------------------------
+  // SESIÓN Y REFRESCO AUTOMÁTICO
+  // ---------------------------------------------------------------
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'SIGNED_OUT') window.location.replace('login.html');
+  });
+
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted && usuarioActual) { renderNotificaciones(); cargarProductos(); }
+  });
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && usuarioActual && Date.now() - ultimaActualizacion > 30000) cargarProductos();
+  });
+  window.addEventListener('online', function(){ if (usuarioActual) cargarProductos(); });
+
+  // ---------------------------------------------------------------
+  // INICIO
+  // ---------------------------------------------------------------
+  async function iniciar(){
+    // Si se llega desde una notificación (?id=...), se recuerda qué resaltar
+    // y se limpia la dirección para que al recargar no se repita.
+    try {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (id) {
+        idPendiente = id;
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    } catch (e) { /* navegador sin URLSearchParams: se ignora */ }
+
+    // La sesión se lee del navegador (rápido). Sin sesión → login.
+    let session = null;
+    try {
+      const res = await supabaseClient.auth.getSession();
+      session = res.data.session;
+    } catch (err) {
+      console.error('No se pudo leer la sesión:', err);
+    }
+
+    if (!session) { window.location.replace('login.html'); return; }
+
+    usuarioActual = session.user;
+    pintarUsuario();
+
+    // 1) Se muestra al instante lo último guardado (si existe)
+    const cache = leerCache();
+    if (cache) {
+      productos = cache;
+      datosListos = true;
+      $('loadingState').hidden = true;
+      indexar();
+      actualizarProveedores();
+      aplicarFiltros(true);
+      renderNotificaciones();
+      if (idPendiente && productos.some(function(p){ return String(p.id) === String(idPendiente); })) {
+        const id = idPendiente; idPendiente = null; resaltarProducto(id);
+      }
+    }
+
+    // 2) Se piden los datos frescos en segundo plano
+    await cargarProductos();
+  }
+
+  iniciar();
 })();
-
-</script>
-
-
-<script>
-
-/* =====================================================
-   NOTIFICACIONES
-===================================================== */
-
-const btnCampana =
-document.getElementById(
-    'notificationBtn'
-);
-
-const panelNotificaciones =
-document.getElementById(
-    'notificationPanel'
-);
-
-const cerrarNotificaciones =
-document.getElementById(
-    'closeNotifications'
-);
-
-
-if(
-    btnCampana &&
-    panelNotificaciones
-){
-
-    btnCampana.addEventListener(
-        'click',
-        function(e){
-
-            e.stopPropagation();
-
-            panelNotificaciones
-                .classList
-                .toggle('show');
-
-
-            if(
-                panelNotificaciones
-                    .classList
-                    .contains('show')
-            ){
-
-                cargarLasNotificaciones();
-
-            }
-
-        }
-    );
-
-
-    cerrarNotificaciones.addEventListener(
-        'click',
-        function(){
-
-            panelNotificaciones
-                .classList
-                .remove('show');
-
-        }
-    );
-
-
-    document.addEventListener(
-        'click',
-        function(e){
-
-            if(
-                !panelNotificaciones
-                    .contains(e.target)
-                &&
-                !btnCampana
-                    .contains(e.target)
-            ){
-
-                panelNotificaciones
-                    .classList
-                    .remove('show');
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   CARGAR NOTIFICACIONES
-===================================================== */
-
-async function cargarLasNotificaciones(){
-
-    const contenido =
-        document.getElementById(
-            'notificationContent'
-        );
-
-    const punto =
-        document.getElementById(
-            'notificationDot'
-        );
-
-
-    if(
-        !contenido ||
-        !punto
-    ){
-
-        return;
-
-    }
-
-
-    contenido.innerHTML =
-        '<div class="notification-empty">' +
-        'Buscando alertas...' +
-        '</div>';
-
-
-    let hayNotificaciones =
-        false;
-
-    let htmlNotifs =
-        '';
-
-
-    const {
-        data:recepciones
-    } = await supabaseClient
-
-        .from('recepciones')
-
-        .select(
-            'id,peso,estado_producto,fecha_recepcion'
-        )
-
-        .order(
-            'fecha_recepcion',
-            {
-                ascending:false
-            }
-        )
-
-        .limit(20);
-
-
-    if(recepciones){
-
-        recepciones.forEach(
-            function(r){
-
-                const estado =
-                    r.estado_producto ||
-                    'Recibido';
-
-
-                if(
-                    estado.toLowerCase()
-                    !==
-                    'recibido'
-                ){
-
-                    hayNotificaciones =
-                        true;
-
-
-                    htmlNotifs += `
-
-<div class="notification-item">
-
-    <div class="ni-icon">
-
-        <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-        >
-
-            <path
-                d="M12 3v12"
-                stroke="currentColor"
-                stroke-width="1.8"
-            />
-
-            <circle
-                cx="12"
-                cy="19"
-                r="1"
-                fill="currentColor"
-            />
-
-        </svg>
-
-    </div>
-
-
-    <div>
-
-        <strong>
-            Recepción:
-            ${escapeHTMLNotif(estado)}
-        </strong>
-
-        <span>
-            Carga de
-            ${Number(
-                r.peso || 0
-            ).toLocaleString('es-CO')}
-            kg.
-        </span>
-
-    </div>
-
-</div>
-
-`;
-
-                }
-
-            }
-        );
-
-    }
-
-
-    const {
-        data:productos
-    } = await supabaseClient
-
-        .from('productos')
-
-        .select(
-            'id,nombre,estado'
-        )
-
-        .order(
-            'created_at',
-            {
-                ascending:false
-            }
-        )
-
-        .limit(20);
-
-
-    if(productos){
-
-        productos.forEach(
-            function(p){
-
-                if(
-                    p.estado &&
-                    p.estado.toLowerCase()
-                    ===
-                    'inactivo'
-                ){
-
-                    hayNotificaciones =
-                        true;
-
-
-                    htmlNotifs += `
-
-<div class="notification-item">
-
-    <div class="ni-icon">
-
-        <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-        >
-
-            <path
-                d="M12 3v11"
-                stroke="currentColor"
-                stroke-width="1.8"
-            />
-
-            <circle
-                cx="12"
-                cy="18.5"
-                r="1"
-                fill="currentColor"
-            />
-
-        </svg>
-
-    </div>
-
-
-    <div>
-
-        <strong>
-            Producto inactivo
-        </strong>
-
-        <span>
-            ${escapeHTMLNotif(
-                p.nombre
-            )}
-        </span>
-
-    </div>
-
-</div>
-
-`;
-
-                }
-
-            }
-        );
-
-    }
-
-
-    if(!hayNotificaciones){
-
-        punto.style.display =
-            'none';
-
-
-        contenido.innerHTML =
-            '<div class="notification-empty">' +
-            'No hay notificaciones pendientes.' +
-            '</div>';
-
-    }else{
-
-        punto.style.display =
-            'block';
-
-        contenido.innerHTML =
-            htmlNotifs;
-
-    }
-
-}
-
-
-/* =====================================================
-   ESCAPAR HTML
-===================================================== */
-
-function escapeHTMLNotif(text){
-
-    const div =
-        document.createElement(
-            'div'
-        );
-
-    div.textContent =
-        text ?? '';
-
-    return div.innerHTML;
-
-}
-
 </script>
 
 </body>

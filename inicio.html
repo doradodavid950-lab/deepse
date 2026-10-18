@@ -49,6 +49,7 @@ html,body{
 body{ overflow-x:hidden; }
 
 :focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
+a,button{ touch-action:manipulation; }
 
 .app{
   display:grid;
@@ -65,6 +66,7 @@ body{ overflow-x:hidden; }
   flex-direction:column;
   /* Los espacios se ajustan a la altura de la pantalla para que
      todo el menú quepa sin necesidad de deslizar */
+  padding:18px 14px;
   padding:clamp(14px,2.4vh,22px) 14px;
   position:sticky;
   top:0;
@@ -77,8 +79,10 @@ body{ overflow-x:hidden; }
   display:flex;
   align-items:center;
   gap:10px;
+  padding:4px 8px 16px;
   padding:4px 8px clamp(10px,2vh,20px);
   border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:12px;
   margin-bottom:clamp(8px,1.6vh,14px);
 }
 /* Insignia blanca con el emblema oficial */
@@ -117,6 +121,7 @@ nav.sb-nav::-webkit-scrollbar{ display:none; }
   display:flex;
   align-items:center;
   gap:12px;
+  padding:8px 12px;
   padding:clamp(6px,1.15vh,10px) 12px;
   border-radius:10px;
   color:rgba(255,255,255,.72);
@@ -127,7 +132,8 @@ nav.sb-nav::-webkit-scrollbar{ display:none; }
   transition:background .15s,color .15s,transform .15s;
 }
 .sb-link svg{ flex:0 0 auto; opacity:.85; }
-.sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); }
+@media (hover:hover){ .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); } }
+.sb-link:active{ background:rgba(255,255,255,.12); }
 .sb-link.active{
   background:var(--azul-medio);
   color:#fff;
@@ -137,6 +143,7 @@ nav.sb-nav::-webkit-scrollbar{ display:none; }
 .sb-footer{
   flex-shrink:0;
   border-top:1px solid rgba(255,255,255,.08);
+  padding-top:12px;
   padding-top:clamp(8px,1.6vh,14px);
   margin-top:8px;
 }
@@ -172,22 +179,6 @@ nav.sb-nav::-webkit-scrollbar{ display:none; }
   background:#4ADE80;
   margin-right:5px;
 }
-.sb-logout{
-  flex:0 0 auto;
-  width:34px;
-  height:34px;
-  border-radius:10px;
-  border:none;
-  background:rgba(255,255,255,.07);
-  color:rgba(255,255,255,.75);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  transition:background .15s,color .15s;
-}
-.sb-logout:hover{ background:var(--rojo); color:#fff; }
-
 /* ===================== CONTENIDO ===================== */
 main{ padding:26px 32px 50px; min-width:0; }
 
@@ -217,7 +208,7 @@ main{ padding:26px 32px 50px; min-width:0; }
   color:var(--azul-oscuro);
   transition:border-color .15s,box-shadow .15s;
 }
-.icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); }
+@media (hover:hover){ .icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 
 /* Globo con el número de notificaciones sin leer */
 .badge-notif{
@@ -252,7 +243,7 @@ main{ padding:26px 32px 50px; min-width:0; }
   cursor:pointer;
   transition:border-color .15s,box-shadow .15s;
 }
-.top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); }
+@media (hover:hover){ .top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 .top-user .avatar{
   width:30px;
   height:30px;
@@ -278,7 +269,7 @@ main{ padding:26px 32px 50px; min-width:0; }
   justify-content:center;
   box-shadow:0 4px 12px rgba(6,43,91,.06);
 }
-.mobile-menu-btn:hover{ border-color:var(--azul-medio); }
+@media (hover:hover){ .mobile-menu-btn:hover{ border-color:var(--azul-medio); } }
 .mobile-menu-btn:active{ transform:scale(.97); }
 
 /* Aviso cuando algo falla al cargar los datos */
@@ -389,7 +380,7 @@ main{ padding:26px 32px 50px; min-width:0; }
 }
 .panel-head h3{ margin:0; font-size:15.5px; }
 .panel-head a{ font-size:12.5px; color:var(--azul-medio); text-decoration:none; font-weight:600; }
-.panel-head a:hover{ text-decoration:underline; }
+@media (hover:hover){ .panel-head a:hover{ text-decoration:underline; } }
 
 .table-scroll{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
 
@@ -409,7 +400,7 @@ table.simple td{
 }
 table.simple tr:last-child td{ border-bottom:none; }
 table.simple tbody tr{ transition:background .15s; }
-table.simple tbody tr:hover{ background:#F8FAFD; }
+@media (hover:hover){ table.simple tbody tr:hover{ background:#F8FAFD; } }
 
 .pill{
   display:inline-block;
@@ -434,7 +425,8 @@ a.alert-item{
   border-radius:10px;
   transition:background .15s;
 }
-a.alert-item:hover{ background:#F6F9FD; }
+@media (hover:hover){ a.alert-item:hover{ background:#F6F9FD; } }
+a.alert-item:active{ background:#EEF4FF; }
 a.alert-item:last-child{ border-bottom:none; }
 .alert-icon{
   flex:0 0 auto;
@@ -462,18 +454,17 @@ a.alert-item:last-child{ border-bottom:none; }
   background:conic-gradient(var(--azul-claro) 0 100%);
   position:relative;
   flex:0 0 auto;
-  transition:background .4s ease;
 }
 .donut::after{
   content:"";
   position:absolute;
-  inset:20px;
+  top:20px;right:20px;bottom:20px;left:20px;
   background:var(--blanco);
   border-radius:50%;
 }
 .donut-center{
   position:absolute;
-  inset:20px;
+  top:20px;right:20px;bottom:20px;left:20px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -516,7 +507,7 @@ a.alert-item:last-child{ border-bottom:none; }
   font-size:14px;
   transition:transform .15s,box-shadow .15s;
 }
-.step:hover .circle{ transform:scale(1.1); box-shadow:0 6px 14px rgba(30,102,245,.35); }
+@media (hover:hover){ .step:hover .circle{ transform:scale(1.1); box-shadow:0 6px 14px rgba(30,102,245,.35); } }
 .step span{ font-size:11.5px; color:var(--texto-secundario); }
 
 .empty{ text-align:center; padding:22px 10px; color:var(--texto-secundario); font-size:12px; }
@@ -555,10 +546,10 @@ a.alert-item:last-child{ border-bottom:none; }
   cursor:pointer;
 }
 #markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
-#markAllRead:hover{ background:var(--azul-claro); }
+@media (hover:hover){ #markAllRead:hover{ background:var(--azul-claro); } }
 #closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
 
-.notification-list{ max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
+.notification-list{ max-height:420px; max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
 
 a.notification-item{
   display:flex;
@@ -570,8 +561,9 @@ a.notification-item{
   text-decoration:none;
   transition:background .15s,opacity .18s,transform .18s;
 }
+a.notification-item:active{ background:#EEF4FF; }
 a.notification-item:last-child{ border-bottom:none; }
-a.notification-item:hover{ background:#F6F9FD; }
+@media (hover:hover){ a.notification-item:hover{ background:#F6F9FD; } }
 a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
 .ni-icon{
@@ -637,13 +629,20 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   .mobile-overlay{
     display:none;
     position:fixed;
-    inset:0;
+    top:0;right:0;bottom:0;left:0;
     background:rgba(0,0,0,.42);
     z-index:1150;
   }
   .mobile-overlay.show{ display:block; }
 
-  main{ width:100%; min-width:0; padding:16px 14px 30px; }
+  main{
+    width:100%;
+    min-width:0;
+    padding:16px 14px 30px;
+    padding-left:max(14px,env(safe-area-inset-left));
+    padding-right:max(14px,env(safe-area-inset-right));
+    padding-bottom:max(30px,env(safe-area-inset-bottom));
+  }
 
   .topbar{
     display:grid;
@@ -685,7 +684,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
   .donut-wrap{ flex-direction:column; align-items:center; justify-content:center; gap:20px; padding-top:5px; }
   .donut{ width:150px; height:150px; }
-  .donut::after,.donut-center{ inset:22px; }
+  .donut::after,.donut-center{ top:22px;right:22px;bottom:22px;left:22px; }
   .donut-center strong{ font-size:18px; }
   .donut-legend{ width:100%; gap:8px; }
   .donut-legend div{ width:100%; background:#F8FAFC; border-radius:8px; padding:8px 10px; }
@@ -694,7 +693,12 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 }
 
 @media (max-width:400px){
-  main{ padding:13px 10px 25px; }
+  main{
+    padding:13px 10px 25px;
+    padding-left:max(10px,env(safe-area-inset-left));
+    padding-right:max(10px,env(safe-area-inset-right));
+    padding-bottom:max(25px,env(safe-area-inset-bottom));
+  }
   .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
   .mobile-menu-btn{ width:39px; height:39px; }
   .topbar h1{ font-size:19px; }
@@ -706,7 +710,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   .panel{ padding:14px; }
   .notification-panel{ left:8px; right:8px; }
   .donut{ width:140px; height:140px; }
-  .donut::after,.donut-center{ inset:20px; }
+  .donut::after,.donut-center{ top:20px;right:20px;bottom:20px;left:20px; }
 }
 </style>
 </head>
@@ -794,10 +798,6 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
           <strong id="sbUserName">Cargando...</strong>
           <span>En línea</span>
         </div>
-        <!-- Botón para cerrar sesión -->
-        <button class="sb-logout" id="logoutBtn" type="button" title="Cerrar sesión" aria-label="Cerrar sesión">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
       </div>
     </div>
 
@@ -1021,6 +1021,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   let cargando = false;
   let ultimaActualizacion = 0;
   let notifsActuales = [];
+  let firmaPintada = '';          // evita volver a dibujar si los datos no cambiaron
 
   // ---------------------------------------------------------------
   // UTILIDADES
@@ -1158,8 +1159,15 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     $('syncEstado').textContent = 'Actualizando…';
     let hayError = false;
 
+    // Si la conexión se queda colgada, a los 15 s se considera un error
+    // y se puede reintentar (antes la pantalla podía quedar bloqueada).
+    let temporizador;
+    const tiempoAgotado = new Promise(function(_, rechazar){
+      temporizador = setTimeout(function(){ rechazar(new Error('Tiempo de espera agotado')); }, 15000);
+    });
+
     try {
-      const [prod, prov, rec] = await Promise.all([
+      const [prod, prov, rec] = await Promise.race([Promise.all([
         supabaseClient.from('productos').select('id,nombre,categoria,estado'),
         supabaseClient.from('proveedores').select('id,estado'),
         supabaseClient
@@ -1167,7 +1175,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
           .select('id,producto_id,peso,estado_producto,fecha_recepcion,productos(nombre)', { count: 'exact' })
           // nullsFirst:false → las recepciones sin fecha no aparecen como "las más recientes"
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
-      ]);
+      ]), tiempoAgotado]);
 
       if (prod.error) { hayError = true; console.error('Error productos:', prod.error); }
       else datos.productos = prod.data || [];
@@ -1183,6 +1191,8 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     } catch (err) {
       hayError = true;
       console.error('Error cargando dashboard:', err);
+    } finally {
+      clearTimeout(temporizador);
     }
 
     cargando = false;
@@ -1208,6 +1218,13 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   // ---------------------------------------------------------------
   function pintarDashboard(){
     if (!datosListos) return;
+
+    // Si los datos son idénticos a los ya dibujados, no se repite el trabajo
+    // (ahorra batería y evita parpadeos en celulares y equipos lentos).
+    const firma = JSON.stringify(datos) + '|' + errorCarga;
+    if (firma === firmaPintada) return;
+    firmaPintada = firma;
+
     const { productos, proveedores, recepciones } = datos;
 
     animarNumero($('totalProductos'),   productos.length,   fmtNumero);
@@ -1500,14 +1517,8 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   });
 
   // ---------------------------------------------------------------
-  // CERRAR SESIÓN
+  // SESIÓN
   // ---------------------------------------------------------------
-  $('logoutBtn').addEventListener('click', async function(){
-    try { await supabaseClient.auth.signOut({ scope: 'local' }); } catch (e) { console.warn(e); }
-    try { if (usuarioActual) localStorage.removeItem(claveCache()); } catch (e) {}
-    window.location.replace('login.html');
-  });
-
   // Si la sesión se cierra (en esta u otra pestaña), se vuelve al login
   supabaseClient.auth.onAuthStateChange(function(evento){
     if (evento === 'SIGNED_OUT') window.location.replace('login.html');

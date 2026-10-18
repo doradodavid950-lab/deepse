@@ -2,1147 +2,955 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Deep Sea Intelligence — Proveedores</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
+
+<!-- Conexiones anticipadas: ahorran tiempo al cargar el SDK y los datos -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <style>
-  :root{
-    --azul-oscuro:#062B5B;
-    --azul-oscuro-2:#083868;
-    --azul-medio:#1E66F5;
-    --azul-claro:#D9ECFF;
-    --verde-suave:#B9F5C5;
-    --verde-txt:#1B8A5A;
-    --rojo:#E53935;
-    --naranja:#FFA94D;
-    --amarillo:#FFD76A;
-    --morado:#E7D7FF;
-    --morado-txt:#7B5CC7;
-    --gris-claro:#F3F5F9;
-    --gris-borde:#E4E9F0;
-    --blanco:#FFFFFF;
-    --texto-principal:#0F2540;
-    --texto-secundario:#5B7089;
-    --sombra:0 10px 30px rgba(6,43,91,.08);
-    --radio:16px;
-  }
+:root{
+  --azul-oscuro:#062B5B;
+  --azul-oscuro-2:#083868;
+  --azul-medio:#1E66F5;
+  --azul-claro:#D9ECFF;
+  --verde-suave:#B9F5C5;
+  --verde-txt:#1B8A5A;
+  --rojo:#E53935;
+  --naranja:#FFA94D;
+  --amarillo:#FFD76A;
+  --morado:#E7D7FF;
+  --morado-txt:#7B5CC7;
+  --gris-claro:#F3F5F9;
+  --gris-borde:#E4E9F0;
+  --blanco:#FFFFFF;
+  --texto-principal:#0F2540;
+  --texto-secundario:#5B7089;
+  --sombra:0 10px 30px rgba(6,43,91,.08);
+  --radio:16px;
+}
 
-  *{
-    box-sizing:border-box;
-  }
+*{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
 
-  html,body{
-    margin:0;
-    padding:0;
-    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:var(--gris-claro);
-    color:var(--texto-principal);
-  }
+html{ scrollbar-width:thin; scrollbar-color:#C5D0DF transparent; }
 
-  body{
-    overflow-x:hidden;
-  }
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--gris-claro);
+  color:var(--texto-principal);
+  -webkit-font-smoothing:antialiased;
+}
+body{ overflow-x:hidden; }
+body.sin-scroll{ overflow:hidden; }
 
-  .app{
-    display:grid;
-    grid-template-columns:250px 1fr;
-    min-height:100vh;
-  }
+button,input,select,textarea{ font-family:inherit; }
+:focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
+a,button{ touch-action:manipulation; }
 
-  /* ---------------- SIDEBAR ---------------- */
+.app{
+  display:grid;
+  grid-template-columns:250px 1fr;
+  min-height:100vh;
+  min-height:100dvh;
+}
+
+/* ===================== MENÚ LATERAL ===================== */
+.sidebar{
+  background:linear-gradient(180deg,#07326F 0%,var(--azul-oscuro) 100%);
+  color:#EAF1FC;
+  display:flex;
+  flex-direction:column;
+  padding:18px 14px;
+  padding:clamp(14px,2.4vh,22px) 14px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  height:100dvh;
+  z-index:1000;
+}
+
+.sb-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:4px 8px 16px;
+  padding:4px 8px clamp(10px,2vh,20px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:12px;
+  margin-bottom:clamp(8px,1.6vh,14px);
+}
+.sb-brand .badge{
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:var(--blanco);
+  padding:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
+}
+.sb-brand .badge img{ width:100%; height:100%; object-fit:contain; display:block; }
+.sb-brand .name{ font-weight:700; font-size:17px; line-height:1.1; }
+.sb-brand .name span{ color:var(--amarillo); }
+.sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); margin-top:2px; }
+
+nav.sb-nav{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+nav.sb-nav::-webkit-scrollbar{ display:none; }
+
+.sb-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px 12px;
+  padding:clamp(6px,1.15vh,10px) 12px;
+  border-radius:10px;
+  color:rgba(255,255,255,.72);
+  text-decoration:none;
+  font-size:13.5px;
+  font-weight:500;
+  cursor:pointer;
+  transition:background .15s,color .15s,transform .15s;
+}
+.sb-link svg{ flex:0 0 auto; opacity:.85; }
+@media (hover:hover){ .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); } }
+.sb-link:active{ background:rgba(255,255,255,.12); }
+.sb-link.active{
+  background:var(--azul-medio);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(30,102,245,.35);
+}
+
+.sb-footer{
+  flex-shrink:0;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:12px;
+  padding-top:clamp(8px,1.6vh,14px);
+  margin-top:8px;
+}
+.sb-user{ display:flex; align-items:center; gap:10px; padding:4px 4px; }
+.sb-user .avatar{
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--verde-suave);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:13px;
+}
+.sb-user .info{ flex:1; min-width:0; }
+.sb-user .info strong{
+  display:block;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+.sb-user .info span::before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4ADE80;
+  margin-right:5px;
+}
+
+/* ===================== MENÚ MÓVIL ===================== */
+.mobile-menu-btn{
+  display:none;
+  border:1px solid var(--gris-borde);
+  background:var(--blanco);
+  color:var(--azul-oscuro);
+  border-radius:12px;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(6,43,91,.06);
+}
+@media (hover:hover){ .mobile-menu-btn:hover{ border-color:var(--azul-medio); } }
+.mobile-menu-btn:active{ transform:scale(.97); }
+
+.mobile-overlay{ display:none; }
+
+/* ===================== CONTENIDO ===================== */
+main{ padding:26px 32px 50px; min-width:0; }
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:24px;
+  gap:20px;
+}
+.topbar h1{ font-size:23px; margin:0; }
+.topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
+
+.top-actions{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative;
+  color:var(--azul-oscuro);
+  flex-shrink:0;
+  transition:border-color .15s,box-shadow .15s;
+}
+@media (hover:hover){ .icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
+
+/* Globo con el número de notificaciones sin leer */
+.badge-notif{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:10px;
+  background:var(--rojo);
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  border:2px solid var(--gris-claro);
+}
+.badge-notif.show{ display:flex; animation:pop .35s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pop{ from{ transform:scale(.3); opacity:0; } to{ transform:scale(1); opacity:1; } }
+
+.top-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  padding:6px 14px 6px 6px;
+  border-radius:30px;
+  max-width:220px;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
+}
+@media (hover:hover){ .top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
+.top-user .avatar{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:12px;
+  flex-shrink:0;
+}
+.top-user span{
+  font-size:13.5px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Aviso cuando algo falla al cargar los datos */
+.aviso{
+  display:none;
+  align-items:center;
+  gap:12px;
+  background:#FFF4F3;
+  border:1px solid #F8C9C6;
+  color:#9B2B27;
+  padding:11px 14px;
+  border-radius:12px;
+  font-size:13px;
+  margin-bottom:18px;
+}
+.aviso.show{ display:flex; }
+.aviso button{
+  margin-left:auto;
+  flex:0 0 auto;
+  border:none;
+  background:var(--rojo);
+  color:#fff;
+  font-weight:600;
+  padding:7px 14px;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:12.5px;
+}
+
+/* ===================== KPI ===================== */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-bottom:22px;
+}
+.kpi-card{
+  background:var(--blanco);
+  border-radius:var(--radio);
+  padding:20px;
+  box-shadow:var(--sombra);
+  border-top:4px solid var(--accent,var(--azul-medio));
+  min-width:0;
+}
+.kpi-card .top-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.kpi-card .icon-wrap{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--accent-soft,var(--azul-claro));
+  color:var(--accent,var(--azul-medio));
+  flex-shrink:0;
+}
+.kpi-card .value{ font-size:26px; font-weight:700; }
+.kpi-card .label{ font-size:12.5px; color:var(--texto-secundario); margin-top:2px; }
+.kpi-card.c1{ --accent:#1E66F5; --accent-soft:#D9ECFF; }
+.kpi-card.c2{ --accent:#7B5CC7; --accent-soft:#E7D7FF; }
+.kpi-card.c3{ --accent:#1B8A5A; --accent-soft:#B9F5C5; }
+.kpi-card.c4{ --accent:#FFA94D; --accent-soft:#FFE8D1; }
+
+/* ===== Animaciones (mismas que Inicio) ===== */
+.topbar .subtitle #saludo{ color:var(--azul-oscuro); font-weight:600; }
+
+.kpi-card{
+  transition:transform .2s ease,box-shadow .2s ease;
+  animation:subir .45s ease backwards;
+}
+@media (hover:hover){
+  .kpi-card:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(6,43,91,.13); }
+}
+.kpi-card .top-row{ margin-bottom:14px; }
+.kpi-card .delta{ font-size:11.5px; margin-top:10px; font-weight:600; color:var(--verde-txt); }
+.kpi-card .delta.neutral{ color:var(--texto-secundario); }
+.kpi-card:nth-child(2){ animation-delay:.05s; }
+.kpi-card:nth-child(3){ animation-delay:.1s; }
+.kpi-card:nth-child(4){ animation-delay:.15s; }
+.grid-2 > .panel:nth-child(1){ animation-delay:.2s; }
+.grid-2 > .panel:nth-child(2){ animation-delay:.26s; }
+main > .panel{ animation-delay:.32s; }
+
+/* Efecto de "cargando" mientras llegan los números */
+.loading-val{
+  display:inline-block;
+  min-width:64px;
+  color:transparent !important;
+  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
+  background-size:200% 100%;
+  animation:brillo 1.2s infinite linear;
+  border-radius:8px;
+}
+
+.alert-item{ transition:background .15s,transform .15s,border-color .15s; }
+@media (hover:hover){ .alert-item:hover{ background:#F6F9FD; border-color:#CFE0F7; transform:translateX(3px); } }
+
+table.simple td{ transition:background .15s; }
+
+@media (max-width:800px){ .sync-wrap{ display:none; } }
+
+/* ===================== PANELES ===================== */
+.grid-2{
+  display:grid;
+  grid-template-columns:1.6fr 1fr;
+  gap:18px;
+  margin-bottom:18px;
+}
+
+.panel{
+  background:var(--blanco);
+  border-radius:var(--radio);
+  box-shadow:var(--sombra);
+  padding:20px;
+  min-width:0;
+  animation:subir .45s ease backwards;
+}
+@keyframes subir{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+  gap:12px;
+}
+.panel-head h3{ margin:0; font-size:15.5px; }
+.panel-head p{ margin:4px 0 0; color:var(--texto-secundario); font-size:12px; }
+
+.count-badge{
+  display:inline-block;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  font-size:12px;
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:30px;
+  margin-left:8px;
+  vertical-align:middle;
+}
+
+/* ===================== FORMULARIO ===================== */
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.field{ display:flex; flex-direction:column; gap:7px; min-width:0; }
+.field.full{ grid-column:1 / -1; }
+.field label{ font-size:12px; font-weight:600; }
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1.5px solid var(--gris-borde);
+  border-radius:10px;
+  padding:10px 12px;
+  background:#fff;
+  color:var(--texto-principal);
+  font-size:13px;
+  outline:none;
+  min-width:0;
+  transition:border-color .15s,box-shadow .15s,background .15s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--azul-medio);
+  box-shadow:0 0 0 4px rgba(30,102,245,.10);
+}
+.field textarea{ min-height:80px; resize:vertical; }
+
+.field-error{ color:var(--rojo); font-size:11.5px; display:none; }
+.field.invalid input,
+.field.invalid select,
+.field.invalid textarea{ border-color:var(--rojo); background:#FFF4F3; }
+.field.invalid .field-error{ display:block; }
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:none;
+  border-radius:10px;
+  padding:10px 16px;
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .15s,box-shadow .15s,transform .1s,opacity .15s;
+}
+.btn:active{ transform:scale(.98); }
+.btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+.btn-primary{ background:var(--azul-medio); color:#fff; }
+@media (hover:hover){ .btn-primary:hover:not(:disabled){ background:#1857D6; box-shadow:0 8px 18px rgba(30,102,245,.28); } }
+
+.btn-secondary{
+  background:var(--gris-claro);
+  color:var(--texto-secundario);
+  border:1px solid var(--gris-borde);
+}
+@media (hover:hover){ .btn-secondary:hover{ border-color:var(--azul-medio); } }
+#cancelBtn{ display:none; }
+
+.btn-danger{ background:var(--rojo); color:#fff; }
+@media (hover:hover){ .btn-danger:hover:not(:disabled){ background:#C62D2A; box-shadow:0 8px 18px rgba(229,57,53,.3); } }
+
+/* ===================== RESUMEN ===================== */
+.alert-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border:1px solid var(--gris-borde);
+  border-radius:12px;
+  margin-bottom:10px;
+}
+.alert-item:last-child{ margin-bottom:0; }
+.alert-icon{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.a-info{ background:var(--azul-claro); color:var(--azul-medio); }
+.a-ok{ background:var(--verde-suave); color:var(--verde-txt); }
+.a-warn{ background:#FFE8D1; color:#B45300; }
+.alert-text{ min-width:0; }
+.alert-text strong{ display:block; font-size:12.5px; }
+.alert-text span{ display:block; font-size:11px; color:var(--texto-secundario); margin-top:2px; }
+
+/* ===================== BÚSQUEDA Y TABLA ===================== */
+.search-wrap{ margin-bottom:14px; position:relative; }
+.search-wrap svg{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--texto-secundario);
+  pointer-events:none;
+}
+.search-wrap input{
+  width:100%;
+  padding:11px 12px 11px 38px;
+  border:1.5px solid var(--gris-borde);
+  border-radius:10px;
+  outline:none;
+  font-size:13px;
+  background:var(--gris-claro);
+  color:var(--texto-principal);
+  transition:border-color .15s,background .15s;
+}
+.search-wrap input:focus{ border-color:var(--azul-medio); background:var(--blanco); }
+
+.table-wrap{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+table.simple{ width:100%; min-width:850px; border-collapse:collapse; font-size:13px; }
+table.simple th{
+  text-align:left;
+  color:var(--texto-secundario);
+  font-weight:600;
+  font-size:11.5px;
+  padding:8px 6px;
+  border-bottom:1.5px solid var(--gris-borde);
+  white-space:nowrap;
+}
+table.simple td{
+  padding:11px 6px;
+  border-bottom:1px solid #F0F3F7;
+  vertical-align:middle;
+}
+table.simple tr:last-child td{ border-bottom:none; }
+@media (hover:hover){ table.simple tbody tr:hover td{ background:#F8FAFD; } }
+
+/* Fila que se resalta al guardar o al llegar desde una notificación */
+@keyframes destello{ 0%,55%{ background-color:#FFF1B8; } 100%{ background-color:transparent; } }
+table.simple tr.resaltado td{ animation:destello 3.4s ease; }
+
+.pill{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.pill.ok{ background:var(--verde-suave); color:#146142; }
+.pill.warn{ background:#FFE3D1; color:#B45300; }
+.pill.type{ background:var(--azul-claro); color:var(--azul-medio); }
+
+.action-btn{
+  border:none;
+  border-radius:8px;
+  padding:6px 10px;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+  margin-right:4px;
+  margin-bottom:3px;
+  transition:filter .15s;
+}
+@media (hover:hover){ .action-btn:hover{ filter:brightness(.95); } }
+.edit-btn{ background:var(--azul-claro); color:var(--azul-medio); }
+.delete-btn{ background:#FCE1E0; color:var(--rojo); }
+
+.empty-state{
+  text-align:center;
+  padding:46px 20px;
+  color:var(--texto-secundario);
+  font-size:13.5px;
+  line-height:1.5;
+}
+.empty-state .icon{ font-size:36px; margin-bottom:10px; }
+.empty-state .btn{ margin-top:14px; }
+
+.mas-wrap{ text-align:center; padding-top:14px; }
+
+/* Efecto de "cargando" (esqueleto) */
+.sk-row{
+  height:46px;
+  margin-bottom:10px;
+  border-radius:10px;
+  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
+  background-size:200% 100%;
+  animation:brillo 1.2s infinite linear;
+}
+@keyframes brillo{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
+
+/* ===================== VENTANA DE CONFIRMACIÓN ===================== */
+.modal-overlay{
+  position:fixed;
+  top:0;right:0;bottom:0;left:0;
+  background:rgba(6,20,45,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:1500;
+}
+.modal-overlay.show{ display:flex; animation:aparecer .18s ease; }
+@keyframes aparecer{ from{ opacity:0; } to{ opacity:1; } }
+
+.modal-card{
+  background:var(--blanco);
+  border-radius:18px;
+  width:100%;
+  max-width:420px;
+  max-height:90vh;
+  max-height:90dvh;
+  overflow-y:auto;
+  padding:26px;
+  box-shadow:0 30px 70px rgba(6,20,45,.35);
+  animation:subir .25s ease;
+}
+.modal-head{ margin-bottom:14px; }
+.modal-head h3{ margin:0; font-size:18px; color:var(--azul-oscuro); }
+.confirm-texto{ margin:0; font-size:14px; line-height:1.55; color:var(--texto-secundario); }
+.modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid var(--gris-borde);
+}
+
+/* ===================== AVISO EMERGENTE (TOAST) ===================== */
+.toast{
+  position:fixed;
+  top:22px;
+  right:22px;
+  background:var(--azul-oscuro);
+  color:#fff;
+  padding:14px 20px;
+  border-radius:12px;
+  font-size:14px;
+  box-shadow:0 18px 45px rgba(6,43,91,.18);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transform:translateY(-140%);
+  opacity:0;
+  transition:transform .35s ease,opacity .35s ease;
+  z-index:2000;
+  max-width:calc(100vw - 24px);
+}
+.toast.show{ transform:translateY(0); opacity:1; }
+.toast.error{ background:var(--rojo); }
+.toast.success{ background:#1B8A5A; }
+
+/* ===================== NOTIFICACIONES ===================== */
+.notification-panel{
+  position:fixed;
+  top:78px;
+  right:32px;
+  width:350px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  border-radius:14px;
+  box-shadow:0 15px 35px rgba(6,43,91,.16);
+  z-index:1300;
+  display:none;
+  overflow:hidden;
+}
+.notification-panel.show{ display:block; animation:caer .18s ease; }
+@keyframes caer{ from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:none; } }
+
+.notification-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--gris-borde);
+}
+.notification-header strong{ font-size:14px; }
+.nh-actions{ display:flex; align-items:center; gap:6px; }
+.notification-header button{ border:none; background:none; color:var(--texto-secundario); cursor:pointer; }
+#markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
+@media (hover:hover){ #markAllRead:hover{ background:var(--azul-claro); } }
+#closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
+
+.notification-list{ max-height:420px; max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
+
+a.notification-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  border-bottom:1px solid #F0F3F7;
+  color:inherit;
+  text-decoration:none;
+  transition:background .15s,opacity .18s,transform .18s;
+}
+a.notification-item:active{ background:#EEF4FF; }
+a.notification-item:last-child{ border-bottom:none; }
+@media (hover:hover){ a.notification-item:hover{ background:#F6F9FD; } }
+a.notification-item.removing{ opacity:0; transform:translateX(26px); }
+
+.ni-icon{
+  flex:0 0 auto;
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+}
+.ni-icon.t-warn{ background:#FCE1E0; color:var(--rojo); }
+.ni-icon.t-pend{ background:#FFF1C9; color:#B8860B; }
+.ni-body{ min-width:0; flex:1; }
+.ni-body strong{ display:block; font-size:12.5px; margin-bottom:2px; }
+.ni-body span{ display:block; font-size:11.5px; color:var(--texto-secundario); line-height:1.4; }
+.ni-body em{ display:block; font-style:normal; font-size:10.5px; color:#8A9BB1; margin-top:3px; }
+.ni-go{ align-self:center; color:#A9B7CA; font-size:18px; }
+.notification-empty{ padding:26px 16px; text-align:center; font-size:12.5px; color:var(--texto-secundario); }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+
+/* ===================== TABLET ===================== */
+@media (max-width:1100px){
+  .app{ grid-template-columns:220px 1fr; }
+  main{ padding:24px; }
+  .kpi-grid{ grid-template-columns:repeat(2,1fr); }
+  .grid-2{ grid-template-columns:1fr; }
+}
+
+/* ===================== CELULAR ===================== */
+@media (max-width:800px){
+
+  .app{ display:block; min-height:100vh; }
 
   .sidebar{
-    background:var(--azul-oscuro);
-    color:#EAF1FC;
-    display:flex;
-    flex-direction:column;
-    padding:22px 16px;
-    position:sticky;
+    position:fixed;
     top:0;
+    left:0;
+    width:270px;
+    max-width:85vw;
     height:100vh;
-    z-index:1000;
+    height:100dvh;
+    transform:translateX(-105%);
+    transition:transform .25s ease;
+    z-index:1200;
+    box-shadow:8px 0 30px rgba(0,0,0,.20);
+    padding-top:max(14px,env(safe-area-inset-top));
+    padding-bottom:max(14px,env(safe-area-inset-bottom));
   }
-
-  .sb-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:6px 10px 22px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:14px;
-  }
-
-  .sb-brand .badge{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:rgba(255,255,255,.12);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .sb-brand .name{
-    font-weight:700;
-    font-size:16px;
-    line-height:1.1;
-  }
-
-  .sb-brand .name span{
-    color:var(--amarillo);
-  }
-
-  .sb-brand .sub{
-    font-size:10.5px;
-    color:rgba(255,255,255,.55);
-  }
-
-  nav.sb-nav{
-    flex:1;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-  }
-
-  .sb-link{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
-    border-radius:10px;
-    color:rgba(255,255,255,.72);
-    text-decoration:none;
-    font-size:14px;
-    font-weight:500;
-    cursor:pointer;
-    border:none;
-    background:none;
-    width:100%;
-    text-align:left;
-  }
-
-  .sb-link svg{
-    flex:0 0 auto;
-    opacity:.85;
-  }
-
-  .sb-link:hover{
-    background:rgba(255,255,255,.06);
-    color:#fff;
-  }
-
-  .sb-link.active{
-    background:var(--azul-medio);
-    color:#fff;
-    box-shadow:0 6px 16px rgba(30,102,245,.35);
-  }
-
-  .sb-footer{
-    border-top:1px solid rgba(255,255,255,.08);
-    padding-top:14px;
-    margin-top:10px;
-  }
-
-  .sb-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px 8px;
-  }
-
-  .sb-user .avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:var(--verde-suave);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:13px;
-    flex-shrink:0;
-  }
-
-  .sb-user .info{
-    min-width:0;
-  }
-
-  .sb-user .info strong{
-    display:block;
-    font-size:13px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-
-  .sb-user .info span{
-    font-size:11px;
-    color:rgba(255,255,255,.5);
-  }
-
-  /* ---------------- BOTÓN MENÚ MÓVIL — IGUAL QUE INICIO ---------------- */
-
-  .mobile-menu-btn{
-    display:none;
-    border:1px solid var(--gris-borde);
-    background:var(--blanco);
-    color:var(--azul-oscuro);
-    border-radius:12px;
-    cursor:pointer;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 4px 12px rgba(6,43,91,.06);
-  }
-
-  .mobile-menu-btn:hover{
-    border-color:var(--azul-medio);
-  }
-
-  .mobile-menu-btn:active{
-    transform:scale(.97);
-  }
+  .sidebar.mobile-open{ transform:translateX(0); }
 
   .mobile-overlay{
+    display:none;
     position:fixed;
-    inset:0;
-    background:rgba(3,22,45,.45);
-    z-index:1100;
-    opacity:0;
-    visibility:hidden;
-    transition:.25s ease;
+    top:0;right:0;bottom:0;left:0;
+    background:rgba(0,0,0,.42);
+    z-index:1150;
   }
-
-  .mobile-overlay.show{
-    opacity:1;
-    visibility:visible;
-  }
-
-  /* ---------------- MAIN ---------------- */
+  .mobile-overlay.show{ display:block; }
 
   main{
-    padding:26px 32px 50px;
+    width:100%;
     min-width:0;
+    padding:16px 14px 30px;
+    padding-left:max(14px,env(safe-area-inset-left));
+    padding-right:max(14px,env(safe-area-inset-right));
+    padding-bottom:max(30px,env(safe-area-inset-bottom));
   }
 
   .topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:26px;
-    gap:20px;
-  }
-
-  .topbar h1{
-    font-size:23px;
-    margin:0;
-  }
-
-  .topbar .subtitle{
-    font-size:13px;
-    color:var(--texto-secundario);
-    margin-top:3px;
-  }
-
-  .top-actions{
-    display:flex;
-    align-items:center;
-    gap:16px;
-  }
-
-  .icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:relative;
-    color:var(--azul-oscuro);
-    flex-shrink:0;
-  }
-
-  .icon-btn:hover{
-    border-color:var(--azul-medio);
-  }
-
-  .dot-alert{
-    position:absolute;
-    top:8px;
-    right:9px;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--rojo);
-    border:1.5px solid var(--blanco);
-  }
-
-  .top-user{
-    display:flex;
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr) auto;
     align-items:center;
     gap:10px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    padding:6px 14px 6px 6px;
-    border-radius:30px;
-    max-width:220px;
+    margin-bottom:20px;
   }
+  .mobile-menu-btn{ display:flex; width:42px; height:42px; }
+  .topbar h1{ font-size:21px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar .subtitle{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-  .top-user .avatar{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:12px;
-    flex-shrink:0;
-  }
+  .top-actions{ gap:8px; }
+  .top-user{ padding:4px; border-radius:50%; }
+  .top-user span{ display:none; }
+  .top-user .avatar{ width:32px; height:32px; }
 
-  .top-user span{
-    font-size:13.5px;
-    font-weight:600;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
+  .kpi-grid{ grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .kpi-card{ padding:15px; border-radius:14px; }
+  .kpi-card .value{ font-size:22px; }
+  .kpi-card .label{ font-size:11px; line-height:1.3; }
+  .kpi-card .icon-wrap{ width:34px; height:34px; }
 
-  /* ---------------- KPI CARDS ---------------- */
+  .grid-2{ gap:14px; margin-bottom:14px; }
 
-  .kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-    margin-bottom:22px;
-  }
+  .panel{ width:100%; padding:16px; border-radius:14px; }
+  .panel-head{ align-items:flex-start; gap:10px; }
+  .panel-head h3{ font-size:15px; line-height:1.3; }
+  .panel-head p{ font-size:11px; line-height:1.4; }
 
-  .kpi-card{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    padding:20px;
-    box-shadow:var(--sombra);
-    border-top:4px solid var(--accent,var(--azul-medio));
-    min-width:0;
-  }
-
-  .kpi-card .top-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-    gap:10px;
-  }
-
-  .kpi-card .icon-wrap{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--accent-soft,var(--azul-claro));
-    color:var(--accent,var(--azul-medio));
-    flex-shrink:0;
-  }
-
-  .kpi-card .value{
-    font-size:26px;
-    font-weight:700;
-  }
-
-  .kpi-card .label{
-    font-size:12.5px;
-    color:var(--texto-secundario);
-    margin-top:2px;
-  }
-
-  .kpi-card.c1{
-    --accent:#1E66F5;
-    --accent-soft:#D9ECFF;
-  }
-
-  .kpi-card.c2{
-    --accent:#7B5CC7;
-    --accent-soft:#E7D7FF;
-  }
-
-  .kpi-card.c3{
-    --accent:#1B8A5A;
-    --accent-soft:#B9F5C5;
-  }
-
-  .kpi-card.c4{
-    --accent:#FFA94D;
-    --accent-soft:#FFE8D1;
-  }
-
-  /* ---------------- GRID ---------------- */
-
-  .grid-2{
-    display:grid;
-    grid-template-columns:1.6fr 1fr;
-    gap:18px;
-    margin-bottom:18px;
-  }
-
-  .panel{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    box-shadow:var(--sombra);
-    padding:20px;
-    min-width:0;
-  }
-
-  .panel-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:14px;
-    gap:12px;
-  }
-
-  .panel-head h3{
-    margin:0;
-    font-size:15.5px;
-  }
-
-  .panel-head p{
-    margin:4px 0 0;
-    color:var(--texto-secundario);
-    font-size:12px;
-  }
-
-  /* ---------------- FORMULARIO ---------------- */
-
-  .form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
-  }
-
-  .field{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-    min-width:0;
-  }
-
-  .field.full{
-    grid-column:1 / -1;
-  }
-
-  .field label{
-    font-size:12px;
-    font-weight:600;
-  }
-
+  .form-grid{ grid-template-columns:1fr; gap:13px; }
+  .field.full{ grid-column:auto; }
   .field input,
   .field select,
-  .field textarea{
+  .field textarea{ font-size:16px; padding:11px; min-height:46px; }   /* 16px evita el zoom en iPhone */
+  .field textarea{ min-height:90px; }
+
+  .form-actions{ display:grid; grid-template-columns:1fr; width:100%; }
+  .form-actions .btn{ width:100%; padding:12px; min-height:46px; font-size:14px; }
+
+  .search-wrap input{ font-size:16px; min-height:48px; padding-top:12px; padding-bottom:12px; }
+
+  /* La tabla se convierte en tarjetas */
+  .table-wrap{ width:100%; overflow:visible; margin:0; }
+  table.simple{ width:100%; min-width:0; display:block; border-collapse:separate; }
+  table.simple thead{ display:none; }
+  table.simple tbody{ display:block; width:100%; }
+
+  table.simple tbody tr{
+    display:block;
     width:100%;
-    border:1px solid var(--gris-borde);
-    border-radius:10px;
-    padding:10px 12px;
     background:#fff;
-    color:var(--texto-principal);
-    font-family:inherit;
-    font-size:13px;
-    outline:none;
-    min-width:0;
-  }
-
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus{
-    border-color:var(--azul-medio);
-    box-shadow:0 0 0 3px rgba(30,102,245,.08);
-  }
-
-  .field textarea{
-    min-height:80px;
-    resize:vertical;
-  }
-
-  .form-actions{
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
-    margin-top:18px;
-    flex-wrap:wrap;
-  }
-
-  .btn{
-    border:none;
-    border-radius:10px;
-    padding:10px 15px;
-    font-size:12.5px;
-    font-weight:600;
-    cursor:pointer;
-  }
-
-  .btn-primary{
-    background:var(--azul-medio);
-    color:#fff;
-  }
-
-  .btn-primary:hover{
-    opacity:.9;
-  }
-
-  .btn-secondary{
-    background:var(--gris-claro);
-    color:var(--texto-secundario);
     border:1px solid var(--gris-borde);
-    display:none;
-  }
-
-  /* ---------------- RESUMEN ---------------- */
-
-  .alert-item{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px;
-    border:1px solid var(--gris-borde);
-    border-radius:12px;
+    border-radius:13px;
+    padding:10px 12px;
     margin-bottom:10px;
+    box-shadow:0 5px 16px rgba(6,43,91,.05);
   }
-
-  .alert-item:last-child{
-    margin-bottom:0;
-  }
-
-  .alert-icon{
-    width:34px;
-    height:34px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
-  }
-
-  .a-info{
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-  }
-
-  .a-ok{
-    background:var(--verde-suave);
-    color:var(--verde-txt);
-  }
-
-  .a-warn{
-    background:#FFE8D1;
-    color:#B45300;
-  }
-
-  .alert-text{
-    min-width:0;
-  }
-
-  .alert-text strong{
-    display:block;
-    font-size:12.5px;
-  }
-
-  .alert-text span{
-    display:block;
-    font-size:11px;
-    color:var(--texto-secundario);
-    margin-top:2px;
-  }
-
-  /* ---------------- TABLA ---------------- */
-
-  .search-wrap{
-    margin-bottom:14px;
-    position:relative;
-  }
-
-  .search-wrap svg{
-    position:absolute;
-    left:12px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--texto-secundario);
-  }
-
-  .search-wrap input{
-    width:100%;
-    padding:11px 12px 11px 38px;
-    border:1px solid var(--gris-borde);
-    border-radius:10px;
-    outline:none;
-    font-family:inherit;
-    font-size:13px;
-  }
-
-  .search-wrap input:focus{
-    border-color:var(--azul-medio);
-  }
-
-  .table-wrap{
-    width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-  }
-
-  table.simple{
-    width:100%;
-    min-width:850px;
-    border-collapse:collapse;
-    font-size:13px;
-  }
-
-  table.simple th{
-    text-align:left;
-    color:var(--texto-secundario);
-    font-weight:600;
-    font-size:11.5px;
-    padding:8px 6px;
-    border-bottom:1px solid var(--gris-borde);
-    white-space:nowrap;
-  }
+  table.simple tbody tr:hover td{ background:transparent; }
+  table.simple tr.resaltado td{ animation:none; }
+  table.simple tr.resaltado{ animation:destello 3.4s ease; }
 
   table.simple td{
-    padding:11px 6px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    width:100%;
+    padding:8px 0;
     border-bottom:1px solid #F0F3F7;
-    vertical-align:middle;
+    text-align:right;
+    line-height:1.35;
+    overflow-wrap:anywhere;
   }
-
-  table.simple tr:last-child td{
-    border-bottom:none;
-  }
-
-  .pill{
-    display:inline-block;
-    padding:3px 10px;
-    border-radius:30px;
-    font-size:11px;
-    font-weight:700;
-    white-space:nowrap;
-  }
-
-  .pill.ok{
-    background:var(--verde-suave);
-    color:#146142;
-  }
-
-  .pill.warn{
-    background:#FFE3D1;
-    color:#B45300;
-  }
-
-  .pill.type{
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-  }
-
-  .action-btn{
-    border:none;
-    border-radius:8px;
-    padding:6px 9px;
-    font-size:11px;
-    font-weight:600;
-    cursor:pointer;
-    margin-right:4px;
-    margin-bottom:3px;
-  }
-
-  .edit-btn{
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-  }
-
-  .delete-btn{
-    background:#FCE1E0;
-    color:var(--rojo);
-  }
-
-  .empty-row{
-    text-align:center;
+  table.simple td:last-child{ border-bottom:none; padding-bottom:2px; }
+  table.simple td::before{
     color:var(--texto-secundario);
-    padding:30px !important;
-  }
-
-  /* ---------------- MENSAJES ---------------- */
-
-  .message{
-    display:none;
-    padding:11px 14px;
-    border-radius:10px;
-    margin-bottom:18px;
-    font-size:12.5px;
+    font-size:11px;
     font-weight:600;
+    text-align:left;
+    flex:0 0 92px;
   }
+  table.simple td:nth-child(1)::before{ content:'Proveedor'; }
+  table.simple td:nth-child(2)::before{ content:'Tipo'; }
+  table.simple td:nth-child(3)::before{ content:'Ubicación'; }
+  table.simple td:nth-child(4)::before{ content:'Teléfono'; }
+  table.simple td:nth-child(5)::before{ content:'Correo'; }
+  table.simple td:nth-child(6)::before{ content:'Estado'; }
+  table.simple td:nth-child(7)::before{ content:'Acciones'; }
+  table.simple td:first-child strong{ color:var(--texto-principal); }
+  table.simple td:last-child{ justify-content:flex-end; flex-wrap:wrap; gap:6px; }
+  table.simple td:last-child::before{ margin-right:auto; }
 
-  .message.success{
-    display:block;
-    background:var(--verde-suave);
-    color:#146142;
+  .action-btn{ margin:0; min-height:36px; padding:7px 12px; }
+
+  .modal-overlay{ padding:0; align-items:flex-end; }
+  .modal-card{
+    max-width:none;
+    border-radius:20px 20px 0 0;
+    padding:20px;
+    padding-bottom:max(20px,env(safe-area-inset-bottom));
   }
-
-  .message.error{
-    display:block;
-    background:#FCE1E0;
-    color:#B42318;
-  }
-
-  /* ---------------- NOTIFICACIONES ---------------- */
-
-  .notification-wrap{
-    position:relative;
-  }
+  .modal-footer{ flex-direction:column-reverse; }
+  .modal-footer .btn{ width:100%; min-height:46px; font-size:14px; }
 
   .notification-panel{
-    display:none;
-    position:absolute;
-    right:0;
-    top:48px;
-    width:300px;
-    max-width:calc(100vw - 30px);
-    background:#fff;
-    border:1px solid var(--gris-borde);
-    border-radius:14px;
-    box-shadow:var(--sombra);
-    z-index:1100;
-    padding:16px;
+    position:fixed;
+    top:70px;
+    right:10px;
+    left:10px;
+    width:auto;
+    max-width:none;
+    max-height:calc(100vh - 85px);
+    overflow-y:auto;
   }
 
-  .notification-panel.show{
-    display:block;
+  .toast{
+    top:auto;
+    bottom:max(18px,env(safe-area-inset-bottom));
+    left:14px;
+    right:14px;
+    justify-content:center;
+    text-align:center;
   }
+}
 
-  .notification-panel strong{
-    font-size:13px;
+@media (max-width:400px){
+  main{
+    padding:13px 10px 25px;
+    padding-left:max(10px,env(safe-area-inset-left));
+    padding-right:max(10px,env(safe-area-inset-right));
+    padding-bottom:max(25px,env(safe-area-inset-bottom));
   }
-
-  .notification-panel p{
-    font-size:11.5px;
-    color:var(--texto-secundario);
-    margin:7px 0 0;
-  }
-
-  /* ---------------- TABLET ---------------- */
-
-  @media(max-width:1100px){
-    .app{
-      grid-template-columns:220px 1fr;
-    }
-
-    main{
-      padding:24px;
-    }
-
-    .kpi-grid{
-      grid-template-columns:repeat(2,1fr);
-    }
-
-    .grid-2{
-      grid-template-columns:1fr;
-    }
-  }
-
-  /* ---------------- CELULAR ---------------- */
-
-  @media(max-width:800px){
-
-    html,
-    body{
-      width:100%;
-      overflow-x:hidden;
-    }
-
-    body{
-      overflow-x:hidden;
-    }
-
-    .app{
-      grid-template-columns:1fr;
-    }
-
-    .sidebar{
-      position:fixed;
-      left:0;
-      top:0;
-      bottom:0;
-      width:250px;
-      height:100vh;
-      z-index:1200;
-      transform:translateX(-100%);
-      transition:transform .25s ease;
-      display:flex;
-      box-shadow:10px 0 30px rgba(6,43,91,.22);
-      overflow-y:auto;
-    }
-
-    .sidebar.mobile-open{
-      transform:translateX(0);
-    }
-
-    main{
-      width:100%;
-      min-width:0;
-      padding:16px 14px 30px;
-    }
-
-    .topbar{
-      display:grid;
-      grid-template-columns:42px minmax(0,1fr) auto;
-      align-items:center;
-      gap:10px;
-      margin-bottom:20px;
-    }
-
-    .mobile-menu-btn{
-      display:flex;
-      width:42px;
-      height:42px;
-    }
-
-    .topbar h1{
-      font-size:21px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .topbar .subtitle{
-      font-size:11px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .top-actions{
-      gap:7px;
-      flex-shrink:0;
-    }
-
-    .icon-btn{
-      width:40px;
-      height:40px;
-    }
-
-    .top-user{
-      display:none;
-    }
-
-    .kpi-grid{
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-bottom:16px;
-    }
-
-    .kpi-card{
-      padding:15px;
-      border-radius:14px;
-    }
-
-    .kpi-card .top-row{
-      margin-bottom:8px;
-    }
-
-    .kpi-card .value{
-      font-size:22px;
-    }
-
-    .kpi-card .label{
-      font-size:11px;
-      line-height:1.3;
-    }
-
-    .kpi-card .icon-wrap{
-      width:34px;
-      height:34px;
-    }
-
-    .grid-2{
-      grid-template-columns:1fr;
-      gap:14px;
-      margin-bottom:14px;
-    }
-
-    .panel{
-      width:100%;
-      padding:16px;
-      border-radius:14px;
-    }
-
-    .panel-head{
-      align-items:flex-start;
-      gap:10px;
-    }
-
-    .panel-head h3{
-      font-size:15px;
-      line-height:1.3;
-    }
-
-    .panel-head p{
-      font-size:11px;
-      line-height:1.4;
-    }
-
-    .form-grid{
-      grid-template-columns:1fr;
-      gap:13px;
-    }
-
-    .field.full{
-      grid-column:auto;
-    }
-
-    .field input,
-    .field select,
-    .field textarea{
-      font-size:13px;
-      padding:11px;
-      min-height:42px;
-    }
-
-    .field textarea{
-      min-height:90px;
-    }
-
-    .form-actions{
-      display:grid;
-      grid-template-columns:1fr;
-      width:100%;
-    }
-
-    .form-actions .btn{
-      width:100%;
-      padding:11px;
-    }
-
-    .search-wrap{
-      margin-bottom:12px;
-    }
-
-    .search-wrap input{
-      font-size:13px;
-      padding-top:12px;
-      padding-bottom:12px;
-    }
-
-    /* Tabla convertida en tarjetas para celular */
-
-    .table-wrap{
-      width:100%;
-      overflow:visible;
-      margin:0;
-    }
-
-    table.simple{
-      width:100%;
-      min-width:0;
-      display:block;
-      border-collapse:separate;
-    }
-
-    table.simple thead{
-      display:none;
-    }
-
-    table.simple tbody{
-      display:block;
-      width:100%;
-    }
-
-    table.simple tbody tr{
-      display:block;
-      width:100%;
-      background:#fff;
-      border:1px solid var(--gris-borde);
-      border-radius:13px;
-      padding:10px 12px;
-      margin-bottom:10px;
-      box-shadow:0 5px 16px rgba(6,43,91,.05);
-    }
-
-    table.simple tbody tr:hover td{
-      background:transparent;
-    }
-
-    table.simple td{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      width:100%;
-      padding:8px 0;
-      border-bottom:1px solid #F0F3F7;
-      text-align:right;
-      line-height:1.35;
-      overflow-wrap:anywhere;
-    }
-
-    table.simple td:last-child{
-      border-bottom:none;
-      padding-bottom:2px;
-    }
-
-    table.simple td::before{
-      color:var(--texto-secundario);
-      font-size:11px;
-      font-weight:600;
-      text-align:left;
-      flex:0 0 92px;
-    }
-
-    table.simple td:nth-child(1)::before{
-      content:'Proveedor';
-    }
-
-    table.simple td:nth-child(2)::before{
-      content:'Tipo';
-    }
-
-    table.simple td:nth-child(3)::before{
-      content:'Ubicación';
-    }
-
-    table.simple td:nth-child(4)::before{
-      content:'Teléfono';
-    }
-
-    table.simple td:nth-child(5)::before{
-      content:'Correo';
-    }
-
-    table.simple td:nth-child(6)::before{
-      content:'Estado';
-    }
-
-    table.simple td:nth-child(7)::before{
-      content:'Acciones';
-    }
-
-    table.simple td:first-child strong{
-      color:var(--texto-principal);
-    }
-
-    table.simple td:last-child{
-      justify-content:flex-end;
-      flex-wrap:wrap;
-      gap:6px;
-    }
-
-    table.simple td:last-child::before{
-      margin-right:auto;
-    }
-
-    .action-btn{
-      margin:0;
-      min-height:34px;
-      padding:7px 11px;
-    }
-
-    .empty-row{
-      display:block !important;
-      text-align:center !important;
-      padding:25px 10px !important;
-    }
-
-    .empty-row::before{
-      display:none !important;
-    }
-
-    .notification-panel{
-      position:fixed;
-      top:70px;
-      right:10px;
-      left:10px;
-      width:auto;
-      max-width:none;
-      max-height:calc(100vh - 85px);
-      overflow-y:auto;
-      z-index:1300;
-    }
-
-    .alert-item{
-      padding:11px;
-    }
-  }
-
-  /* ---------------- CELULAR PEQUEÑO ---------------- */
-
-  @media(max-width:400px){
-
-    main{
-      padding:13px 10px 25px;
-    }
-
-    .topbar{
-      grid-template-columns:39px minmax(0,1fr) auto;
-      gap:7px;
-    }
-
-    .mobile-menu-btn{
-      width:39px;
-      height:39px;
-    }
-
-    .topbar h1{
-      font-size:19px;
-    }
-
-    .topbar .subtitle{
-      font-size:10px;
-    }
-
-    .icon-btn{
-      width:39px;
-      height:39px;
-    }
-
-    .top-actions{
-      gap:5px;
-    }
-
-    .kpi-grid{
-      gap:8px;
-    }
-
-    .kpi-card{
-      padding:13px;
-    }
-
-    .kpi-card .value{
-      font-size:20px;
-    }
-
-    .kpi-card .label{
-      font-size:10.5px;
-    }
-
-    .kpi-card .icon-wrap{
-      width:30px;
-      height:30px;
-    }
-
-    .panel{
-      padding:14px;
-    }
-
-    table.simple td::before{
-      flex-basis:82px;
-    }
-
-    .notification-panel{
-      left:8px;
-      right:8px;
-    }
-  }
+  .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
+  .mobile-menu-btn{ width:39px; height:39px; }
+  .topbar h1{ font-size:19px; }
+  .topbar .subtitle{ font-size:10px; }
+  .icon-btn{ width:39px; height:39px; }
+  .top-actions{ gap:5px; }
+  .kpi-grid{ gap:8px; }
+  .kpi-card{ padding:13px; }
+  .kpi-card .value{ font-size:20px; }
+  .kpi-card .label{ font-size:10.5px; }
+  .kpi-card .icon-wrap{ width:30px; height:30px; }
+  .panel{ padding:14px; }
+  table.simple td::before{ flex-basis:82px; }
+  .notification-panel{ left:8px; right:8px; }
+}
 </style>
 </head>
 
@@ -1150,225 +958,73 @@
 
 <div class="app">
 
-  <!-- SIDEBAR -->
-
+  <!-- ===================== MENÚ LATERAL ===================== -->
   <aside class="sidebar" id="sidebar">
 
     <div class="sb-brand">
       <div class="badge">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-            stroke="#FFD76A"
-            stroke-width="1.6"
-            stroke-linejoin="round"
-          />
-          <circle
-            cx="16"
-            cy="10.3"
-            r=".9"
-            fill="#FFD76A"
-          />
-        </svg>
+        <img src="logo-emblema.png" alt="Deep Sea Intelligence">
       </div>
-
       <div>
-        <div class="name">
-          Deep <span>Sea</span>
-        </div>
-        <div class="sub">
-          Gestión de recursos marinos
-        </div>
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
       </div>
     </div>
 
     <nav class="sb-nav" id="sbNav">
 
       <a class="sb-link" data-view="inicio" href="inicio.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/>
-          <path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
         Inicio
       </a>
 
       <a class="sb-link" data-view="productos" href="productos.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <circle
-            cx="12"
-            cy="12"
-            r="2.2"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
         Productos
       </a>
 
-      <a class="sb-link active" data-view="proveedores" href="proveedores.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle
-            cx="12"
-            cy="8"
-            r="3.4"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <path
-            d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-        </svg>
+      <a class="sb-link active" data-view="proveedores" href="proveedores.html" aria-current="page">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
         Proveedores
       </a>
 
       <a class="sb-link" data-view="recepciones" href="recepciones.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <rect
-            x="4"
-            y="7"
-            width="16"
-            height="13"
-            rx="2"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <path
-            d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
         Recepciones
       </a>
 
       <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M9 20v-6h6v6"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
         Almacenamiento
       </a>
 
       <a class="sb-link" data-view="ventas" href="ventas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle cx="9" cy="20" r="1.3" fill="currentColor"/>
-          <circle cx="17" cy="20" r="1.3" fill="currentColor"/>
-          <path
-            d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
         Ventas
       </a>
 
       <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M3 6h18M3 12h18M3 18h12"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <circle
-            cx="20"
-            cy="18"
-            r="1.6"
-            fill="currentColor"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
         Trazabilidad
       </a>
 
       <a class="sb-link" data-view="reportes" href="reportes.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M4 20V10M12 20V4M20 20v-7"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         Reportes
       </a>
 
       <a class="sb-link" data-view="normas" href="normas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <path
-            d="m9 12 2 2 4-4"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
         Normas y Calidad
       </a>
 
       <a class="sb-link" data-view="usuarios" href="usuarios.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle
-            cx="9"
-            cy="8"
-            r="3"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <path
-            d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <circle
-            cx="18"
-            cy="8"
-            r="2.2"
-            stroke="currentColor"
-            stroke-width="1.5"
-          />
-          <path
-            d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-            stroke="currentColor"
-            stroke-width="1.5"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
         Usuarios
       </a>
 
       <a class="sb-link" data-view="configuracion" href="configuracion.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle
-            cx="12"
-            cy="12"
-            r="3"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-          <path
-            d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-            stroke="currentColor"
-            stroke-width="1.3"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         Configuración
       </a>
 
@@ -1377,7 +1033,6 @@
     <div class="sb-footer">
       <div class="sb-user">
         <div class="avatar" id="sbAvatar">C</div>
-
         <div class="info">
           <strong id="sbUserName">Cargando...</strong>
           <span>En línea</span>
@@ -1387,124 +1042,74 @@
 
   </aside>
 
-  <div
-    class="mobile-overlay"
-    id="mobileOverlay"
-  ></div>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
-  <!-- MAIN -->
-
+  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
   <main>
 
     <div class="topbar">
 
-      <button
-        class="mobile-menu-btn"
-        id="mobileMenuBtn"
-        type="button"
-        aria-label="Abrir menú"
-        title="Abrir menú"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M4 6h16M4 12h16M4 18h16"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-          />
-        </svg>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
 
       <div>
         <h1>Proveedores</h1>
-
         <div class="subtitle">
-          Gestiona y consulta tus proveedores registrados
+          <span id="saludo">Gestiona tus proveedores</span> —
+          <span id="todayDate"></span>
+          <span class="sync-wrap">· <span id="syncEstado"></span></span>
         </div>
       </div>
 
       <div class="top-actions">
 
         <div class="notification-wrap">
-
-          <button
-            class="icon-btn"
-            id="notificationBtn"
-            title="Notificaciones"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-                stroke="currentColor"
-                stroke-width="1.6"
-              />
-              <path
-                d="M10 20a2 2 0 0 0 4 0"
-                stroke="currentColor"
-                stroke-width="1.6"
-              />
-            </svg>
-
-            <span class="dot-alert"></span>
+          <button class="icon-btn" id="notificationBtn" title="Notificaciones" type="button" aria-label="Notificaciones" aria-expanded="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+            <span class="badge-notif" id="notificationBadge"></span>
           </button>
 
-          <div
-            class="notification-panel"
-            id="notificationPanel"
-          >
-            <strong>Notificaciones</strong>
-
-            <p>
-              Aquí aparecerán las notificaciones relacionadas con los proveedores.
-            </p>
+          <div class="notification-panel" id="notificationPanel">
+            <div class="notification-header">
+              <strong>Notificaciones</strong>
+              <div class="nh-actions">
+                <button id="markAllRead" type="button" style="display:none">Marcar todas como leídas</button>
+                <button id="closeNotifications" type="button" aria-label="Cerrar">×</button>
+              </div>
+            </div>
+            <div class="notification-list" id="notificationContent">
+              <div class="notification-empty">Cargando notificaciones...</div>
+            </div>
           </div>
-
         </div>
 
-        <div class="top-user">
+        <a href="configuracion.html" class="top-user" title="Ir a configuración">
           <div class="avatar" id="topAvatar">C</div>
           <span id="topUserName">Cargando...</span>
-        </div>
+        </a>
 
       </div>
-
     </div>
 
-    <!-- MENSAJE -->
-
-    <div id="message" class="message"></div>
+    <!-- Aviso de error de carga -->
+    <div class="aviso" id="aviso" role="alert">
+      <span id="avisoTexto"></span>
+      <button id="avisoBtn" type="button">Reintentar</button>
+    </div>
 
     <!-- KPI -->
-
     <div class="kpi-grid">
 
       <div class="kpi-card c1">
         <div class="top-row">
           <div>
-            <div class="value" id="totalProveedores">0</div>
+            <div class="value loading-val" id="totalProveedores">0000</div>
             <div class="label">Total proveedores</div>
+            <div class="delta ">Proveedores registrados</div>
           </div>
-
           <div class="icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <circle
-                cx="12"
-                cy="8"
-                r="3.4"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-              <path
-                d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
         </div>
       </div>
@@ -1512,30 +1117,12 @@
       <div class="kpi-card c2">
         <div class="top-row">
           <div>
-            <div class="value" id="totalPescadores">0</div>
+            <div class="value loading-val" id="totalPescadores">0000</div>
             <div class="label">Pescadores</div>
+            <div class="delta ">Captura en el mar</div>
           </div>
-
           <div class="icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M3 13c3-4 6-6 10-6 3 0 5 2 8 5"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-              <path
-                d="M3 13c2 1 4 3 7 3"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-              <circle
-                cx="18"
-                cy="7"
-                r="2"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 13c3-4 6-6 10-6 3 0 5 2 8 5" stroke="currentColor" stroke-width="1.7"/><path d="M3 13c2 1 4 3 7 3" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="7" r="2" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
         </div>
       </div>
@@ -1543,24 +1130,12 @@
       <div class="kpi-card c3">
         <div class="top-row">
           <div>
-            <div class="value" id="totalCriaderos">0</div>
+            <div class="value loading-val" id="totalCriaderos">0000</div>
             <div class="label">Criaderos</div>
+            <div class="delta ">Producción controlada</div>
           </div>
-
           <div class="icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M3 20V8l9-5 9 5v12"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M8 20v-6h8v6"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 20V8l9-5 9 5v12" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 20v-6h8v6" stroke="currentColor" stroke-width="1.7"/></svg>
           </div>
         </div>
       </div>
@@ -1568,28 +1143,19 @@
       <div class="kpi-card c4">
         <div class="top-row">
           <div>
-            <div class="value" id="totalActivos">0</div>
+            <div class="value loading-val" id="totalActivos">0000</div>
             <div class="label">Proveedores activos</div>
+            <div class="delta neutral">En operación</div>
           </div>
-
           <div class="icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path
-                d="m5 12 4 4L19 6"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- FORMULARIO -->
-
+    <!-- Formulario + resumen -->
     <div class="grid-2">
 
       <section class="panel">
@@ -1597,320 +1163,148 @@
         <div class="panel-head">
           <div>
             <h3 id="formTitle">Registrar proveedor</h3>
-            <p>
-              Agrega un nuevo proveedor al sistema.
-            </p>
+            <p>Agrega un nuevo proveedor al sistema.</p>
           </div>
         </div>
 
-        <form id="providerForm">
+        <form id="providerForm" novalidate>
 
           <div class="form-grid">
 
-            <div class="field">
-              <label for="nombre">
-                Nombre del proveedor
-              </label>
-
-              <input
-                type="text"
-                id="nombre"
-                placeholder="Nombre completo"
-                required
-              >
+            <div class="field" id="fieldNombre">
+              <label for="nombre">Nombre del proveedor *</label>
+              <input type="text" id="nombre" placeholder="Nombre completo" maxlength="100" autocomplete="off">
+              <div class="field-error">El nombre es obligatorio.</div>
             </div>
 
-            <div class="field">
-              <label for="tipo">
-                Tipo de proveedor
-              </label>
-
-              <select id="tipo" required>
-                <option value="">
-                  Seleccionar
-                </option>
-
-                <option value="Pescador">
-                  Pescador
-                </option>
-
-                <option value="Criadero">
-                  Criadero
-                </option>
+            <div class="field" id="fieldTipo">
+              <label for="tipo">Tipo de proveedor *</label>
+              <select id="tipo">
+                <option value="">Seleccionar</option>
+                <option value="Pescador">Pescador</option>
+                <option value="Criadero">Criadero</option>
               </select>
+              <div class="field-error">Selecciona un tipo de proveedor.</div>
             </div>
 
-            <div class="field">
-              <label for="ubicacion">
-                Ubicación
-              </label>
-
-              <input
-                type="text"
-                id="ubicacion"
-                placeholder="Ciudad o municipio"
-                required
-              >
+            <div class="field" id="fieldUbicacion">
+              <label for="ubicacion">Ubicación *</label>
+              <input type="text" id="ubicacion" placeholder="Ciudad o municipio" maxlength="100" list="listaUbicaciones" autocomplete="off">
+              <datalist id="listaUbicaciones"></datalist>
+              <div class="field-error">La ubicación es obligatoria.</div>
             </div>
 
-            <div class="field">
-              <label for="telefono">
-                Teléfono
-              </label>
-
-              <input
-                type="tel"
-                id="telefono"
-                placeholder="Número de contacto"
-              >
+            <div class="field" id="fieldTelefono">
+              <label for="telefono">Teléfono</label>
+              <input type="tel" id="telefono" placeholder="Número de contacto" maxlength="20" inputmode="tel" autocomplete="off">
+              <div class="field-error">Ingresa un teléfono válido.</div>
             </div>
 
-            <div class="field">
-              <label for="email">
-                Correo electrónico
-              </label>
-
-              <input
-                type="email"
-                id="email"
-                placeholder="correo@ejemplo.com"
-              >
+            <div class="field" id="fieldEmail">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" placeholder="correo@ejemplo.com" maxlength="120" inputmode="email" autocomplete="off">
+              <div class="field-error">Ingresa un correo válido.</div>
             </div>
 
-            <div class="field">
-              <label for="estado">
-                Estado
-              </label>
-
+            <div class="field" id="fieldEstado">
+              <label for="estado">Estado</label>
               <select id="estado">
-                <option value="Activo">
-                  Activo
-                </option>
-
-                <option value="Inactivo">
-                  Inactivo
-                </option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
               </select>
+              <div class="field-error">Selecciona un estado.</div>
             </div>
 
             <div class="field full">
-
-              <label for="observaciones">
-                Observaciones
-              </label>
-
-              <textarea
-                id="observaciones"
-                placeholder="Información adicional..."
-              ></textarea>
-
+              <label for="observaciones">Observaciones</label>
+              <textarea id="observaciones" placeholder="Información adicional..." maxlength="500"></textarea>
             </div>
 
           </div>
 
           <div class="form-actions">
-
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="cancelBtn"
-            >
-              Cancelar
-            </button>
-
-            <button
-              type="submit"
-              class="btn btn-primary"
-              id="saveBtn"
-            >
-              Guardar proveedor
-            </button>
-
+            <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">Guardar proveedor</button>
           </div>
 
         </form>
 
       </section>
 
-      <!-- RESUMEN -->
-
       <section class="panel">
 
         <div class="panel-head">
-
           <div>
             <h3>Resumen</h3>
-
-            <p>
-              Estado actual de los proveedores.
-            </p>
+            <p>Estado actual de los proveedores.</p>
           </div>
-
         </div>
 
         <div class="alert-item">
-
           <div class="alert-icon a-info">
-
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <path
-                d="M12 10v6"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <circle
-                cx="12"
-                cy="7"
-                r="1"
-                fill="currentColor"
-              />
-            </svg>
-
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10v6" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="7" r="1" fill="currentColor"/></svg>
           </div>
-
           <div class="alert-text">
-
             <strong>Proveedores registrados</strong>
-
-            <span id="resumenTotal">
-              0 proveedores registrados
-            </span>
-
+            <span id="resumenTotal">0 proveedores registrados</span>
           </div>
-
         </div>
 
         <div class="alert-item">
-
           <div class="alert-icon a-ok">
-
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-              <path
-                d="m5 12 4 4L19 6"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-
           <div class="alert-text">
-
             <strong>Proveedores activos</strong>
-
-            <span id="resumenActivos">
-              0 proveedores activos
-            </span>
-
+            <span id="resumenActivos">0 proveedores activos</span>
           </div>
-
         </div>
 
         <div class="alert-item">
-
           <div class="alert-icon a-warn">
-
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 4 21 20H3L12 4z"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-
-              <path
-                d="M12 10v4"
-                stroke="currentColor"
-                stroke-width="1.7"
-              />
-
-              <circle
-                cx="12"
-                cy="17"
-                r="1"
-                fill="currentColor"
-              />
-            </svg>
-
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 4 21 20H3L12 4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
           </div>
-
           <div class="alert-text">
-
             <strong>Proveedores inactivos</strong>
-
-            <span id="resumenInactivos">
-              0 proveedores inactivos
-            </span>
-
+            <span id="resumenInactivos">0 proveedores inactivos</span>
           </div>
-
         </div>
 
       </section>
 
     </div>
 
-    <!-- TABLA -->
-
+    <!-- Tabla -->
     <section class="panel">
 
       <div class="panel-head">
-
         <div>
-
-          <h3>Proveedores registrados</h3>
-
-          <p>
-            Consulta y administra los proveedores del sistema.
-          </p>
-
+          <h3>
+            Proveedores registrados
+            <span class="count-badge" id="countBadge" aria-live="polite">0</span>
+          </h3>
+          <p>Consulta y administra los proveedores del sistema.</p>
         </div>
-
       </div>
 
       <div class="search-wrap">
-
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-          <circle
-            cx="11"
-            cy="11"
-            r="6"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-
-          <path
-            d="m16 16 4 4"
-            stroke="currentColor"
-            stroke-width="1.7"
-          />
-        </svg>
-
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Buscar por nombre, tipo o ubicación..."
-        >
-
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7"/></svg>
+        <input type="search" id="searchInput" placeholder="Buscar por nombre, tipo, ubicación o correo..." maxlength="100" autocomplete="off" aria-label="Buscar proveedor">
       </div>
 
+      <!-- Esqueleto mientras carga -->
+      <div id="loadingState" aria-busy="true">
+        <div class="sk-row"></div>
+        <div class="sk-row"></div>
+        <div class="sk-row"></div>
+        <div class="sk-row"></div>
+      </div>
+
+      <div id="emptyState" class="empty-state" hidden></div>
+
       <div class="table-wrap">
-
-        <table class="simple">
-
+        <table class="simple" id="tablaProveedores" hidden>
           <thead>
-
             <tr>
               <th>Proveedor</th>
               <th>Tipo</th>
@@ -1920,13 +1314,13 @@
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
-
           </thead>
-
           <tbody id="providerTable"></tbody>
-
         </table>
+      </div>
 
+      <div class="mas-wrap" id="masWrap" hidden>
+        <button class="btn btn-secondary" id="btnMas" type="button">Mostrar más</button>
       </div>
 
     </section>
@@ -1935,725 +1329,1037 @@
 
 </div>
 
-<!-- SDK SUPABASE -->
+<!-- ===================== VENTANA: CONFIRMAR ELIMINAR ===================== -->
+<div class="modal-overlay" id="confirmOverlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitulo">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="confirmTitulo">Eliminar proveedor</h3>
+    </div>
+    <p class="confirm-texto" id="confirmTexto"></p>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="confirmCancelar">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="confirmOk">Eliminar</button>
+    </div>
+  </div>
+</div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- El SDK se carga al final: la página se dibuja primero y no queda
+     bloqueada esperando la descarga del script. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+(function(){
+  'use strict';
 
-const SUPABASE_URL =
-'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const $ = function(id){ return document.getElementById(id); };
 
-const SUPABASE_ANON_KEY =
-'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  // Si el SDK no cargó (sin internet) se avisa y se ofrece recargar
+  if (typeof supabase === 'undefined') {
+    $('avisoTexto').textContent = 'No se pudo cargar el sistema. Revisa tu conexión e intenta de nuevo.';
+    $('avisoBtn').textContent = 'Recargar';
+    $('aviso').classList.add('show');
+    $('avisoBtn').addEventListener('click', function(){ window.location.reload(); });
+    $('loadingState').hidden = true;
+    return;
+  }
 
-const supabaseClient =
-supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let proveedores = [];
-let proveedorEditando = null;
+  const COLUMNAS   = 'id,nombre,tipo,ubicacion,telefono,email,estado,observaciones,created_at';
+  const TIPOS      = ['Pescador', 'Criadero'];
+  const ESTADOS    = ['Activo', 'Inactivo'];
+  const TAM_PAGINA = 25;        // filas que se dibujan por tanda (mantiene la página ligera)
+  const LIMITE_MS  = 15000;     // tiempo máximo de espera por una consulta
 
-const form =
-document.getElementById('providerForm');
+  const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const table =
-document.getElementById('providerTable');
+  // ---------------------------------------------------------------
+  // ESTADO DE LA PÁGINA
+  // ---------------------------------------------------------------
+  let usuarioActual = null;
+  let proveedores = [];          // todos los proveedores
+  let filtrados = [];            // los que cumplen la búsqueda
+  let proveedorEditando = null;  // id del proveedor que se está editando
+  let limiteMostrar = TAM_PAGINA;
+  let datosListos = false;
+  let errorCarga = false;
+  let cargando = false;
+  let guardando = false;
+  let eliminando = false;
+  let idPorEliminar = null;
+  let idPendiente = null;        // proveedor a resaltar (si llega ?id=...)
+  let firmaDatos = '';
+  let ultimaActualizacion = 0;
+  let productosNotif = [];       // solo para las notificaciones
+  let recepcionesNotif = [];     // solo para las notificaciones
+  let notifsActuales = [];
+  let menuAbierto = false;
+  let toastTimer = null;
+  let debounceTimer = null;
+  const indice = new WeakMap();  // texto normalizado de cada proveedor para buscar rápido
 
-const searchInput =
-document.getElementById('searchInput');
+  // ---------------------------------------------------------------
+  // UTILIDADES
+  // ---------------------------------------------------------------
+  function escapeHTML(texto){
+    return String(texto == null ? '' : texto).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
 
-const message =
-document.getElementById('message');
+  // Quita tildes y pasa a minúsculas (buscar "bahia" encuentra "Bahía")
+  function normalizar(texto){
+    return String(texto == null ? '' : texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
 
-/* MENÚ MÓVIL — MISMO FUNCIONAMIENTO DE INICIO */
+  // Quita espacios de más: "  Juan   Pérez " -> "Juan Pérez"
+  function colapsar(texto){
+    return String(texto == null ? '' : texto).replace(/\s+/g, ' ').trim();
+  }
 
-const mobileMenuBtn =
-document.getElementById('mobileMenuBtn');
+  // Cancela la espera si la conexión se cuelga
+  function conTiempo(promesa){
+    let t;
+    const limite = new Promise(function(_, rechazar){
+      t = setTimeout(function(){ rechazar(new Error('Tiempo de espera agotado')); }, LIMITE_MS);
+    });
+    return Promise.race([promesa, limite]).finally(function(){ clearTimeout(t); });
+  }
 
-const mobileOverlay =
-document.getElementById('mobileOverlay');
-
-const sidebar =
-document.querySelector('.sidebar');
-
-function abrirMenuMobile(){
-  sidebar.classList.add('mobile-open');
-  mobileOverlay.classList.add('show');
-  mobileMenuBtn.setAttribute('aria-label','Cerrar menú');
-  document.body.style.overflow = 'hidden';
-}
-
-function cerrarMenuMobile(){
-  sidebar.classList.remove('mobile-open');
-  mobileOverlay.classList.remove('show');
-  mobileMenuBtn.setAttribute('aria-label','Abrir menú');
-  document.body.style.overflow = '';
-}
-
-mobileMenuBtn.addEventListener(
-  'click',
-  function(){
-    const abierto =
-      sidebar.classList.contains('mobile-open');
-
-    if(abierto){
-      cerrarMenuMobile();
-    }else{
-      abrirMenuMobile();
+  // Convierte los errores técnicos de Supabase en mensajes claros
+  function mensajeError(error, accion){
+    const msg = String((error && error.message) || '').toLowerCase();
+    const code = error && error.code;
+    if (accion === 'eliminar' && (code === '23503' || msg.indexOf('foreign key') !== -1)) {
+      return 'No se puede eliminar: el proveedor está asociado a otros registros (por ejemplo, productos o recepciones). Puedes marcarlo como Inactivo.';
     }
-  }
-);
-
-mobileOverlay.addEventListener(
-  'click',
-  cerrarMenuMobile
-);
-
-document.querySelectorAll('.sb-link').forEach(
-  function(link){
-    link.addEventListener(
-      'click',
-      cerrarMenuMobile
-    );
-  }
-);
-
-window.addEventListener(
-  'resize',
-  function(){
-    if(window.innerWidth > 800){
-      cerrarMenuMobile();
+    if (code === '42501' || msg.indexOf('row-level security') !== -1 || msg.indexOf('permission') !== -1) {
+      return 'No tienes permiso para realizar esta acción.';
     }
+    if (code === '23505' || msg.indexOf('duplicate') !== -1) return 'Ya existe un registro con esos datos.';
+    if (code === '23502') return 'Falta un dato obligatorio.';
+    if (code === '22001') return 'Alguno de los textos es demasiado largo.';
+    if (msg.indexOf('failed to fetch') !== -1 || msg.indexOf('network') !== -1 || msg.indexOf('tiempo de espera') !== -1) {
+      return 'No se pudo conectar. Revisa tu internet e intenta de nuevo.';
+    }
+    console.warn('Error al ' + accion + ':', error);
+    return 'No se pudo ' + accion + ' el proveedor. Intenta de nuevo.';
   }
-);
 
-/* SESIÓN */
+  function showToast(mensaje, tipo){
+    const t = $('toast');
+    t.textContent = mensaje;
+    t.className = 'toast show' + (tipo ? ' ' + tipo : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.className = 'toast'; }, 3400);
+  }
 
-async function verificarSesion(){
+  function mostrarAviso(texto){ $('avisoTexto').textContent = texto; $('aviso').classList.add('show'); }
+  function ocultarAviso(){ $('aviso').classList.remove('show'); }
 
-  const { data, error } =
-    await supabaseClient.auth.getSession();
+  // Bloquea el scroll de la página cuando hay una ventana o el menú abierto
+  function actualizarScroll(){
+    const bloquear = menuAbierto || $('confirmOverlay').classList.contains('show');
+    document.body.classList.toggle('sin-scroll', bloquear);
+  }
 
-  if(error || !data.session){
+  function plural(n, singular, pluralTxt){ return n + ' ' + (n === 1 ? singular : pluralTxt); }
 
-    window.location.href =
-      'login.html';
+  const fmtNumero = function(n){ return Math.round(n).toLocaleString('es-CO'); };
 
+  // Número que sube suavemente hasta su valor final
+  function animarNumero(el, destino, formato){
+    el.classList.remove('loading-val');
+    const inicio = Number(el.dataset.v || 0);
+    el.dataset.v = destino;
+    const id = (el._anim = (el._anim || 0) + 1);
+    if (reducirMovimiento || inicio === destino) { el.textContent = formato(destino); return; }
+    const duracion = 600, t0 = performance.now();
+    (function paso(t){
+      if (el._anim !== id) return;
+      const p = Math.min((t - t0) / duracion, 1);
+      const suave = 1 - Math.pow(1 - p, 3);
+      el.textContent = formato(inicio + (destino - inicio) * suave);
+      if (p < 1) requestAnimationFrame(paso);
+    })(t0);
+  }
+
+  function saludar(){
+    const h = new Date().getHours();
+    return h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
+  }
+  function colocarFecha(){
+    $('todayDate').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  // ---------------------------------------------------------------
+  // USUARIO
+  // ---------------------------------------------------------------
+  function pintarUsuario(){
+    const u = usuarioActual;
+    const meta = u.user_metadata || {};
+    const nombre = (meta.full_name || meta.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario';
+    const inicial = nombre.charAt(0).toUpperCase();
+    $('sbUserName').textContent  = nombre;
+    $('topUserName').textContent = nombre;
+    $('sbAvatar').textContent    = inicial;
+    $('topAvatar').textContent   = inicial;
+    $('saludo').textContent      = saludar() + ', ' + nombre.split(/\s+/)[0];
+  }
+
+  // ---------------------------------------------------------------
+  // CACHÉ LOCAL: al volver a la página se ve al instante lo último
+  // guardado y en segundo plano se piden los datos nuevos.
+  // ---------------------------------------------------------------
+  const claveCache = function(){ return 'dsi_prov2_' + usuarioActual.id; };
+
+  function leerCache(){
+    try {
+      const c = JSON.parse(localStorage.getItem(claveCache()) || 'null');
+      if (c && Array.isArray(c.proveedores)) return c;
+    } catch (e) { /* caché dañada: se ignora */ }
     return null;
   }
-
-  return data.session;
-}
-
-/* USUARIO */
-
-function cargarUsuario(session){
-
-  const fullName =
-    session.user.user_metadata &&
-    session.user.user_metadata.full_name
-      ? session.user.user_metadata.full_name
-      : session.user.email;
-
-  const initial =
-    fullName.charAt(0).toUpperCase();
-
-  document.getElementById(
-    'sbUserName'
-  ).textContent = fullName;
-
-  document.getElementById(
-    'topUserName'
-  ).textContent = fullName;
-
-  document.getElementById(
-    'sbAvatar'
-  ).textContent = initial;
-
-  document.getElementById(
-    'topAvatar'
-  ).textContent = initial;
-}
-
-/* MENSAJES */
-
-function mostrarMensaje(texto,tipo){
-
-  message.textContent =
-    texto;
-
-  message.className =
-    'message ' + tipo;
-
-  setTimeout(function(){
-
-    message.className =
-      'message';
-
-    message.textContent =
-      '';
-
-  },3000);
-}
-
-/* CARGAR PROVEEDORES */
-
-async function cargarProveedores(){
-
-  const { data,error } =
-    await supabaseClient
-      .from('proveedores')
-      .select('*')
-      .order(
-        'created_at',
-        { ascending:false }
-      );
-
-  if(error){
-
-    console.error(error);
-
-    mostrarMensaje(
-      'No se pudieron cargar los proveedores.',
-      'error'
-    );
-
-    return;
+  function guardarCache(){
+    try {
+      localStorage.setItem(claveCache(), JSON.stringify({
+        proveedores: proveedores, productos: productosNotif, recepciones: recepcionesNotif
+      }));
+    } catch (e) { /* sin espacio */ }
   }
 
-  proveedores =
-    data || [];
+  // ---------------------------------------------------------------
+  // RESUMEN (tarjetas y panel lateral)
+  // ---------------------------------------------------------------
+  function actualizarResumen(){
+    let pescadores = 0, criaderos = 0, activos = 0, inactivos = 0;
 
-  actualizarResumen();
-  mostrarTabla(proveedores);
-}
+    proveedores.forEach(function(p){
+      const tipo = normalizar(p.tipo);
+      if (tipo === 'pescador') pescadores++;
+      else if (tipo === 'criadero') criaderos++;
 
-/* RESUMEN */
+      if (normalizar(p.estado || 'Activo') === 'inactivo') inactivos++;
+      else activos++;
+    });
 
-function actualizarResumen(){
+    const total = proveedores.length;
+    animarNumero($('totalProveedores'), total,      fmtNumero);
+    animarNumero($('totalPescadores'),  pescadores, fmtNumero);
+    animarNumero($('totalCriaderos'),   criaderos,  fmtNumero);
+    animarNumero($('totalActivos'),     activos,    fmtNumero);
 
-  const total =
-    proveedores.length;
-
-  const pescadores =
-    proveedores.filter(
-      p => p.tipo === 'Pescador'
-    ).length;
-
-  const criaderos =
-    proveedores.filter(
-      p => p.tipo === 'Criadero'
-    ).length;
-
-  const activos =
-    proveedores.filter(
-      p => p.estado === 'Activo'
-    ).length;
-
-  const inactivos =
-    proveedores.filter(
-      p => p.estado === 'Inactivo'
-    ).length;
-
-  document.getElementById(
-    'totalProveedores'
-  ).textContent = total;
-
-  document.getElementById(
-    'totalPescadores'
-  ).textContent = pescadores;
-
-  document.getElementById(
-    'totalCriaderos'
-  ).textContent = criaderos;
-
-  document.getElementById(
-    'totalActivos'
-  ).textContent = activos;
-
-  document.getElementById(
-    'resumenTotal'
-  ).textContent =
-    `${total} proveedor${total === 1 ? '' : 'es'} registrado${total === 1 ? '' : 's'}`;
-
-  document.getElementById(
-    'resumenActivos'
-  ).textContent =
-    `${activos} proveedor${activos === 1 ? '' : 'es'} activo${activos === 1 ? '' : 's'}`;
-
-  document.getElementById(
-    'resumenInactivos'
-  ).textContent =
-    `${inactivos} proveedor${inactivos === 1 ? '' : 'es'} inactivo${inactivos === 1 ? '' : 's'}`;
-}
-
-/* TABLA */
-
-function mostrarTabla(lista){
-
-  table.innerHTML = '';
-
-  if(lista.length === 0){
-
-    table.innerHTML = `
-      <tr>
-        <td
-          colspan="7"
-          class="empty-row"
-        >
-          No hay proveedores registrados.
-        </td>
-      </tr>
-    `;
-
-    return;
+    $('resumenTotal').textContent     = plural(total, 'proveedor registrado', 'proveedores registrados');
+    $('resumenActivos').textContent   = plural(activos, 'proveedor activo', 'proveedores activos');
+    $('resumenInactivos').textContent = plural(inactivos, 'proveedor inactivo', 'proveedores inactivos');
   }
 
-  lista.forEach(function(proveedor){
+  // ---------------------------------------------------------------
+  // BÚSQUEDA
+  // ---------------------------------------------------------------
+  function indexar(){
+    proveedores.forEach(function(p){
+      indice.set(p, normalizar([p.nombre, p.tipo, p.ubicacion, p.telefono, p.email].join(' ')));
+    });
+  }
 
-    const fila =
-      document.createElement('tr');
+  // Sugerencias de ubicación (las ya usadas) para escribir más rápido y sin variaciones
+  function actualizarUbicaciones(){
+    const vistos = {};
+    const lista = [];
+    proveedores.forEach(function(p){
+      const v = colapsar(p.ubicacion);
+      const k = normalizar(v);
+      if (v && !vistos[k]) { vistos[k] = true; lista.push(v); }
+    });
+    lista.sort(function(a, b){ return a.localeCompare(b, 'es'); });
+    $('listaUbicaciones').innerHTML = lista.slice(0, 60).map(function(v){
+      return '<option value="' + escapeHTML(v) + '"></option>';
+    }).join('');
+  }
 
-    const estadoClase =
-      proveedor.estado === 'Activo'
-        ? 'ok'
-        : 'warn';
+  function aplicarFiltros(reiniciar){
+    const q = normalizar($('searchInput').value);
 
-    fila.innerHTML = `
-      <td>
-        <strong>
-          ${escaparHTML(proveedor.nombre)}
-        </strong>
-      </td>
+    filtrados = q
+      ? proveedores.filter(function(p){ return (indice.get(p) || '').indexOf(q) !== -1; })
+      : proveedores.slice();
 
-      <td>
-        <span class="pill type">
-          ${escaparHTML(proveedor.tipo)}
-        </span>
-      </td>
+    if (reiniciar) limiteMostrar = TAM_PAGINA;
+    renderTabla();
+  }
 
-      <td>
-        ${escaparHTML(proveedor.ubicacion)}
-      </td>
+  // ---------------------------------------------------------------
+  // TABLA
+  // ---------------------------------------------------------------
+  function filaHTML(p){
+    const id = escapeHTML(p.id);
+    const nombre = escapeHTML(p.nombre);
+    const estado = p.estado || 'Activo';
+    const estadoClase = normalizar(estado) === 'inactivo' ? 'warn' : 'ok';
 
-      <td>
-        ${escaparHTML(proveedor.telefono || '-')}
-      </td>
+    return '<tr data-id="' + id + '">' +
+      '<td><strong>' + nombre + '</strong></td>' +
+      '<td><span class="pill type">' + escapeHTML(p.tipo || '-') + '</span></td>' +
+      '<td>' + escapeHTML(p.ubicacion || '-') + '</td>' +
+      '<td>' + escapeHTML(p.telefono || '-') + '</td>' +
+      '<td>' + escapeHTML(p.email || '-') + '</td>' +
+      '<td><span class="pill ' + estadoClase + '">' + escapeHTML(estado) + '</span></td>' +
+      '<td>' +
+        '<button class="action-btn edit-btn" type="button" data-action="editar" data-id="' + id + '" aria-label="Editar ' + nombre + '">Editar</button>' +
+        '<button class="action-btn delete-btn" type="button" data-action="eliminar" data-id="' + id + '" aria-label="Eliminar ' + nombre + '">Eliminar</button>' +
+      '</td>' +
+    '</tr>';
+  }
 
-      <td>
-        ${escaparHTML(proveedor.email || '-')}
-      </td>
+  function renderTabla(){
+    const total = proveedores.length;
+    const tabla = $('tablaProveedores');
+    const vacio = $('emptyState');
 
-      <td>
-        <span class="pill ${estadoClase}">
-          ${escaparHTML(proveedor.estado)}
-        </span>
-      </td>
+    $('countBadge').textContent = (filtrados.length === total) ? String(total) : (filtrados.length + ' de ' + total);
 
-      <td>
-        <button
-          class="action-btn edit-btn"
-          onclick="editarProveedor('${proveedor.id}')"
-        >
-          Editar
-        </button>
-
-        <button
-          class="action-btn delete-btn"
-          onclick="eliminarProveedor('${proveedor.id}')"
-        >
-          Eliminar
-        </button>
-      </td>
-    `;
-
-    table.appendChild(fila);
-  });
-}
-
-/* SEGURIDAD HTML */
-
-function escaparHTML(texto){
-
-  const div =
-    document.createElement('div');
-
-  div.textContent =
-    String(texto);
-
-  return div.innerHTML;
-}
-
-/* GUARDAR */
-
-form.addEventListener(
-  'submit',
-  async function(e){
-
-    e.preventDefault();
-
-    const proveedor = {
-
-      nombre:
-        document.getElementById(
-          'nombre'
-        ).value.trim(),
-
-      tipo:
-        document.getElementById(
-          'tipo'
-        ).value,
-
-      ubicacion:
-        document.getElementById(
-          'ubicacion'
-        ).value.trim(),
-
-      telefono:
-        document.getElementById(
-          'telefono'
-        ).value.trim() || null,
-
-      email:
-        document.getElementById(
-          'email'
-        ).value.trim() || null,
-
-      estado:
-        document.getElementById(
-          'estado'
-        ).value,
-
-      observaciones:
-        document.getElementById(
-          'observaciones'
-        ).value.trim() || null
-
-    };
-
-    let resultado;
-
-    if(proveedorEditando){
-
-      resultado =
-        await supabaseClient
-          .from('proveedores')
-          .update(proveedor)
-          .eq(
-            'id',
-            proveedorEditando
-          );
-
-    }else{
-
-      resultado =
-        await supabaseClient
-          .from('proveedores')
-          .insert([
-            proveedor
-          ]);
-
-    }
-
-    if(resultado.error){
-
-      console.error(resultado.error);
-
-      mostrarMensaje(
-        'No se pudo guardar el proveedor.',
-        'error'
-      );
-
+    if (!total) {
+      tabla.hidden = true;
+      $('masWrap').hidden = true;
+      vacio.hidden = false;
+      vacio.innerHTML = errorCarga
+        ? '<div class="icon">⚠️</div>No se pudo cargar la información.'
+        : '<div class="icon">🎣</div>No hay proveedores registrados todavía.<br>Crea el primero con el formulario de arriba.';
       return;
     }
 
-    mostrarMensaje(
-      proveedorEditando
-        ? 'Proveedor actualizado correctamente.'
-        : 'Proveedor registrado correctamente.',
-      'success'
-    );
-
-    limpiarFormulario();
-
-    await cargarProveedores();
-
-  }
-);
-
-/* EDITAR */
-
-function editarProveedor(id){
-
-  const proveedor =
-    proveedores.find(
-      p => p.id === id
-    );
-
-  if(!proveedor){
-    return;
-  }
-
-  proveedorEditando =
-    id;
-
-  document.getElementById(
-    'nombre'
-  ).value =
-    proveedor.nombre || '';
-
-  document.getElementById(
-    'tipo'
-  ).value =
-    proveedor.tipo || '';
-
-  document.getElementById(
-    'ubicacion'
-  ).value =
-    proveedor.ubicacion || '';
-
-  document.getElementById(
-    'telefono'
-  ).value =
-    proveedor.telefono || '';
-
-  document.getElementById(
-    'email'
-  ).value =
-    proveedor.email || '';
-
-  document.getElementById(
-    'estado'
-  ).value =
-    proveedor.estado || 'Activo';
-
-  document.getElementById(
-    'observaciones'
-  ).value =
-    proveedor.observaciones || '';
-
-  document.getElementById(
-    'formTitle'
-  ).textContent =
-    'Editar proveedor';
-
-  document.getElementById(
-    'saveBtn'
-  ).textContent =
-    'Actualizar proveedor';
-
-  document.getElementById(
-    'cancelBtn'
-  ).style.display =
-    'block';
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-}
-
-/* CANCELAR */
-
-document.getElementById(
-  'cancelBtn'
-).addEventListener(
-  'click',
-  limpiarFormulario
-);
-
-function limpiarFormulario(){
-
-  form.reset();
-
-  proveedorEditando =
-    null;
-
-  document.getElementById(
-    'formTitle'
-  ).textContent =
-    'Registrar proveedor';
-
-  document.getElementById(
-    'saveBtn'
-  ).textContent =
-    'Guardar proveedor';
-
-  document.getElementById(
-    'cancelBtn'
-  ).style.display =
-    'none';
-
-  document.getElementById(
-    'estado'
-  ).value =
-    'Activo';
-}
-
-/* ELIMINAR */
-
-async function eliminarProveedor(id){
-
-  const confirmar =
-    confirm(
-      '¿Deseas eliminar este proveedor?'
-    );
-
-  if(!confirmar){
-    return;
-  }
-
-  const { error } =
-    await supabaseClient
-      .from('proveedores')
-      .delete()
-      .eq(
-        'id',
-        id
-      );
-
-  if(error){
-
-    console.error(error);
-
-    mostrarMensaje(
-      'No se pudo eliminar el proveedor.',
-      'error'
-    );
-
-    return;
-  }
-
-  mostrarMensaje(
-    'Proveedor eliminado correctamente.',
-    'success'
-  );
-
-  await cargarProveedores();
-}
-
-/* BUSCAR */
-
-searchInput.addEventListener(
-  'input',
-  function(){
-
-    const texto =
-      searchInput.value
-        .toLowerCase()
-        .trim();
-
-    const filtrados =
-      proveedores.filter(
-        function(proveedor){
-
-          return (
-
-            (proveedor.nombre || '')
-              .toLowerCase()
-              .includes(texto)
-
-            ||
-
-            (proveedor.tipo || '')
-              .toLowerCase()
-              .includes(texto)
-
-            ||
-
-            (proveedor.ubicacion || '')
-              .toLowerCase()
-              .includes(texto)
-
-            ||
-
-            (proveedor.email || '')
-              .toLowerCase()
-              .includes(texto)
-
-          );
-
-        }
-      );
-
-    mostrarTabla(
-      filtrados
-    );
-  }
-);
-
-/* NOTIFICACIONES */
-
-document.getElementById(
-  'notificationBtn'
-).addEventListener(
-  'click',
-  function(e){
-
-    e.stopPropagation();
-
-    document.getElementById(
-      'notificationPanel'
-    ).classList.toggle(
-      'show'
-    );
-
-  }
-);
-
-document.addEventListener(
-  'click',
-  function(e){
-
-    const panel =
-      document.getElementById(
-        'notificationPanel'
-      );
-
-    const button =
-      document.getElementById(
-        'notificationBtn'
-      );
-
-    if(
-      !panel.contains(e.target) &&
-      !button.contains(e.target)
-    ){
-
-      panel.classList.remove(
-        'show'
-      );
-
+    if (!filtrados.length) {
+      tabla.hidden = true;
+      $('masWrap').hidden = true;
+      vacio.hidden = false;
+      vacio.innerHTML = '<div class="icon">🔎</div>No se encontraron proveedores con esa búsqueda.' +
+        '<br><button class="btn btn-secondary" type="button" data-action="limpiar">Limpiar búsqueda</button>';
+      return;
     }
 
-  }
-);
+    vacio.hidden = true;
+    tabla.hidden = false;
 
-/* INICIAR */
+    $('providerTable').innerHTML = filtrados.slice(0, limiteMostrar).map(filaHTML).join('');
 
-(async function(){
-
-  const session =
-    await verificarSesion();
-
-  if(!session){
-    return;
+    const restantes = filtrados.length - limiteMostrar;
+    $('masWrap').hidden = restantes <= 0;
+    if (restantes > 0) $('btnMas').textContent = 'Mostrar más (' + restantes + ' restantes)';
   }
 
-  cargarUsuario(
-    session
-  );
+  // Resalta una fila (al guardar o si se llega con ?id=...)
+  function resaltarProveedor(id){
+    const sid = String(id);
+    let idx = filtrados.findIndex(function(p){ return String(p.id) === sid; });
 
-  await cargarProveedores();
+    if (idx === -1) {
+      if (!proveedores.some(function(p){ return String(p.id) === sid; })) {
+        showToast('Ese proveedor ya no existe.', 'error');
+        return;
+      }
+      // Estaba oculto por la búsqueda: se limpia para mostrarlo
+      $('searchInput').value = '';
+      aplicarFiltros(true);
+      idx = filtrados.findIndex(function(p){ return String(p.id) === sid; });
+    }
 
+    if (idx >= limiteMostrar) { limiteMostrar = idx + 1; renderTabla(); }
+
+    const fila = Array.prototype.find.call($('providerTable').children, function(tr){ return tr.dataset.id === sid; });
+    if (!fila) return;
+
+    fila.scrollIntoView({ behavior: reducirMovimiento ? 'auto' : 'smooth', block: 'center' });
+    fila.classList.remove('resaltado');
+    void fila.offsetWidth;                       // reinicia la animación
+    fila.classList.add('resaltado');
+    setTimeout(function(){ fila.classList.remove('resaltado'); }, 3600);
+  }
+
+  // ---------------------------------------------------------------
+  // CARGA DE DATOS
+  // Si los datos no cambiaron, no se vuelve a dibujar nada.
+  // ---------------------------------------------------------------
+  async function cargarProveedores(){
+    if (cargando) return;
+    cargando = true;
+    if (!datosListos) $('loadingState').hidden = false;
+    $('syncEstado').textContent = 'Actualizando…';
+
+    let hayError = false;
+    try {
+      const res = await conTiempo(Promise.all([
+        supabaseClient.from('proveedores').select(COLUMNAS).order('created_at', { ascending: false }),
+        supabaseClient.from('productos').select('id,nombre,estado'),
+        supabaseClient
+          .from('recepciones')
+          .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
+          .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+          .limit(200)
+      ]));
+
+      if (res[0].error) { hayError = true; console.error('Error proveedores:', res[0].error); }
+      else proveedores = res[0].data || [];
+
+      // Si fallan estas dos solo se pierden las notificaciones; no bloquea la página
+      if (!res[1].error) productosNotif = res[1].data || [];
+      else console.warn('Error productos (notificaciones):', res[1].error);
+      if (!res[2].error) recepcionesNotif = res[2].data || [];
+      else console.warn('Error recepciones (notificaciones):', res[2].error);
+    } catch (err) {
+      hayError = true;
+      console.error('Error cargando proveedores:', err);
+    }
+
+    cargando = false;
+    $('loadingState').hidden = true;
+    errorCarga = hayError;
+
+    if (hayError) {
+      mostrarAviso('No se pudieron actualizar los proveedores. Revisa tu conexión.');
+      $('syncEstado').textContent = 'Sin actualizar';
+      if (!datosListos) { datosListos = true; actualizarResumen(); renderTabla(); }
+      return;
+    }
+
+    ocultarAviso();
+    datosListos = true;
+    ultimaActualizacion = Date.now();
+    $('syncEstado').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    const firma = JSON.stringify([proveedores, productosNotif, recepcionesNotif]);
+    if (firma !== firmaDatos) {
+      firmaDatos = firma;
+      podarLeidas();          // limpia notificaciones leídas que ya no existen
+      guardarCache();
+      indexar();
+      actualizarUbicaciones();
+      actualizarResumen();
+      aplicarFiltros(false);
+      renderNotificaciones();
+    }
+
+    if (idPendiente) { const id = idPendiente; idPendiente = null; resaltarProveedor(id); }
+  }
+
+  // Después de crear/editar/eliminar: se actualiza la lista al instante
+  // sin volver a pedirlo todo al servidor.
+  function despuesDeCambio(){
+    firmaDatos = JSON.stringify([proveedores, productosNotif, recepcionesNotif]);
+    indexar();
+    actualizarUbicaciones();
+    actualizarResumen();
+    guardarCache();
+    aplicarFiltros(false);
+    renderNotificaciones();
+  }
+
+  // ---------------------------------------------------------------
+  // FORMULARIO: VALIDACIÓN
+  // ---------------------------------------------------------------
+  const form = $('providerForm');
+  const CAMPOS = [
+    ['fieldNombre', 'nombre'],
+    ['fieldTipo', 'tipo'],
+    ['fieldUbicacion', 'ubicacion'],
+    ['fieldTelefono', 'telefono'],
+    ['fieldEmail', 'email'],
+    ['fieldEstado', 'estado']
+  ];
+
+  function limpiarErrores(){
+    CAMPOS.forEach(function(c){ $(c[0]).classList.remove('invalid'); });
+  }
+
+  function ponerError(idCampo, mensaje){
+    const f = $(idCampo);
+    f.classList.add('invalid');
+    if (mensaje) f.querySelector('.field-error').textContent = mensaje;
+  }
+
+  // Al escribir en un campo se le quita el error
+  CAMPOS.forEach(function(c){
+    const el = $(c[1]);
+    el.addEventListener('input',  function(){ $(c[0]).classList.remove('invalid'); });
+    el.addEventListener('change', function(){ $(c[0]).classList.remove('invalid'); });
+  });
+
+  // Teléfono: solo dígitos, espacios, + ( ) - . y entre 7 y 15 dígitos
+  function telefonoValido(valor){
+    if (!/^\+?[\d\s().\-]{7,20}$/.test(valor)) return false;
+    const digitos = valor.replace(/\D/g, '').length;
+    return digitos >= 7 && digitos <= 15;
+  }
+
+  function emailValido(valor){
+    return valor.length <= 120 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(valor);
+  }
+
+  function validarFormulario(){
+    limpiarErrores();
+    let ok = true;
+    let primero = null;
+
+    function fallo(idCampo, mensaje, input){
+      ponerError(idCampo, mensaje);
+      ok = false;
+      if (!primero) primero = input;
+    }
+
+    const nombre = colapsar($('nombre').value);
+    if (nombre.length < 2) {
+      fallo('fieldNombre', 'El nombre es obligatorio (mínimo 2 caracteres).', $('nombre'));
+    } else if (!/\p{L}/u.test(nombre)) {
+      fallo('fieldNombre', 'El nombre debe contener letras.', $('nombre'));
+    } else if (!/^[\p{L}\p{N}][\p{L}\p{N}\s.,'&()\-\/#°]*$/u.test(nombre)) {
+      fallo('fieldNombre', 'El nombre tiene caracteres no permitidos.', $('nombre'));
+    }
+
+    if (TIPOS.indexOf($('tipo').value) === -1) {
+      fallo('fieldTipo', 'Selecciona un tipo de proveedor.', $('tipo'));
+    }
+
+    const ubicacion = colapsar($('ubicacion').value);
+    if (ubicacion.length < 2) {
+      fallo('fieldUbicacion', 'La ubicación es obligatoria (mínimo 2 caracteres).', $('ubicacion'));
+    } else if (!/\p{L}/u.test(ubicacion)) {
+      fallo('fieldUbicacion', 'La ubicación debe contener letras.', $('ubicacion'));
+    }
+
+    const telefono = colapsar($('telefono').value);
+    if (telefono && !telefonoValido(telefono)) {
+      fallo('fieldTelefono', 'Ingresa un teléfono válido (7 a 15 dígitos).', $('telefono'));
+    }
+
+    const email = colapsar($('email').value).toLowerCase();
+    if (email && !emailValido(email)) {
+      fallo('fieldEmail', 'Ingresa un correo válido (ej. nombre@correo.com).', $('email'));
+    }
+
+    if (ESTADOS.indexOf($('estado').value) === -1) {
+      fallo('fieldEstado', 'Selecciona un estado.', $('estado'));
+    }
+
+    // Evita registros idénticos (mismo nombre + tipo + ubicación), por ejemplo
+    // al tocar "Guardar" dos veces. Mismo nombre en otra ubicación SÍ se permite.
+    if (ok) {
+      const clave = normalizar(nombre) + '|' + $('tipo').value + '|' + normalizar(ubicacion);
+      const repetido = proveedores.some(function(p){
+        return String(p.id) !== String(proveedorEditando) &&
+          (normalizar(colapsar(p.nombre)) + '|' + p.tipo + '|' + normalizar(colapsar(p.ubicacion))) === clave;
+      });
+      if (repetido) {
+        fallo('fieldNombre', 'Ya existe un proveedor con el mismo nombre, tipo y ubicación.', $('nombre'));
+      }
+    }
+
+    if (primero) primero.focus();
+    return ok;
+  }
+
+  // ---------------------------------------------------------------
+  // FORMULARIO: GUARDAR (crear / actualizar)
+  // ---------------------------------------------------------------
+  function limpiarFormulario(){
+    form.reset();
+    limpiarErrores();
+    proveedorEditando = null;
+    $('formTitle').textContent = 'Registrar proveedor';
+    $('saveBtn').textContent = 'Guardar proveedor';
+    $('cancelBtn').style.display = 'none';
+    $('estado').value = 'Activo';
+  }
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    if (guardando) return;
+
+    if (!validarFormulario()) {
+      showToast('Revisa los campos marcados en rojo.', 'error');
+      return;
+    }
+
+    const idEditando = proveedorEditando;
+    const payload = {
+      nombre:        colapsar($('nombre').value),
+      tipo:          $('tipo').value,
+      ubicacion:     colapsar($('ubicacion').value),
+      telefono:      colapsar($('telefono').value) || null,
+      email:         colapsar($('email').value).toLowerCase() || null,
+      estado:        $('estado').value,
+      observaciones: $('observaciones').value.trim() || null
+    };
+
+    guardando = true;
+    $('saveBtn').disabled = true;
+    $('saveBtn').textContent = 'Guardando...';
+
+    let resultado;
+    try {
+      resultado = idEditando !== null
+        ? await conTiempo(supabaseClient.from('proveedores').update(payload).eq('id', idEditando).select(COLUMNAS))
+        : await conTiempo(supabaseClient.from('proveedores').insert(payload).select(COLUMNAS));
+    } catch (err) {
+      resultado = { error: err };
+    }
+
+    guardando = false;
+    $('saveBtn').disabled = false;
+    $('saveBtn').textContent = idEditando !== null ? 'Actualizar proveedor' : 'Guardar proveedor';
+
+    if (resultado.error) {
+      showToast(mensajeError(resultado.error, 'guardar'), 'error');
+      return;
+    }
+
+    const fila = resultado.data && resultado.data[0];
+
+    if (idEditando !== null && !fila) {
+      // La actualización no afectó ninguna fila (fue eliminada o no hay permiso)
+      showToast('No se pudo actualizar: el proveedor ya no existe o no tienes permiso.', 'error');
+      limpiarFormulario();
+      cargarProveedores();
+      return;
+    }
+
+    limpiarFormulario();
+    showToast(idEditando !== null ? 'Proveedor actualizado correctamente.' : 'Proveedor registrado correctamente.', 'success');
+
+    if (fila) {
+      if (idEditando !== null) {
+        const i = proveedores.findIndex(function(p){ return String(p.id) === String(idEditando); });
+        if (i > -1) proveedores[i] = fila; else proveedores.unshift(fila);
+      } else {
+        proveedores.unshift(fila);
+      }
+      despuesDeCambio();
+      resaltarProveedor(fila.id);
+    } else {
+      firmaDatos = '';
+      cargarProveedores();      // se insertó pero el servidor no devolvió la fila: se recarga la lista
+    }
+  });
+
+  // ---------------------------------------------------------------
+  // EDITAR
+  // ---------------------------------------------------------------
+  function editarProveedor(id){
+    const p = proveedores.find(function(x){ return String(x.id) === String(id); });
+    if (!p) { showToast('Ese proveedor ya no existe.', 'error'); return; }
+
+    limpiarErrores();
+    proveedorEditando = p.id;
+
+    $('nombre').value        = p.nombre || '';
+    $('tipo').value          = p.tipo || '';
+    $('ubicacion').value     = p.ubicacion || '';
+    $('telefono').value      = p.telefono || '';
+    $('email').value         = p.email || '';
+    $('estado').value        = p.estado || 'Activo';
+    $('observaciones').value = p.observaciones || '';
+
+    $('formTitle').textContent = 'Editar proveedor';
+    $('saveBtn').textContent = 'Actualizar proveedor';
+    $('cancelBtn').style.display = 'block';
+
+    window.scrollTo({ top: 0, behavior: reducirMovimiento ? 'auto' : 'smooth' });
+    if (window.matchMedia('(pointer:fine)').matches) setTimeout(function(){ $('nombre').focus(); }, 250);
+  }
+
+  $('cancelBtn').addEventListener('click', limpiarFormulario);
+
+  // ---------------------------------------------------------------
+  // ELIMINAR (con ventana de confirmación)
+  // ---------------------------------------------------------------
+  function pedirEliminar(id){
+    const p = proveedores.find(function(x){ return String(x.id) === String(id); });
+    if (!p) return;
+    idPorEliminar = p.id;
+    $('confirmTexto').textContent = '¿Eliminar "' + p.nombre + '"? Esta acción no se puede deshacer.';
+    $('confirmOverlay').classList.add('show');
+    actualizarScroll();
+  }
+
+  function cerrarConfirmacion(){
+    $('confirmOverlay').classList.remove('show');
+    idPorEliminar = null;
+    actualizarScroll();
+  }
+
+  $('confirmCancelar').addEventListener('click', cerrarConfirmacion);
+  $('confirmOverlay').addEventListener('click', function(e){
+    if (e.target === $('confirmOverlay')) cerrarConfirmacion();
+  });
+
+  $('confirmOk').addEventListener('click', async function(){
+    if (eliminando || idPorEliminar === null) return;
+    eliminando = true;
+    const id = idPorEliminar;
+    $('confirmOk').disabled = true;
+    $('confirmOk').textContent = 'Eliminando...';
+
+    let resultado;
+    try {
+      resultado = await conTiempo(supabaseClient.from('proveedores').delete().eq('id', id).select('id'));
+    } catch (err) {
+      resultado = { error: err };
+    }
+
+    eliminando = false;
+    $('confirmOk').disabled = false;
+    $('confirmOk').textContent = 'Eliminar';
+    cerrarConfirmacion();
+
+    if (resultado.error) {
+      showToast(mensajeError(resultado.error, 'eliminar'), 'error');
+      return;
+    }
+    if (!resultado.data || !resultado.data.length) {
+      showToast('No se pudo eliminar: el proveedor ya no existe o no tienes permiso.', 'error');
+      cargarProveedores();
+      return;
+    }
+
+    // Si se estaba editando justo este proveedor, se limpia el formulario
+    if (proveedorEditando !== null && String(proveedorEditando) === String(id)) limpiarFormulario();
+
+    proveedores = proveedores.filter(function(p){ return String(p.id) !== String(id); });
+    despuesDeCambio();
+    showToast('Proveedor eliminado correctamente.', 'success');
+  });
+
+  // ---------------------------------------------------------------
+  // EVENTOS DE LA LISTA Y LA BÚSQUEDA
+  // ---------------------------------------------------------------
+  $('providerTable').addEventListener('click', function(e){
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    if (btn.dataset.action === 'editar') editarProveedor(btn.dataset.id);
+    else if (btn.dataset.action === 'eliminar') pedirEliminar(btn.dataset.id);
+  });
+
+  $('emptyState').addEventListener('click', function(e){
+    if (e.target.closest('[data-action="limpiar"]')) {
+      $('searchInput').value = '';
+      aplicarFiltros(true);
+    }
+  });
+
+  $('btnMas').addEventListener('click', function(){
+    limiteMostrar += TAM_PAGINA;
+    renderTabla();
+  });
+
+  // Búsqueda mientras se escribe (con una pequeña pausa para no trabajar de más)
+  $('searchInput').addEventListener('input', function(){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function(){ aplicarFiltros(true); }, 200);
+  });
+
+  $('avisoBtn').addEventListener('click', cargarProveedores);
+
+  // ---------------------------------------------------------------
+  // NOTIFICACIONES (panel simple; notificaciones.js puede ampliarlo)
+  // ---------------------------------------------------------------
+  // Mismo comportamiento que en Inicio: se calculan con los datos ya
+  // cargados, se marcan como leídas al hacer clic (se recuerda en este
+  // navegador) y llevan al módulo de donde vienen.
+  const PALABRAS_PROBLEMA  = ['rechaz', 'dano', 'danad', 'deterior', 'vencid', 'cancelad', 'inactiv', 'no apto'];
+  const PALABRAS_PENDIENTE = ['pendiente', 'evaluacion', 'revision', 'observ'];
+
+  function clasificarEstado(estado){
+    const e = normalizar(estado);
+    if (PALABRAS_PROBLEMA.some(function(p){ return e.indexOf(p) !== -1; }))  return 'warn';
+    if (PALABRAS_PENDIENTE.some(function(p){ return e.indexOf(p) !== -1; })) return 'pend';
+    return 'ok';
+  }
+
+  const fmtPeso = function(n){ return (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg'; };
+
+  function parsearFecha(valor){
+    if (!valor) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      const p = valor.split('-').map(Number);
+      return new Date(p[0], p[1] - 1, p[2]);
+    }
+    const f = new Date(valor);
+    return isNaN(f.getTime()) ? null : f;
+  }
+  function formatearFecha(valor){
+    const f = parsearFecha(valor);
+    return f ? f.toLocaleDateString('es-CO') : '-';
+  }
+
+  const claveLeidas = function(){ return 'dsi_notif_leidas_' + usuarioActual.id; };
+
+  function leerLeidas(){
+    try { return new Set(JSON.parse(localStorage.getItem(claveLeidas()) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function guardarLeidas(set){
+    try { localStorage.setItem(claveLeidas(), JSON.stringify(Array.from(set).slice(-300))); } catch (e) {}
+  }
+
+  function construirNotificaciones(){
+    const lista = [];
+
+    recepcionesNotif.forEach(function(r){
+      const estado = r.estado_producto || 'Recibido';
+      const clase = clasificarEstado(estado);
+      if (clase === 'ok') return;                         // solo lo que requiere atención
+      const prod = Array.isArray(r.productos) ? r.productos[0] : r.productos;
+      lista.push({
+        key: 'rec:' + r.id + ':' + normalizar(estado),
+        tipo: clase,
+        titulo: 'Recepción ' + estado.toLowerCase(),
+        texto: ((prod && prod.nombre) || 'Producto') + ' — ' + fmtPeso(Number(r.peso) || 0),
+        fecha: formatearFecha(r.fecha_recepcion),
+        href: 'recepciones.html?id=' + encodeURIComponent(r.id),
+        refId: null
+      });
+    });
+
+    productosNotif.forEach(function(p){
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: 'prod:' + p.id,
+        tipo: 'info',
+        titulo: 'Producto inactivo',
+        texto: p.nombre || 'Producto',
+        fecha: '',
+        href: 'productos.html?id=' + encodeURIComponent(p.id),
+        refId: null
+      });
+    });
+
+    proveedores.forEach(function(p){
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: 'prov:' + p.id,
+        tipo: 'info',
+        titulo: 'Proveedor inactivo',
+        texto: p.nombre || 'Proveedor',
+        fecha: '',
+        href: 'proveedores.html?id=' + encodeURIComponent(p.id),
+        refId: p.id
+      });
+    });
+
+    return lista;
+  }
+
+  // Elimina de la lista de "leídas" las que ya no existen (mantiene el registro corto)
+  function podarLeidas(){
+    if (!usuarioActual) return;
+    const vigentes = new Set(construirNotificaciones().map(function(n){ return n.key; }));
+    const leidas = leerLeidas();
+    const nuevas = new Set(Array.from(leidas).filter(function(k){ return vigentes.has(k); }));
+    if (nuevas.size !== leidas.size) guardarLeidas(nuevas);
+  }
+
+  function actualizarGlobo(){
+    const leidas = leerLeidas();
+    const total = notifsActuales.filter(function(n){ return !leidas.has(n.key); }).length;
+    const globo = $('notificationBadge');
+    globo.textContent = total > 9 ? '9+' : String(total);
+    globo.classList.toggle('show', total > 0);
+    $('notificationBtn').setAttribute('aria-label', total ? 'Notificaciones (' + total + ' sin leer)' : 'Notificaciones');
+    $('markAllRead').style.display = total ? '' : 'none';
+  }
+
+  function iconoNotif(tipo){
+    return tipo === 'info'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="8" r=".9" fill="currentColor"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>';
+  }
+
+  function renderNotificaciones(){
+    if (!usuarioActual) return;
+    const leidas = leerLeidas();
+    notifsActuales = construirNotificaciones().filter(function(n){ return !leidas.has(n.key); }).slice(0, 30);
+    actualizarGlobo();
+
+    const cont = $('notificationContent');
+    if (!notifsActuales.length) {
+      cont.innerHTML = '<div class="notification-empty">No tienes notificaciones nuevas.</div>';
+      return;
+    }
+
+    cont.innerHTML = notifsActuales.map(function(n, i){
+      return '<a class="notification-item" href="' + escapeHTML(n.href) + '" data-i="' + i + '">' +
+        '<div class="ni-icon t-' + n.tipo + '">' + iconoNotif(n.tipo) + '</div>' +
+        '<div class="ni-body">' +
+          '<strong>' + escapeHTML(n.titulo) + '</strong>' +
+          '<span>' + escapeHTML(n.texto) + '</span>' +
+          ((n.fecha && n.fecha !== '-') ? '<em>' + escapeHTML(n.fecha) + '</em>' : '') +
+        '</div>' +
+        '<span class="ni-go">›</span>' +
+      '</a>';
+    }).join('');
+  }
+
+  const panelNotif = $('notificationPanel');
+  const btnNotif = $('notificationBtn');
+
+  function cerrarPanel(){
+    panelNotif.classList.remove('show');
+    btnNotif.setAttribute('aria-expanded', 'false');
+  }
+
+  btnNotif.addEventListener('click', function(e){
+    e.stopPropagation();
+    const abierto = panelNotif.classList.toggle('show');
+    btnNotif.setAttribute('aria-expanded', String(abierto));
+  });
+  $('closeNotifications').addEventListener('click', cerrarPanel);
+  document.addEventListener('click', function(e){
+    if (!panelNotif.contains(e.target) && !btnNotif.contains(e.target)) cerrarPanel();
+  });
+
+  // Clic en una notificación: se marca como leída, desaparece y se abre el módulo
+  $('notificationContent').addEventListener('click', function(e){
+    const item = e.target.closest('.notification-item');
+    if (!item) return;
+    e.preventDefault();
+
+    const n = notifsActuales[Number(item.dataset.i)];
+    if (!n) return;
+
+    const leidas = leerLeidas();
+    leidas.add(n.key);
+    guardarLeidas(leidas);
+    actualizarGlobo();
+
+    item.classList.add('removing');
+    setTimeout(function(){
+      item.remove();
+      if (!$('notificationContent').querySelector('.notification-item')) renderNotificaciones();
+
+      // Si es de un proveedor, ya estamos en su módulo: se resalta sin recargar
+      if (n.refId !== null && n.refId !== undefined) {
+        cerrarPanel();
+        resaltarProveedor(n.refId);
+      } else {
+        window.location.href = n.href;
+      }
+    }, 170);
+  });
+
+  $('markAllRead').addEventListener('click', function(){
+    const leidas = leerLeidas();
+    construirNotificaciones().forEach(function(n){ leidas.add(n.key); });
+    guardarLeidas(leidas);
+    renderNotificaciones();
+  });
+
+  // ---------------------------------------------------------------
+  // MENÚ MÓVIL
+  // ---------------------------------------------------------------
+  const sidebar = $('sidebar');
+  const overlay = $('mobileOverlay');
+  const btnMenu = $('mobileMenuBtn');
+
+  function abrirMenuMovil(){
+    menuAbierto = true;
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('show');
+    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+    actualizarScroll();
+  }
+  function cerrarMenuMovil(){
+    menuAbierto = false;
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    btnMenu.setAttribute('aria-label', 'Abrir menú');
+    actualizarScroll();
+  }
+
+  btnMenu.addEventListener('click', function(){ menuAbierto ? cerrarMenuMovil() : abrirMenuMovil(); });
+  overlay.addEventListener('click', cerrarMenuMovil);
+  document.querySelectorAll('.sb-link').forEach(function(l){ l.addEventListener('click', cerrarMenuMovil); });
+  window.addEventListener('resize', function(){ if (window.innerWidth > 800 && menuAbierto) cerrarMenuMovil(); });
+
+  // Tecla Escape: cierra lo último que se abrió
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    if ($('confirmOverlay').classList.contains('show')) { cerrarConfirmacion(); return; }
+    cerrarPanel();
+    cerrarMenuMovil();
+  });
+
+  // ---------------------------------------------------------------
+  // SESIÓN Y REFRESCO AUTOMÁTICO
+  // ---------------------------------------------------------------
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'SIGNED_OUT') window.location.replace('login.html');
+  });
+
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted && usuarioActual) { renderNotificaciones(); cargarProveedores(); }
+  });
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && usuarioActual && Date.now() - ultimaActualizacion > 30000) cargarProveedores();
+  });
+  window.addEventListener('online', function(){ if (usuarioActual) cargarProveedores(); });
+
+  // ---------------------------------------------------------------
+  // INICIO
+  // ---------------------------------------------------------------
+  async function iniciar(){
+    colocarFecha();
+
+    // Si se llega con ?id=..., se recuerda qué resaltar y se limpia la dirección
+    try {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (id) {
+        idPendiente = id;
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    } catch (e) { /* navegador sin URLSearchParams: se ignora */ }
+
+    // La sesión se lee del navegador (rápido). Sin sesión → login.
+    let session = null;
+    try {
+      const res = await supabaseClient.auth.getSession();
+      session = res.data.session;
+    } catch (err) {
+      console.error('No se pudo leer la sesión:', err);
+    }
+
+    if (!session) { window.location.replace('login.html'); return; }
+
+    usuarioActual = session.user;
+    pintarUsuario();
+
+    // 1) Se muestra al instante lo último guardado (si existe)
+    const cache = leerCache();
+    if (cache) {
+      proveedores = cache.proveedores;
+      productosNotif = cache.productos || [];
+      recepcionesNotif = cache.recepciones || [];
+      datosListos = true;
+      $('loadingState').hidden = true;
+      indexar();
+      actualizarUbicaciones();
+      actualizarResumen();
+      aplicarFiltros(true);
+      renderNotificaciones();
+      if (idPendiente && proveedores.some(function(p){ return String(p.id) === String(idPendiente); })) {
+        const id = idPendiente; idPendiente = null; resaltarProveedor(id);
+      }
+    }
+
+    // 2) Se piden los datos frescos en segundo plano
+    await cargarProveedores();
+  }
+
+  iniciar();
 })();
-
 </script>
-
-<script src="notificaciones.js"></script>
 
 </body>
 </html>

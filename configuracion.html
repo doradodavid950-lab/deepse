@@ -2,1915 +2,1067 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Deep Sea Intelligence — Configuración</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
+
+<!-- Conexiones anticipadas: ahorran tiempo al cargar el SDK y los datos -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <style>
-  :root{
-    --azul-oscuro:#062B5B;
-    --azul-oscuro-2:#083868;
-    --azul-medio:#1E66F5;
-    --azul-claro:#D9ECFF;
-    --verde-suave:#B9F5C5;
-    --verde-txt:#1B8A5A;
-    --rojo:#E53935;
-    --naranja:#FFA94D;
-    --amarillo:#FFD76A;
-    --morado:#E7D7FF;
-    --morado-txt:#7B5CC7;
-    --gris-claro:#F3F5F9;
-    --gris-borde:#E4E9F0;
-    --blanco:#FFFFFF;
-    --texto-principal:#0F2540;
-    --texto-secundario:#5B7089;
-    --sombra:0 10px 30px rgba(6,43,91,.08);
-    --radio:16px;
-  }
+:root{
+  --azul-oscuro:#062B5B;
+  --azul-oscuro-2:#083868;
+  --azul-medio:#1E66F5;
+  --azul-claro:#D9ECFF;
+  --verde-suave:#B9F5C5;
+  --verde-txt:#1B8A5A;
+  --rojo:#E53935;
+  --naranja:#FFA94D;
+  --amarillo:#FFD76A;
+  --morado:#E7D7FF;
+  --morado-txt:#7B5CC7;
+  --gris-claro:#F3F5F9;
+  --gris-borde:#E4E9F0;
+  --blanco:#FFFFFF;
+  --texto-principal:#0F2540;
+  --texto-secundario:#5B7089;
+  --sombra:0 10px 30px rgba(6,43,91,.08);
+  --radio:16px;
+}
 
-  *{
-    box-sizing:border-box;
-  }
+*{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
 
-  html,body{
-    margin:0;
-    padding:0;
-    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:var(--gris-claro);
-    color:var(--texto-principal);
-  }
+html{ scrollbar-width:thin; scrollbar-color:#C5D0DF transparent; }
 
-  body{
-    min-height:100vh;
-  }
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--gris-claro);
+  color:var(--texto-principal);
+  -webkit-font-smoothing:antialiased;
+}
+body{ overflow-x:hidden; }
+body.sin-scroll{ overflow:hidden; }
 
-  .app{
-    display:grid;
-    grid-template-columns:250px 1fr;
-    min-height:100vh;
-  }
+button,input,select{ font-family:inherit; }
+:focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
+a,button{ touch-action:manipulation; }
 
-  /* ================= SIDEBAR ================= */
+.app{
+  display:grid;
+  grid-template-columns:250px 1fr;
+  min-height:100vh;
+  min-height:100dvh;
+}
+
+/* ===================== MENÚ LATERAL ===================== */
+.sidebar{
+  background:linear-gradient(180deg,#07326F 0%,var(--azul-oscuro) 100%);
+  color:#EAF1FC;
+  display:flex;
+  flex-direction:column;
+  padding:18px 14px;
+  padding:clamp(14px,2.4vh,22px) 14px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  height:100dvh;
+  z-index:1000;
+}
+
+.sb-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:4px 8px 16px;
+  padding:4px 8px clamp(10px,2vh,20px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:12px;
+  margin-bottom:clamp(8px,1.6vh,14px);
+}
+.sb-brand .badge{
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:var(--blanco);
+  padding:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
+}
+.sb-brand .badge img{ width:100%; height:100%; object-fit:contain; display:block; }
+.sb-brand .name{ font-weight:700; font-size:17px; line-height:1.1; }
+.sb-brand .name span{ color:var(--amarillo); }
+.sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); margin-top:2px; }
+
+nav.sb-nav{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+nav.sb-nav::-webkit-scrollbar{ display:none; }
+
+.sb-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px 12px;
+  padding:clamp(6px,1.15vh,10px) 12px;
+  border-radius:10px;
+  color:rgba(255,255,255,.72);
+  text-decoration:none;
+  font-size:13.5px;
+  font-weight:500;
+  cursor:pointer;
+  transition:background .15s,color .15s,transform .15s;
+}
+.sb-link svg{ flex:0 0 auto; opacity:.85; }
+@media (hover:hover){ .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); } }
+.sb-link:active{ background:rgba(255,255,255,.12); }
+.sb-link.active{
+  background:var(--azul-medio);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(30,102,245,.35);
+}
+
+.sb-footer{
+  flex-shrink:0;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:12px;
+  padding-top:clamp(8px,1.6vh,14px);
+  margin-top:8px;
+}
+.sb-user{ display:flex; align-items:center; gap:10px; padding:4px 4px; }
+.sb-user .avatar{
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--verde-suave);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:13px;
+}
+.sb-user .info{ flex:1; min-width:0; }
+.sb-user .info strong{
+  display:block;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+.sb-user .info span::before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4ADE80;
+  margin-right:5px;
+}
+
+/* ===================== MENÚ MÓVIL ===================== */
+.mobile-menu-btn{
+  display:none;
+  border:1px solid var(--gris-borde);
+  background:var(--blanco);
+  color:var(--azul-oscuro);
+  border-radius:12px;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(6,43,91,.06);
+}
+@media (hover:hover){ .mobile-menu-btn:hover{ border-color:var(--azul-medio); } }
+.mobile-menu-btn:active{ transform:scale(.97); }
+
+.mobile-overlay{ display:none; }
+
+/* ===================== CONTENIDO ===================== */
+main{ padding:26px 32px 50px; min-width:0; }
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:24px;
+  gap:20px;
+}
+.topbar h1{ font-size:23px; margin:0; }
+.topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
+.topbar .subtitle #saludo{ color:var(--azul-oscuro); font-weight:600; }
+
+.top-actions{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
+
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative;
+  color:var(--azul-oscuro);
+  flex-shrink:0;
+  transition:border-color .15s,box-shadow .15s;
+}
+@media (hover:hover){ .icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
+
+/* Globo con el número de notificaciones sin leer */
+.badge-notif{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:10px;
+  background:var(--rojo);
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  border:2px solid var(--gris-claro);
+}
+.badge-notif.show{ display:flex; animation:pop .35s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pop{ from{ transform:scale(.3); opacity:0; } to{ transform:scale(1); opacity:1; } }
+
+.top-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  padding:6px 14px 6px 6px;
+  border-radius:30px;
+  max-width:220px;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
+}
+@media (hover:hover){ .top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
+.top-user .avatar{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:12px;
+  flex-shrink:0;
+}
+.top-user span{
+  font-size:13.5px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Efecto de "cargando" mientras llegan los textos */
+.loading-val{
+  display:inline-block;
+  min-width:90px;
+  color:transparent !important;
+  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
+  background-size:200% 100%;
+  animation:brillo 1.2s infinite linear;
+  border-radius:8px;
+}
+@keyframes brillo{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
+
+/* ===================== PANELES ===================== */
+.config-grid{
+  display:grid;
+  grid-template-columns:1.15fr 1fr;
+  gap:18px;
+  margin-bottom:18px;
+  align-items:start;
+}
+
+.panel{
+  background:var(--blanco);
+  border-radius:var(--radio);
+  box-shadow:var(--sombra);
+  padding:20px;
+  min-width:0;
+}
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:16px;
+}
+.panel-head h3{ margin:0; font-size:15.5px; }
+.panel-head span{ font-size:12px; color:var(--texto-secundario); }
+
+/* Entrada escalonada (igual que Inicio) */
+@keyframes subir{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+.panel{ animation:subir .45s ease backwards; }
+.config-grid > .panel:nth-child(1){ animation-delay:.05s; }
+.config-grid > .panel:nth-child(2){ animation-delay:.11s; }
+main > .panel{ animation-delay:.17s; }
+main > .logout-panel{ animation-delay:.23s; }
+
+/* ===================== PREFERENCIAS ===================== */
+.config-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:15px 8px;
+  margin:0 -8px;
+  border-bottom:1px solid #F0F3F7;
+  border-radius:10px;
+  transition:background .15s;
+}
+@media (hover:hover){ .config-item:hover{ background:#F8FAFD; } }
+.config-item:last-child{ border-bottom:none; }
+
+.config-left{ display:flex; align-items:center; gap:12px; min-width:0; flex:1; }
+.config-icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+.config-info{ min-width:0; }
+.config-info strong{ display:block; font-size:13px; }
+.config-info span{ display:block; color:var(--texto-secundario); font-size:11.5px; margin-top:3px; line-height:1.4; }
+.config-info span.preview{ color:var(--azul-medio); font-weight:600; }
+
+/* Interruptor */
+.switch{ position:relative; width:42px; height:23px; flex:0 0 auto; }
+.switch input{ opacity:0; width:100%; height:100%; margin:0; position:absolute; inset:0; cursor:pointer; z-index:2; }
+.slider{
+  position:absolute;
+  inset:0;
+  background:#D5DCE5;
+  border-radius:30px;
+  transition:background .2s;
+}
+.slider:before{
+  content:"";
+  position:absolute;
+  width:17px;
+  height:17px;
+  left:3px;
+  top:3px;
+  background:#fff;
+  border-radius:50%;
+  transition:transform .2s cubic-bezier(.3,1.4,.5,1);
+  box-shadow:0 2px 5px rgba(0,0,0,.12);
+}
+.switch input:checked + .slider{ background:var(--azul-medio); }
+.switch input:checked + .slider:before{ transform:translateX(19px); }
+.switch input:focus-visible + .slider{ outline:2px solid var(--azul-medio); outline-offset:2px; }
+
+.select-config{
+  border:1.5px solid var(--gris-borde);
+  background:var(--gris-claro);
+  color:var(--texto-principal);
+  border-radius:9px;
+  padding:8px 10px;
+  font-size:12px;
+  outline:none;
+  max-width:150px;
+  transition:border-color .15s;
+}
+.select-config:focus{ border-color:var(--azul-medio); }
+
+.btn-soft{
+  border:1.5px solid var(--gris-borde);
+  background:var(--blanco);
+  color:var(--texto-principal);
+  border-radius:9px;
+  padding:8px 13px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:border-color .15s,transform .1s;
+}
+@media (hover:hover){ .btn-soft:hover{ border-color:var(--azul-medio); } }
+.btn-soft:active{ transform:scale(.97); }
+
+/* ===================== CUENTA Y SISTEMA ===================== */
+.account-box{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:15px;
+  background:var(--gris-claro);
+  border-radius:12px;
+  margin-bottom:14px;
+}
+.account-avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+  font-weight:700;
+  flex:0 0 auto;
+}
+.account-info{ min-width:0; }
+.account-info strong{ display:block; font-size:14px; }
+.account-info > span{
+  display:block;
+  color:var(--texto-secundario);
+  font-size:11.5px;
+  margin-top:3px;
+  overflow-wrap:anywhere;
+}
+.status{
+  display:inline-block;
+  margin-top:7px;
+  padding:3px 10px;
+  border-radius:30px;
+  background:var(--verde-suave);
+  color:#146142;
+  font-size:10.5px;
+  font-weight:700;
+}
+
+.system-list{ display:flex; flex-direction:column; gap:2px; }
+.system-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:10px 8px;
+  margin:0 -8px;
+  border-bottom:1px solid #F0F3F7;
+  border-radius:8px;
+  transition:background .15s;
+}
+@media (hover:hover){ .system-row:hover{ background:#F8FAFD; } }
+.system-row:last-child{ border-bottom:none; }
+.system-row span{ color:var(--texto-secundario); font-size:12px; }
+.system-row strong{ font-size:12px; text-align:right; }
+
+.notice{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:14px;
+  border-radius:12px;
+  background:var(--azul-claro);
+  margin-top:16px;
+}
+.notice svg{ flex:0 0 auto; color:var(--azul-medio); margin-top:1px; }
+.notice strong{ display:block; font-size:12.5px; }
+.notice span{ display:block; font-size:11.5px; color:var(--texto-secundario); margin-top:3px; line-height:1.45; }
+
+/* ===================== CERRAR SESIÓN ===================== */
+.logout-panel{ margin-top:18px; }
+.logout-content{ display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.logout-info{ display:flex; align-items:center; gap:13px; min-width:0; }
+.logout-icon{
+  width:40px;
+  height:40px;
+  border-radius:10px;
+  background:rgba(229,57,53,.10);
+  color:var(--rojo);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+.logout-text strong{ display:block; font-size:13px; }
+.logout-text span{ display:block; color:var(--texto-secundario); font-size:11.5px; margin-top:3px; }
+
+.config-logout{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:none;
+  background:rgba(229,57,53,.10);
+  color:var(--rojo);
+  padding:10px 17px;
+  border-radius:10px;
+  font-size:12.5px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:background .2s,transform .1s;
+}
+@media (hover:hover){ .config-logout:hover{ background:rgba(229,57,53,.18); } }
+.config-logout:active{ transform:scale(.98); }
+.config-logout:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* ===================== VENTANA DE CONFIRMACIÓN ===================== */
+.modal-overlay{
+  position:fixed;
+  top:0;right:0;bottom:0;left:0;
+  background:rgba(6,20,45,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:1500;
+}
+.modal-overlay.show{ display:flex; animation:aparecer .18s ease; }
+@keyframes aparecer{ from{ opacity:0; } to{ opacity:1; } }
+.modal-card{
+  background:var(--blanco);
+  border-radius:18px;
+  width:100%;
+  max-width:420px;
+  padding:26px;
+  box-shadow:0 30px 70px rgba(6,20,45,.35);
+  animation:subir .25s ease;
+}
+.modal-head{ margin-bottom:14px; }
+.modal-head h3{ margin:0; font-size:18px; color:var(--azul-oscuro); }
+.confirm-texto{ margin:0; font-size:14px; line-height:1.55; color:var(--texto-secundario); }
+.modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid var(--gris-borde);
+}
+.btn{
+  border:none;
+  border-radius:10px;
+  padding:10px 16px;
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .15s,transform .1s,opacity .15s;
+}
+.btn:active{ transform:scale(.98); }
+.btn:disabled{ opacity:.6; cursor:not-allowed; }
+.btn-secondary{ background:var(--gris-claro); color:var(--texto-secundario); border:1px solid var(--gris-borde); }
+.btn-danger{ background:var(--rojo); color:#fff; }
+@media (hover:hover){ .btn-danger:hover:not(:disabled){ background:#C62D2A; } }
+
+/* ===================== AVISO EMERGENTE (TOAST) ===================== */
+.toast{
+  position:fixed;
+  top:22px;
+  right:22px;
+  background:var(--azul-oscuro);
+  color:#fff;
+  padding:14px 20px;
+  border-radius:12px;
+  font-size:14px;
+  box-shadow:0 18px 45px rgba(6,43,91,.18);
+  transform:translateY(-140%);
+  opacity:0;
+  transition:transform .35s ease,opacity .35s ease;
+  z-index:2000;
+  max-width:calc(100vw - 24px);
+}
+.toast.show{ transform:translateY(0); opacity:1; }
+.toast.error{ background:var(--rojo); }
+.toast.success{ background:#1B8A5A; }
+
+/* ===================== NOTIFICACIONES ===================== */
+.notification-panel{
+  position:fixed;
+  top:78px;
+  right:32px;
+  width:350px;
+  background:var(--blanco);
+  border:1px solid var(--gris-borde);
+  border-radius:14px;
+  box-shadow:0 15px 35px rgba(6,43,91,.16);
+  z-index:1300;
+  display:none;
+  overflow:hidden;
+}
+.notification-panel.show{ display:block; animation:caer .18s ease; }
+@keyframes caer{ from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:none; } }
+
+.notification-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--gris-borde);
+}
+.notification-header strong{ font-size:14px; }
+.nh-actions{ display:flex; align-items:center; gap:6px; }
+.notification-header button{ border:none; background:none; color:var(--texto-secundario); cursor:pointer; }
+#markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
+@media (hover:hover){ #markAllRead:hover{ background:var(--azul-claro); } }
+#closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
+
+.notification-list{ max-height:420px; max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
+
+a.notification-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 16px;
+  border-bottom:1px solid #F0F3F7;
+  color:inherit;
+  text-decoration:none;
+  transition:background .15s,opacity .18s,transform .18s;
+}
+a.notification-item:active{ background:#EEF4FF; }
+a.notification-item:last-child{ border-bottom:none; }
+@media (hover:hover){ a.notification-item:hover{ background:#F6F9FD; } }
+a.notification-item.removing{ opacity:0; transform:translateX(26px); }
+
+.ni-icon{
+  flex:0 0 auto;
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+}
+.ni-icon.t-warn{ background:#FCE1E0; color:var(--rojo); }
+.ni-icon.t-pend{ background:#FFF1C9; color:#B8860B; }
+.ni-body{ min-width:0; flex:1; }
+.ni-body strong{ display:block; font-size:12.5px; margin-bottom:2px; }
+.ni-body span{ display:block; font-size:11.5px; color:var(--texto-secundario); line-height:1.4; }
+.ni-body em{ display:block; font-style:normal; font-size:10.5px; color:#8A9BB1; margin-top:3px; }
+.ni-go{ align-self:center; color:#A9B7CA; font-size:18px; }
+.notification-empty{ padding:26px 16px; text-align:center; font-size:12.5px; color:var(--texto-secundario); }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+
+/* ===================== TABLET ===================== */
+@media (max-width:1100px){
+  .app{ grid-template-columns:220px 1fr; }
+  main{ padding:24px; }
+  .config-grid{ grid-template-columns:1fr; }
+}
+
+/* ===================== CELULAR ===================== */
+@media (max-width:800px){
+
+  .app{ display:block; min-height:100vh; }
 
   .sidebar{
-    background:var(--azul-oscuro);
-    color:#EAF1FC;
-    display:flex;
-    flex-direction:column;
-    padding:22px 16px;
-    position:sticky;
+    position:fixed;
     top:0;
+    left:0;
+    width:270px;
+    max-width:85vw;
     height:100vh;
+    height:100dvh;
+    transform:translateX(-105%);
+    transition:transform .25s ease;
     z-index:1200;
+    box-shadow:8px 0 30px rgba(0,0,0,.20);
+    padding-top:max(14px,env(safe-area-inset-top));
+    padding-bottom:max(14px,env(safe-area-inset-bottom));
   }
-
-  .sb-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:6px 10px 22px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:14px;
-  }
-
-  .sb-brand .badge{
-    width:38px;
-    height:38px;
-    border-radius:11px;
-    background:rgba(255,255,255,.12);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .sb-brand .name{
-    font-weight:700;
-    font-size:16px;
-    line-height:1.1;
-  }
-
-  .sb-brand .name span{
-    color:var(--amarillo);
-  }
-
-  .sb-brand .sub{
-    font-size:10.5px;
-    color:rgba(255,255,255,.55);
-  }
-
-  nav.sb-nav{
-    flex:1;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-  }
-
-  .sb-link{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:10px 12px;
-    border-radius:10px;
-    color:rgba(255,255,255,.72);
-    text-decoration:none;
-    font-size:14px;
-    font-weight:500;
-    cursor:pointer;
-    border:none;
-    background:none;
-    width:100%;
-    text-align:left;
-  }
-
-  .sb-link svg{
-    flex:0 0 auto;
-    opacity:.85;
-  }
-
-  .sb-link:hover{
-    background:rgba(255,255,255,.06);
-    color:#fff;
-  }
-
-  .sb-link.active{
-    background:var(--azul-medio);
-    color:#fff;
-    box-shadow:0 6px 16px rgba(30,102,245,.35);
-  }
-
-  .sb-footer{
-    border-top:1px solid rgba(255,255,255,.08);
-    padding-top:14px;
-    margin-top:10px;
-  }
-
-  .sb-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px 8px;
-  }
-
-  .sb-user .avatar{
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:var(--verde-suave);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:13px;
-  }
-
-  .sb-user .info strong{
-    display:block;
-    font-size:13px;
-  }
-
-  .sb-user .info span{
-    font-size:11px;
-    color:rgba(255,255,255,.5);
-  }
-
-  /* ================= BOTÓN MENÚ MÓVIL ================= */
-
-  .mobile-menu-btn{
-    display:none;
-    border:1px solid var(--gris-borde);
-    background:var(--blanco);
-    color:var(--azul-oscuro);
-    border-radius:12px;
-    cursor:pointer;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 4px 12px rgba(6,43,91,.06);
-  }
-
-  .mobile-menu-btn:hover{
-    border-color:var(--azul-medio);
-  }
-
-  .mobile-menu-btn:active{
-    transform:scale(.97);
-  }
+  .sidebar.mobile-open{ transform:translateX(0); }
 
   .mobile-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    z-index:1100;
     display:none;
+    position:fixed;
+    top:0;right:0;bottom:0;left:0;
+    background:rgba(0,0,0,.42);
+    z-index:1150;
   }
-
-  .mobile-overlay.show{
-    display:block;
-  }
-
-  /* ================= MAIN ================= */
+  .mobile-overlay.show{ display:block; }
 
   main{
-    padding:26px 32px 50px;
+    width:100%;
     min-width:0;
+    padding:16px 14px 30px;
+    padding-left:max(14px,env(safe-area-inset-left));
+    padding-right:max(14px,env(safe-area-inset-right));
+    padding-bottom:max(30px,env(safe-area-inset-bottom));
   }
 
   .topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:26px;
-  }
-
-  .topbar h1{
-    font-size:23px;
-    margin:0;
-  }
-
-  .topbar .subtitle{
-    font-size:13px;
-    color:var(--texto-secundario);
-    margin-top:3px;
-  }
-
-  .top-actions{
-    display:flex;
-    align-items:center;
-    gap:16px;
-  }
-
-  .icon-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:relative;
-    color:var(--azul-oscuro);
-  }
-
-  .icon-btn:hover{
-    border-color:var(--azul-medio);
-  }
-
-  .dot-alert{
-    position:absolute;
-    top:8px;
-    right:9px;
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--rojo);
-    border:1.5px solid var(--blanco);
-  }
-
-  .top-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    padding:6px 14px 6px 6px;
-    border-radius:30px;
-  }
-
-  .top-user .avatar{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:700;
-    font-size:12px;
-  }
-
-  .top-user span{
-    font-size:13.5px;
-    font-weight:600;
-  }
-
-  /* ================= CONFIGURACIÓN ================= */
-
-  .config-grid{
     display:grid;
-    grid-template-columns:1.15fr 1fr;
-    gap:18px;
-    margin-bottom:18px;
+    grid-template-columns:42px minmax(0,1fr) auto;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
   }
+  .mobile-menu-btn{ display:flex; width:42px; height:42px; }
+  .topbar h1{ font-size:21px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar .subtitle{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-  .panel{
-    background:var(--blanco);
-    border-radius:var(--radio);
-    box-shadow:var(--sombra);
+  .top-actions{ gap:8px; }
+  .top-user{ padding:4px; border-radius:50%; }
+  .top-user span{ display:none; }
+  .top-user .avatar{ width:32px; height:32px; }
+
+  .config-grid{ gap:14px; margin-bottom:14px; }
+  .panel{ padding:16px; border-radius:14px; }
+  .panel-head h3{ font-size:15px; }
+
+  .config-item{ gap:10px; padding:14px 8px; }
+  .select-config{ max-width:125px; flex:0 0 auto; font-size:16px; }
+
+  .system-row{ align-items:flex-start; gap:12px; }
+  .system-row strong{ max-width:48%; line-height:1.4; }
+
+  .logout-content{ align-items:flex-start; flex-direction:column; gap:14px; }
+  .logout-info{ width:100%; }
+  .config-logout{ width:100%; min-height:46px; font-size:14px; }
+
+  .modal-overlay{ padding:0; align-items:flex-end; }
+  .modal-card{
+    max-width:none;
+    border-radius:20px 20px 0 0;
     padding:20px;
+    padding-bottom:max(20px,env(safe-area-inset-bottom));
   }
+  .modal-footer{ flex-direction:column-reverse; }
+  .modal-footer .btn{ width:100%; min-height:46px; font-size:14px; }
 
-  .panel-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:18px;
-  }
-
-  .panel-head h3{
-    margin:0;
-    font-size:15.5px;
-  }
-
-  .panel-head span{
-    font-size:12px;
-    color:var(--texto-secundario);
-  }
-
-  .config-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    padding:15px 0;
-    border-bottom:1px solid #F0F3F7;
-  }
-
-  .config-item:last-child{
-    border-bottom:none;
-  }
-
-  .config-left{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    min-width:0;
-  }
-
-  .config-icon{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:0 0 auto;
-  }
-
-  .config-info{
-    min-width:0;
-  }
-
-  .config-info strong{
-    display:block;
-    font-size:13px;
-  }
-
-  .config-info span{
-    display:block;
-    color:var(--texto-secundario);
-    font-size:11.5px;
-    margin-top:3px;
-  }
-
-  /* ================= SWITCH ================= */
-
-  .switch{
-    position:relative;
-    width:42px;
-    height:23px;
-    flex:0 0 auto;
-  }
-
-  .switch input{
-    opacity:0;
-    width:0;
-    height:0;
-  }
-
-  .slider{
-    position:absolute;
-    cursor:pointer;
-    inset:0;
-    background:#D5DCE5;
-    border-radius:30px;
-    transition:.2s;
-  }
-
-  .slider:before{
-    content:"";
-    position:absolute;
-    width:17px;
-    height:17px;
-    left:3px;
-    top:3px;
-    background:#fff;
-    border-radius:50%;
-    transition:.2s;
-    box-shadow:0 2px 5px rgba(0,0,0,.12);
-  }
-
-  .switch input:checked + .slider{
-    background:var(--azul-medio);
-  }
-
-  .switch input:checked + .slider:before{
-    transform:translateX(19px);
-  }
-
-  /* ================= SELECTORES ================= */
-
-  .select-config{
-    border:1px solid var(--gris-borde);
-    background:var(--gris-claro);
-    color:var(--texto-principal);
-    border-radius:9px;
-    padding:7px 10px;
-    font-family:inherit;
-    font-size:12px;
-    outline:none;
-    max-width:150px;
-  }
-
-  .select-config:focus{
-    border-color:var(--azul-medio);
-  }
-
-  /* ================= CUENTA Y SISTEMA ================= */
-
-  .account-box{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:15px;
-    background:var(--gris-claro);
-    border-radius:12px;
-    margin-bottom:14px;
-  }
-
-  .account-avatar{
-    width:48px;
-    height:48px;
-    border-radius:50%;
-    background:var(--azul-claro);
-    color:var(--azul-oscuro);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:17px;
-    font-weight:700;
-    flex:0 0 auto;
-  }
-
-  .account-info{
-    min-width:0;
-  }
-
-  .account-info strong{
-    display:block;
-    font-size:14px;
-  }
-
-  .account-info span{
-    display:block;
-    color:var(--texto-secundario);
-    font-size:11.5px;
-    margin-top:3px;
-    overflow-wrap:anywhere;
-  }
-
-  .status{
-    display:inline-block;
-    margin-top:7px;
-    padding:3px 10px;
-    border-radius:30px;
-    background:var(--verde-suave);
-    color:#146142;
-    font-size:10.5px;
-    font-weight:700;
-  }
-
-  .system-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .system-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    padding:10px 0;
-    border-bottom:1px solid #F0F3F7;
-  }
-
-  .system-row:last-child{
-    border-bottom:none;
-  }
-
-  .system-row span{
-    color:var(--texto-secundario);
-    font-size:12px;
-  }
-
-  .system-row strong{
-    font-size:12px;
-    text-align:right;
-  }
-
-  /* ================= AVISOS ================= */
-
-  .notice{
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-    padding:14px;
-    border-radius:12px;
-    background:var(--azul-claro);
-    margin-top:16px;
-  }
-
-  .notice svg{
-    flex:0 0 auto;
-    color:var(--azul-medio);
-    margin-top:1px;
-  }
-
-  .notice strong{
-    display:block;
-    font-size:12.5px;
-  }
-
-  .notice span{
-    display:block;
-    font-size:11.5px;
-    color:var(--texto-secundario);
-    margin-top:3px;
-    line-height:1.45;
-  }
-
-  /* ================= NOTIFICACIONES ================= */
-
-  .notification-panel{
-    position:fixed;
-    top:78px;
-    right:32px;
-    width:330px;
-    background:var(--blanco);
-    border:1px solid var(--gris-borde);
-    border-radius:14px;
-    box-shadow:0 15px 35px rgba(6,43,91,.16);
-    z-index:1500;
-    display:none;
-    overflow:hidden;
-  }
-
-  .notification-panel.show{
-    display:block;
-  }
-
-  .notification-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:15px 17px;
-    border-bottom:1px solid var(--gris-borde);
-  }
-
-  .notification-header strong{
-    font-size:14px;
-    color:var(--texto-principal);
-  }
-
-  .notification-header button{
-    border:none;
-    background:none;
-    font-size:22px;
-    color:var(--texto-secundario);
-    cursor:pointer;
-    padding:0 5px;
-  }
-
-  .notification-header button:hover{
-    color:var(--rojo);
-  }
-
-  .notification-item{
-    display:flex;
-    gap:10px;
-    padding:13px 16px;
-    border-bottom:1px solid #F0F3F7;
-  }
-
-  .notification-item:last-child{
-    border-bottom:none;
-  }
-
-  .notification-item .ni-icon{
-    width:32px;
-    height:32px;
-    border-radius:9px;
-    background:var(--azul-claro);
-    color:var(--azul-medio);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:0 0 auto;
-  }
-
-  .notification-item strong{
-    display:block;
-    font-size:12.5px;
-    margin-bottom:2px;
-    color:var(--texto-principal);
-  }
-
-  .notification-item span{
-    display:block;
-    font-size:11px;
-    color:var(--texto-secundario);
-    line-height:1.4;
-  }
-
-  .notification-empty{
-    padding:22px 16px;
+  .toast{
+    top:auto;
+    bottom:max(18px,env(safe-area-inset-bottom));
+    left:14px;
+    right:14px;
     text-align:center;
-    font-size:12px;
-    color:var(--texto-secundario);
   }
 
-  /* ================= CERRAR SESIÓN ================= */
+  .notification-panel{ top:70px; left:10px; right:10px; width:auto; max-width:none; }
+}
 
-  .logout-panel{
-    margin-top:18px;
+@media (max-width:520px){
+  .config-item{ align-items:flex-start; }
+  .config-item .switch{ margin-top:6px; }
+  .config-item .btn-soft{ margin-top:2px; }
+  .account-box{ align-items:flex-start; }
+  .account-avatar{ width:44px; height:44px; font-size:16px; }
+  .system-row{ flex-direction:column; gap:4px; }
+  .system-row strong{ max-width:none; text-align:left; }
+}
+
+@media (max-width:400px){
+  main{
+    padding:13px 10px 25px;
+    padding-left:max(10px,env(safe-area-inset-left));
+    padding-right:max(10px,env(safe-area-inset-right));
+    padding-bottom:max(25px,env(safe-area-inset-bottom));
   }
-
-  .logout-content{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-  }
-
-  .logout-info{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    min-width:0;
-  }
-
-  .logout-icon{
-    width:40px;
-    height:40px;
-    border-radius:10px;
-    background:rgba(229,57,53,.10);
-    color:var(--rojo);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:0 0 auto;
-  }
-
-  .logout-text strong{
-    display:block;
-    font-size:13px;
-  }
-
-  .logout-text span{
-    display:block;
-    color:var(--texto-secundario);
-    font-size:11.5px;
-    margin-top:3px;
-  }
-
-  .config-logout{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    border:none;
-    background:rgba(229,57,53,.10);
-    color:var(--rojo);
-    padding:10px 17px;
-    border-radius:10px;
-    font-family:inherit;
-    font-size:12.5px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.2s;
-    white-space:nowrap;
-  }
-
-  .config-logout:hover{
-    background:rgba(229,57,53,.18);
-  }
-
-  /* ================= TABLET ================= */
-
-  @media (max-width:1100px){
-
-    .config-grid{
-      grid-template-columns:1fr;
-    }
-
-  }
-
-  /* ================= MÓVIL ================= */
-
-  @media (max-width:800px){
-
-    .app{
-      display:block;
-      min-height:100vh;
-    }
-
-    .sidebar{
-      position:fixed;
-      left:0;
-      top:0;
-      bottom:0;
-      width:280px;
-      max-width:85vw;
-      height:100vh;
-      display:flex;
-      transform:translateX(-110%);
-      transition:transform .25s ease;
-      box-shadow:12px 0 30px rgba(0,0,0,.18);
-      z-index:1200;
-      overflow-y:auto;
-    }
-
-    .sidebar.mobile-open{
-      transform:translateX(0);
-    }
-
-    .mobile-menu-btn{
-      display:flex;
-      width:42px;
-      height:42px;
-    }
-
-    main{
-      width:100%;
-      padding:16px 18px 30px;
-      min-width:0;
-    }
-
-    .topbar{
-      display:grid;
-      grid-template-columns:42px minmax(0,1fr) auto;
-      align-items:center;
-      gap:14px;
-      margin-bottom:22px;
-    }
-
-    .topbar h1{
-      font-size:22px;
-      line-height:1.2;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .topbar .subtitle{
-      font-size:12px;
-      line-height:1.4;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .top-actions{
-      gap:8px;
-      flex:0 0 auto;
-    }
-
-    .top-user{
-      display:none;
-    }
-
-    .icon-btn{
-      width:40px;
-      height:40px;
-    }
-
-    .notification-panel{
-      top:64px;
-      left:18px;
-      right:18px;
-      width:auto;
-      max-height:70vh;
-      overflow-y:auto;
-    }
-
-    .config-grid{
-      grid-template-columns:1fr;
-      gap:15px;
-      margin-bottom:15px;
-    }
-
-    .panel{
-      padding:18px;
-      border-radius:16px;
-    }
-
-    .panel-head{
-      margin-bottom:14px;
-    }
-
-    .panel-head h3{
-      font-size:15px;
-    }
-
-    .panel-head span{
-      font-size:11px;
-    }
-
-    .config-item{
-      padding:14px 0;
-      gap:10px;
-    }
-
-    .config-left{
-      flex:1;
-    }
-
-    .config-info strong{
-      font-size:13px;
-    }
-
-    .config-info span{
-      font-size:11px;
-      line-height:1.4;
-    }
-
-    .select-config{
-      max-width:125px;
-      flex:0 0 auto;
-    }
-
-    .account-box{
-      padding:14px;
-    }
-
-    .system-row{
-      align-items:flex-start;
-      gap:12px;
-    }
-
-    .system-row span{
-      line-height:1.4;
-    }
-
-    .system-row strong{
-      max-width:48%;
-      line-height:1.4;
-    }
-
-    .notice{
-      padding:13px;
-    }
-
-    .logout-content{
-      align-items:flex-start;
-      flex-direction:column;
-      gap:14px;
-    }
-
-    .logout-info{
-      width:100%;
-    }
-
-    .config-logout{
-      width:100%;
-    }
-
-  }
-
-  /* ================= MÓVIL PEQUEÑO ================= */
-
-  @media (max-width:520px){
-
-    main{
-      padding:14px 14px 25px;
-    }
-
-    .topbar{
-      margin-bottom:18px;
-    }
-
-    .topbar h1{
-      font-size:20px;
-    }
-
-    .topbar .subtitle{
-      font-size:11.5px;
-    }
-
-    .top-actions{
-      gap:6px;
-    }
-
-    .icon-btn{
-      width:38px;
-      height:38px;
-      border-radius:11px;
-    }
-
-    .panel{
-      padding:16px;
-    }
-
-    .panel-head{
-      align-items:flex-start;
-      gap:8px;
-    }
-
-    .panel-head span{
-      white-space:nowrap;
-    }
-
-    .config-item{
-      align-items:flex-start;
-    }
-
-    .config-left{
-      min-width:0;
-    }
-
-    .config-icon{
-      width:36px;
-      height:36px;
-    }
-
-    .config-info span{
-      line-height:1.45;
-    }
-
-    .switch{
-      margin-top:6px;
-    }
-
-    .select-config{
-      max-width:115px;
-      margin-top:2px;
-    }
-
-    .account-box{
-      align-items:flex-start;
-    }
-
-    .account-avatar{
-      width:44px;
-      height:44px;
-      font-size:16px;
-    }
-
-    .system-row{
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .system-row strong{
-      max-width:none;
-      text-align:left;
-    }
-
-    .notice{
-      gap:9px;
-    }
-
-    .notification-panel{
-      left:12px;
-      right:12px;
-      top:62px;
-    }
-
-  }
-
-  @media (max-width:400px){
-
-    .mobile-menu-btn{
-      width:39px;
-      height:39px;
-    }
-
-  }
-
+  .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
+  .mobile-menu-btn{ width:39px; height:39px; }
+  .topbar h1{ font-size:19px; }
+  .topbar .subtitle{ font-size:10px; }
+  .icon-btn{ width:39px; height:39px; }
+  .top-actions{ gap:5px; }
+  .panel{ padding:14px; }
+  .notification-panel{ left:8px; right:8px; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- FONDO DEL MENÚ MÓVIL -->
-
-<div
-  class="mobile-overlay"
-  id="mobileOverlay">
-</div>
-
 <div class="app">
 
-  <!-- MENÚ LATERAL -->
-
-  <aside
-    class="sidebar"
-    id="sidebar">
+  <!-- ===================== MENÚ LATERAL ===================== -->
+  <aside class="sidebar" id="sidebar">
 
     <div class="sb-brand">
-
       <div class="badge">
-
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-            stroke="#FFD76A"
-            stroke-width="1.6"
-            stroke-linejoin="round"/>
-
-          <circle
-            cx="16"
-            cy="10.3"
-            r=".9"
-            fill="#FFD76A"/>
-
-        </svg>
-
+        <img src="logo-emblema.png" alt="Deep Sea Intelligence">
       </div>
-
       <div>
-
-        <div class="name">
-          Deep <span>Sea</span>
-        </div>
-
-        <div class="sub">
-          Gestión de recursos marinos
-        </div>
-
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
       </div>
-
     </div>
 
-    <nav
-      class="sb-nav"
-      id="sbNav">
+    <nav class="sb-nav" id="sbNav">
 
-      <a
-        class="sb-link"
-        data-view="inicio"
-        href="inicio.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M3 11l9-7 9 7"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <path
-            d="M5 10v10h14V10"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="inicio" href="inicio.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
         Inicio
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="productos"
-        href="productos.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <circle
-            cx="12"
-            cy="12"
-            r="2.2"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="productos" href="productos.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
         Productos
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="proveedores"
-        href="proveedores.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <circle
-            cx="12"
-            cy="8"
-            r="3.4"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <path
-            d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="proveedores" href="proveedores.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
         Proveedores
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="recepciones"
-        href="recepciones.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <rect
-            x="4"
-            y="7"
-            width="16"
-            height="13"
-            rx="2"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <path
-            d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="recepciones" href="recepciones.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
         Recepciones
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="almacenamiento"
-        href="almacenamiento.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linejoin="round"/>
-
-          <path
-            d="M9 20v-6h6v6"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
         Almacenamiento
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="ventas"
-        href="ventas.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <circle
-            cx="9"
-            cy="20"
-            r="1.3"
-            fill="currentColor"/>
-
-          <circle
-            cx="17"
-            cy="20"
-            r="1.3"
-            fill="currentColor"/>
-
-          <path
-            d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="ventas" href="ventas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
         Ventas
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="trazabilidad"
-        href="trazabilidad.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M3 6h18M3 12h18M3 18h12"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <circle
-            cx="20"
-            cy="18"
-            r="1.6"
-            fill="currentColor"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
         Trazabilidad
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="reportes"
-        href="reportes.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M4 20V10M12 20V4M20 20v-7"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="reportes" href="reportes.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         Reportes
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="normas"
-        href="normas.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <path
-            d="m9 12 2 2 4-4"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="normas" href="normas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
         Normas y Calidad
-
       </a>
 
-      <a
-        class="sb-link"
-        data-view="usuarios"
-        href="usuarios.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <circle
-            cx="9"
-            cy="8"
-            r="3"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <path
-            d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <circle
-            cx="18"
-            cy="8"
-            r="2.2"
-            stroke="currentColor"
-            stroke-width="1.5"/>
-
-          <path
-            d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-            stroke="currentColor"
-            stroke-width="1.5"/>
-
-        </svg>
-
+      <a class="sb-link" data-view="usuarios" href="usuarios.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
         Usuarios
-
       </a>
 
-      <a
-        class="sb-link active"
-        data-view="configuracion"
-        href="configuracion.html">
-
-        <svg
-          width="17"
-          height="17"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <circle
-            cx="12"
-            cy="12"
-            r="3"
-            stroke="currentColor"
-            stroke-width="1.7"/>
-
-          <path
-            d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8-.1-1.2z"
-            stroke="currentColor"
-            stroke-width="1.3"
-            stroke-linejoin="round"/>
-
-        </svg>
-
+      <a class="sb-link active" data-view="configuracion" href="configuracion.html" aria-current="page">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
         Configuración
-
       </a>
 
     </nav>
 
     <div class="sb-footer">
-
       <div class="sb-user">
-
-        <div
-          class="avatar"
-          id="sbAvatar">
-          C
-        </div>
-
+        <div class="avatar" id="sbAvatar">C</div>
         <div class="info">
-
-          <strong id="sbUserName">
-            Cargando...
-          </strong>
-
-          <span>
-            En línea
-          </span>
-
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
         </div>
-
       </div>
-
     </div>
 
   </aside>
 
-  <!-- CONTENIDO PRINCIPAL -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
+  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
   <main>
 
     <div class="topbar">
 
-      <button
-        class="mobile-menu-btn"
-        id="mobileMenuBtn"
-        type="button"
-        aria-label="Abrir menú"
-        title="Abrir menú">
-
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none">
-
-          <path
-            d="M4 6h16M4 12h16M4 18h16"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"/>
-
-        </svg>
-
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
 
       <div>
-
-        <h1>
-          Configuración
-        </h1>
-
+        <h1>Configuración</h1>
         <div class="subtitle">
-          Configuración general del sistema —
+          <span id="saludo">Configuración general del sistema</span> —
           <span id="todayDate"></span>
         </div>
-
       </div>
 
       <div class="top-actions">
 
-        <button
-          class="icon-btn"
-          id="notificationBtn"
-          title="Notificaciones"
-          type="button">
-
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none">
-
-            <path
-              d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-              stroke="currentColor"
-              stroke-width="1.6"/>
-
-            <path
-              d="M10 20a2 2 0 0 0 4 0"
-              stroke="currentColor"
-              stroke-width="1.6"/>
-
-          </svg>
-
-          <span
-            class="dot-alert"
-            id="notificationDot">
-          </span>
-
+        <button class="icon-btn" id="notificationBtn" title="Notificaciones" type="button" aria-label="Notificaciones" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="badge-notif" id="notificationBadge"></span>
         </button>
 
-        <div class="top-user">
-
-          <div
-            class="avatar"
-            id="topAvatar">
-            C
-          </div>
-
-          <span id="topUserName">
-            Cargando...
-          </span>
-
-        </div>
+        <a href="configuracion.html" class="top-user" title="Configuración">
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
+        </a>
 
       </div>
-
     </div>
 
-    <!-- PANEL DE NOTIFICACIONES -->
-
-    <div
-      class="notification-panel"
-      id="notificationPanel">
-
+    <!-- Panel de notificaciones -->
+    <div class="notification-panel" id="notificationPanel">
       <div class="notification-header">
-
-        <strong>
-          Notificaciones
-        </strong>
-
-        <button
-          id="closeNotifications"
-          type="button">
-          ×
-        </button>
-
-      </div>
-
-      <div id="notificationContent">
-
-        <div class="notification-empty">
-          Cargando notificaciones...
+        <strong>Notificaciones</strong>
+        <div class="nh-actions">
+          <button id="markAllRead" type="button" style="display:none">Marcar todas como leídas</button>
+          <button id="closeNotifications" type="button" aria-label="Cerrar">×</button>
         </div>
-
       </div>
-
+      <div class="notification-list" id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
+      </div>
     </div>
 
     <div class="config-grid">
 
       <!-- PREFERENCIAS -->
-
       <section class="panel">
 
         <div class="panel-head">
-
-          <h3>
-            Preferencias del sistema
-          </h3>
-
-          <span>
-            Configuración
-          </span>
-
+          <h3>Preferencias del sistema</h3>
+          <span>Se guardan en este dispositivo</span>
         </div>
 
         <div class="config-item">
-
           <div class="config-left">
-
             <div class="config-icon">
-
-              <svg
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill="none">
-
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="3"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-
-                <path
-                  d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-                  stroke="currentColor"
-                  stroke-width="1.3"
-                  stroke-linejoin="round"/>
-
-              </svg>
-
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.7"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.7"/></svg>
             </div>
-
             <div class="config-info">
-
-              <strong>
-                Notificaciones
-              </strong>
-
-              <span>
-                Mostrar avisos importantes del sistema
-              </span>
-
+              <strong>Notificaciones</strong>
+              <span>Mostrar la campana con los avisos importantes del sistema</span>
             </div>
-
           </div>
-
           <label class="switch">
-
-            <input
-              type="checkbox"
-              id="notificaciones"
-              checked>
-
+            <input type="checkbox" id="notificaciones" role="switch" aria-label="Notificaciones" checked>
             <span class="slider"></span>
-
           </label>
-
         </div>
 
         <div class="config-item">
-
           <div class="config-left">
-
             <div class="config-icon">
-
-              <svg
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill="none">
-
-                <path
-                  d="M12 3v18M3 12h18"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"/>
-
-              </svg>
-
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-2.4-5.7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M20 4v5h-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-
             <div class="config-info">
-
-              <strong>
-                Actualización automática
-              </strong>
-
-              <span>
-                Actualizar información cuando sea necesario
-              </span>
-
+              <strong>Actualización automática</strong>
+              <span>Actualizar la información al volver a la pestaña</span>
             </div>
-
           </div>
-
           <label class="switch">
-
-            <input
-              type="checkbox"
-              id="actualizacion"
-              checked>
-
+            <input type="checkbox" id="actualizacion" role="switch" aria-label="Actualización automática" checked>
             <span class="slider"></span>
-
           </label>
-
         </div>
 
         <div class="config-item">
-
           <div class="config-left">
-
             <div class="config-icon">
-
-              <svg
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill="none">
-
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="8"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-
-                <path
-                  d="M12 7v5l3 2"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"/>
-
-              </svg>
-
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
             </div>
-
             <div class="config-info">
-
-              <strong>
-                Formato de fecha
-              </strong>
-
-              <span>
-                Formato utilizado para mostrar las fechas
-              </span>
-
+              <strong>Formato de fecha</strong>
+              <span class="preview" id="vistaFecha">Vista previa</span>
             </div>
-
           </div>
-
-          <select
-            class="select-config"
-            id="formatoFecha">
-
-            <option value="colombia">
-              DD/MM/AAAA
-            </option>
-
-            <option value="iso">
-              AAAA-MM-DD
-            </option>
-
+          <select class="select-config" id="formatoFecha" aria-label="Formato de fecha">
+            <option value="colombia">DD/MM/AAAA</option>
+            <option value="iso">AAAA-MM-DD</option>
           </select>
-
         </div>
 
         <div class="config-item">
-
           <div class="config-left">
-
             <div class="config-icon">
-
-              <svg
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill="none">
-
-                <path
-                  d="M4 7h16M4 12h16M4 17h16"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"/>
-
-              </svg>
-
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
             </div>
-
             <div class="config-info">
-
-              <strong>
-                Idioma
-              </strong>
-
-              <span>
-                Idioma principal de la aplicación
-              </span>
-
+              <strong>Idioma</strong>
+              <span>Idioma principal de la aplicación</span>
             </div>
-
           </div>
-
-          <select class="select-config">
-
-            <option>
-              Español
-            </option>
-
+          <select class="select-config" aria-label="Idioma">
+            <option>Español</option>
           </select>
+        </div>
 
+        <div class="config-item">
+          <div class="config-left">
+            <div class="config-icon">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="config-info">
+              <strong>Datos guardados en este dispositivo</strong>
+              <span>Las páginas guardan una copia para abrir más rápido. Limpiarla no borra nada de tu cuenta.</span>
+            </div>
+          </div>
+          <button class="btn-soft" id="limpiarCacheBtn" type="button">Limpiar</button>
         </div>
 
       </section>
 
       <!-- CUENTA ACTUAL -->
-
       <section class="panel">
 
         <div class="panel-head">
-
-          <h3>
-            Cuenta actual
-          </h3>
-
-          <span>
-            Sesión
-          </span>
-
+          <h3>Cuenta actual</h3>
+          <span>Sesión</span>
         </div>
 
         <div class="account-box">
-
-          <div
-            class="account-avatar"
-            id="accountAvatar">
-            C
-          </div>
-
+          <div class="account-avatar" id="accountAvatar">C</div>
           <div class="account-info">
-
-            <strong id="accountName">
-              Cargando...
-            </strong>
-
-            <span id="accountEmail">
-              Cargando...
-            </span>
-
-            <div class="status">
-              Cuenta activa
-            </div>
-
+            <strong id="accountName" class="loading-val">Cargando...</strong>
+            <span id="accountEmail" class="loading-val">Cargando...</span>
+            <div class="status">Cuenta activa</div>
           </div>
-
         </div>
 
         <div class="system-list">
-
           <div class="system-row">
-
-            <span>
-              Estado de autenticación
-            </span>
-
-            <strong>
-              Autenticado
-            </strong>
-
+            <span>Estado de autenticación</span>
+            <strong>Autenticado</strong>
           </div>
-
           <div class="system-row">
-
-            <span>
-              Proveedor de autenticación
-            </span>
-
-            <strong>
-              Supabase
-            </strong>
-
+            <span>Último inicio de sesión</span>
+            <strong id="ultimoAcceso">-</strong>
           </div>
-
           <div class="system-row">
-
-            <span>
-              Aplicación
-            </span>
-
-            <strong>
-              Deep Sea
-            </strong>
-
+            <span>Proveedor de autenticación</span>
+            <strong>Supabase</strong>
           </div>
-
           <div class="system-row">
-
-            <span>
-              Estado del sistema
-            </span>
-
-            <strong>
-              Operativo
-            </strong>
-
+            <span>Estado del sistema</span>
+            <strong>Operativo</strong>
           </div>
-
         </div>
 
         <div class="notice">
-
-          <svg
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none">
-
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-              stroke="currentColor"
-              stroke-width="1.7"/>
-
-            <path
-              d="M12 10v6"
-              stroke="currentColor"
-              stroke-width="1.7"
-              stroke-linecap="round"/>
-
-            <circle
-              cx="12"
-              cy="7"
-              r="1"
-              fill="currentColor"/>
-
-          </svg>
-
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 10v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="7" r="1" fill="currentColor"/></svg>
           <div>
-
-            <strong>
-              Información de seguridad
-            </strong>
-
-            <span>
-              Tu sesión está protegida mediante el sistema de autenticación de Supabase.
-            </span>
-
+            <strong>Información de seguridad</strong>
+            <span>Tu sesión está protegida mediante el sistema de autenticación de Supabase.</span>
           </div>
-
         </div>
 
       </section>
@@ -1918,147 +1070,52 @@
     </div>
 
     <!-- INFORMACIÓN DEL SISTEMA -->
-
     <section class="panel">
 
       <div class="panel-head">
-
-        <h3>
-          Información del sistema
-        </h3>
-
-        <span>
-          Deep Sea
-        </span>
-
+        <h3>Información del sistema</h3>
+        <span>Deep Sea</span>
       </div>
 
       <div class="system-list">
-
         <div class="system-row">
-
-          <span>
-            Nombre del sistema
-          </span>
-
-          <strong>
-            Deep Sea
-          </strong>
-
+          <span>Nombre del sistema</span>
+          <strong>Deep Sea</strong>
         </div>
-
         <div class="system-row">
-
-          <span>
-            Descripción
-          </span>
-
-          <strong>
-            Gestión de recursos marinos
-          </strong>
-
+          <span>Descripción</span>
+          <strong>Gestión de recursos marinos</strong>
         </div>
-
         <div class="system-row">
-
-          <span>
-            Versión
-          </span>
-
-          <strong>
-            1.0
-          </strong>
-
+          <span>Versión</span>
+          <strong>1.0</strong>
         </div>
-
         <div class="system-row">
-
-          <span>
-            Estado
-          </span>
-
-          <strong>
-            Activo
-          </strong>
-
+          <span>Estado</span>
+          <strong>Activo</strong>
         </div>
-
       </div>
 
     </section>
 
     <!-- CERRAR SESIÓN -->
-
     <section class="panel logout-panel">
 
       <div class="logout-content">
 
         <div class="logout-info">
-
           <div class="logout-icon">
-
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none">
-
-              <path
-                d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
-
-              <path
-                d="M16 17l5-5-5-5M21 12H9"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
-
-            </svg>
-
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-
           <div class="logout-text">
-
-            <strong>
-              Cerrar sesión
-            </strong>
-
-            <span>
-              Finaliza la sesión actual de Deep Sea Intelligence.
-            </span>
-
+            <strong>Cerrar sesión</strong>
+            <span>Finaliza la sesión actual de Deep Sea Intelligence.</span>
           </div>
-
         </div>
 
-        <button
-          class="config-logout"
-          id="logoutBtn"
-          type="button">
-
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none">
-
-            <path
-              d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-              stroke="currentColor"
-              stroke-width="1.8"/>
-
-            <path
-              d="M16 17l5-5-5-5M21 12H9"
-              stroke="currentColor"
-              stroke-width="1.8"/>
-
-          </svg>
-
-          Cerrar sesión
-
+        <button class="config-logout" id="logoutBtn" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="1.8"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span id="logoutLabel">Cerrar sesión</span>
         </button>
 
       </div>
@@ -2069,748 +1126,605 @@
 
 </div>
 
-<!-- SUPABASE -->
+<!-- ===================== VENTANA: CONFIRMAR CERRAR SESIÓN ===================== -->
+<div class="modal-overlay" id="confirmOverlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitulo">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="confirmTitulo">Cerrar sesión</h3>
+    </div>
+    <p class="confirm-texto">¿Seguro que quieres cerrar tu sesión? Tendrás que iniciar sesión de nuevo para volver a entrar.</p>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="confirmCancelar">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="confirmOk">Cerrar sesión</button>
+    </div>
+  </div>
+</div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- El SDK se carga al final: la página se dibuja primero y no queda
+     bloqueada esperando la descarga del script. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+(function(){
+  'use strict';
 
-const SUPABASE_URL =
-  'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const $ = function(id){ return document.getElementById(id); };
 
-const SUPABASE_ANON_KEY =
-  'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
-
-/* ================= MENÚ MÓVIL ================= */
-
-const mobileMenuBtn =
-  document.getElementById('mobileMenuBtn');
-
-const mobileOverlay =
-  document.getElementById('mobileOverlay');
-
-const sidebar =
-  document.getElementById('sidebar');
-
-
-function abrirMenuMovil(){
-
-  if(!sidebar){
+  // Si el SDK no cargó (sin internet) se avisa y se ofrece recargar
+  if (typeof supabase === 'undefined') {
+    $('accountName').classList.remove('loading-val');
+    $('accountEmail').classList.remove('loading-val');
+    $('accountName').textContent = 'Sin conexión';
+    $('accountEmail').textContent = 'No se pudo cargar el sistema. Revisa tu conexión y recarga la página.';
+    $('logoutBtn').disabled = true;
     return;
   }
 
-  sidebar.classList.add('mobile-open');
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  mobileOverlay.classList.add('show');
+  const LIMITE_MS = 15000;     // tiempo máximo de espera por una consulta
 
-  mobileMenuBtn.setAttribute(
-    'aria-label',
-    'Cerrar menú'
-  );
+  // Preferencias (se guardan en este navegador)
+  const PREF_NOTIF = 'deepsea_notificaciones';
+  const PREF_AUTO  = 'deepsea_actualizacion';
+  const PREF_FECHA = 'deepsea_formato_fecha';
 
-  mobileMenuBtn.setAttribute(
-    'title',
-    'Cerrar menú'
-  );
+  // ---------------------------------------------------------------
+  // ESTADO DE LA PÁGINA
+  // ---------------------------------------------------------------
+  let usuarioActual = null;
+  let productosNotif = [];
+  let proveedoresNotif = [];
+  let recepcionesNotif = [];
+  let notifsActuales = [];
+  let ultimaActualizacion = 0;
+  let cargandoNotif = false;
+  let saliendo = false;
+  let menuAbierto = false;
+  let toastTimer = null;
 
-  document.body.style.overflow =
-    'hidden';
-
-}
-
-
-function cerrarMenuMovil(){
-
-  if(!sidebar){
-    return;
+  // ---------------------------------------------------------------
+  // UTILIDADES
+  // ---------------------------------------------------------------
+  function escapeHTML(texto){
+    return String(texto == null ? '' : texto).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
   }
 
-  sidebar.classList.remove('mobile-open');
+  function normalizar(texto){
+    return String(texto == null ? '' : texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
 
-  mobileOverlay.classList.remove('show');
+  const fmtPeso = function(n){ return (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg'; };
 
-  mobileMenuBtn.setAttribute(
-    'aria-label',
-    'Abrir menú'
-  );
-
-  mobileMenuBtn.setAttribute(
-    'title',
-    'Abrir menú'
-  );
-
-  document.body.style.overflow = '';
-
-}
-
-
-if(mobileMenuBtn){
-
-  mobileMenuBtn.addEventListener(
-    'click',
-    function(){
-
-      if(
-        sidebar.classList.contains(
-          'mobile-open'
-        )
-      ){
-
-        cerrarMenuMovil();
-
-      }else{
-
-        abrirMenuMovil();
-
-      }
-
+  function parsearFecha(valor){
+    if (!valor) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      const p = valor.split('-').map(Number);
+      return new Date(p[0], p[1] - 1, p[2]);
     }
-  );
+    const f = new Date(valor);
+    return isNaN(f.getTime()) ? null : f;
+  }
+  function formatearFecha(valor){
+    const f = parsearFecha(valor);
+    return f ? f.toLocaleDateString('es-CO') : '-';
+  }
 
-}
+  function nombreRel(rel){
+    const r = Array.isArray(rel) ? rel[0] : rel;
+    return (r && r.nombre) || '';
+  }
 
+  function conTiempo(promesa, ms){
+    let t;
+    const limite = new Promise(function(_, rechazar){
+      t = setTimeout(function(){ rechazar(new Error('Tiempo de espera agotado')); }, ms || LIMITE_MS);
+    });
+    return Promise.race([promesa, limite]).finally(function(){ clearTimeout(t); });
+  }
 
-if(mobileOverlay){
+  function showToast(mensaje, tipo){
+    const t = $('toast');
+    t.textContent = mensaje;
+    t.className = 'toast show' + (tipo ? ' ' + tipo : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.className = 'toast'; }, 3000);
+  }
 
-  mobileOverlay.addEventListener(
-    'click',
-    cerrarMenuMovil
-  );
+  function actualizarScroll(){
+    const bloquear = menuAbierto || $('confirmOverlay').classList.contains('show');
+    document.body.classList.toggle('sin-scroll', bloquear);
+  }
 
-}
+  function obtenerInicial(nombre){
+    const t = String(nombre || '').trim();
+    return t ? t.charAt(0).toUpperCase() : 'U';
+  }
 
+  function saludar(){
+    const h = new Date().getHours();
+    return h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
+  }
 
-if(sidebar){
+  // ---------------------------------------------------------------
+  // PREFERENCIAS
+  // ---------------------------------------------------------------
+  function leerPref(clave, porDefecto){
+    try {
+      const v = localStorage.getItem(clave);
+      return v === null ? porDefecto : v;
+    } catch (e) { return porDefecto; }
+  }
+  function guardarPref(clave, valor){
+    try { localStorage.setItem(clave, valor); } catch (e) { /* sin espacio o bloqueado */ }
+  }
 
-  sidebar
-    .querySelectorAll('a')
-    .forEach(
-      function(link){
+  const notifActivas = function(){ return leerPref(PREF_NOTIF, 'on') !== 'off'; };
+  const autoActiva   = function(){ return leerPref(PREF_AUTO, 'on') !== 'off'; };
 
-        link.addEventListener(
-          'click',
-          function(){
+  // La fecha se muestra en el formato elegido
+  function formatoFechaElegido(){
+    return leerPref(PREF_FECHA, 'colombia') === 'iso' ? 'iso' : 'colombia';
+  }
+  function fechaConFormato(f){
+    if (formatoFechaElegido() === 'iso') {
+      const p = function(n){ return String(n).padStart(2, '0'); };
+      return f.getFullYear() + '-' + p(f.getMonth() + 1) + '-' + p(f.getDate());
+    }
+    return f.toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  }
+  function pintarFechas(){
+    const hoy = new Date();
+    $('vistaFecha').textContent = 'Vista previa: ' + fechaConFormato(hoy);
+    $('todayDate').textContent = formatoFechaElegido() === 'iso'
+      ? fechaConFormato(hoy)
+      : hoy.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
 
-            if(
-              window.innerWidth <= 800
-            ){
+    if (usuarioActual) {
+      const ult = parsearFecha(usuarioActual.last_sign_in_at);
+      $('ultimoAcceso').textContent = ult
+        ? fechaConFormato(ult) + ' ' + ult.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
+        : '-';
+    }
+  }
 
-              cerrarMenuMovil();
+  // Aplica las preferencias a esta página
+  function aplicarPreferencias(){
+    $('notificaciones').checked = notifActivas();
+    $('actualizacion').checked  = autoActiva();
+    $('formatoFecha').value     = formatoFechaElegido();
 
-            }
+    $('notificationBtn').hidden = !notifActivas();
+    if (!notifActivas()) cerrarPanel();
+    pintarFechas();
+  }
 
-          }
+  $('notificaciones').addEventListener('change', function(){
+    guardarPref(PREF_NOTIF, this.checked ? 'on' : 'off');
+    aplicarPreferencias();
+    showToast(this.checked ? 'Notificaciones activadas.' : 'Notificaciones desactivadas.', 'success');
+  });
+
+  $('actualizacion').addEventListener('change', function(){
+    guardarPref(PREF_AUTO, this.checked ? 'on' : 'off');
+    showToast(this.checked ? 'Actualización automática activada.' : 'Actualización automática desactivada.', 'success');
+  });
+
+  $('formatoFecha').addEventListener('change', function(){
+    guardarPref(PREF_FECHA, this.value === 'iso' ? 'iso' : 'colombia');
+    pintarFechas();
+    showToast('Formato de fecha actualizado.', 'success');
+  });
+
+  // ---------------------------------------------------------------
+  // DATOS GUARDADOS EN ESTE DISPOSITIVO
+  // Se borran las copias de datos, pero NO las preferencias ni las
+  // notificaciones ya leídas.
+  // ---------------------------------------------------------------
+  function limpiarCaches(){
+    let borradas = 0;
+    try {
+      const claves = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.indexOf('dsi_') === 0 && k.indexOf('dsi_notif_leidas_') !== 0) claves.push(k);
+      }
+      claves.forEach(function(k){ localStorage.removeItem(k); borradas++; });
+    } catch (e) { /* almacenamiento bloqueado */ }
+    return borradas;
+  }
+
+  $('limpiarCacheBtn').addEventListener('click', function(){
+    limpiarCaches();
+    showToast('Datos guardados eliminados. La próxima carga puede tardar un poco más.', 'success');
+  });
+
+  // ---------------------------------------------------------------
+  // USUARIO
+  // ---------------------------------------------------------------
+  function pintarUsuario(){
+    const u = usuarioActual;
+    const meta = u.user_metadata || {};
+    const nombre = (meta.full_name || meta.name || (u.email || '').split('@')[0] || u.phone || 'Usuario').trim() || 'Usuario';
+    const correo = u.email || u.phone || 'Sin correo';
+    const inicial = obtenerInicial(nombre);
+
+    $('sbUserName').textContent  = nombre;
+    $('topUserName').textContent = nombre;
+    $('sbAvatar').textContent    = inicial;
+    $('topAvatar').textContent   = inicial;
+    $('accountAvatar').textContent = inicial;
+
+    $('accountName').classList.remove('loading-val');
+    $('accountEmail').classList.remove('loading-val');
+    $('accountName').textContent  = nombre;
+    $('accountEmail').textContent = correo;
+
+    $('saludo').textContent = saludar() + ', ' + nombre.split(/\s+/)[0];
+  }
+
+  // ---------------------------------------------------------------
+  // CERRAR SESIÓN
+  // ---------------------------------------------------------------
+  function abrirConfirmacion(){
+    if (saliendo) return;
+    $('confirmOverlay').classList.add('show');
+    actualizarScroll();
+  }
+  function cerrarConfirmacion(){
+    $('confirmOverlay').classList.remove('show');
+    actualizarScroll();
+  }
+
+  $('logoutBtn').addEventListener('click', abrirConfirmacion);
+  $('confirmCancelar').addEventListener('click', cerrarConfirmacion);
+  $('confirmOverlay').addEventListener('click', function(e){
+    if (e.target === $('confirmOverlay')) cerrarConfirmacion();
+  });
+
+  $('confirmOk').addEventListener('click', async function(){
+    if (saliendo) return;
+    saliendo = true;
+    $('confirmOk').disabled = true;
+    $('confirmOk').textContent = 'Cerrando...';
+    $('logoutBtn').disabled = true;
+    $('logoutLabel').textContent = 'Cerrando sesión...';
+
+    // Se marca como desconectado para que en Usuarios no aparezca "conectado" 45 s más
+    try {
+      if (usuarioActual) {
+        await conTiempo(
+          supabaseClient.from('presencia_usuarios').upsert(
+            { user_id: usuarioActual.id, last_seen: new Date(0).toISOString() },
+            { onConflict: 'user_id' }
+          ), 3000
         );
-
       }
-    );
+    } catch (e) { /* no es importante: se sigue cerrando la sesión */ }
 
-}
-
-
-document.addEventListener(
-  'keydown',
-  function(event){
-
-    if(event.key === 'Escape'){
-
-      cerrarMenuMovil();
-
+    try {
+      const r = await conTiempo(supabaseClient.auth.signOut());
+      if (r && r.error) throw r.error;
+      limpiarCaches();
+      window.location.replace('login.html');
+    } catch (err) {
+      console.error('Error al cerrar sesión:', err);
+      saliendo = false;
+      $('confirmOk').disabled = false;
+      $('confirmOk').textContent = 'Cerrar sesión';
+      $('logoutBtn').disabled = false;
+      $('logoutLabel').textContent = 'Cerrar sesión';
+      cerrarConfirmacion();
+      showToast('No se pudo cerrar la sesión. Revisa tu conexión e intenta de nuevo.', 'error');
     }
+  });
 
+  // ---------------------------------------------------------------
+  // NOTIFICACIONES (mismo comportamiento que en Inicio)
+  // Sus datos se piden DESPUÉS de mostrar la página, para no retrasarla.
+  // ---------------------------------------------------------------
+  const claveCache = function(){ return 'dsi_cfg_' + usuarioActual.id; };
+
+  function leerCache(){
+    try {
+      const c = JSON.parse(localStorage.getItem(claveCache()) || 'null');
+      if (c && Array.isArray(c.productos)) return c;
+    } catch (e) { /* caché dañada: se ignora */ }
+    return null;
   }
-);
+  function guardarCache(){
+    try {
+      localStorage.setItem(claveCache(), JSON.stringify({
+        productos: productosNotif, proveedores: proveedoresNotif, recepciones: recepcionesNotif
+      }));
+    } catch (e) { /* sin espacio */ }
+  }
 
-
-window.addEventListener(
-  'resize',
-  function(){
-
-    if(window.innerWidth > 800){
-
-      cerrarMenuMovil();
-
+  async function cargarDatosNotificaciones(){
+    if (cargandoNotif || !notifActivas()) return;
+    cargandoNotif = true;
+    try {
+      const res = await conTiempo(Promise.all([
+        supabaseClient.from('productos').select('id,nombre,estado'),
+        supabaseClient.from('proveedores').select('id,nombre,estado'),
+        supabaseClient
+          .from('recepciones')
+          .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
+          .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+          .limit(200)
+      ]));
+      if (!res[0].error) productosNotif = res[0].data || [];
+      if (!res[1].error) proveedoresNotif = res[1].data || [];
+      if (!res[2].error) recepcionesNotif = res[2].data || [];
+      ultimaActualizacion = Date.now();
+      podarLeidas();
+      guardarCache();
+      renderNotificaciones();
+    } catch (e) {
+      console.warn('No se pudieron cargar las notificaciones:', e);
     }
-
-  }
-);
-
-
-/* ================= USUARIO ================= */
-
-function obtenerInicial(nombre){
-
-  if(!nombre){
-    return 'U';
+    cargandoNotif = false;
   }
 
-  return nombre
-    .trim()
-    .charAt(0)
-    .toUpperCase();
+  const PALABRAS_PROBLEMA  = ['rechaz', 'dano', 'danad', 'deterior', 'vencid', 'cancelad', 'inactiv', 'no apto'];
+  const PALABRAS_PENDIENTE = ['pendiente', 'evaluacion', 'revision', 'observ'];
 
-}
-
-
-/* ================= CARGAR USUARIO ================= */
-
-async function cargarUsuario(){
-
-  const {
-    data:{
-      session
-    }
-  } =
-    await supabaseClient.auth.getSession();
-
-
-  if(!session){
-
-    window.location.href =
-      'login.html';
-
-    return;
-
+  function clasificarEstado(estado){
+    const e = normalizar(estado);
+    if (PALABRAS_PROBLEMA.some(function(p){ return e.indexOf(p) !== -1; }))  return 'warn';
+    if (PALABRAS_PENDIENTE.some(function(p){ return e.indexOf(p) !== -1; })) return 'pend';
+    return 'ok';
   }
 
+  const claveLeidas = function(){ return 'dsi_notif_leidas_' + usuarioActual.id; };
 
-  const user =
-    session.user;
+  function leerLeidas(){
+    try { return new Set(JSON.parse(localStorage.getItem(claveLeidas()) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function guardarLeidas(set){
+    try { localStorage.setItem(claveLeidas(), JSON.stringify(Array.from(set).slice(-300))); } catch (e) {}
+  }
 
+  function construirNotificaciones(){
+    const lista = [];
 
-  const nombre =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    user.email?.split('@')[0] ||
-    user.phone ||
-    'Usuario';
+    recepcionesNotif.forEach(function(r){
+      const estado = r.estado_producto || 'Recibido';
+      const clase = clasificarEstado(estado);
+      if (clase === 'ok') return;                         // solo lo que requiere atención
+      lista.push({
+        key: 'rec:' + r.id + ':' + normalizar(estado),
+        tipo: clase,
+        titulo: 'Recepción ' + estado.toLowerCase(),
+        texto: (nombreRel(r.productos) || 'Producto') + ' — ' + fmtPeso(Number(r.peso) || 0),
+        fecha: formatearFecha(r.fecha_recepcion),
+        href: 'recepciones.html?id=' + encodeURIComponent(r.id)
+      });
+    });
 
+    productosNotif.forEach(function(p){
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: 'prod:' + p.id,
+        tipo: 'info',
+        titulo: 'Producto inactivo',
+        texto: p.nombre || 'Producto',
+        fecha: '',
+        href: 'productos.html?id=' + encodeURIComponent(p.id)
+      });
+    });
 
-  const correo =
-    user.email ||
-    user.phone ||
-    'Sin correo';
+    proveedoresNotif.forEach(function(p){
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: 'prov:' + p.id,
+        tipo: 'info',
+        titulo: 'Proveedor inactivo',
+        texto: p.nombre || 'Proveedor',
+        fecha: '',
+        href: 'proveedores.html?id=' + encodeURIComponent(p.id)
+      });
+    });
 
+    return lista;
+  }
 
-  const inicial =
-    obtenerInicial(nombre);
+  function podarLeidas(){
+    if (!usuarioActual) return;
+    const vigentes = new Set(construirNotificaciones().map(function(n){ return n.key; }));
+    const leidas = leerLeidas();
+    const nuevas = new Set(Array.from(leidas).filter(function(k){ return vigentes.has(k); }));
+    if (nuevas.size !== leidas.size) guardarLeidas(nuevas);
+  }
 
+  function actualizarGlobo(){
+    const leidas = leerLeidas();
+    const total = notifsActuales.filter(function(n){ return !leidas.has(n.key); }).length;
+    const globo = $('notificationBadge');
+    globo.textContent = total > 9 ? '9+' : String(total);
+    globo.classList.toggle('show', total > 0);
+    $('notificationBtn').setAttribute('aria-label', total ? 'Notificaciones (' + total + ' sin leer)' : 'Notificaciones');
+    $('markAllRead').style.display = total ? '' : 'none';
+  }
 
-  document.getElementById(
-    'sbUserName'
-  ).textContent =
-    nombre;
+  function iconoNotif(tipo){
+    return tipo === 'info'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="8" r=".9" fill="currentColor"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>';
+  }
 
+  function renderNotificaciones(){
+    if (!usuarioActual) return;
+    const leidas = leerLeidas();
+    notifsActuales = construirNotificaciones().filter(function(n){ return !leidas.has(n.key); }).slice(0, 30);
+    actualizarGlobo();
 
-  document.getElementById(
-    'topUserName'
-  ).textContent =
-    nombre;
-
-
-  document.getElementById(
-    'sbAvatar'
-  ).textContent =
-    inicial;
-
-
-  document.getElementById(
-    'topAvatar'
-  ).textContent =
-    inicial;
-
-
-  document.getElementById(
-    'accountAvatar'
-  ).textContent =
-    inicial;
-
-
-  document.getElementById(
-    'accountName'
-  ).textContent =
-    nombre;
-
-
-  document.getElementById(
-    'accountEmail'
-  ).textContent =
-    correo;
-
-}
-
-
-/* ================= CERRAR SESIÓN ================= */
-
-document.getElementById(
-  'logoutBtn'
-).addEventListener(
-  'click',
-  async function(){
-
-    const {
-      error
-    } =
-      await supabaseClient.auth.signOut();
-
-
-    if(error){
-
-      console.error(
-        'Error al cerrar sesión:',
-        error
-      );
-
+    const cont = $('notificationContent');
+    if (!notifsActuales.length) {
+      cont.innerHTML = '<div class="notification-empty">No tienes notificaciones nuevas.</div>';
       return;
-
     }
 
-
-    window.location.href =
-      'login.html';
-
+    cont.innerHTML = notifsActuales.map(function(n, i){
+      return '<a class="notification-item" href="' + escapeHTML(n.href) + '" data-i="' + i + '">' +
+        '<div class="ni-icon t-' + n.tipo + '">' + iconoNotif(n.tipo) + '</div>' +
+        '<div class="ni-body">' +
+          '<strong>' + escapeHTML(n.titulo) + '</strong>' +
+          '<span>' + escapeHTML(n.texto) + '</span>' +
+          ((n.fecha && n.fecha !== '-') ? '<em>' + escapeHTML(n.fecha) + '</em>' : '') +
+        '</div>' +
+        '<span class="ni-go">›</span>' +
+      '</a>';
+    }).join('');
   }
-);
 
+  const panelNotif = $('notificationPanel');
+  const btnNotif = $('notificationBtn');
 
-/* ================= FECHA ================= */
+  function cerrarPanel(){
+    panelNotif.classList.remove('show');
+    btnNotif.setAttribute('aria-expanded', 'false');
+  }
 
-document.getElementById(
-  'todayDate'
-).textContent =
-  new Date().toLocaleDateString(
-    'es-CO',
-    {
-      day:'2-digit',
-      month:'long',
-      year:'numeric'
+  btnNotif.addEventListener('click', function(e){
+    e.stopPropagation();
+    const abierto = panelNotif.classList.toggle('show');
+    btnNotif.setAttribute('aria-expanded', String(abierto));
+  });
+  $('closeNotifications').addEventListener('click', cerrarPanel);
+  document.addEventListener('click', function(e){
+    if (!panelNotif.contains(e.target) && !btnNotif.contains(e.target)) cerrarPanel();
+  });
+
+  $('notificationContent').addEventListener('click', function(e){
+    const item = e.target.closest('.notification-item');
+    if (!item) return;
+    e.preventDefault();
+
+    const n = notifsActuales[Number(item.dataset.i)];
+    if (!n) return;
+
+    const leidas = leerLeidas();
+    leidas.add(n.key);
+    guardarLeidas(leidas);
+    actualizarGlobo();
+
+    item.classList.add('removing');
+    setTimeout(function(){
+      item.remove();
+      if (!$('notificationContent').querySelector('.notification-item')) renderNotificaciones();
+      window.location.href = n.href;
+    }, 170);
+  });
+
+  $('markAllRead').addEventListener('click', function(){
+    const leidas = leerLeidas();
+    construirNotificaciones().forEach(function(n){ leidas.add(n.key); });
+    guardarLeidas(leidas);
+    renderNotificaciones();
+  });
+
+  // ---------------------------------------------------------------
+  // MENÚ MÓVIL
+  // ---------------------------------------------------------------
+  const sidebar = $('sidebar');
+  const overlay = $('mobileOverlay');
+  const btnMenu = $('mobileMenuBtn');
+
+  function abrirMenuMovil(){
+    menuAbierto = true;
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('show');
+    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+    actualizarScroll();
+  }
+  function cerrarMenuMovil(){
+    menuAbierto = false;
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    btnMenu.setAttribute('aria-label', 'Abrir menú');
+    actualizarScroll();
+  }
+
+  btnMenu.addEventListener('click', function(){ menuAbierto ? cerrarMenuMovil() : abrirMenuMovil(); });
+  overlay.addEventListener('click', cerrarMenuMovil);
+  document.querySelectorAll('.sb-link').forEach(function(l){ l.addEventListener('click', cerrarMenuMovil); });
+  window.addEventListener('resize', function(){ if (window.innerWidth > 800 && menuAbierto) cerrarMenuMovil(); });
+
+  // Tecla Escape: cierra lo último que se abrió
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    if ($('confirmOverlay').classList.contains('show')) { cerrarConfirmacion(); return; }
+    cerrarPanel();
+    cerrarMenuMovil();
+  });
+
+  // ---------------------------------------------------------------
+  // SESIÓN Y REFRESCO AUTOMÁTICO
+  // ---------------------------------------------------------------
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'SIGNED_OUT') {
+      limpiarCaches();
+      window.location.replace('login.html');
     }
-  );
+  });
 
+  // Solo si la actualización automática está activada
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && usuarioActual && autoActiva() && Date.now() - ultimaActualizacion > 30000) {
+      cargarDatosNotificaciones();
+    }
+  });
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted && usuarioActual) { renderNotificaciones(); if (autoActiva()) cargarDatosNotificaciones(); }
+  });
+  window.addEventListener('online', function(){
+    if (usuarioActual && autoActiva()) cargarDatosNotificaciones();
+  });
 
-/* ================= PREFERENCIAS ================= */
+  // ---------------------------------------------------------------
+  // INICIO
+  // ---------------------------------------------------------------
+  async function iniciar(){
+    aplicarPreferencias();
 
-document.getElementById(
-  'notificaciones'
-).addEventListener(
-  'change',
-  function(){
-
-    if(this.checked){
-
-      console.log(
-        'Notificaciones activadas'
-      );
-
-    }else{
-
-      console.log(
-        'Notificaciones desactivadas'
-      );
-
+    // La sesión se lee del navegador (rápido). Sin sesión → login.
+    let session = null;
+    try {
+      const res = await supabaseClient.auth.getSession();
+      session = res.data.session;
+    } catch (err) {
+      console.error('No se pudo leer la sesión:', err);
     }
 
-  }
-);
+    if (!session) { window.location.replace('login.html'); return; }
 
+    usuarioActual = session.user;
+    pintarUsuario();
+    pintarFechas();
 
-document.getElementById(
-  'actualizacion'
-).addEventListener(
-  'change',
-  function(){
-
-    if(this.checked){
-
-      console.log(
-        'Actualización automática activada'
-      );
-
-    }else{
-
-      console.log(
-        'Actualización automática desactivada'
-      );
-
+    // La página ya está lista: las notificaciones se muestran al instante desde la copia guardada...
+    const cache = leerCache();
+    if (cache) {
+      productosNotif = cache.productos || [];
+      proveedoresNotif = cache.proveedores || [];
+      recepcionesNotif = cache.recepciones || [];
     }
+    renderNotificaciones();
 
-  }
-);
-
-
-document.getElementById(
-  'formatoFecha'
-).addEventListener(
-  'change',
-  function(){
-
-    localStorage.setItem(
-      'deepsea_formato_fecha',
-      this.value
-    );
-
-  }
-);
-
-
-const formatoGuardado =
-  localStorage.getItem(
-    'deepsea_formato_fecha'
-  );
-
-
-if(formatoGuardado){
-
-  document.getElementById(
-    'formatoFecha'
-  ).value =
-    formatoGuardado;
-
-}
-
-
-cargarUsuario();
-
-
-/* ================= NOTIFICACIONES ================= */
-
-const btnCampana =
-  document.getElementById(
-    'notificationBtn'
-  );
-
-const panelNotificaciones =
-  document.getElementById(
-    'notificationPanel'
-  );
-
-const cerrarNotificaciones =
-  document.getElementById(
-    'closeNotifications'
-  );
-
-
-if(
-  btnCampana &&
-  panelNotificaciones
-){
-
-  btnCampana.addEventListener(
-    'click',
-    function(e){
-
-      e.stopPropagation();
-
-      panelNotificaciones.classList.toggle(
-        'show'
-      );
-
-
-      if(
-        panelNotificaciones.classList.contains(
-          'show'
-        )
-      ){
-
-        cargarLasNotificaciones();
-
-      }
-
-    }
-  );
-
-
-  cerrarNotificaciones.addEventListener(
-    'click',
-    function(){
-
-      panelNotificaciones.classList.remove(
-        'show'
-      );
-
-    }
-  );
-
-
-  document.addEventListener(
-    'click',
-    function(e){
-
-      if(
-        !panelNotificaciones.contains(
-          e.target
-        ) &&
-        !btnCampana.contains(
-          e.target
-        )
-      ){
-
-        panelNotificaciones.classList.remove(
-          'show'
-        );
-
-      }
-
-    }
-  );
-
-}
-
-
-/* ================= ESCAPAR HTML ================= */
-
-function escapeHtmlNotif(texto){
-
-  const div =
-    document.createElement(
-      'div'
-    );
-
-  div.textContent =
-    texto ?? '';
-
-  return div.innerHTML;
-
-}
-
-
-/* ================= CARGAR NOTIFICACIONES ================= */
-
-async function cargarLasNotificaciones(){
-
-  const contenido =
-    document.getElementById(
-      'notificationContent'
-    );
-
-  const punto =
-    document.getElementById(
-      'notificationDot'
-    );
-
-
-  if(
-    !contenido ||
-    !punto
-  ){
-
-    return;
-
+    // ...y se actualizan en segundo plano
+    cargarDatosNotificaciones();
   }
 
-
-  contenido.innerHTML =
-    '<div class="notification-empty">Buscando alertas...</div>';
-
-
-  let hayNotificaciones =
-    false;
-
-  let htmlNotifs =
-    '';
-
-
-  const {
-    data:recepcionesNotif
-  } =
-    await supabaseClient
-      .from('recepciones')
-      .select(
-        'id,peso,estado_producto,fecha_recepcion'
-      )
-      .order(
-        'fecha_recepcion',
-        {
-          ascending:false
-        }
-      )
-      .limit(20);
-
-
-  if(recepcionesNotif){
-
-    recepcionesNotif.forEach(
-      function(r){
-
-        const estado =
-          r.estado_producto ||
-          'Recibido';
-
-
-        if(
-          estado.toLowerCase() !==
-          'recibido'
-        ){
-
-          hayNotificaciones =
-            true;
-
-
-          htmlNotifs += `
-
-            <div class="notification-item">
-
-              <div class="ni-icon">
-
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none">
-
-                  <path
-                    d="M12 3v12"
-                    stroke="currentColor"
-                    stroke-width="1.8"/>
-
-                  <circle
-                    cx="12"
-                    cy="19"
-                    r="1"
-                    fill="currentColor"/>
-
-                </svg>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Recepción: ${escapeHtmlNotif(estado)}
-                </strong>
-
-                <span>
-                  Carga de ${Number(
-                    r.peso || 0
-                  ).toLocaleString('es-CO')} kg.
-                </span>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-
-      }
-    );
-
-  }
-
-
-  const {
-    data:productosNotif
-  } =
-    await supabaseClient
-      .from('productos')
-      .select(
-        'id,nombre,estado'
-      )
-      .order(
-        'created_at',
-        {
-          ascending:false
-        }
-      )
-      .limit(20);
-
-
-  if(productosNotif){
-
-    productosNotif.forEach(
-      function(p){
-
-        if(
-          p.estado &&
-          p.estado.toLowerCase() ===
-          'inactivo'
-        ){
-
-          hayNotificaciones =
-            true;
-
-
-          htmlNotifs += `
-
-            <div class="notification-item">
-
-              <div class="ni-icon">
-
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none">
-
-                  <path
-                    d="M12 3v11"
-                    stroke="currentColor"
-                    stroke-width="1.8"/>
-
-                  <circle
-                    cx="12"
-                    cy="18.5"
-                    r="1"
-                    fill="currentColor"/>
-
-                </svg>
-
-              </div>
-
-              <div>
-
-                <strong>
-                  Producto inactivo
-                </strong>
-
-                <span>
-                  ${escapeHtmlNotif(p.nombre)}
-                </span>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-
-      }
-    );
-
-  }
-
-
-  if(!hayNotificaciones){
-
-    punto.style.display =
-      'none';
-
-
-    contenido.innerHTML =
-      '<div class="notification-empty">No hay notificaciones pendientes.</div>';
-
-  }else{
-
-    punto.style.display =
-      'block';
-
-
-    contenido.innerHTML =
-      htmlNotifs;
-
-  }
-
-}
-
+  iniciar();
+})();
 </script>
 
 </body>

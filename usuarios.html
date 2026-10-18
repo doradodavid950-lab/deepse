@@ -2,8 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Deep Sea Intelligence — Usuarios</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
+
+<!-- Conexiones anticipadas: ahorran tiempo al cargar el SDK y los datos -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <style>
 :root{
@@ -27,105 +32,106 @@
   --radio:16px;
 }
 
-*{box-sizing:border-box;}
+*{ box-sizing:border-box; }
+[hidden]{ display:none !important; }
+
+html{ scrollbar-width:thin; scrollbar-color:#C5D0DF transparent; }
 
 html,body{
   margin:0;
   padding:0;
+  width:100%;
+  min-height:100%;
   font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   background:var(--gris-claro);
   color:var(--texto-principal);
+  -webkit-font-smoothing:antialiased;
 }
+body{ overflow-x:hidden; }
+body.sin-scroll{ overflow:hidden; }
 
-body{min-height:100vh;}
+button,input{ font-family:inherit; }
+:focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
+a,button{ touch-action:manipulation; }
 
 .app{
   display:grid;
   grid-template-columns:250px 1fr;
   min-height:100vh;
+  min-height:100dvh;
 }
 
-/* ================= SIDEBAR ================= */
-
+/* ===================== MENÚ LATERAL ===================== */
 .sidebar{
-  background:var(--azul-oscuro);
+  background:linear-gradient(180deg,#07326F 0%,var(--azul-oscuro) 100%);
   color:#EAF1FC;
   display:flex;
   flex-direction:column;
-  padding:22px 16px;
+  padding:18px 14px;
+  padding:clamp(14px,2.4vh,22px) 14px;
   position:sticky;
   top:0;
   height:100vh;
-  z-index:1200;
+  height:100dvh;
+  z-index:1000;
 }
 
 .sb-brand{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:6px 10px 22px;
+  padding:4px 8px 16px;
+  padding:4px 8px clamp(10px,2vh,20px);
   border-bottom:1px solid rgba(255,255,255,.08);
-  margin-bottom:14px;
+  margin-bottom:12px;
+  margin-bottom:clamp(8px,1.6vh,14px);
 }
-
 .sb-brand .badge{
-  width:38px;
-  height:38px;
-  border-radius:11px;
-  background:rgba(255,255,255,.12);
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:var(--blanco);
+  padding:4px;
   display:flex;
   align-items:center;
   justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
 }
-
-.sb-brand .name{
-  font-weight:700;
-  font-size:16px;
-  line-height:1.1;
-}
-
-.sb-brand .name span{color:var(--amarillo);}
-
-.sb-brand .sub{
-  font-size:10.5px;
-  color:rgba(255,255,255,.55);
-}
+.sb-brand .badge img{ width:100%; height:100%; object-fit:contain; display:block; }
+.sb-brand .name{ font-weight:700; font-size:17px; line-height:1.1; }
+.sb-brand .name span{ color:var(--amarillo); }
+.sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); margin-top:2px; }
 
 nav.sb-nav{
   flex:1;
+  min-height:0;
   overflow-y:auto;
   display:flex;
   flex-direction:column;
   gap:2px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
 }
+nav.sb-nav::-webkit-scrollbar{ display:none; }
 
 .sb-link{
   display:flex;
   align-items:center;
   gap:12px;
-  padding:10px 12px;
+  padding:8px 12px;
+  padding:clamp(6px,1.15vh,10px) 12px;
   border-radius:10px;
   color:rgba(255,255,255,.72);
   text-decoration:none;
-  font-size:14px;
+  font-size:13.5px;
   font-weight:500;
   cursor:pointer;
-  border:none;
-  background:none;
-  width:100%;
-  text-align:left;
+  transition:background .15s,color .15s,transform .15s;
 }
-
-.sb-link svg{
-  flex:0 0 auto;
-  opacity:.85;
-}
-
-.sb-link:hover{
-  background:rgba(255,255,255,.06);
-  color:#fff;
-}
-
+.sb-link svg{ flex:0 0 auto; opacity:.85; }
+@media (hover:hover){ .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); } }
+.sb-link:active{ background:rgba(255,255,255,.12); }
 .sb-link.active{
   background:var(--azul-medio);
   color:#fff;
@@ -133,19 +139,15 @@ nav.sb-nav{
 }
 
 .sb-footer{
+  flex-shrink:0;
   border-top:1px solid rgba(255,255,255,.08);
-  padding-top:14px;
-  margin-top:10px;
+  padding-top:12px;
+  padding-top:clamp(8px,1.6vh,14px);
+  margin-top:8px;
 }
-
-.sb-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px;
-}
-
+.sb-user{ display:flex; align-items:center; gap:10px; padding:4px 4px; }
 .sb-user .avatar{
+  flex:0 0 auto;
   width:34px;
   height:34px;
   border-radius:50%;
@@ -157,47 +159,57 @@ nav.sb-nav{
   font-weight:700;
   font-size:13px;
 }
-
+.sb-user .info{ flex:1; min-width:0; }
 .sb-user .info strong{
   display:block;
   font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
+.sb-user .info span::before{
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#4ADE80;
+  margin-right:5px;
 }
 
-.sb-user .info span{
-  font-size:11px;
-  color:rgba(255,255,255,.5);
+/* ===================== MENÚ MÓVIL ===================== */
+.mobile-menu-btn{
+  display:none;
+  border:1px solid var(--gris-borde);
+  background:var(--blanco);
+  color:var(--azul-oscuro);
+  border-radius:12px;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(6,43,91,.06);
 }
+@media (hover:hover){ .mobile-menu-btn:hover{ border-color:var(--azul-medio); } }
+.mobile-menu-btn:active{ transform:scale(.97); }
 
-/* ================= MAIN ================= */
+.mobile-overlay{ display:none; }
 
-main{
-  padding:26px 32px 50px;
-  min-width:0;
-}
+/* ===================== CONTENIDO ===================== */
+main{ padding:26px 32px 50px; min-width:0; }
 
 .topbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:26px;
+  margin-bottom:24px;
+  gap:20px;
 }
+.topbar h1{ font-size:23px; margin:0; }
+.topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
+.topbar .subtitle #saludo{ color:var(--azul-oscuro); font-weight:600; }
 
-.topbar h1{
-  font-size:23px;
-  margin:0;
-}
-
-.topbar .subtitle{
-  font-size:13px;
-  color:var(--texto-secundario);
-  margin-top:3px;
-}
-
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
+.top-actions{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
 
 .icon-btn{
   width:40px;
@@ -211,22 +223,31 @@ main{
   cursor:pointer;
   position:relative;
   color:var(--azul-oscuro);
+  flex-shrink:0;
+  transition:border-color .15s,box-shadow .15s;
 }
+@media (hover:hover){ .icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 
-.icon-btn:hover{
-  border-color:var(--azul-medio);
-}
-
-.dot-alert{
+/* Globo con el número de notificaciones sin leer */
+.badge-notif{
   position:absolute;
-  top:8px;
-  right:9px;
-  width:7px;
-  height:7px;
-  border-radius:50%;
+  top:-6px;
+  right:-6px;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:10px;
   background:var(--rojo);
-  border:1.5px solid var(--blanco);
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  border:2px solid var(--gris-claro);
 }
+.badge-notif.show{ display:flex; animation:pop .35s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pop{ from{ transform:scale(.3); opacity:0; } to{ transform:scale(1); opacity:1; } }
 
 .top-user{
   display:flex;
@@ -236,8 +257,13 @@ main{
   border:1px solid var(--gris-borde);
   padding:6px 14px 6px 6px;
   border-radius:30px;
+  max-width:220px;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
 }
-
+@media (hover:hover){ .top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
 .top-user .avatar{
   width:30px;
   height:30px;
@@ -249,73 +275,69 @@ main{
   justify-content:center;
   font-weight:700;
   font-size:12px;
+  flex-shrink:0;
 }
-
 .top-user span{
   font-size:13.5px;
   font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-/* ================= MENU MOVIL ================= */
-
-.mobile-menu-btn{
+/* Aviso cuando algo falla al cargar los datos */
+.aviso{
   display:none;
-  border:1px solid var(--gris-borde);
-  background:var(--blanco);
-  color:var(--azul-oscuro);
-  border-radius:12px;
-  cursor:pointer;
   align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 12px rgba(6,43,91,.06);
+  gap:12px;
+  background:#FFF4F3;
+  border:1px solid #F8C9C6;
+  color:#9B2B27;
+  padding:11px 14px;
+  border-radius:12px;
+  font-size:13px;
+  margin-bottom:18px;
+}
+.aviso.show{ display:flex; }
+.aviso button{
+  margin-left:auto;
+  flex:0 0 auto;
+  border:none;
+  background:var(--rojo);
+  color:#fff;
+  font-weight:600;
+  padding:7px 14px;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:12.5px;
 }
 
-.mobile-menu-btn:hover{
-  border-color:var(--azul-medio);
-}
-
-.mobile-menu-btn:active{
-  transform:scale(.97);
-}
-
-.mobile-overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.45);
-  z-index:1100;
-}
-
-.mobile-overlay.show{display:block;}
-
-/* ================= KPI ================= */
-
+/* ===================== TARJETAS KPI ===================== */
 .kpi-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:18px;
   margin-bottom:22px;
 }
-
 .kpi-card{
-  min-height:112px;
   background:var(--blanco);
   border-radius:var(--radio);
   padding:20px;
   box-shadow:var(--sombra);
   border-top:4px solid var(--accent,var(--azul-medio));
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  min-width:0;
+  transition:transform .2s ease,box-shadow .2s ease;
 }
-
+@media (hover:hover){
+  .kpi-card:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(6,43,91,.13); }
+}
 .kpi-card .top-row{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:15px;
+  gap:12px;
+  margin-bottom:14px;
 }
-
 .kpi-card .icon-wrap{
   width:38px;
   height:38px;
@@ -327,36 +349,28 @@ main{
   background:var(--accent-soft,var(--azul-claro));
   color:var(--accent,var(--azul-medio));
 }
+.kpi-card .value{ font-size:26px; font-weight:700; line-height:1.1; }
+.kpi-card .label{ font-size:12.5px; color:var(--texto-secundario); margin-top:4px; }
+.kpi-card .delta{ font-size:11.5px; margin-top:10px; font-weight:600; color:var(--verde-txt); }
+.kpi-card .delta.neutral{ color:var(--texto-secundario); }
 
-.kpi-card .value{
-  font-size:26px;
-  font-weight:700;
-  line-height:1.1;
+.kpi-card.c1{ --accent:#1E66F5; --accent-soft:#D9ECFF; }
+.kpi-card.c2{ --accent:#1B8A5A; --accent-soft:#B9F5C5; }
+.kpi-card.c3{ --accent:#7B5CC7; --accent-soft:#E7D7FF; }
+
+/* Efecto de "cargando" mientras llegan los números */
+.loading-val{
+  display:inline-block;
+  min-width:64px;
+  color:transparent !important;
+  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
+  background-size:200% 100%;
+  animation:brillo 1.2s infinite linear;
+  border-radius:8px;
 }
+@keyframes brillo{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
 
-.kpi-card .label{
-  font-size:12.5px;
-  color:var(--texto-secundario);
-  margin-top:5px;
-}
-
-.kpi-card.c1{
-  --accent:#1E66F5;
-  --accent-soft:#D9ECFF;
-}
-
-.kpi-card.c2{
-  --accent:#1B8A5A;
-  --accent-soft:#B9F5C5;
-}
-
-.kpi-card.c3{
-  --accent:#7B5CC7;
-  --accent-soft:#E7D7FF;
-}
-
-/* ================= PANELES ================= */
-
+/* ===================== PANELES ===================== */
 .grid-2{
   display:grid;
   grid-template-columns:1.6fr 1fr;
@@ -372,8 +386,7 @@ main{
   padding:20px;
   min-width:0;
 }
-
-.grid-2 > .panel{height:100%;}
+.grid-2 > .panel{ height:100%; }
 
 .panel-head{
   display:flex;
@@ -382,79 +395,126 @@ main{
   gap:12px;
   margin-bottom:16px;
 }
+.panel-head h3{ margin:0; font-size:15.5px; }
 
-.panel-head h3{
-  margin:0;
-  font-size:15.5px;
-}
-
-.panel-head span{
+.count-badge{
+  display:inline-block;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
   font-size:12px;
-  color:var(--texto-secundario);
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:30px;
   white-space:nowrap;
 }
 
-/* ================= BUSCADOR ================= */
+/* Entrada escalonada (igual que Inicio) */
+@keyframes subir{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+.kpi-card,.panel{ animation:subir .45s ease backwards; }
+.kpi-card:nth-child(2){ animation-delay:.05s; }
+.kpi-card:nth-child(3){ animation-delay:.1s; }
+.grid-2 > .panel:nth-child(1){ animation-delay:.15s; }
+.grid-2 > .panel:nth-child(2){ animation-delay:.21s; }
+main > .panel{ animation-delay:.27s; }
 
+/* ===================== BUSCADOR ===================== */
 .search-box{
   display:flex;
   align-items:center;
   gap:10px;
   background:var(--gris-claro);
-  border:1px solid var(--gris-borde);
+  border:1.5px solid var(--gris-borde);
   border-radius:10px;
   padding:9px 12px;
   margin-bottom:16px;
+  transition:border-color .15s,background .15s;
 }
-
-.search-box svg{
-  color:var(--texto-secundario);
-  flex:0 0 auto;
-}
-
+.search-box:focus-within{ border-color:var(--azul-medio); background:var(--blanco); }
+.search-box svg{ color:var(--texto-secundario); flex:0 0 auto; }
 .search-box input{
   width:100%;
   border:none;
   outline:none;
   background:transparent;
-  font-family:inherit;
   font-size:13px;
   color:var(--texto-principal);
+  min-width:0;
 }
 
-/* ================= TABLA ================= */
+/* ===================== TABLA ===================== */
+.table-wrap{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
 
-.users-table-wrap{
-  width:100%;
-  overflow-x:auto;
-}
-
-table.simple{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
-}
-
+table.simple{ width:100%; border-collapse:collapse; font-size:13px; }
 table.simple th{
   text-align:left;
   color:var(--texto-secundario);
   font-weight:600;
   font-size:11.5px;
   padding:8px 6px;
-  border-bottom:1px solid var(--gris-borde);
+  border-bottom:1.5px solid var(--gris-borde);
+  white-space:nowrap;
 }
-
 table.simple td{
   padding:11px 6px;
   border-bottom:1px solid #F0F3F7;
   vertical-align:middle;
+  transition:background .15s;
 }
+table.simple tr:last-child td{ border-bottom:none; }
+@media (hover:hover){ table.simple tbody tr:hover td{ background:#F8FAFD; } }
 
-table.simple tr:last-child td{
-  border-bottom:none;
+/* Las primeras filas aparecen una tras otra solo la primera vez */
+@keyframes filaIn{ from{ opacity:0; transform:translateX(-8px); } to{ opacity:1; transform:none; } }
+tbody.anim tr{ animation:filaIn .35s ease backwards; animation-delay:calc(var(--i,0) * 35ms); }
+
+.user-cell{ display:flex; align-items:center; gap:10px; min-width:0; }
+.user-mini{
+  width:34px;
+  height:34px;
+  min-width:34px;
+  border-radius:50%;
+  background:var(--azul-claro);
+  color:var(--azul-oscuro);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:700;
+  position:relative;
 }
-
-/* ================= USUARIO ================= */
+/* Puntico verde sobre el avatar de quien está conectado */
+.user-mini.on::after{
+  content:"";
+  position:absolute;
+  right:-1px;
+  bottom:-1px;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#22C55E;
+  border:2px solid var(--blanco);
+}
+.user-info{ min-width:0; }
+.user-info strong{
+  display:block;
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.user-info span{ display:block; font-size:11px; color:var(--texto-secundario); margin-top:2px; }
+.tag-yo{
+  display:inline-block;
+  margin-left:6px;
+  padding:1px 7px;
+  border-radius:20px;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+  font-size:10px;
+  font-weight:700;
+  vertical-align:middle;
+}
+td.contacto{ color:var(--texto-secundario); overflow-wrap:anywhere; }
 
 .pill{
   display:inline-flex;
@@ -466,179 +526,53 @@ table.simple tr:last-child td{
   font-weight:700;
   white-space:nowrap;
 }
-
-.pill.ok{
-  background:var(--verde-suave);
-  color:#146142;
+.pill.ok{ background:var(--verde-suave); color:#146142; }
+.pill.off{ background:#FCE1E0; color:#B42318; }
+.pill.chk{ background:#ECEEF1; color:#5F6773; }
+.status-dot{ width:6px; height:6px; border-radius:50%; background:currentColor; }
+.pill.ok .status-dot{ animation:latido 1.8s ease-in-out infinite; }
+@keyframes latido{
+  0%,100%{ box-shadow:0 0 0 0 rgba(20,97,66,.45); }
+  50%{ box-shadow:0 0 0 5px rgba(20,97,66,0); }
 }
+.visto{ display:block; font-size:10.5px; color:var(--texto-secundario); margin-top:3px; }
 
-.pill.off{
-  background:#FCE1E0;
-  color:#B42318;
-}
-
-.status-dot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:currentColor;
-}
-
-.user-cell{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.user-mini{
-  width:32px;
-  height:32px;
-  min-width:32px;
-  border-radius:50%;
-  background:var(--azul-claro);
-  color:var(--azul-oscuro);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  font-weight:700;
-}
-
-.user-info{
-  min-width:0;
-}
-
-.user-info strong{
-  display:block;
-  font-size:13px;
-}
-
-.user-info span{
-  display:block;
-  font-size:11px;
+.empty-state{
+  text-align:center;
+  padding:40px 20px;
   color:var(--texto-secundario);
-  margin-top:2px;
+  font-size:13.5px;
+  line-height:1.5;
 }
-
-/* ================= TARJETAS MOVILES ================= */
-
-.users-cards{
-  display:none;
-}
-
-.user-card{
+.empty-state .icon{ font-size:34px; margin-bottom:10px; }
+.btn-ghost{
+  margin-top:14px;
+  border:1.5px solid var(--gris-borde);
+  border-radius:10px;
+  padding:9px 16px;
   background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:12px;
-  box-shadow:0 6px 18px rgba(6,43,91,.055);
-  min-height:154px;
-}
-
-.user-card:last-child{
-  margin-bottom:0;
-}
-
-.user-card-head{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  align-items:center;
-  gap:12px;
-  min-height:48px;
-  padding-bottom:13px;
-  border-bottom:1px solid #EEF2F6;
-  margin-bottom:13px;
-}
-
-.user-card-main{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  min-width:0;
-}
-
-.user-card-avatar{
-  width:42px;
-  height:42px;
-  min-width:42px;
-  border-radius:50%;
-  background:var(--azul-claro);
-  color:var(--azul-oscuro);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-  font-weight:700;
-}
-
-.user-card-name{
-  min-width:0;
-}
-
-.user-card-name strong{
-  display:block;
-  font-size:14px;
-  line-height:1.25;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.user-card-name span{
-  display:block;
-  font-size:11px;
-  color:var(--texto-secundario);
-  margin-top:3px;
-}
-
-.user-card-info{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:10px;
-  min-height:78px;
-}
-
-.user-card-field{
-  display:grid;
-  grid-template-columns:18px minmax(0,1fr);
-  align-items:start;
-  gap:9px;
-  min-height:34px;
-}
-
-.user-card-field svg{
-  color:var(--texto-secundario);
-  margin-top:2px;
-}
-
-.user-card-field-content{
-  min-width:0;
-}
-
-.user-card-field-label{
-  display:block;
-  font-size:10.5px;
-  color:var(--texto-secundario);
-  margin-bottom:3px;
-}
-
-.user-card-field-value{
-  display:block;
-  font-size:12.5px;
   color:var(--texto-principal);
-  line-height:1.35;
-  word-break:break-word;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:border-color .15s;
+}
+@media (hover:hover){ .btn-ghost:hover{ border-color:var(--azul-medio); } }
+.mas-wrap{ text-align:center; padding-top:14px; }
+.mas-wrap .btn-ghost{ margin-top:0; }
+
+/* Esqueleto mientras carga */
+.sk-row{
+  height:50px;
+  margin-bottom:10px;
+  border-radius:10px;
+  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
+  background-size:200% 100%;
+  animation:brillo 1.2s infinite linear;
 }
 
-/* ================= INFORMACION ================= */
-
-.info-list{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
+/* ===================== INFORMACIÓN ===================== */
+.info-list{ display:flex; flex-direction:column; gap:12px; }
 .info-item{
   display:flex;
   align-items:center;
@@ -647,8 +581,9 @@ table.simple tr:last-child td{
   border:1px solid var(--gris-borde);
   border-radius:12px;
   min-height:62px;
+  transition:background .15s,transform .15s,border-color .15s;
 }
-
+@media (hover:hover){ .info-item:hover{ background:#F6F9FD; border-color:#CFE0F7; transform:translateX(3px); } }
 .info-icon{
   width:36px;
   height:36px;
@@ -660,158 +595,135 @@ table.simple tr:last-child td{
   align-items:center;
   justify-content:center;
 }
-
-.info-item strong{
-  display:block;
-  font-size:13px;
-}
-
+.info-item > div:last-child{ min-width:0; }
+.info-item strong{ display:block; font-size:13px; }
 .info-item span{
   display:block;
   color:var(--texto-secundario);
   font-size:11.5px;
   margin-top:2px;
   line-height:1.4;
+  overflow-wrap:anywhere;
 }
 
-.empty{
-  text-align:center;
-  padding:25px 10px;
-  color:var(--texto-secundario);
-  font-size:13px;
-}
-
-.loading{
-  text-align:center;
-  padding:25px;
-  color:var(--texto-secundario);
-  font-size:13px;
-}
-
-/* ================= NOTIFICACIONES ================= */
-
+/* ===================== NOTIFICACIONES ===================== */
 .notification-panel{
   position:fixed;
   top:78px;
   right:32px;
-  width:330px;
+  width:350px;
   background:var(--blanco);
   border:1px solid var(--gris-borde);
   border-radius:14px;
   box-shadow:0 15px 35px rgba(6,43,91,.16);
-  z-index:1400;
+  z-index:1300;
   display:none;
   overflow:hidden;
 }
-
-.notification-panel.show{display:block;}
+.notification-panel.show{ display:block; animation:caer .18s ease; }
+@keyframes caer{ from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:none; } }
 
 .notification-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:15px 17px;
+  gap:8px;
+  padding:14px 16px;
   border-bottom:1px solid var(--gris-borde);
 }
+.notification-header strong{ font-size:14px; }
+.nh-actions{ display:flex; align-items:center; gap:6px; }
+.notification-header button{ border:none; background:none; color:var(--texto-secundario); cursor:pointer; }
+#markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
+@media (hover:hover){ #markAllRead:hover{ background:var(--azul-claro); } }
+#closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
 
-.notification-header strong{font-size:14px;}
+.notification-list{ max-height:420px; max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
 
-.notification-header button{
-  border:none;
-  background:none;
-  font-size:22px;
-  color:var(--texto-secundario);
-  cursor:pointer;
-}
-
-.notification-item{
+a.notification-item{
   display:flex;
+  align-items:flex-start;
   gap:10px;
   padding:13px 16px;
   border-bottom:1px solid #F0F3F7;
+  color:inherit;
+  text-decoration:none;
+  transition:background .15s,opacity .18s,transform .18s;
 }
+a.notification-item:active{ background:#EEF4FF; }
+a.notification-item:last-child{ border-bottom:none; }
+@media (hover:hover){ a.notification-item:hover{ background:#F6F9FD; } }
+a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
-.notification-item:last-child{border-bottom:none;}
-
-.notification-item .ni-icon{
+.ni-icon{
+  flex:0 0 auto;
   width:32px;
   height:32px;
-  min-width:32px;
   border-radius:9px;
-  background:var(--azul-claro);
-  color:var(--azul-medio);
   display:flex;
   align-items:center;
   justify-content:center;
+  background:var(--azul-claro);
+  color:var(--azul-medio);
+}
+.ni-icon.t-warn{ background:#FCE1E0; color:var(--rojo); }
+.ni-icon.t-pend{ background:#FFF1C9; color:#B8860B; }
+.ni-body{ min-width:0; flex:1; }
+.ni-body strong{ display:block; font-size:12.5px; margin-bottom:2px; }
+.ni-body span{ display:block; font-size:11.5px; color:var(--texto-secundario); line-height:1.4; }
+.ni-body em{ display:block; font-style:normal; font-size:10.5px; color:#8A9BB1; margin-top:3px; }
+.ni-go{ align-self:center; color:#A9B7CA; font-size:18px; }
+.notification-empty{ padding:26px 16px; text-align:center; font-size:12.5px; color:var(--texto-secundario); }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
 }
 
-.notification-item strong{
-  display:block;
-  font-size:12.5px;
-  margin-bottom:2px;
+/* ===================== TABLET ===================== */
+@media (max-width:1100px){
+  .app{ grid-template-columns:220px 1fr; }
+  main{ padding:24px; }
+  .grid-2{ grid-template-columns:1fr; }
 }
 
-.notification-item span{
-  display:block;
-  font-size:11px;
-  color:var(--texto-secundario);
-  line-height:1.4;
-}
+/* ===================== CELULAR ===================== */
+@media (max-width:800px){
 
-.notification-empty{
-  padding:22px 16px;
-  text-align:center;
-  font-size:12px;
-  color:var(--texto-secundario);
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:1100px){
-
-  .kpi-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .grid-2{
-    grid-template-columns:1fr;
-  }
-}
-
-@media(max-width:800px){
-
-  .app{
-    grid-template-columns:1fr;
-  }
+  .app{ display:block; min-height:100vh; }
 
   .sidebar{
-    display:flex;
     position:fixed;
-    left:0;
     top:0;
-    bottom:0;
-    width:280px;
+    left:0;
+    width:270px;
     max-width:85vw;
     height:100vh;
-    z-index:1200;
-    transform:translateX(-110%);
+    height:100dvh;
+    transform:translateX(-105%);
     transition:transform .25s ease;
-    box-shadow:10px 0 30px rgba(0,0,0,.18);
-    overflow-y:auto;
+    z-index:1200;
+    box-shadow:8px 0 30px rgba(0,0,0,.20);
+    padding-top:max(14px,env(safe-area-inset-top));
+    padding-bottom:max(14px,env(safe-area-inset-bottom));
   }
+  .sidebar.mobile-open{ transform:translateX(0); }
 
-  .sidebar.mobile-open{
-    transform:translateX(0);
+  .mobile-overlay{
+    display:none;
+    position:fixed;
+    top:0;right:0;bottom:0;left:0;
+    background:rgba(0,0,0,.42);
+    z-index:1150;
   }
-
-  .mobile-menu-btn{
-    display:flex;
-    width:42px;
-    height:42px;
-  }
+  .mobile-overlay.show{ display:block; }
 
   main{
+    width:100%;
+    min-width:0;
     padding:16px 14px 30px;
+    padding-left:max(14px,env(safe-area-inset-left));
+    padding-right:max(14px,env(safe-area-inset-right));
+    padding-bottom:max(30px,env(safe-area-inset-bottom));
   }
 
   .topbar{
@@ -821,1301 +733,1106 @@ table.simple tr:last-child td{
     gap:10px;
     margin-bottom:20px;
   }
+  .mobile-menu-btn{ display:flex; width:42px; height:42px; }
+  .topbar h1{ font-size:21px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar .subtitle{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sync-wrap{ display:none; }
 
-  .topbar h1{
-    font-size:21px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
+  .top-actions{ gap:8px; }
+  .top-user{ padding:4px; border-radius:50%; }
+  .top-user span{ display:none; }
+  .top-user .avatar{ width:32px; height:32px; }
 
-  .topbar .subtitle{
-    font-size:11px;
-    line-height:1.4;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
+  .kpi-grid{ grid-template-columns:1fr; gap:13px; margin-bottom:18px; }
+  .kpi-card{ width:100%; padding:17px; border-radius:14px; }
+  .kpi-card .value{ font-size:24px; }
 
-  .top-user span{display:none;}
+  .grid-2{ gap:14px; margin-bottom:14px; }
+  .panel{ width:100%; padding:16px; border-radius:14px; }
+  .panel-head h3{ font-size:15px; }
 
-  .top-actions{flex-shrink:0;}
+  .search-box{ padding:11px 13px; }
+  .search-box input{ font-size:16px; }          /* 16px evita el zoom en iPhone */
 
-  .kpi-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-  }
+  /* La tabla se convierte en tarjetas */
+  .table-wrap{ overflow:visible; }
+  table.simple{ display:block; border-collapse:separate; }
+  table.simple thead{ display:none; }
+  table.simple tbody{ display:block; width:100%; }
 
-  .kpi-card{
-    min-height:104px;
-    padding:16px;
-  }
-
-  .kpi-card .value{font-size:23px;}
-
-  .kpi-card .label{font-size:11.5px;}
-
-  .notification-panel{
-    right:18px;
-    left:18px;
-    width:auto;
-    top:70px;
-  }
-
-  .grid-2{gap:14px;}
-
-  .panel{padding:16px;}
-
-  .users-table-wrap{display:none;}
-
-  .users-cards{display:block;}
-}
-
-@media(max-width:520px){
-
-  main{
-    padding-left:14px;
-    padding-right:14px;
-  }
-
-  .top-actions{gap:8px;}
-
-  .icon-btn{
-    width:38px;
-    height:38px;
-  }
-
-  .topbar{gap:8px;}
-
-  .topbar h1{font-size:20px;}
-
-  .topbar .subtitle{font-size:12px;}
-
-  .kpi-grid{
-    grid-template-columns:1fr;
-  }
-
-  .kpi-card{
-    min-height:100px;
-    padding:16px;
-  }
-
-  .panel{padding:14px;}
-
-  .panel-head{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .panel-head span{align-self:flex-start;}
-
-  .user-card{
+  table.simple tbody tr{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:
+      "usuario estado"
+      "contacto contacto";
+    gap:10px 12px;
+    align-items:center;
+    background:#fff;
+    border:1px solid var(--gris-borde);
+    border-radius:14px;
     padding:14px;
-    min-height:154px;
+    margin-bottom:10px;
+    box-shadow:0 4px 14px rgba(6,43,91,.05);
+  }
+  table.simple td{ display:block; padding:0; border:none; min-width:0; }
+  table.simple tbody tr:hover td{ background:transparent; }
+  table.simple td:nth-child(1){ grid-area:usuario; }
+  table.simple td:nth-child(2){ grid-area:contacto; font-size:12.5px; padding-top:10px; border-top:1px solid #EEF2F6; }
+  table.simple td:nth-child(3){ grid-area:estado; text-align:right; }
+  table.simple td:nth-child(2)::before{
+    content:attr(data-label);
+    display:block;
+    font-size:10.5px;
+    color:var(--texto-secundario);
+    margin-bottom:3px;
   }
 
-  .user-card-head{
-    grid-template-columns:1fr;
-    align-items:flex-start;
-  }
-
-  .user-card-head > .pill{
-    justify-self:start;
-  }
-
-  .user-card-main{width:100%;}
+  .notification-panel{ top:70px; left:10px; right:10px; width:auto; max-width:none; }
 }
 
-@media(max-width:400px){
-
-  .mobile-menu-btn{
-    width:39px;
-    height:39px;
+@media (max-width:400px){
+  main{
+    padding:13px 10px 25px;
+    padding-left:max(10px,env(safe-area-inset-left));
+    padding-right:max(10px,env(safe-area-inset-right));
+    padding-bottom:max(25px,env(safe-area-inset-bottom));
   }
+  .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
+  .mobile-menu-btn{ width:39px; height:39px; }
+  .topbar h1{ font-size:19px; }
+  .topbar .subtitle{ font-size:10px; }
+  .icon-btn{ width:39px; height:39px; }
+  .top-actions{ gap:5px; }
+  .kpi-card{ padding:14px; }
+  .kpi-card .value{ font-size:21px; }
+  .panel{ padding:14px; }
+  .notification-panel{ left:8px; right:8px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="mobile-overlay" id="mobileOverlay"></div>
-
 <div class="app">
 
-<aside class="sidebar" id="sidebar">
+  <!-- ===================== MENÚ LATERAL ===================== -->
+  <aside class="sidebar" id="sidebar">
 
-  <div class="sb-brand">
-    <div class="badge">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M2 12c3-4 6-5 9-5s6 3 9 3-2 5-9 5-6-1-9-3z"
-          stroke="#FFD76A" stroke-width="1.6" stroke-linejoin="round"/>
-        <circle cx="16" cy="10.3" r=".9" fill="#FFD76A"/>
-      </svg>
-    </div>
-
-    <div>
-      <div class="name">Deep <span>Sea</span></div>
-      <div class="sub">Gestión de recursos marinos</div>
-    </div>
-  </div>
-
-  <nav class="sb-nav">
-
-    <a class="sb-link" href="inicio.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/>
-        <path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Inicio
-    </a>
-
-    <a class="sb-link" href="productos.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"
-          stroke="currentColor" stroke-width="1.7"/>
-        <circle cx="12" cy="12" r="2.2"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Productos
-    </a>
-
-    <a class="sb-link" href="proveedores.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="3.4"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Proveedores
-    </a>
-
-    <a class="sb-link" href="recepciones.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <rect x="4" y="7" width="16" height="13" rx="2"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Recepciones
-    </a>
-
-    <a class="sb-link" href="almacenamiento.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 9.5 12 4l9 5.5V20H3V9.5z"
-          stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-        <path d="M9 20v-6h6v6"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Almacenamiento
-    </a>
-
-    <a class="sb-link" href="ventas.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="9" cy="20" r="1.3" fill="currentColor"/>
-        <circle cx="17" cy="20" r="1.3" fill="currentColor"/>
-        <path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Ventas
-    </a>
-
-    <a class="sb-link" href="trazabilidad.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M3 6h18M3 12h18M3 18h12"
-          stroke="currentColor" stroke-width="1.7"/>
-        <circle cx="20" cy="18" r="1.6" fill="currentColor"/>
-      </svg>
-      Trazabilidad
-    </a>
-
-    <a class="sb-link" href="reportes.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M4 20V10M12 20V4M20 20v-7"
-          stroke="currentColor" stroke-width="1.7"
-          stroke-linecap="round"/>
-      </svg>
-      Reportes
-    </a>
-
-    <a class="sb-link" href="normas.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="m9 12 2 2 4-4"
-          stroke="currentColor" stroke-width="1.7"/>
-      </svg>
-      Normas y Calidad
-    </a>
-
-    <a class="sb-link active" href="usuarios.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="9" cy="8" r="3"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"
-          stroke="currentColor" stroke-width="1.7"/>
-        <circle cx="18" cy="8" r="2.2"
-          stroke="currentColor" stroke-width="1.5"/>
-        <path d="M16 14.3c2.6.4 4.5 2 4.5 5.7"
-          stroke="currentColor" stroke-width="1.5"/>
-      </svg>
-      Usuarios
-    </a>
-
-    <a class="sb-link" href="configuracion.html">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="3"
-          stroke="currentColor" stroke-width="1.7"/>
-        <path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"
-          stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
-      </svg>
-      Configuración
-    </a>
-
-  </nav>
-
-  <div class="sb-footer">
-    <div class="sb-user">
-      <div class="avatar" id="sbAvatar">C</div>
-      <div class="info">
-        <strong id="sbUserName">Cargando...</strong>
-        <span>En línea</span>
+    <div class="sb-brand">
+      <div class="badge">
+        <img src="logo-emblema.png" alt="Deep Sea Intelligence">
+      </div>
+      <div>
+        <div class="name">Deep <span>Sea</span></div>
+        <div class="sub">Gestión de recursos marinos</div>
       </div>
     </div>
-  </div>
 
-</aside>
+    <nav class="sb-nav" id="sbNav">
 
-<main>
+      <a class="sb-link" data-view="inicio" href="inicio.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
+        Inicio
+      </a>
 
-<div class="topbar">
+      <a class="sb-link" data-view="productos" href="productos.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Productos
+      </a>
 
-  <button
-    class="mobile-menu-btn"
-    id="mobileMenuBtn"
-    type="button"
-    aria-label="Abrir menú"
-    title="Abrir menú"
-  >
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </svg>
-  </button>
+      <a class="sb-link" data-view="proveedores" href="proveedores.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Proveedores
+      </a>
 
-  <div>
-    <h1>Usuarios</h1>
-    <div class="subtitle">
-      Gestión de usuarios del sistema —
-      <span id="todayDate"></span>
+      <a class="sb-link" data-view="recepciones" href="recepciones.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
+        Recepciones
+      </a>
+
+      <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Almacenamiento
+      </a>
+
+      <a class="sb-link" data-view="ventas" href="ventas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
+        Ventas
+      </a>
+
+      <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
+        Trazabilidad
+      </a>
+
+      <a class="sb-link" data-view="reportes" href="reportes.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Reportes
+      </a>
+
+      <a class="sb-link" data-view="normas" href="normas.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
+        Normas y Calidad
+      </a>
+
+      <a class="sb-link active" data-view="usuarios" href="usuarios.html" aria-current="page">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
+        Usuarios
+      </a>
+
+      <a class="sb-link" data-view="configuracion" href="configuracion.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Configuración
+      </a>
+
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="avatar" id="sbAvatar">C</div>
+        <div class="info">
+          <strong id="sbUserName">Cargando...</strong>
+          <span>En línea</span>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="top-actions">
+  </aside>
 
-    <button class="icon-btn" id="notificationBtn" title="Notificaciones">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"
-          stroke="currentColor" stroke-width="1.6"/>
-        <path d="M10 20a2 2 0 0 0 4 0"
-          stroke="currentColor" stroke-width="1.6"/>
-      </svg>
-      <span class="dot-alert" id="notificationDot"></span>
-    </button>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
-    <div class="top-user">
-      <div class="avatar" id="topAvatar">C</div>
-      <span id="topUserName">Cargando...</span>
-    </div>
+  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
+  <main>
 
-  </div>
+    <div class="topbar">
 
-</div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
 
-<div class="notification-panel" id="notificationPanel">
-
-  <div class="notification-header">
-    <strong>Notificaciones</strong>
-    <button id="closeNotifications">×</button>
-  </div>
-
-  <div id="notificationContent">
-    <div class="notification-empty">
-      Cargando notificaciones...
-    </div>
-  </div>
-
-</div>
-
-<section class="kpi-grid">
-
-  <div class="kpi-card c1">
-    <div class="top-row">
       <div>
-        <div class="value" id="totalUsuarios">0</div>
-        <div class="label" id="labelUsuarios">
-          Usuarios registrados
+        <h1>Usuarios</h1>
+        <div class="subtitle">
+          <span id="saludo">Gestión de usuarios del sistema</span> —
+          <span id="todayDate"></span>
+          <span class="sync-wrap">· <span id="syncEstado"></span></span>
         </div>
       </div>
 
-      <div class="icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="8" r="3.5"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="M5 20c0-4 3.1-6 7-6s7 2 7 6"
-            stroke="currentColor" stroke-width="1.7"/>
-        </svg>
+      <div class="top-actions">
+
+        <button class="icon-btn" id="notificationBtn" title="Notificaciones" type="button" aria-label="Notificaciones" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="badge-notif" id="notificationBadge"></span>
+        </button>
+
+        <a href="configuracion.html" class="top-user" title="Ir a configuración">
+          <div class="avatar" id="topAvatar">C</div>
+          <span id="topUserName">Cargando...</span>
+        </a>
+
       </div>
     </div>
-  </div>
 
-  <div class="kpi-card c2">
-    <div class="top-row">
-      <div>
-        <div class="value" id="usuariosConectados">0</div>
-        <div class="label">Usuarios conectados</div>
+    <!-- Panel de notificaciones -->
+    <div class="notification-panel" id="notificationPanel">
+      <div class="notification-header">
+        <strong>Notificaciones</strong>
+        <div class="nh-actions">
+          <button id="markAllRead" type="button" style="display:none">Marcar todas como leídas</button>
+          <button id="closeNotifications" type="button" aria-label="Cerrar">×</button>
+        </div>
       </div>
-
-      <div class="icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="8"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="M12 7v5l3 2"
-            stroke="currentColor" stroke-width="1.7"
-            stroke-linecap="round"/>
-        </svg>
+      <div class="notification-list" id="notificationContent">
+        <div class="notification-empty">Cargando notificaciones...</div>
       </div>
     </div>
-  </div>
 
-  <div class="kpi-card c3">
-    <div class="top-row">
-      <div>
-        <div class="value" id="estadoCuenta">Activo</div>
-        <div class="label">Estado de la cuenta actual</div>
-      </div>
-
-      <div class="icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="m9 12 2 2 4-4"
-            stroke="currentColor" stroke-width="1.7"/>
-        </svg>
-      </div>
+    <!-- Aviso de error de carga -->
+    <div class="aviso" id="aviso" role="alert">
+      <span id="avisoTexto"></span>
+      <button id="avisoBtn" type="button">Reintentar</button>
     </div>
-  </div>
 
-</section>
+    <!-- Tarjetas de resumen -->
+    <section class="kpi-grid">
 
-<div class="grid-2">
+      <div class="kpi-card c1">
+        <div class="top-row">
+          <div>
+            <div class="value loading-val" id="totalUsuarios">0000</div>
+            <div class="label" id="labelUsuarios">Usuarios registrados</div>
+          </div>
+          <div class="icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-4 3.1-6 7-6s7 2 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+        </div>
+        <div class="delta">Cuentas en el sistema</div>
+      </div>
 
-<section class="panel">
+      <div class="kpi-card c2">
+        <div class="top-row">
+          <div>
+            <div class="value loading-val" id="usuariosConectados">0000</div>
+            <div class="label">Usuarios conectados</div>
+          </div>
+          <div class="icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div class="delta">Activos ahora mismo</div>
+      </div>
 
-  <div class="panel-head">
-    <h3>Usuarios registrados</h3>
-    <span id="contadorUsuarios">0 usuarios</span>
-  </div>
+      <div class="kpi-card c3">
+        <div class="top-row">
+          <div>
+            <div class="value" id="estadoCuenta">Activo</div>
+            <div class="label">Estado de la cuenta actual</div>
+          </div>
+          <div class="icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+        </div>
+        <div class="delta neutral">Cuenta autenticada</div>
+      </div>
 
-  <div class="search-box">
+    </section>
 
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-      <circle cx="11" cy="11" r="7"
-        stroke="currentColor" stroke-width="1.7"/>
-      <path d="m16 16 5 5"
-        stroke="currentColor" stroke-width="1.7"
-        stroke-linecap="round"/>
-    </svg>
+    <div class="grid-2">
 
-    <input
-      type="text"
-      id="buscarUsuario"
-      placeholder="Buscar usuario..."
-    >
+      <section class="panel">
 
-  </div>
+        <div class="panel-head">
+          <h3>Usuarios registrados</h3>
+          <span class="count-badge" id="contadorUsuarios" aria-live="polite">0</span>
+        </div>
 
-  <div class="users-table-wrap">
+        <div class="search-box">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input type="search" id="buscarUsuario" placeholder="Buscar por nombre, correo o teléfono..." maxlength="100" autocomplete="off" aria-label="Buscar usuario">
+        </div>
 
-    <table class="simple">
+        <!-- Esqueleto mientras carga -->
+        <div id="loadingState" aria-busy="true">
+          <div class="sk-row"></div>
+          <div class="sk-row"></div>
+          <div class="sk-row"></div>
+          <div class="sk-row"></div>
+        </div>
 
-      <thead>
-        <tr>
-          <th>Usuario</th>
-          <th>Correo</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
+        <div id="emptyState" class="empty-state" hidden></div>
 
-      <tbody id="usuariosTabla">
-        <tr>
-          <td colspan="3">
-            <div class="loading">
-              Cargando usuarios...
+        <div class="table-wrap">
+          <table class="simple" id="tablaUsuarios" hidden>
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Contacto</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="usuariosTabla"></tbody>
+          </table>
+        </div>
+
+        <div class="mas-wrap" id="masWrap" hidden>
+          <button class="btn-ghost" id="btnMas" type="button">Mostrar más</button>
+        </div>
+
+      </section>
+
+      <section class="panel">
+
+        <div class="panel-head">
+          <h3>Información de acceso</h3>
+        </div>
+
+        <div class="info-list">
+
+          <div class="info-item">
+            <div class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-4 3.1-6 7-6s7 2 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
             </div>
-          </td>
-        </tr>
-      </tbody>
+            <div>
+              <strong>Cuenta actual</strong>
+              <span id="infoNombre">Cargando...</span>
+            </div>
+          </div>
 
-    </table>
+          <div class="info-item">
+            <div class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7"/></svg>
+            </div>
+            <div>
+              <strong>Correo electrónico</strong>
+              <span id="infoCorreo">Cargando...</span>
+            </div>
+          </div>
 
-  </div>
+          <div class="info-item">
+            <div class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
+            </div>
+            <div>
+              <strong>Estado</strong>
+              <span>Cuenta autenticada y activa</span>
+            </div>
+          </div>
 
-  <div id="usuariosCards" class="users-cards"></div>
+          <div class="info-item">
+            <div class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <strong>Sesión</strong>
+              <span id="infoSesion">Sesión iniciada actualmente</span>
+            </div>
+          </div>
 
-</section>
+        </div>
 
-<section class="panel">
+      </section>
 
-  <div class="panel-head">
-    <h3>Información de acceso</h3>
-  </div>
-
-  <div class="info-list">
-
-    <div class="info-item">
-      <div class="info-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="8" r="3.5"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="M5 20c0-4 3.1-6 7-6s7 2 7 6"
-            stroke="currentColor" stroke-width="1.7"/>
-        </svg>
-      </div>
-
-      <div>
-        <strong>Cuenta actual</strong>
-        <span id="infoNombre">Cargando...</span>
-      </div>
     </div>
 
-    <div class="info-item">
-      <div class="info-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <rect x="3" y="5" width="18" height="14" rx="2"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="m4 7 8 6 8-6"
-            stroke="currentColor" stroke-width="1.7"/>
-        </svg>
+    <section class="panel">
+
+      <div class="panel-head">
+        <h3>Gestión de usuarios</h3>
       </div>
 
-      <div>
-        <strong>Correo electrónico</strong>
-        <span id="infoCorreo">Cargando...</span>
-      </div>
-    </div>
-
-    <div class="info-item">
-      <div class="info-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="m9 12 2 2 4-4"
-            stroke="currentColor" stroke-width="1.7"/>
-        </svg>
+      <div class="info-item">
+        <div class="info-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <strong>Autenticación y presencia</strong>
+          <span>Los usuarios acceden mediante Supabase y su estado de conexión se actualiza automáticamente mientras mantienen activa su sesión.</span>
+        </div>
       </div>
 
-      <div>
-        <strong>Estado</strong>
-        <span>Cuenta autenticada y activa</span>
-      </div>
-    </div>
+    </section>
 
-    <div class="info-item">
-      <div class="info-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="8"
-            stroke="currentColor" stroke-width="1.7"/>
-          <path d="M12 7v5l3 2"
-            stroke="currentColor" stroke-width="1.7"
-            stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <div>
-        <strong>Sesión</strong>
-        <span id="infoSesion">
-          Sesión iniciada actualmente
-        </span>
-      </div>
-    </div>
-
-  </div>
-
-</section>
+  </main>
 
 </div>
 
-<section class="panel">
-
-  <div class="panel-head">
-    <h3>Gestión de usuarios</h3>
-  </div>
-
-  <div class="info-item">
-
-    <div class="info-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M12 3v18M3 12h18"
-          stroke="currentColor"
-          stroke-width="1.7"
-          stroke-linecap="round"/>
-      </svg>
-    </div>
-
-    <div>
-      <strong>Autenticación y presencia</strong>
-
-      <span>
-        Los usuarios acceden mediante Supabase y su estado de conexión
-        se actualiza automáticamente mientras mantienen activa su sesión.
-      </span>
-    </div>
-
-  </div>
-
-</section>
-
-</main>
-</div>
-
+<!-- El SDK se carga al final: la página se dibuja primero y no queda
+     bloqueada esperando la descarga del script. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL =
-  'https://lohxgdeuohhczejyxwgr.supabase.co';
+(function(){
+  'use strict';
 
-const SUPABASE_ANON_KEY =
-  'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const $ = function(id){ return document.getElementById(id); };
 
-const supabaseClient =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
-let sessionActual = null;
-let todosLosUsuarios = [];
-const TIEMPO_ONLINE = 45000;
-
-function escapeHtml(text){
-  if(text === null || text === undefined) return '';
-
-  return String(text)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
-}
-
-function obtenerInicial(nombre){
-  return nombre?.trim()?.charAt(0)?.toUpperCase() || 'U';
-}
-
-function estaConectado(lastSeen){
-  if(!lastSeen) return false;
-
-  return Date.now() - new Date(lastSeen).getTime()
-    <= TIEMPO_ONLINE;
-}
-
-function mostrarUsuarioActual(session){
-
-  const user = session.user;
-
-  const nombre =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    user.user_metadata?.nombre ||
-    user.email?.split('@')[0] ||
-    user.phone ||
-    'Usuario';
-
-  const inicial = obtenerInicial(nombre);
-
-  document.getElementById('sbUserName').textContent = nombre;
-  document.getElementById('topUserName').textContent = nombre;
-  document.getElementById('sbAvatar').textContent = inicial;
-  document.getElementById('topAvatar').textContent = inicial;
-  document.getElementById('infoNombre').textContent = nombre;
-
-  document.getElementById('infoCorreo').textContent =
-    user.email || user.phone || 'Sin correo ni teléfono';
-}
-
-async function actualizarPresencia(){
-
-  if(!sessionActual?.user?.id) return;
-
-  const {error} =
-    await supabaseClient
-      .from('presencia_usuarios')
-      .upsert(
-        {
-          user_id:sessionActual.user.id,
-          last_seen:new Date().toISOString()
-        },
-        {onConflict:'user_id'}
-      );
-
-  if(error){
-    console.error('Error de presencia:',error);
-  }
-}
-
-async function cargarUsuarios(){
-
-  const tabla =
-    document.getElementById('usuariosTabla');
-
-  const cards =
-    document.getElementById('usuariosCards');
-
-  const {data:perfiles,error} =
-    await supabaseClient
-      .from('perfiles')
-      .select('id,nombre,email,telefono,created_at')
-      .order('created_at',{ascending:false});
-
-  if(error){
-
-    console.error('Error cargando perfiles:',error);
-
-    tabla.innerHTML = `
-      <tr>
-        <td colspan="3">
-          <div class="empty">
-            No se pudo cargar la lista de usuarios.
-          </div>
-        </td>
-      </tr>
-    `;
-
-    cards.innerHTML = `
-      <div class="empty">
-        No se pudo cargar la lista de usuarios.
-      </div>
-    `;
-
+  // Si el SDK no cargó (sin internet) se avisa y se ofrece recargar
+  if (typeof supabase === 'undefined') {
+    $('avisoTexto').textContent = 'No se pudo cargar el sistema. Revisa tu conexión e intenta de nuevo.';
+    $('avisoBtn').textContent = 'Recargar';
+    $('aviso').classList.add('show');
+    $('avisoBtn').addEventListener('click', function(){ window.location.reload(); });
+    $('loadingState').hidden = true;
     return;
   }
 
-  const {data:presencia,error:errorPresencia} =
-    await supabaseClient
-      .from('presencia_usuarios')
-      .select('user_id,last_seen');
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  if(errorPresencia){
-    console.error('Error cargando presencia:',errorPresencia);
-  }
+  const TIEMPO_ONLINE = 45000;     // sin señal de vida en 45 s = desconectado
+  const CICLO_MS      = 15000;     // cada cuánto se envía la presencia y se refresca la lista
+  const TAM_PAGINA    = 25;        // filas que se dibujan por tanda
+  const LIMITE_MS     = 15000;     // tiempo máximo de espera por una consulta
 
-  const presenciaMapa = {};
+  const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  (presencia || []).forEach(item => {
-    presenciaMapa[item.user_id] = item.last_seen;
-  });
+  // ---------------------------------------------------------------
+  // ESTADO DE LA PÁGINA
+  // ---------------------------------------------------------------
+  let usuarioActual = null;
+  let usuarios = [];             // perfiles con su última señal de vida
+  let filtrados = [];
+  let productosNotif = [];       // solo para las notificaciones
+  let proveedoresNotif = [];     // solo para las notificaciones
+  let recepcionesNotif = [];     // solo para las notificaciones
+  let limiteMostrar = TAM_PAGINA;
+  let datosListos = false;       // ya hay algo que mostrar (caché o datos frescos)
+  let estadosListos = false;     // ya se conoce quién está conectado (datos frescos)
+  let errorCarga = false;
+  let cargando = false;
+  let primeraPintura = true;
+  let firmaPintada = '';
+  let ultimaActualizacion = 0;
+  let notifsActuales = [];
+  let menuAbierto = false;
+  let debounceTimer = null;
+  const indice = new WeakMap();  // texto normalizado de cada usuario para buscar rápido
 
-  todosLosUsuarios =
-    (perfiles || []).map(usuario => ({
-      ...usuario,
-      last_seen:presenciaMapa[usuario.id] || null
-    }));
-
-  aplicarFiltroUsuarios();
-}
-
-function aplicarFiltroUsuarios(){
-
-  const texto =
-    document.getElementById('buscarUsuario')
-      .value
-      .toLowerCase()
-      .trim();
-
-  const filtrados =
-    todosLosUsuarios.filter(usuario => {
-
-      const nombre =
-        (usuario.nombre || '').toLowerCase();
-
-      const correo =
-        (usuario.email || '').toLowerCase();
-
-      const telefono =
-        (usuario.telefono || '').toLowerCase();
-
-      return (
-        nombre.includes(texto) ||
-        correo.includes(texto) ||
-        telefono.includes(texto)
-      );
+  // ---------------------------------------------------------------
+  // UTILIDADES
+  // ---------------------------------------------------------------
+  function escapeHTML(texto){
+    return String(texto == null ? '' : texto).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
-
-  renderizarUsuarios(filtrados);
-}
-
-function renderizarUsuarios(usuarios){
-
-  const tabla =
-    document.getElementById('usuariosTabla');
-
-  const cards =
-    document.getElementById('usuariosCards');
-
-  const total = usuarios.length;
-
-  const conectados =
-    usuarios.filter(usuario =>
-      estaConectado(usuario.last_seen)
-    ).length;
-
-  document.getElementById('totalUsuarios').textContent =
-    total;
-
-  document.getElementById('usuariosConectados').textContent =
-    conectados;
-
-  document.getElementById('labelUsuarios').textContent =
-    total === 1
-      ? 'Usuario registrado'
-      : 'Usuarios registrados';
-
-  document.getElementById('contadorUsuarios').textContent =
-    total === 1
-      ? '1 usuario'
-      : `${total} usuarios`;
-
-  if(!usuarios.length){
-
-    tabla.innerHTML = `
-      <tr>
-        <td colspan="3">
-          <div class="empty">
-            No hay usuarios registrados.
-          </div>
-        </td>
-      </tr>
-    `;
-
-    cards.innerHTML = `
-      <div class="empty">
-        No hay usuarios registrados.
-      </div>
-    `;
-
-    return;
   }
 
-  tabla.innerHTML =
-    usuarios.map(usuario => {
-
-      const nombre =
-        usuario.nombre ||
-        usuario.email?.split('@')[0] ||
-        usuario.telefono ||
-        'Usuario';
-
-      const contacto =
-        usuario.email ||
-        usuario.telefono ||
-        'Sin contacto';
-
-      const conectado =
-        estaConectado(usuario.last_seen);
-
-      return `
-        <tr>
-
-          <td>
-            <div class="user-cell">
-
-              <div class="user-mini">
-                ${escapeHtml(obtenerInicial(nombre))}
-              </div>
-
-              <div class="user-info">
-                <strong>${escapeHtml(nombre)}</strong>
-                <span>Usuario del sistema</span>
-              </div>
-
-            </div>
-          </td>
-
-          <td>
-            ${escapeHtml(contacto)}
-          </td>
-
-          <td>
-            <span class="pill ${conectado ? 'ok' : 'off'}">
-              <span class="status-dot"></span>
-              ${conectado ? 'Conectado' : 'Desconectado'}
-            </span>
-          </td>
-
-        </tr>
-      `;
-
-    }).join('');
-
-  cards.innerHTML =
-    usuarios.map(usuario => {
-
-      const nombre =
-        usuario.nombre ||
-        usuario.email?.split('@')[0] ||
-        usuario.telefono ||
-        'Usuario';
-
-      const conectado =
-        estaConectado(usuario.last_seen);
-
-      const tieneCorreo =
-        !!usuario.email;
-
-      const contacto =
-        usuario.email ||
-        usuario.telefono ||
-        'Sin contacto';
-
-      const etiquetaContacto =
-        tieneCorreo
-          ? 'Correo electrónico'
-          : 'Número de teléfono';
-
-      return `
-        <article class="user-card">
-
-          <div class="user-card-head">
-
-            <div class="user-card-main">
-
-              <div class="user-card-avatar">
-                ${escapeHtml(obtenerInicial(nombre))}
-              </div>
-
-              <div class="user-card-name">
-                <strong>${escapeHtml(nombre)}</strong>
-                <span>Usuario del sistema</span>
-              </div>
-
-            </div>
-
-            <span class="pill ${conectado ? 'ok' : 'off'}">
-              <span class="status-dot"></span>
-              ${conectado ? 'Conectado' : 'Desconectado'}
-            </span>
-
-          </div>
-
-          <div class="user-card-info">
-
-            <div class="user-card-field">
-
-              <svg width="16" height="16"
-                viewBox="0 0 24 24" fill="none">
-
-                ${
-                  tieneCorreo
-                  ? `
-                    <rect x="3" y="5" width="18" height="14"
-                      rx="2"
-                      stroke="currentColor"
-                      stroke-width="1.7"/>
-
-                    <path d="m4 7 8 6 8-6"
-                      stroke="currentColor"
-                      stroke-width="1.7"/>
-                  `
-                  : `
-                    <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
-                      stroke="currentColor"
-                      stroke-width="1.7"/>
-
-                    <path d="M9 6h6"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round"/>
-
-                    <circle cx="12" cy="17.5" r="1"
-                      fill="currentColor"/>
-                  `
-                }
-
-              </svg>
-
-              <div class="user-card-field-content">
-
-                <span class="user-card-field-label">
-                  ${etiquetaContacto}
-                </span>
-
-                <span class="user-card-field-value">
-                  ${escapeHtml(contacto)}
-                </span>
-
-              </div>
-
-            </div>
-
-            <div class="user-card-field">
-
-              <svg width="16" height="16"
-                viewBox="0 0 24 24" fill="none">
-
-                <circle cx="12" cy="12" r="8"
-                  stroke="currentColor"
-                  stroke-width="1.7"/>
-
-                <path d="M12 7v5l3 2"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"/>
-
-              </svg>
-
-              <div class="user-card-field-content">
-
-                <span class="user-card-field-label">
-                  Estado de conexión
-                </span>
-
-                <span class="user-card-field-value">
-                  ${
-                    conectado
-                      ? 'Usuario conectado actualmente'
-                      : 'Usuario desconectado'
-                  }
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </article>
-      `;
-
-    }).join('');
-}
-
-document
-  .getElementById('buscarUsuario')
-  .addEventListener('input',function(){
-
-    aplicarFiltroUsuarios();
-
-  });
-
-async function verificarSesion(){
-
-  const {data:{session}} =
-    await supabaseClient.auth.getSession();
-
-  if(!session){
-    window.location.href = 'login.html';
-    return;
+  // Quita tildes y pasa a minúsculas (buscar "maria" encuentra "María")
+  function normalizar(texto){
+    return String(texto == null ? '' : texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   }
 
-  sessionActual = session;
+  const fmtNumero = function(n){ return Math.round(n).toLocaleString('es-CO'); };
+  const fmtPeso   = function(n){ return (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg'; };
 
-  mostrarUsuarioActual(session);
+  function parsearFecha(valor){
+    if (!valor) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+      const p = valor.split('-').map(Number);
+      return new Date(p[0], p[1] - 1, p[2]);
+    }
+    const f = new Date(valor);
+    return isNaN(f.getTime()) ? null : f;
+  }
+  function formatearFecha(valor){
+    const f = parsearFecha(valor);
+    return f ? f.toLocaleDateString('es-CO') : '-';
+  }
 
-  await actualizarPresencia();
+  // "hace 5 min", "hace 2 h", "hace 3 días"
+  function hace(valor){
+    const f = parsearFecha(valor);
+    if (!f) return '';
+    const s = Math.max(0, Math.floor((Date.now() - f.getTime()) / 1000));
+    if (s < 60) return 'hace un momento';
+    const m = Math.floor(s / 60);
+    if (m < 60) return 'hace ' + m + ' min';
+    const h = Math.floor(m / 60);
+    if (h < 24) return 'hace ' + h + ' h';
+    const d = Math.floor(h / 24);
+    if (d < 30) return 'hace ' + d + (d === 1 ? ' día' : ' días');
+    return 'el ' + f.toLocaleDateString('es-CO');
+  }
 
-  await cargarUsuarios();
+  function obtenerInicial(nombre){
+    const t = String(nombre || '').trim();
+    return t ? t.charAt(0).toUpperCase() : 'U';
+  }
 
-  document.getElementById('infoSesion').textContent =
-    'Sesión iniciada actualmente';
-}
+  function nombreDe(u){
+    return (u.nombre && String(u.nombre).trim()) ||
+      (u.email && String(u.email).split('@')[0]) ||
+      u.telefono || 'Usuario';
+  }
 
-supabaseClient.auth.onAuthStateChange(
-  async (event,session) => {
+  // Quien tiene la página abierta siempre está conectado
+  function esYo(u){ return !!(usuarioActual && u.id === usuarioActual.id); }
 
-    if(event === 'SIGNED_OUT'){
-      window.location.href = 'login.html';
+  function estaConectado(u){
+    if (esYo(u)) return true;
+    if (!u.last_seen) return false;
+    const t = new Date(u.last_seen).getTime();
+    return isFinite(t) && (Date.now() - t) <= TIEMPO_ONLINE;
+  }
+
+  // Cancela la espera si la conexión se cuelga
+  function conTiempo(promesa){
+    let t;
+    const limite = new Promise(function(_, rechazar){
+      t = setTimeout(function(){ rechazar(new Error('Tiempo de espera agotado')); }, LIMITE_MS);
+    });
+    return Promise.race([promesa, limite]).finally(function(){ clearTimeout(t); });
+  }
+
+  function mostrarAviso(texto){ $('avisoTexto').textContent = texto; $('aviso').classList.add('show'); }
+  function ocultarAviso(){ $('aviso').classList.remove('show'); }
+
+  function actualizarScroll(){
+    document.body.classList.toggle('sin-scroll', menuAbierto);
+  }
+
+  // Número que sube suavemente hasta su valor final
+  function animarNumero(el, destino, formato){
+    el.classList.remove('loading-val');
+    const inicio = Number(el.dataset.v || 0);
+    el.dataset.v = destino;
+    const id = (el._anim = (el._anim || 0) + 1);
+    if (reducirMovimiento || inicio === destino) { el.textContent = formato(destino); return; }
+    const duracion = 600, t0 = performance.now();
+    (function paso(t){
+      if (el._anim !== id) return;
+      const p = Math.min((t - t0) / duracion, 1);
+      const suave = 1 - Math.pow(1 - p, 3);
+      el.textContent = formato(inicio + (destino - inicio) * suave);
+      if (p < 1) requestAnimationFrame(paso);
+    })(t0);
+  }
+
+  function saludar(){
+    const h = new Date().getHours();
+    return h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
+  }
+  function colocarFecha(){
+    $('todayDate').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  // ---------------------------------------------------------------
+  // USUARIO ACTUAL
+  // ---------------------------------------------------------------
+  function pintarUsuario(){
+    const u = usuarioActual;
+    const meta = u.user_metadata || {};
+    const nombre = (meta.full_name || meta.name || meta.nombre || (u.email || '').split('@')[0] || u.phone || 'Usuario').trim() || 'Usuario';
+    const inicial = obtenerInicial(nombre);
+    $('sbUserName').textContent  = nombre;
+    $('topUserName').textContent = nombre;
+    $('sbAvatar').textContent    = inicial;
+    $('topAvatar').textContent   = inicial;
+    $('saludo').textContent      = saludar() + ', ' + nombre.split(/\s+/)[0];
+    $('infoNombre').textContent  = nombre;
+    $('infoCorreo').textContent  = u.email || u.phone || 'Sin correo ni teléfono';
+
+    const ult = parsearFecha(u.last_sign_in_at);
+    $('infoSesion').textContent = ult
+      ? 'Último inicio de sesión: ' + ult.toLocaleDateString('es-CO') + ' ' + ult.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
+      : 'Sesión iniciada actualmente';
+  }
+
+  // ---------------------------------------------------------------
+  // CACHÉ LOCAL: al volver a la página se ve al instante lo último
+  // guardado y en segundo plano se piden los datos nuevos.
+  // ---------------------------------------------------------------
+  const claveCache = function(){ return 'dsi_usr_' + usuarioActual.id; };
+
+  function leerCache(){
+    try {
+      const c = JSON.parse(localStorage.getItem(claveCache()) || 'null');
+      if (c && Array.isArray(c.usuarios)) return c;
+    } catch (e) { /* caché dañada: se ignora */ }
+    return null;
+  }
+  function guardarCache(){
+    try {
+      localStorage.setItem(claveCache(), JSON.stringify({
+        usuarios: usuarios, productos: productosNotif,
+        proveedores: proveedoresNotif, recepciones: recepcionesNotif
+      }));
+    } catch (e) { /* sin espacio */ }
+  }
+
+  // ---------------------------------------------------------------
+  // PRESENCIA: cada 15 s se avisa que esta sesión sigue activa
+  // ---------------------------------------------------------------
+  async function latido(){
+    if (!usuarioActual) return;
+    try {
+      const r = await conTiempo(
+        supabaseClient.from('presencia_usuarios').upsert(
+          { user_id: usuarioActual.id, last_seen: new Date().toISOString() },
+          { onConflict: 'user_id' }
+        )
+      );
+      if (r.error) console.warn('Error de presencia:', r.error);
+    } catch (e) { console.warn('Error de presencia:', e); }
+  }
+
+  // ---------------------------------------------------------------
+  // CARGA DE USUARIOS (perfiles y presencia en paralelo)
+  // ---------------------------------------------------------------
+  async function cargarUsuarios(){
+    if (cargando) return;
+    cargando = true;
+    $('syncEstado').textContent = 'Actualizando…';
+    if (!datosListos) $('loadingState').hidden = false;
+
+    let hayError = false;
+    try {
+      const res = await conTiempo(Promise.all([
+        supabaseClient.from('perfiles').select('id,nombre,email,telefono,created_at').order('created_at', { ascending: false }),
+        supabaseClient.from('presencia_usuarios').select('user_id,last_seen')
+      ]));
+
+      if (res[0].error) { hayError = true; console.error('Error cargando perfiles:', res[0].error); }
+      else {
+        if (res[1].error) console.warn('Error cargando presencia:', res[1].error);
+        const mapa = {};
+        (res[1].data || []).forEach(function(p){ mapa[p.user_id] = p.last_seen; });
+        usuarios = (res[0].data || []).map(function(u){
+          return { id: u.id, nombre: u.nombre, email: u.email, telefono: u.telefono,
+                   created_at: u.created_at, last_seen: mapa[u.id] || null };
+        });
+        estadosListos = !res[1].error;
+      }
+    } catch (err) {
+      hayError = true;
+      console.error('Error cargando usuarios:', err);
+    }
+
+    cargando = false;
+    $('loadingState').hidden = true;
+    errorCarga = hayError;
+
+    if (hayError) {
+      mostrarAviso('No se pudo actualizar la lista de usuarios. Revisa tu conexión.');
+      $('syncEstado').textContent = 'Sin actualizar';
+      if (!datosListos) { datosListos = true; indexar(); aplicarFiltros(true); pintarResumen(); }
       return;
     }
 
-    if(session){
-      sessionActual = session;
-      mostrarUsuarioActual(session);
+    ocultarAviso();
+    datosListos = true;
+    ultimaActualizacion = Date.now();
+    $('syncEstado').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    guardarCache();
+    refrescarVista();
+  }
+
+  // Redibuja solo si algo cambió (quién está conectado, nombres, etc.)
+  function refrescarVista(){
+    if (!datosListos) return;
+    const firma = estadosListos + '|' + JSON.stringify(usuarios.map(function(u){
+      const on = estaConectado(u);
+      return [u.id, u.nombre, u.email, u.telefono, on ? 1 : 0, on ? '' : u.last_seen];
+    }));
+    if (firma === firmaPintada) return;
+    firmaPintada = firma;
+
+    indexar();
+    pintarResumen();
+    aplicarFiltros(false);
+  }
+
+  // ---------------------------------------------------------------
+  // RESUMEN (tarjetas)
+  // ---------------------------------------------------------------
+  function pintarResumen(){
+    const total = usuarios.length;
+    animarNumero($('totalUsuarios'), total, fmtNumero);
+    $('labelUsuarios').textContent = total === 1 ? 'Usuario registrado' : 'Usuarios registrados';
+
+    // Hasta no tener datos frescos no se sabe quién está conectado
+    if (estadosListos) {
+      animarNumero($('usuariosConectados'), usuarios.filter(estaConectado).length, fmtNumero);
     }
   }
-);
 
-setInterval(async () => {
-
-  if(sessionActual){
-    await actualizarPresencia();
+  // ---------------------------------------------------------------
+  // BÚSQUEDA
+  // ---------------------------------------------------------------
+  function indexar(){
+    usuarios.forEach(function(u){
+      indice.set(u, normalizar([nombreDe(u), u.email, u.telefono].join(' ')));
+    });
   }
 
-},15000);
+  function aplicarFiltros(reiniciar){
+    const q = normalizar($('buscarUsuario').value);
+    filtrados = q
+      ? usuarios.filter(function(u){ return (indice.get(u) || '').indexOf(q) !== -1; })
+      : usuarios.slice();
+    if (reiniciar) limiteMostrar = TAM_PAGINA;
+    renderTabla();
+  }
 
-setInterval(async () => {
+  // ---------------------------------------------------------------
+  // TABLA (en celular se ve como tarjetas)
+  // ---------------------------------------------------------------
+  function filaHTML(u, i){
+    const nombre = nombreDe(u);
+    const contacto = u.email || u.telefono || 'Sin contacto';
+    const etiqueta = u.email ? 'Correo electrónico' : 'Número de teléfono';
+    const on = estaConectado(u);
+    const reg = u.created_at ? 'Registrado el ' + formatearFecha(u.created_at) : 'Usuario del sistema';
 
-  if(sessionActual){
+    let estado;
+    if (!estadosListos && !esYo(u)) {
+      estado = '<span class="pill chk">Verificando…</span>';
+    } else if (on) {
+      estado = '<span class="pill ok"><span class="status-dot"></span>Conectado</span>';
+    } else {
+      estado = '<span class="pill off"><span class="status-dot"></span>Desconectado</span>' +
+        (u.last_seen ? '<span class="visto">' + escapeHTML(hace(u.last_seen)) + '</span>' : '');
+    }
+
+    return '<tr style="--i:' + Math.min(i, 12) + '">' +
+      '<td><div class="user-cell">' +
+        '<div class="user-mini' + (on && (estadosListos || esYo(u)) ? ' on' : '') + '">' + escapeHTML(obtenerInicial(nombre)) + '</div>' +
+        '<div class="user-info"><strong>' + escapeHTML(nombre) + (esYo(u) ? '<span class="tag-yo">Tú</span>' : '') + '</strong>' +
+        '<span>' + escapeHTML(reg) + '</span></div>' +
+      '</div></td>' +
+      '<td class="contacto" data-label="' + etiqueta + '">' + escapeHTML(contacto) + '</td>' +
+      '<td>' + estado + '</td>' +
+    '</tr>';
+  }
+
+  function renderTabla(){
+    const total = usuarios.length;
+    const tabla = $('tablaUsuarios');
+    const vacio = $('emptyState');
+    const cuerpo = $('usuariosTabla');
+
+    $('contadorUsuarios').textContent = (filtrados.length === total)
+      ? (total === 1 ? '1 usuario' : total + ' usuarios')
+      : (filtrados.length + ' de ' + total);
+
+    if (!total) {
+      tabla.hidden = true;
+      $('masWrap').hidden = true;
+      vacio.hidden = false;
+      vacio.innerHTML = errorCarga
+        ? '<div class="icon">⚠️</div>No se pudo cargar la lista de usuarios.'
+        : '<div class="icon">👥</div>No hay usuarios registrados.';
+      return;
+    }
+
+    if (!filtrados.length) {
+      tabla.hidden = true;
+      $('masWrap').hidden = true;
+      vacio.hidden = false;
+      vacio.innerHTML = '<div class="icon">🔎</div>No se encontraron usuarios con esa búsqueda.' +
+        '<br><button class="btn-ghost" type="button" data-action="limpiar">Limpiar búsqueda</button>';
+      return;
+    }
+
+    vacio.hidden = true;
+    tabla.hidden = false;
+
+    // Las filas entran una tras otra solo en la primera pintura
+    cuerpo.classList.toggle('anim', primeraPintura && !reducirMovimiento);
+    cuerpo.innerHTML = filtrados.slice(0, limiteMostrar).map(filaHTML).join('');
+    if (primeraPintura) {
+      primeraPintura = false;
+      setTimeout(function(){ cuerpo.classList.remove('anim'); }, 900);
+    }
+
+    const restantes = filtrados.length - limiteMostrar;
+    $('masWrap').hidden = restantes <= 0;
+    if (restantes > 0) $('btnMas').textContent = 'Mostrar más (' + restantes + ' restantes)';
+  }
+
+  $('btnMas').addEventListener('click', function(){
+    limiteMostrar += TAM_PAGINA;
+    renderTabla();
+  });
+
+  $('emptyState').addEventListener('click', function(e){
+    if (e.target.closest('[data-action="limpiar"]')) {
+      $('buscarUsuario').value = '';
+      aplicarFiltros(true);
+    }
+  });
+
+  // Búsqueda mientras se escribe (con una pequeña pausa para no trabajar de más)
+  $('buscarUsuario').addEventListener('input', function(){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function(){ aplicarFiltros(true); }, 200);
+  });
+
+  $('avisoBtn').addEventListener('click', cargarUsuarios);
+
+  // ---------------------------------------------------------------
+  // NOTIFICACIONES (mismo comportamiento que en Inicio)
+  // Sus datos se piden DESPUÉS de mostrar la lista de usuarios, para que
+  // la página no tenga que esperarlos.
+  // ---------------------------------------------------------------
+  async function cargarDatosNotificaciones(){
+    try {
+      const res = await conTiempo(Promise.all([
+        supabaseClient.from('productos').select('id,nombre,estado'),
+        supabaseClient.from('proveedores').select('id,nombre,estado'),
+        supabaseClient
+          .from('recepciones')
+          .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
+          .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+          .limit(200)
+      ]));
+      if (!res[0].error) productosNotif = res[0].data || [];
+      if (!res[1].error) proveedoresNotif = res[1].data || [];
+      if (!res[2].error) recepcionesNotif = res[2].data || [];
+      podarLeidas();
+      guardarCache();
+      renderNotificaciones();
+    } catch (e) {
+      console.warn('No se pudieron cargar las notificaciones:', e);
+    }
+  }
+
+  const PALABRAS_PROBLEMA  = ['rechaz', 'dano', 'danad', 'deterior', 'vencid', 'cancelad', 'inactiv', 'no apto'];
+  const PALABRAS_PENDIENTE = ['pendiente', 'evaluacion', 'revision', 'observ'];
+
+  function clasificarEstado(estado){
+    const e = normalizar(estado);
+    if (PALABRAS_PROBLEMA.some(function(p){ return e.indexOf(p) !== -1; }))  return 'warn';
+    if (PALABRAS_PENDIENTE.some(function(p){ return e.indexOf(p) !== -1; })) return 'pend';
+    return 'ok';
+  }
+
+  const claveLeidas = function(){ return 'dsi_notif_leidas_' + usuarioActual.id; };
+
+  function leerLeidas(){
+    try { return new Set(JSON.parse(localStorage.getItem(claveLeidas()) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+  function guardarLeidas(set){
+    try { localStorage.setItem(claveLeidas(), JSON.stringify(Array.from(set).slice(-300))); } catch (e) {}
+  }
+
+  function nombreRel(rel){
+    const r = Array.isArray(rel) ? rel[0] : rel;
+    return (r && r.nombre) || '';
+  }
+
+  function construirNotificaciones(){
+    const lista = [];
+
+    recepcionesNotif.forEach(function(r){
+      const estado = r.estado_producto || 'Recibido';
+      const clase = clasificarEstado(estado);
+      if (clase === 'ok') return;                         // solo lo que requiere atención
+      lista.push({
+        key: 'rec:' + r.id + ':' + normalizar(estado),
+        tipo: clase,
+        titulo: 'Recepción ' + estado.toLowerCase(),
+        texto: (nombreRel(r.productos) || 'Producto') + ' — ' + fmtPeso(Number(r.peso) || 0),
+        fecha: formatearFecha(r.fecha_recepcion),
+        href: 'recepciones.html?id=' + encodeURIComponent(r.id)
+      });
+    });
+
+    productosNotif.forEach(function(p){
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: 'prod:' + p.id,
+        tipo: 'info',
+        titulo: 'Producto inactivo',
+        texto: p.nombre || 'Producto',
+        fecha: '',
+        href: 'productos.html?id=' + encodeURIComponent(p.id)
+      });
+    });
+
+    proveedoresNotif.forEach(function(p){
+      if (normalizar(p.estado) !== 'inactivo') return;
+      lista.push({
+        key: 'prov:' + p.id,
+        tipo: 'info',
+        titulo: 'Proveedor inactivo',
+        texto: p.nombre || 'Proveedor',
+        fecha: '',
+        href: 'proveedores.html?id=' + encodeURIComponent(p.id)
+      });
+    });
+
+    return lista;
+  }
+
+  // Elimina de la lista de "leídas" las que ya no existen (mantiene el registro corto)
+  function podarLeidas(){
+    if (!usuarioActual) return;
+    const vigentes = new Set(construirNotificaciones().map(function(n){ return n.key; }));
+    const leidas = leerLeidas();
+    const nuevas = new Set(Array.from(leidas).filter(function(k){ return vigentes.has(k); }));
+    if (nuevas.size !== leidas.size) guardarLeidas(nuevas);
+  }
+
+  function actualizarGlobo(){
+    const leidas = leerLeidas();
+    const total = notifsActuales.filter(function(n){ return !leidas.has(n.key); }).length;
+    const globo = $('notificationBadge');
+    globo.textContent = total > 9 ? '9+' : String(total);
+    globo.classList.toggle('show', total > 0);
+    $('notificationBtn').setAttribute('aria-label', total ? 'Notificaciones (' + total + ' sin leer)' : 'Notificaciones');
+    $('markAllRead').style.display = total ? '' : 'none';
+  }
+
+  function iconoNotif(tipo){
+    return tipo === 'info'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="8" r=".9" fill="currentColor"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>';
+  }
+
+  function renderNotificaciones(){
+    if (!usuarioActual) return;
+    const leidas = leerLeidas();
+    notifsActuales = construirNotificaciones().filter(function(n){ return !leidas.has(n.key); }).slice(0, 30);
+    actualizarGlobo();
+
+    const cont = $('notificationContent');
+    if (!notifsActuales.length) {
+      cont.innerHTML = '<div class="notification-empty">No tienes notificaciones nuevas.</div>';
+      return;
+    }
+
+    cont.innerHTML = notifsActuales.map(function(n, i){
+      return '<a class="notification-item" href="' + escapeHTML(n.href) + '" data-i="' + i + '">' +
+        '<div class="ni-icon t-' + n.tipo + '">' + iconoNotif(n.tipo) + '</div>' +
+        '<div class="ni-body">' +
+          '<strong>' + escapeHTML(n.titulo) + '</strong>' +
+          '<span>' + escapeHTML(n.texto) + '</span>' +
+          ((n.fecha && n.fecha !== '-') ? '<em>' + escapeHTML(n.fecha) + '</em>' : '') +
+        '</div>' +
+        '<span class="ni-go">›</span>' +
+      '</a>';
+    }).join('');
+  }
+
+  const panelNotif = $('notificationPanel');
+  const btnNotif = $('notificationBtn');
+
+  function cerrarPanel(){
+    panelNotif.classList.remove('show');
+    btnNotif.setAttribute('aria-expanded', 'false');
+  }
+
+  btnNotif.addEventListener('click', function(e){
+    e.stopPropagation();
+    const abierto = panelNotif.classList.toggle('show');
+    btnNotif.setAttribute('aria-expanded', String(abierto));
+  });
+  $('closeNotifications').addEventListener('click', cerrarPanel);
+  document.addEventListener('click', function(e){
+    if (!panelNotif.contains(e.target) && !btnNotif.contains(e.target)) cerrarPanel();
+  });
+
+  // Clic en una notificación: se marca como leída, desaparece y se abre el módulo
+  $('notificationContent').addEventListener('click', function(e){
+    const item = e.target.closest('.notification-item');
+    if (!item) return;
+    e.preventDefault();
+
+    const n = notifsActuales[Number(item.dataset.i)];
+    if (!n) return;
+
+    const leidas = leerLeidas();
+    leidas.add(n.key);
+    guardarLeidas(leidas);
+    actualizarGlobo();
+
+    item.classList.add('removing');
+    setTimeout(function(){
+      item.remove();
+      if (!$('notificationContent').querySelector('.notification-item')) renderNotificaciones();
+      window.location.href = n.href;
+    }, 170);
+  });
+
+  $('markAllRead').addEventListener('click', function(){
+    const leidas = leerLeidas();
+    construirNotificaciones().forEach(function(n){ leidas.add(n.key); });
+    guardarLeidas(leidas);
+    renderNotificaciones();
+  });
+
+  // ---------------------------------------------------------------
+  // MENÚ MÓVIL
+  // ---------------------------------------------------------------
+  const sidebar = $('sidebar');
+  const overlay = $('mobileOverlay');
+  const btnMenu = $('mobileMenuBtn');
+
+  function abrirMenuMovil(){
+    menuAbierto = true;
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('show');
+    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+    actualizarScroll();
+  }
+  function cerrarMenuMovil(){
+    menuAbierto = false;
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    btnMenu.setAttribute('aria-label', 'Abrir menú');
+    actualizarScroll();
+  }
+
+  btnMenu.addEventListener('click', function(){ menuAbierto ? cerrarMenuMovil() : abrirMenuMovil(); });
+  overlay.addEventListener('click', cerrarMenuMovil);
+  document.querySelectorAll('.sb-link').forEach(function(l){ l.addEventListener('click', cerrarMenuMovil); });
+  window.addEventListener('resize', function(){ if (window.innerWidth > 800 && menuAbierto) cerrarMenuMovil(); });
+
+  // Tecla Escape: cierra el panel de notificaciones y el menú móvil
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    cerrarPanel();
+    cerrarMenuMovil();
+  });
+
+  // ---------------------------------------------------------------
+  // SESIÓN Y REFRESCO AUTOMÁTICO
+  // ---------------------------------------------------------------
+  supabaseClient.auth.onAuthStateChange(function(evento, session){
+    if (evento === 'SIGNED_OUT') { window.location.replace('login.html'); return; }
+    if (session && session.user && usuarioActual) {
+      usuarioActual = session.user;
+      pintarUsuario();
+    }
+  });
+
+  // Cada 15 s: se envía la presencia y, si la pestaña se está viendo,
+  // se actualiza la lista. Si la pestaña está oculta no se gasta ni batería ni red.
+  setInterval(function(){
+    if (!usuarioActual) return;
+    latido();
+    if (!document.hidden) cargarUsuarios();
+  }, CICLO_MS);
+
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden || !usuarioActual) return;
+    latido();
+    if (Date.now() - ultimaActualizacion > 10000) cargarUsuarios();
+  });
+  window.addEventListener('pageshow', function(e){
+    if (e.persisted && usuarioActual) { renderNotificaciones(); latido(); cargarUsuarios(); }
+  });
+  window.addEventListener('online', function(){ if (usuarioActual) { latido(); cargarUsuarios(); } });
+
+  // ---------------------------------------------------------------
+  // INICIO
+  // ---------------------------------------------------------------
+  async function iniciar(){
+    colocarFecha();
+
+    // La sesión se lee del navegador (rápido). Sin sesión → login.
+    let session = null;
+    try {
+      const res = await supabaseClient.auth.getSession();
+      session = res.data.session;
+    } catch (err) {
+      console.error('No se pudo leer la sesión:', err);
+    }
+
+    if (!session) { window.location.replace('login.html'); return; }
+
+    usuarioActual = session.user;
+    pintarUsuario();
+
+    // 1) Se muestra al instante lo último guardado (si existe)
+    const cache = leerCache();
+    if (cache) {
+      usuarios = cache.usuarios;
+      productosNotif = cache.productos || [];
+      proveedoresNotif = cache.proveedores || [];
+      recepcionesNotif = cache.recepciones || [];
+      datosListos = true;
+      $('loadingState').hidden = true;
+      refrescarVista();
+      renderNotificaciones();
+    }
+
+    // 2) Se avisa que este usuario está conectado y se piden los datos frescos
+    latido();
     await cargarUsuarios();
+
+    // 3) Al final, sin retrasar nada, los datos de las notificaciones
+    cargarDatosNotificaciones();
   }
 
-},15000);
-
-/* ================= FECHA ================= */
-
-document.getElementById('todayDate').textContent =
-  new Date().toLocaleDateString(
-    'es-CO',
-    {
-      day:'2-digit',
-      month:'long',
-      year:'numeric'
-    }
-  );
-
-/* ================= NOTIFICACIONES ================= */
-
-const btnCampana =
-  document.getElementById('notificationBtn');
-
-const panelNotificaciones =
-  document.getElementById('notificationPanel');
-
-const cerrarNotificaciones =
-  document.getElementById('closeNotifications');
-
-btnCampana.addEventListener('click',e => {
-
-  e.stopPropagation();
-
-  panelNotificaciones.classList.toggle('show');
-
-  if(panelNotificaciones.classList.contains('show')){
-    cargarLasNotificaciones();
-  }
-});
-
-cerrarNotificaciones.addEventListener('click',() => {
-  panelNotificaciones.classList.remove('show');
-});
-
-document.addEventListener('click',e => {
-
-  if(
-    !panelNotificaciones.contains(e.target) &&
-    !btnCampana.contains(e.target)
-  ){
-    panelNotificaciones.classList.remove('show');
-  }
-});
-
-function escapeHtmlNotif(texto){
-
-  const div = document.createElement('div');
-
-  div.textContent = texto ?? '';
-
-  return div.innerHTML;
-}
-
-async function cargarLasNotificaciones(){
-
-  const contenido =
-    document.getElementById('notificationContent');
-
-  const punto =
-    document.getElementById('notificationDot');
-
-  contenido.innerHTML =
-    '<div class="notification-empty">Buscando alertas...</div>';
-
-  let html = '';
-  let hay = false;
-
-  const {data:recepciones} =
-    await supabaseClient
-      .from('recepciones')
-      .select('id,peso,estado_producto,fecha_recepcion')
-      .order('fecha_recepcion',{ascending:false})
-      .limit(20);
-
-  (recepciones || []).forEach(r => {
-
-    const estado =
-      r.estado_producto || 'Recibido';
-
-    if(estado.toLowerCase() !== 'recibido'){
-
-      hay = true;
-
-      html += `
-        <div class="notification-item">
-
-          <div class="ni-icon">
-            <svg width="16" height="16"
-              viewBox="0 0 24 24" fill="none">
-
-              <path d="M12 3v12"
-                stroke="currentColor"
-                stroke-width="1.8"/>
-
-              <circle cx="12" cy="19" r="1"
-                fill="currentColor"/>
-
-            </svg>
-          </div>
-
-          <div>
-            <strong>
-              Recepción: ${escapeHtmlNotif(estado)}
-            </strong>
-
-            <span>
-              Carga de ${
-                Number(r.peso || 0).toLocaleString('es-CO')
-              } kg.
-            </span>
-          </div>
-
-        </div>
-      `;
-    }
-  });
-
-  const {data:productos} =
-    await supabaseClient
-      .from('productos')
-      .select('id,nombre,estado')
-      .order('created_at',{ascending:false})
-      .limit(20);
-
-  (productos || []).forEach(p => {
-
-    if(
-      p.estado &&
-      p.estado.toLowerCase() === 'inactivo'
-    ){
-
-      hay = true;
-
-      html += `
-        <div class="notification-item">
-
-          <div class="ni-icon">
-
-            <svg width="16" height="16"
-              viewBox="0 0 24 24" fill="none">
-
-              <path d="M12 3v11"
-                stroke="currentColor"
-                stroke-width="1.8"/>
-
-              <circle cx="12" cy="18.5" r="1"
-                fill="currentColor"/>
-
-            </svg>
-
-          </div>
-
-          <div>
-            <strong>Producto inactivo</strong>
-            <span>${escapeHtmlNotif(p.nombre)}</span>
-          </div>
-
-        </div>
-      `;
-    }
-  });
-
-  if(!hay){
-
-    punto.style.display = 'none';
-
-    contenido.innerHTML =
-      '<div class="notification-empty">No hay notificaciones pendientes.</div>';
-
-  }else{
-
-    punto.style.display = 'block';
-
-    contenido.innerHTML = html;
-  }
-}
-
-/* ================= MENU MOVIL ================= */
-
-const mobileMenuBtn =
-  document.getElementById('mobileMenuBtn');
-
-const mobileOverlay =
-  document.getElementById('mobileOverlay');
-
-const sidebar =
-  document.getElementById('sidebar');
-
-function abrirMenuMovil(){
-
-  sidebar.classList.add('mobile-open');
-  mobileOverlay.classList.add('show');
-
-  mobileMenuBtn.setAttribute('aria-label', 'Cerrar menú');
-  mobileMenuBtn.setAttribute('title', 'Cerrar menú');
-
-  document.body.style.overflow = 'hidden';
-}
-
-function cerrarMenuMovil(){
-
-  sidebar.classList.remove('mobile-open');
-  mobileOverlay.classList.remove('show');
-
-  mobileMenuBtn.setAttribute('aria-label', 'Abrir menú');
-  mobileMenuBtn.setAttribute('title', 'Abrir menú');
-
-  document.body.style.overflow = '';
-}
-
-mobileMenuBtn.addEventListener('click',() => {
-
-  sidebar.classList.contains('mobile-open')
-    ? cerrarMenuMovil()
-    : abrirMenuMovil();
-
-});
-
-mobileOverlay.addEventListener(
-  'click',
-  cerrarMenuMovil
-);
-
-sidebar.querySelectorAll('.sb-link').forEach(link => {
-
-  link.addEventListener('click',() => {
-
-    if(window.innerWidth <= 800){
-      cerrarMenuMovil();
-    }
-
-  });
-
-});
-
-document.addEventListener('keydown',event => {
-
-  if(event.key === 'Escape'){
-    cerrarMenuMovil();
-  }
-
-});
-
-window.addEventListener('resize',() => {
-
-  if(window.innerWidth > 800){
-    cerrarMenuMovil();
-  }
-
-});
-
-verificarSesion();
-
+  iniciar();
+})();
 </script>
 
 </body>
