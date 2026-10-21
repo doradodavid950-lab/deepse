@@ -3,1220 +3,538 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Deep Sea Intelligence — Recepciones</title>
+<meta name="theme-color" content="#062B5B">
+<title>Recepciones — Deep Sea</title>
 <link rel="icon" type="image/png" href="logo-emblema.png">
 
-<!-- Conexiones anticipadas: ahorran tiempo al cargar el SDK y los datos -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
+<!-- El SDK empieza a descargarse de inmediato y sin bloquear: la página se dibuja primero -->
+<script async id="sdk" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
-  --azul-oscuro:#062B5B;
-  --azul-oscuro-2:#083868;
-  --azul-medio:#1E66F5;
-  --azul-claro:#D9ECFF;
-  --verde-suave:#B9F5C5;
-  --verde-txt:#1B8A5A;
-  --rojo:#E53935;
-  --naranja:#FFA94D;
-  --amarillo:#FFD76A;
-  --morado:#E7D7FF;
-  --morado-txt:#7B5CC7;
-  --gris-claro:#F3F5F9;
-  --gris-borde:#E4E9F0;
-  --blanco:#FFFFFF;
-  --texto-principal:#0F2540;
-  --texto-secundario:#5B7089;
-  --sombra:0 10px 30px rgba(6,43,91,.08);
-  --radio:16px;
-}
-
-*{ box-sizing:border-box; }
-[hidden]{ display:none !important; }
-
-html{ scrollbar-width:thin; scrollbar-color:#C5D0DF transparent; }
-
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  min-height:100%;
-  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  background:var(--gris-claro);
-  color:var(--texto-principal);
-  -webkit-font-smoothing:antialiased;
-}
-body{ overflow-x:hidden; }
-body.sin-scroll{ overflow:hidden; }
-
-button,input,select,textarea{ font-family:inherit; }
-:focus-visible{ outline:2px solid var(--azul-medio); outline-offset:2px; }
-a,button{ touch-action:manipulation; }
-
-.app{
-  display:grid;
-  grid-template-columns:250px 1fr;
-  min-height:100vh;
-  min-height:100dvh;
-}
-
-/* ===================== MENÚ LATERAL ===================== */
-.sidebar{
-  background:linear-gradient(180deg,#07326F 0%,var(--azul-oscuro) 100%);
-  color:#EAF1FC;
-  display:flex;
-  flex-direction:column;
-  padding:18px 14px;
-  padding:clamp(14px,2.4vh,22px) 14px;
-  position:sticky;
-  top:0;
-  height:100vh;
-  height:100dvh;
-  z-index:1000;
-}
-
-.sb-brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:4px 8px 16px;
-  padding:4px 8px clamp(10px,2vh,20px);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  margin-bottom:12px;
-  margin-bottom:clamp(8px,1.6vh,14px);
-}
-.sb-brand .badge{
-  flex:0 0 auto;
-  width:44px;
-  height:44px;
-  border-radius:12px;
-  background:var(--blanco);
-  padding:4px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 6px 16px rgba(0,0,0,.25);
-}
-.sb-brand .badge img{ width:100%; height:100%; object-fit:contain; display:block; }
-.sb-brand .name{ font-weight:700; font-size:17px; line-height:1.1; }
-.sb-brand .name span{ color:var(--amarillo); }
-.sb-brand .sub{ font-size:10.5px; color:rgba(255,255,255,.55); margin-top:2px; }
-
-nav.sb-nav{
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-}
-nav.sb-nav::-webkit-scrollbar{ display:none; }
-
-.sb-link{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:8px 12px;
-  padding:clamp(6px,1.15vh,10px) 12px;
-  border-radius:10px;
-  color:rgba(255,255,255,.72);
-  text-decoration:none;
-  font-size:13.5px;
-  font-weight:500;
-  cursor:pointer;
-  transition:background .15s,color .15s,transform .15s;
-}
-.sb-link svg{ flex:0 0 auto; opacity:.85; }
-@media (hover:hover){ .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; transform:translateX(2px); } }
-.sb-link:active{ background:rgba(255,255,255,.12); }
-.sb-link.active{
-  background:var(--azul-medio);
-  color:#fff;
-  box-shadow:0 6px 16px rgba(30,102,245,.35);
-}
-
-.sb-footer{
-  flex-shrink:0;
-  border-top:1px solid rgba(255,255,255,.08);
-  padding-top:12px;
-  padding-top:clamp(8px,1.6vh,14px);
-  margin-top:8px;
-}
-.sb-user{ display:flex; align-items:center; gap:10px; padding:4px 4px; }
-.sb-user .avatar{
-  flex:0 0 auto;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:var(--verde-suave);
-  color:var(--azul-oscuro);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:13px;
-}
-.sb-user .info{ flex:1; min-width:0; }
-.sb-user .info strong{
-  display:block;
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.sb-user .info span{ font-size:11px; color:rgba(255,255,255,.5); }
-.sb-user .info span::before{
-  content:"";
-  display:inline-block;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#4ADE80;
-  margin-right:5px;
-}
-
-/* ===================== MENÚ MÓVIL ===================== */
-.mobile-menu-btn{
-  display:none;
-  border:1px solid var(--gris-borde);
-  background:var(--blanco);
-  color:var(--azul-oscuro);
-  border-radius:12px;
-  cursor:pointer;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 12px rgba(6,43,91,.06);
-}
-@media (hover:hover){ .mobile-menu-btn:hover{ border-color:var(--azul-medio); } }
-.mobile-menu-btn:active{ transform:scale(.97); }
-
-.mobile-overlay{ display:none; }
-
-/* ===================== CONTENIDO ===================== */
-main{ padding:26px 32px 50px; min-width:0; }
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:24px;
-  gap:20px;
-}
-.topbar h1{ font-size:23px; margin:0; }
-.topbar .subtitle{ font-size:13px; color:var(--texto-secundario); margin-top:3px; }
-.topbar .subtitle #saludo{ color:var(--azul-oscuro); font-weight:600; }
-
-.top-actions{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  position:relative;
-  color:var(--azul-oscuro);
-  flex-shrink:0;
-  transition:border-color .15s,box-shadow .15s;
-}
-@media (hover:hover){ .icon-btn:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
-
-/* Globo con el número de notificaciones sin leer */
-.badge-notif{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  min-width:19px;
-  height:19px;
-  padding:0 5px;
-  border-radius:10px;
-  background:var(--rojo);
-  color:#fff;
-  font-size:10.5px;
-  font-weight:700;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  border:2px solid var(--gris-claro);
-}
-.badge-notif.show{ display:flex; animation:pop .35s cubic-bezier(.2,1.6,.4,1); }
-@keyframes pop{ from{ transform:scale(.3); opacity:0; } to{ transform:scale(1); opacity:1; } }
-
-.top-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  padding:6px 14px 6px 6px;
-  border-radius:30px;
-  max-width:220px;
-  text-decoration:none;
-  color:inherit;
-  cursor:pointer;
-  transition:border-color .15s,box-shadow .15s;
-}
-@media (hover:hover){ .top-user:hover{ border-color:var(--azul-medio); box-shadow:0 4px 12px rgba(30,102,245,.15); } }
-.top-user .avatar{
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  background:var(--azul-claro);
-  color:var(--azul-oscuro);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:12px;
-  flex-shrink:0;
-}
-.top-user span{
-  font-size:13.5px;
-  font-weight:600;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* Aviso cuando algo falla al cargar los datos */
-.aviso{
-  display:none;
-  align-items:center;
-  gap:12px;
-  background:#FFF4F3;
-  border:1px solid #F8C9C6;
-  color:#9B2B27;
-  padding:11px 14px;
-  border-radius:12px;
-  font-size:13px;
-  margin-bottom:18px;
-}
-.aviso.show{ display:flex; }
-.aviso button{
-  margin-left:auto;
-  flex:0 0 auto;
-  border:none;
-  background:var(--rojo);
-  color:#fff;
-  font-weight:600;
-  padding:7px 14px;
-  border-radius:9px;
-  cursor:pointer;
-  font-size:12.5px;
-}
-
-/* ===================== ENCABEZADO DEL MÓDULO ===================== */
-.module-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-  margin-bottom:22px;
-}
-.module-title h2{ margin:0; font-size:19px; }
-.module-title p{ margin:5px 0 0; font-size:13px; color:var(--texto-secundario); }
-
-/* ===================== BOTONES ===================== */
-.btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 16px;
-  font-size:12.5px;
-  font-weight:600;
-  cursor:pointer;
-  transition:background .15s,box-shadow .15s,transform .1s,opacity .15s;
-}
-.btn:active{ transform:scale(.98); }
-.btn:disabled{ opacity:.6; cursor:not-allowed; }
-
-.btn-primary{
-  background:var(--azul-medio);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  white-space:nowrap;
-  font-size:13px;
-}
-@media (hover:hover){ .btn-primary:hover:not(:disabled){ background:#1857D6; box-shadow:0 8px 18px rgba(30,102,245,.28); } }
-
-.btn-secondary{
-  background:var(--gris-claro);
-  color:var(--texto-secundario);
-  border:1px solid var(--gris-borde);
-}
-@media (hover:hover){ .btn-secondary:hover{ border-color:var(--azul-medio); } }
-
-.btn-danger{ background:var(--rojo); color:#fff; }
-@media (hover:hover){ .btn-danger:hover:not(:disabled){ background:#C62D2A; box-shadow:0 8px 18px rgba(229,57,53,.3); } }
-
-/* ===================== KPI ===================== */
-.kpi-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-bottom:22px;
-}
-.kpi-card{
-  background:var(--blanco);
-  border-radius:var(--radio);
-  padding:20px;
-  box-shadow:var(--sombra);
-  border-top:4px solid var(--accent,var(--azul-medio));
-  min-width:0;
-  transition:transform .2s ease,box-shadow .2s ease;
-}
-@media (hover:hover){
-  .kpi-card:hover{ transform:translateY(-3px); box-shadow:0 16px 36px rgba(6,43,91,.13); }
-}
-.kpi-card .top-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:14px;
-}
-.kpi-card .icon-wrap{
-  width:38px;
-  height:38px;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--accent-soft,var(--azul-claro));
-  color:var(--accent,var(--azul-medio));
-  flex-shrink:0;
-}
-.kpi-card .value{ font-size:26px; font-weight:700; }
-.kpi-card .label{ font-size:12.5px; color:var(--texto-secundario); margin-top:2px; }
-.kpi-card .delta{ font-size:11.5px; margin-top:10px; font-weight:600; color:var(--verde-txt); }
-.kpi-card .delta.neutral{ color:var(--texto-secundario); }
-.kpi-card.c1{ --accent:#1E66F5; --accent-soft:#D9ECFF; }
-.kpi-card.c2{ --accent:#1B8A5A; --accent-soft:#B9F5C5; }
-.kpi-card.c3{ --accent:#FFA94D; --accent-soft:#FFE8D1; }
-
-/* Efecto de "cargando" mientras llegan los números */
-.loading-val{
-  display:inline-block;
-  min-width:64px;
-  color:transparent !important;
-  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
-  background-size:200% 100%;
-  animation:brillo 1.2s infinite linear;
-  border-radius:8px;
-}
-
-/* ===================== PANEL ===================== */
-.panel{
-  background:var(--blanco);
-  border-radius:var(--radio);
-  box-shadow:var(--sombra);
-  padding:20px;
-  min-width:0;
-}
-.panel-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:16px;
-  gap:15px;
-}
-.panel-head h3{ margin:0; font-size:15.5px; }
-
-.count-badge{
-  display:inline-block;
-  background:var(--azul-claro);
-  color:var(--azul-oscuro);
-  font-size:12px;
-  font-weight:700;
-  padding:4px 12px;
-  border-radius:30px;
-  margin-left:8px;
-  vertical-align:middle;
-}
-
-/* Entrada escalonada (igual que Inicio) */
-@keyframes subir{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
-.kpi-card,.panel,.module-header{ animation:subir .45s ease backwards; }
-.kpi-card:nth-child(1){ animation-delay:.05s; }
-.kpi-card:nth-child(2){ animation-delay:.1s; }
-.kpi-card:nth-child(3){ animation-delay:.15s; }
-main > .panel{ animation-delay:.22s; }
-
-/* ===================== BÚSQUEDA Y TABLA ===================== */
-.search-box{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  width:290px;
-  height:40px;
-  border:1.5px solid var(--gris-borde);
-  border-radius:10px;
-  padding:0 12px;
-  background:var(--gris-claro);
-  transition:border-color .15s,background .15s;
-}
-.search-box:focus-within{ border-color:var(--azul-medio); background:var(--blanco); }
-.search-box svg{ color:var(--texto-secundario); flex:0 0 auto; }
-.search-box input{
-  width:100%;
-  border:none;
-  outline:none;
-  background:transparent;
-  font-size:13px;
-  color:var(--texto-principal);
-  min-width:0;
-}
-
-.table-wrap{ width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
-
-table.simple{ width:100%; min-width:900px; border-collapse:collapse; font-size:13px; }
-table.simple th{
-  text-align:left;
-  color:var(--texto-secundario);
-  font-weight:600;
-  font-size:11.5px;
-  padding:9px 7px;
-  border-bottom:1.5px solid var(--gris-borde);
-  white-space:nowrap;
-}
-table.simple td{
-  padding:12px 7px;
-  border-bottom:1px solid #F0F3F7;
-  vertical-align:middle;
-  transition:background .15s;
-}
-table.simple tr:last-child td{ border-bottom:none; }
-@media (hover:hover){ table.simple tbody tr:hover td{ background:#F8FAFD; } }
-td.obs{ max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--texto-secundario); }
-
-/* Fila que se resalta al guardar o al llegar desde una notificación */
-@keyframes destello{ 0%,55%{ background-color:#FFF1B8; } 100%{ background-color:transparent; } }
-table.simple tr.resaltado td{ animation:destello 3.4s ease; }
-
-.pill{
-  display:inline-block;
-  padding:4px 10px;
-  border-radius:30px;
-  font-size:11px;
-  font-weight:700;
-  white-space:nowrap;
-}
-.pill.recibido{ background:var(--verde-suave); color:var(--verde-txt); }
-.pill.revision{ background:#FFF0D9; color:#B96B00; }
-.pill.rechazado{ background:#FCE1E0; color:var(--rojo); }
-
-.action-btn{
-  border:none;
-  border-radius:8px;
-  padding:7px 10px;
-  font-size:11px;
-  font-weight:600;
-  cursor:pointer;
-  white-space:nowrap;
-  margin-right:4px;
-  transition:filter .15s;
-}
-@media (hover:hover){ .action-btn:hover{ filter:brightness(.95); } }
-.edit-btn{ background:var(--azul-claro); color:var(--azul-medio); }
-.delete-btn{ background:#FCE1E0; color:var(--rojo); }
-
-.empty-state{
-  text-align:center;
-  padding:46px 20px;
-  color:var(--texto-secundario);
-  font-size:13.5px;
-  line-height:1.5;
-}
-.empty-state .icon{ font-size:36px; margin-bottom:10px; }
-.empty-state .btn{ margin-top:14px; }
-
-.mas-wrap{ text-align:center; padding-top:14px; }
-
-/* Esqueleto mientras carga */
-.sk-row{
-  height:46px;
-  margin-bottom:10px;
-  border-radius:10px;
-  background:linear-gradient(90deg,#EEF2F7 25%,#F7F9FC 50%,#EEF2F7 75%);
-  background-size:200% 100%;
-  animation:brillo 1.2s infinite linear;
-}
-@keyframes brillo{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
-
-/* ===================== VENTANAS (MODAL) ===================== */
-.modal-overlay{
-  position:fixed;
-  top:0;right:0;bottom:0;left:0;
-  background:rgba(6,20,45,.55);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  z-index:1500;
-}
-.modal-overlay.show{ display:flex; animation:aparecer .18s ease; }
-@keyframes aparecer{ from{ opacity:0; } to{ opacity:1; } }
-
-.modal-card{
-  background:var(--blanco);
-  border-radius:18px;
-  width:100%;
-  max-width:600px;
-  max-height:90vh;
-  max-height:90dvh;
-  overflow-y:auto;
-  padding:26px;
-  box-shadow:0 30px 70px rgba(6,20,45,.35);
-  animation:subir .25s ease;
-}
-.modal-card.pequeno{ max-width:420px; }
-
-.modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
-}
-.modal-head h3{ margin:0; font-size:18px; color:var(--azul-oscuro); }
-.modal-close{
-  border:none;
-  background:none;
-  cursor:pointer;
-  color:var(--texto-secundario);
-  width:34px;
-  height:34px;
-  border-radius:8px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-@media (hover:hover){ .modal-close:hover{ background:var(--gris-claro); } }
-
-.confirm-texto{ margin:0; font-size:14px; line-height:1.55; color:var(--texto-secundario); }
-
-.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.form-grid .full{ grid-column:1 / -1; }
-
-.field label{
-  display:block;
-  font-size:12.5px;
-  font-weight:600;
-  color:var(--azul-oscuro);
-  margin-bottom:6px;
-}
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  padding:10px 12px;
-  border:1.5px solid var(--gris-borde);
-  border-radius:10px;
-  background:var(--gris-claro);
-  font-size:13.5px;
-  color:var(--texto-principal);
-  transition:border-color .15s,background .15s,box-shadow .15s;
-}
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-  outline:none;
-  border-color:var(--azul-medio);
-  background:var(--blanco);
-  box-shadow:0 0 0 4px rgba(30,102,245,.12);
-}
-.field textarea{ resize:vertical; min-height:85px; }
-.field .ayuda{ font-size:11px; color:var(--texto-secundario); margin-top:5px; }
-
-.field-error{ color:var(--rojo); font-size:11.5px; margin-top:5px; display:none; }
-.field.invalid input,
-.field.invalid select,
-.field.invalid textarea{ border-color:var(--rojo); background:#FFF4F3; }
-.field.invalid .field-error{ display:block; }
-
-.modal-footer{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-  margin-top:22px;
-  padding-top:18px;
-  border-top:1px solid var(--gris-borde);
-}
-
-/* ===================== AVISO EMERGENTE (TOAST) ===================== */
-.toast{
-  position:fixed;
-  top:22px;
-  right:22px;
-  background:var(--azul-oscuro);
-  color:#fff;
-  padding:14px 20px;
-  border-radius:12px;
-  font-size:14px;
-  box-shadow:0 18px 45px rgba(6,43,91,.18);
-  display:flex;
-  align-items:center;
-  gap:10px;
-  transform:translateY(-140%);
-  opacity:0;
-  transition:transform .35s ease,opacity .35s ease;
-  z-index:2000;
-  max-width:calc(100vw - 24px);
-}
-.toast.show{ transform:translateY(0); opacity:1; }
-.toast.error{ background:var(--rojo); }
-.toast.success{ background:#1B8A5A; }
-
-/* ===================== NOTIFICACIONES ===================== */
-.notification-panel{
-  position:fixed;
-  top:78px;
-  right:32px;
-  width:350px;
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  border-radius:14px;
-  box-shadow:0 15px 35px rgba(6,43,91,.16);
-  z-index:1300;
-  display:none;
-  overflow:hidden;
-}
-.notification-panel.show{ display:block; animation:caer .18s ease; }
-@keyframes caer{ from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:none; } }
-
-.notification-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  padding:14px 16px;
-  border-bottom:1px solid var(--gris-borde);
-}
-.notification-header strong{ font-size:14px; }
-.nh-actions{ display:flex; align-items:center; gap:6px; }
-.notification-header button{ border:none; background:none; color:var(--texto-secundario); cursor:pointer; }
-#markAllRead{ font-size:11.5px; font-weight:600; color:var(--azul-medio); padding:4px 6px; border-radius:6px; }
-@media (hover:hover){ #markAllRead:hover{ background:var(--azul-claro); } }
-#closeNotifications{ font-size:22px; line-height:1; padding:0 4px; }
-
-.notification-list{ max-height:420px; max-height:min(60vh,420px); overflow-y:auto; scrollbar-width:thin; }
-
-a.notification-item{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  padding:13px 16px;
-  border-bottom:1px solid #F0F3F7;
-  color:inherit;
-  text-decoration:none;
-  transition:background .15s,opacity .18s,transform .18s;
-}
-a.notification-item:active{ background:#EEF4FF; }
-a.notification-item:last-child{ border-bottom:none; }
-@media (hover:hover){ a.notification-item:hover{ background:#F6F9FD; } }
-a.notification-item.removing{ opacity:0; transform:translateX(26px); }
-
-.ni-icon{
-  flex:0 0 auto;
-  width:32px;
-  height:32px;
-  border-radius:9px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--azul-claro);
-  color:var(--azul-medio);
-}
-.ni-icon.t-warn{ background:#FCE1E0; color:var(--rojo); }
-.ni-icon.t-pend{ background:#FFF1C9; color:#B8860B; }
-.ni-body{ min-width:0; flex:1; }
-.ni-body strong{ display:block; font-size:12.5px; margin-bottom:2px; }
-.ni-body span{ display:block; font-size:11.5px; color:var(--texto-secundario); line-height:1.4; }
-.ni-body em{ display:block; font-style:normal; font-size:10.5px; color:#8A9BB1; margin-top:3px; }
-.ni-go{ align-self:center; color:#A9B7CA; font-size:18px; }
-.notification-empty{ padding:26px 16px; text-align:center; font-size:12.5px; color:var(--texto-secundario); }
-
-@media (prefers-reduced-motion: reduce){
-  *{ animation:none !important; transition:none !important; }
-}
-
-/* ===================== TABLET ===================== */
-@media (max-width:1100px){
-  .app{ grid-template-columns:220px 1fr; }
-  main{ padding:24px; }
-}
-
-/* ===================== CELULAR ===================== */
-@media (max-width:800px){
-
-  .app{ display:block; min-height:100vh; }
-
-  .sidebar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:270px;
-    max-width:85vw;
-    height:100vh;
-    height:100dvh;
-    transform:translateX(-105%);
-    transition:transform .25s ease;
-    z-index:1200;
-    box-shadow:8px 0 30px rgba(0,0,0,.20);
-    padding-top:max(14px,env(safe-area-inset-top));
-    padding-bottom:max(14px,env(safe-area-inset-bottom));
+  :root{
+    --azul-oscuro:#062B5B;
+    --azul-medio:#1E66F5;
+    --azul-claro:#5CC0FF;
+    --fondo:#E6F0FA;
+    --borde:#DCE8F6;
+    --campo:#F5F9FE;
+    --texto:#0F2540;
+    --texto-2:#5B7089;
+    --texto-3:#3D5573;
+    --rojo:#E53935;
+    --sombra:0 8px 22px rgba(6,43,91,.07);
+    --g-azul:linear-gradient(135deg,#1E66F5,#3FA9FF);
+    --g-verde:linear-gradient(135deg,#17A673,#5BDDA0);
+    --g-morado:linear-gradient(135deg,#7B5CC7,#B494F5);
+    --g-rojo:linear-gradient(135deg,#E53935,#FF7B76);
   }
-  .sidebar.mobile-open{ transform:translateX(0); }
-
-  .mobile-overlay{
-    display:none;
-    position:fixed;
-    top:0;right:0;bottom:0;left:0;
-    background:rgba(0,0,0,.42);
-    z-index:1150;
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;
+    color:var(--texto);background:var(--fondo);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:128px;min-height:100vh;
   }
-  .mobile-overlay.show{ display:block; }
+  body.sin-scroll{overflow:hidden}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer;border:0;background:none;touch-action:manipulation}
+  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  [hidden]{display:none!important}
+  :focus-visible{outline:2px solid var(--azul-medio);outline-offset:2px}
 
-  main{
-    width:100%;
-    min-width:0;
-    padding:16px 14px 30px;
-    padding-left:max(14px,env(safe-area-inset-left));
-    padding-right:max(14px,env(safe-area-inset-right));
-    padding-bottom:max(30px,env(safe-area-inset-bottom));
+  /* ================= ENCABEZADO ================= */
+  .top-zone{position:relative}
+  .top-wave{display:none}
+  .topbar{display:flex;align-items:center;gap:16px;padding:16px 36px 14px;max-width:1500px;margin:0 auto;position:relative;z-index:20}
+  .brand{display:flex;align-items:center;gap:12px;flex:none}
+  .brand-badge{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#062B5B,#0B4DB5);box-shadow:0 8px 18px rgba(6,43,91,.25)}
+  .brand-badge span{width:36px;height:36px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center}
+  .brand-badge img{width:28px;height:28px;display:block}
+  .brand-name{font-size:21px;font-weight:700;line-height:1;color:var(--azul-oscuro)}
+  .brand-name span{color:var(--azul-medio)}
+  .brand-sub{font-size:11.5px;color:var(--texto-2);margin-top:3px}
+  .tb-space{flex:1}
+
+  .tb-search{flex:1;max-width:575px;margin-left:28px;height:52px;display:flex;align-items:center;gap:10px;padding:0 18px;border-radius:16px;background:#fff;border:1px solid #D3E3F5;color:#7A90AB;transition:border-color .15s,box-shadow .15s}
+  .tb-search:focus-within{border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.14);color:var(--azul-medio)}
+  .tb-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:15px;color:var(--texto)}
+  .tb-search input::placeholder{color:#8DA0B8}
+
+  .icon-btn{width:46px;height:46px;border-radius:15px;background:#fff;border:1px solid #D3E3F5;color:#0B3C74;display:flex;align-items:center;justify-content:center;position:relative}
+  .icon-btn:hover{border-color:var(--azul-medio)}
+  .badge-n{position:absolute;top:10px;right:11px;width:10px;height:10px;border-radius:50%;background:var(--rojo);color:transparent;font-size:0;border:2px solid #fff;display:none}
+  .badge-n.show{display:block}
+  .uchip{display:flex;align-items:center;gap:10px;padding:5px 16px 5px 5px;border-radius:30px;background:#fff;border:1px solid #D3E3F5}
+  .uchip:hover{border-color:var(--azul-medio)}
+  .av{width:36px;height:36px;border-radius:50%;flex:none;color:#fff;font-weight:700;font-size:15px;background:linear-gradient(135deg,#5CC0FF,#1E66F5);display:flex;align-items:center;justify-content:center}
+  .uchip b{display:block;font-size:13.5px;line-height:1.1;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .uchip small{font-size:11.5px;color:#17A673;font-weight:700}
+
+  /* Notificaciones */
+  .notif-wrap{position:relative}
+  .notif-panel{position:absolute;right:0;top:calc(100% + 10px);width:380px;max-width:calc(100vw - 24px);background:#fff;border-radius:20px;border:1px solid var(--borde);box-shadow:0 24px 54px rgba(6,43,91,.24);display:none;z-index:80;overflow:hidden}
+  .notif-panel.show{display:block;animation:aparecer .15s ease both}
+  @keyframes aparecer{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .np-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #EDF2F8}
+  .np-head strong{font-size:16px;flex:1}
+  .np-head .link{font-size:12.5px;font-weight:700;color:var(--azul-medio)}
+  .np-head .x{width:30px;height:30px;border-radius:10px;font-size:20px;line-height:1;color:var(--texto-2)}
+  .np-head .x:hover{background:#F1F6FC}
+  .np-body{max-height:380px;overflow:auto;padding:6px}
+  .notification-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;transition:opacity .17s,transform .17s}
+  .notification-item:hover{background:#F3F8FF}
+  .notification-item.removing{opacity:0;transform:translateX(14px)}
+  .ni-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none}
+  .t-warn{background:#FFE3E0;color:#D93A35}.t-pend{background:#FFF1D1;color:#B27300}.t-info{background:#DCEBFF;color:#1E66F5}
+  .ni-body{flex:1;min-width:0}
+  .ni-body strong{display:block;font-size:14px}
+  .ni-body span{display:block;font-size:12.5px;color:var(--texto-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ni-body em{font-style:normal;font-size:11.5px;color:#8DA0B8}
+  .ni-go{color:#9AB0C9;font-size:20px}
+  .notification-empty{padding:28px 16px;text-align:center;color:var(--texto-2);font-size:14px}
+
+  /* ================= HERO ================= */
+  .hero-wrap{max-width:1500px;margin:0 auto;padding:0 36px}
+  .hero{border-radius:24px;color:#fff;padding:26px 38px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:120px;background:linear-gradient(115deg,#062B5B 0%,#0B4DB5 45%,#1E8CF5 78%,#3FD0F2 100%);box-shadow:0 18px 40px rgba(11,77,181,.28)}
+  .hero svg.w{position:absolute;left:0;bottom:0;width:100%;height:80px;opacity:.9;pointer-events:none}
+  .hero-txt{position:relative}
+  .hero h1{font-size:32px;font-weight:700;line-height:1.15}
+  .hero p{font-size:17px;color:#D6E9FF;margin-top:6px}
+  .sm{display:none}
+  .b1{position:relative;background:#fff;color:#0B3C74;height:54px;padding:0 26px;border-radius:15px;font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 10px 24px rgba(2,16,42,.18);transition:filter .15s,transform .12s;flex:none}
+  .b1:hover{filter:brightness(.97)}
+  .b1:active{transform:scale(.98)}
+
+  /* ================= CONTENIDO ================= */
+  .aviso{display:none;align-items:center;gap:12px;justify-content:space-between;padding:12px 16px;border-radius:14px;background:#FFF1D1;border:1px solid #F5D58A;color:#7A5200;font-size:14px;font-weight:600}
+  .aviso.show{display:flex}
+  .aviso button{padding:7px 14px;border-radius:10px;background:#fff;border:1px solid #F5D58A;font-weight:700;font-size:13px}
+  .main{max-width:1500px;margin:0 auto;padding:18px 36px 0;display:flex;flex-direction:column;gap:18px}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .k{display:flex;gap:16px;align-items:center;padding:14px 20px;background:#fff;border-radius:20px;border:1px solid var(--borde);box-shadow:var(--sombra);min-width:0}
+  .ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;flex:none}
+  .ic svg.i{width:25px;height:25px}
+  .ic-azul{background:var(--g-azul)}.ic-verde{background:var(--g-verde)}.ic-morado{background:var(--g-morado)}.ic-rojo{background:var(--g-rojo)}
+  .k b{display:block;font-size:26px;line-height:1.1}
+  .k span{font-size:14px;color:var(--texto-2)}
+  .loading-val{color:transparent!important;border-radius:8px;background:linear-gradient(90deg,#E8F0FA 25%,#F6FAFF 50%,#E8F0FA 75%);background-size:200% 100%;animation:brillo 1.2s linear infinite;min-width:44px;display:inline-block}
+  @keyframes brillo{to{background-position:-200% 0}}
+
+  .c{background:#fff;border-radius:22px;border:1px solid var(--borde);box-shadow:var(--sombra);padding:22px 24px;min-width:0}
+  .c h3{font-size:18px;font-weight:700;margin-bottom:14px}
+  .c-tabla{min-height:540px}
+
+  /* Tabla */
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:12.5px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.6px;padding:11px 14px;background:#F1F6FC;white-space:nowrap}
+  th:first-child{border-radius:12px 0 0 12px}th:last-child{border-radius:0 12px 12px 0}
+  td{padding:15px 14px;border-bottom:1px solid #EDF2F8;font-size:15px;vertical-align:middle}
+  tr:last-child td{border:0}
+  td:first-child{font-weight:700}
+  td.obs{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  td.nowrap{white-space:nowrap}
+  @media (hover:hover){tbody tr:hover td{background:#F8FBFF}}
+  @keyframes destello{0%,55%{background-color:#FFF1B8}100%{background-color:transparent}}
+  tr.resaltado td{animation:destello 3.4s ease}
+  .pill{display:inline-block;padding:4px 13px;border-radius:20px;font-size:13px;font-weight:700;white-space:nowrap}
+  .pill.ok{background:#D6F7E2;color:#12804F}
+  .pill.cold{background:#DCEBFF;color:#1E66F5}
+  .pill.warn{background:#FFF1D1;color:#9A6200}
+  .pill.bad{background:#FFE3E0;color:#C62F2A}
+  .acts{display:flex;gap:8px}
+  .action-btn{width:40px;height:40px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;transition:filter .15s,transform .12s}
+  .action-btn svg.i{width:18px;height:18px}
+  .action-btn:hover{filter:brightness(.95)}
+  .action-btn:active{transform:scale(.95)}
+  .edit-btn{background:#DCEBFF;color:#1E66F5}
+  .delete-btn{background:#FFE3E0;color:#D93A35}
+  .empty-state{text-align:center;padding:60px 16px;color:var(--texto-2);font-size:15px;line-height:1.6}
+  .empty-state .icon{font-size:36px;margin-bottom:8px}
+  .empty-state .btn{margin-top:14px;height:42px}
+  .mas-wrap{text-align:center;padding-top:14px}
+  .sk-row{height:46px;margin-bottom:10px;border-radius:12px;background:linear-gradient(90deg,#E8F0FA 25%,#F6FAFF 50%,#E8F0FA 75%);background-size:200% 100%;animation:brillo 1.2s linear infinite}
+
+  /* Tarjetas (celular) */
+  .cards{display:flex;flex-direction:column;gap:12px}
+  .pcard{background:#fff;border:1px solid var(--borde);border-radius:24px;padding:14px 16px;box-shadow:var(--sombra);cursor:pointer}
+  .pcard:active{transform:scale(.99)}
+  .pc-top{display:flex;align-items:center;gap:14px}
+  .pc-ic{width:52px;height:52px;border-radius:16px;background:var(--g-verde);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .pc-ic svg.i{width:25px;height:25px}
+  .pc-info{flex:1;min-width:0}
+  .pc-info strong{display:block;font-size:18px;line-height:1.2;overflow-wrap:anywhere}
+  .pc-info span{display:block;font-size:15px;color:var(--texto-2);margin-top:2px;overflow-wrap:anywhere}
+  .pc-bot{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid #EDF2F8;font-size:15px;color:var(--texto-2)}
+  .pc-bot b{color:var(--texto);font-weight:700}
+  .pcard.resaltado{animation:destello 3.4s ease}
+
+  /* Botones */
+  .btn{height:46px;padding:0 22px;border-radius:14px;font-size:14.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,filter .12s}
+  .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.65;cursor:wait}
+  .btn-primary{color:#fff;background:var(--g-azul);box-shadow:0 10px 22px rgba(30,102,245,.3)}
+  .btn-primary:hover:not(:disabled){filter:brightness(1.06)}
+  .btn-secondary{background:#fff;color:var(--texto-3);border:1px solid var(--borde)}
+  .btn-secondary:hover{border-color:var(--azul-medio);color:var(--azul-medio)}
+  .btn-danger{color:#fff;background:linear-gradient(135deg,#E53935,#FF6B66);box-shadow:0 10px 22px rgba(229,57,53,.3)}
+  .btn-danger:hover:not(:disabled){filter:brightness(1.06)}
+  .btn-ghost-danger{background:#FFE3E0;color:#C62F2A}
+  .btn-ghost-danger:hover{filter:brightness(.96)}
+
+  /* Formulario (ventana) */
+  .form-card{background:#fff;border-radius:24px;width:100%;max-width:660px;max-height:calc(100dvh - 40px);overflow:auto;padding:26px;box-shadow:0 30px 70px rgba(6,20,45,.35);animation:aparecer .18s ease}
+  .fc-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+  .fc-head > div{flex:1}
+  .fc-head h3{font-size:20px;color:var(--azul-oscuro)}
+  .fc-head p{font-size:13.5px;color:var(--texto-2);margin-top:3px}
+  .fc-x{width:38px;height:38px;border-radius:12px;font-size:24px;line-height:1;color:var(--texto-2);background:#F1F6FC}
+  .fc-x:hover{background:#E4EEF9}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .field.full{grid-column:1/-1}
+  .field label{font-size:13px;font-weight:700;color:var(--texto-3)}
+  .field input,.field select,.field textarea{
+    width:100%;min-width:0;height:46px;padding:0 14px;border-radius:14px;
+    background:var(--campo);border:1px solid var(--borde);font-size:14.5px;color:var(--texto);outline:0;
+    transition:border-color .15s,box-shadow .15s,background .15s;
   }
+  .field select{appearance:none;-webkit-appearance:none;padding-right:38px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A90AB' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 13px center}
+  .field textarea{height:auto;min-height:84px;padding:12px 14px;resize:vertical}
+  .field input::placeholder,.field textarea::placeholder{color:#8DA0B8}
+  .field input:focus,.field select:focus,.field textarea:focus{background:#fff;border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.15)}
+  .field-hint{font-size:12.5px;color:var(--texto-2)}
+  .field-error{display:none;font-size:12.5px;color:var(--rojo);font-weight:600}
+  .field.invalid .field-hint{display:none}
+  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--rojo);background:#FFF5F5}
+  .field.invalid .field-error{display:block}
 
-  .topbar{
-    display:grid;
-    grid-template-columns:42px minmax(0,1fr) auto;
-    align-items:center;
-    gap:10px;
-    margin-bottom:20px;
+  .msg{display:none;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:14px;font-size:13.5px;font-weight:600;margin-bottom:14px;line-height:1.4}
+  .msg.show{display:flex}
+  .msg svg.i{width:18px;height:18px;margin-top:1px}
+  .msg.error{background:#FFF1F0;border:1px solid #F8C9C6;color:#9B2B27}
+  .nota{font-size:12.5px;color:var(--texto-2);margin-top:12px}
+  .form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .form-actions .fa-left{margin-right:auto}
+
+  /* Ventanas */
+  .modal-overlay{position:fixed;inset:0;background:rgba(6,20,45,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:1500}
+  #confirmOverlay{z-index:1600}
+  .modal-overlay.show{display:flex;animation:aparecer .15s ease}
+  .modal-card{background:#fff;border-radius:22px;width:100%;max-width:420px;padding:26px;box-shadow:0 30px 70px rgba(6,20,45,.35)}
+  .modal-card h3{font-size:19px;color:var(--azul-oscuro);margin-bottom:10px}
+  .confirm-texto{font-size:14.5px;line-height:1.55;color:var(--texto-2)}
+  .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--borde)}
+
+  /* Toast */
+  .toast{position:fixed;left:50%;bottom:112px;transform:translate(-50%,30px);max-width:calc(100% - 32px);padding:13px 20px;border-radius:14px;background:var(--azul-oscuro);color:#fff;font-size:14.5px;font-weight:600;box-shadow:0 14px 30px rgba(2,16,42,.4);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:2000;text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .toast.error{background:#C62828}
+  .toast.success{background:#12804F}
+
+  /* ================= DOCK (computador) ================= */
+  .dock{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:50;display:flex;align-items:flex-end;gap:10px;padding:10px 16px;border-radius:30px;background:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.95);box-shadow:0 18px 50px rgba(6,43,91,.3),inset 0 1px 0 rgba(255,255,255,.9)}
+  .dock a{position:relative;width:56px;height:56px;border-radius:17px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--g);box-shadow:0 8px 16px rgba(6,43,91,.22);transform-origin:50% 100%;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+  .dock a svg.i{width:26px;height:26px}
+  .dock a:hover,.dock a:focus-visible{transform:translateY(-16px) scale(1.3);box-shadow:0 20px 30px rgba(6,43,91,.38);outline:0}
+  .dock a:hover + a,.dock a:has(+ a:hover){transform:translateY(-6px) scale(1.12)}
+  .dock a[aria-current="page"]{box-shadow:0 0 0 3px rgba(255,255,255,.95),0 0 0 5px rgba(30,102,245,.55),0 10px 20px rgba(6,43,91,.28)}
+  .dock a[aria-current="page"]::after{content:"";position:absolute;bottom:-8px;left:50%;margin-left:-3px;width:6px;height:6px;border-radius:50%;background:var(--azul-medio);box-shadow:0 0 8px var(--azul-medio)}
+  .dock .tip{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translate(-50%,10px) scale(.85);opacity:0;pointer-events:none;white-space:nowrap;background:linear-gradient(135deg,#062B5B,#0B4DB5);color:#fff;font-size:13px;font-weight:700;padding:7px 13px;border-radius:11px;box-shadow:0 10px 22px rgba(6,43,91,.4);transition:opacity .22s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+  .dock .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#0B4DB5}
+  .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.78)}
+  .dock .sep{width:1px;height:42px;background:rgba(6,43,91,.18);align-self:center;margin:0 4px}
+  .bnav,.fan,.fab{display:none}
+
+  /* ================= CELULAR / TABLET ================= */
+  @media (max-width:1000px){
+    body{padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
+    .dock,.tb-search{display:none}
+    .top-zone{background:linear-gradient(120deg,#062B5B 0%,#0B4DB5 52%,#2FA8F0 100%);border-radius:0 0 34px 34px;box-shadow:0 14px 28px rgba(11,77,181,.25);padding:env(safe-area-inset-top,0px) 0 40px;overflow:hidden}
+    .top-wave{display:block;position:absolute;left:0;bottom:0;width:100%;height:46px;opacity:.9;pointer-events:none}
+    .topbar{padding:16px 18px 0;gap:11px}
+    .brand-badge{width:42px;height:42px;border-radius:13px;background:#fff;box-shadow:0 5px 14px rgba(0,0,0,.25)}
+    .brand-badge span{width:auto;height:auto;background:none}
+    .brand-badge img{width:32px;height:32px}
+    .brand-name{color:#fff;font-size:20px}.brand-name span{color:var(--azul-claro)}
+    .brand-sub{display:none}
+    .uchip{display:none}
+    .icon-btn{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff;width:42px;height:42px;border-radius:14px}
+    .badge-n{border-color:#1357C7;top:9px;right:10px}
+    .notif-panel{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 66px);width:auto;max-width:none}
+
+    .hero-wrap{padding:0 18px}
+    .hero{background:none;box-shadow:none;padding:20px 0 0;display:block;border-radius:0;overflow:visible;min-height:0}
+    .hero svg.w,.hero .b1{display:none}
+    .hero h1{font-size:34px}
+    .hero p{font-size:16px;margin-top:4px;color:#CFE6FF}
+    .sd{display:none}.sm{display:inline}
+
+    .main{padding:16px 16px 0;gap:14px}
+    .kpis{grid-template-columns:1fr 1fr;gap:12px}
+    .k{padding:16px;gap:14px;border-radius:24px}
+    .k-hm{display:none}
+    .ic{width:56px;height:56px;border-radius:18px}
+    .ic-morado{background:var(--g-verde)}
+    .ic svg.i{width:26px;height:26px}
+    .k b{font-size:30px}.k span{font-size:15px;line-height:1.3}
+    .c{padding:0;border:0;box-shadow:none;background:none;border-radius:0}
+    .c h3{display:none}
+    .c-tabla{min-height:0}
+
+    .form-card{max-width:none;border-radius:24px 24px 0 0;padding:20px;padding-bottom:max(20px,env(safe-area-inset-bottom));max-height:92dvh}
+    .form-grid{grid-template-columns:1fr}
+    .field.full{grid-column:auto}
+    .field input,.field select,.field textarea{font-size:16px;height:48px}   /* 16px evita el zoom en iPhone */
+    .field textarea{height:auto;min-height:90px}
+    .form-actions{display:flex;flex-direction:column-reverse}
+    .form-actions .btn{width:100%}
+    .form-actions .fa-left{margin-right:0}
+
+    .modal-overlay{padding:0;align-items:flex-end}
+    .modal-card{max-width:none;border-radius:22px 22px 0 0;padding:20px;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+    .modal-footer{flex-direction:column-reverse}
+    .modal-footer .btn{width:100%}
+    .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+
+    .fab{display:flex;position:fixed;right:16px;bottom:calc(94px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:20px;background:var(--g-azul);color:#fff;align-items:center;justify-content:center;box-shadow:0 14px 28px rgba(30,102,245,.42);z-index:45}
+    .fab svg.i{width:28px;height:28px;stroke-width:2}
+    .fab:active{transform:scale(.95)}
+
+    .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;height:calc(78px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #D3E3F5;box-shadow:0 -8px 24px rgba(6,43,91,.08);padding:8px 8px calc(14px + env(safe-area-inset-bottom,0px))}
+    .bnav a,.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;color:#6B7F99;border-radius:16px}
+    .bnav svg.i{width:22px;height:22px}
+    .bnav a[aria-current="page"],.bnav button.open,.bnav button.cur{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
+    .bnav .ico-x{display:none}
+    .bnav button.open .ico-x{display:block}.bnav button.open .ico-grid{display:none}
+
+    .fan{display:block;position:fixed;inset:0;z-index:55;pointer-events:none}
+    .fan-overlay{position:absolute;inset:0;background:rgba(4,26,58,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;transition:opacity .25s}
+    .fan-list{position:absolute;right:19px;bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:11px;align-items:flex-end}
+    .fan-item{display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(24px) scale(.6);transform-origin:100% 100%;transition:opacity .22s,transform .32s cubic-bezier(.34,1.56,.64,1);transition-delay:calc(var(--i) * 35ms)}
+    .fan-label{background:#fff;padding:8px 15px;border-radius:14px;font-weight:700;font-size:14.5px;color:var(--azul-oscuro);box-shadow:0 8px 20px rgba(2,16,42,.25)}
+    .fan-ic{width:52px;height:52px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 22px rgba(2,16,42,.4),0 0 0 4px rgba(255,255,255,.18)}
+    .fan-ic svg.i{width:24px;height:24px}
+    .fan.open{pointer-events:auto}
+    .fan.open .fan-overlay{opacity:1}
+    .fan.open .fan-item{opacity:1;transform:none}
   }
-  .mobile-menu-btn{ display:flex; width:42px; height:42px; }
-  .topbar h1{ font-size:21px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .topbar .subtitle{ font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .sync-wrap{ display:none; }
-
-  .top-actions{ gap:8px; }
-  .top-user{ padding:4px; border-radius:50%; }
-  .top-user span{ display:none; }
-  .top-user .avatar{ width:32px; height:32px; }
-
-  .module-header{ flex-direction:column; align-items:stretch; gap:14px; margin-bottom:18px; }
-  .module-title h2{ font-size:17px; }
-  .module-title p{ font-size:12px; line-height:1.5; }
-  .btn-primary{ width:100%; min-height:46px; font-size:14px; }
-
-  .kpi-card{ padding:15px; border-radius:14px; }
-  .kpi-card .top-row{ margin-bottom:10px; }
-  .kpi-card .value{ font-size:22px; }
-  .kpi-card .label{ font-size:11px; line-height:1.3; }
-  .kpi-grid{ gap:10px; margin-bottom:16px; }
-
-  .panel{ width:100%; padding:16px; border-radius:14px; }
-  .panel-head{ flex-direction:column; align-items:stretch; gap:12px; }
-  .panel-head h3{ font-size:15px; }
-  .search-box{ width:100%; height:48px; }
-  .search-box input{ font-size:16px; }          /* 16px evita el zoom en iPhone */
-
-  /* La tabla se convierte en tarjetas */
-  .table-wrap{ width:100%; overflow:visible; margin:0; }
-  table.simple{ width:100%; min-width:0; display:block; border-collapse:separate; }
-  table.simple thead{ display:none; }
-  table.simple tbody{ display:block; width:100%; }
-
-  table.simple tbody tr{
-    display:block;
-    width:100%;
-    background:#fff;
-    border:1px solid var(--gris-borde);
-    border-radius:13px;
-    padding:10px 12px;
-    margin-bottom:10px;
-    box-shadow:0 5px 16px rgba(6,43,91,.05);
+  @media (min-width:1001px) and (max-width:1180px){
+    .topbar{padding-left:24px;padding-right:24px}.hero-wrap,.main{padding-left:24px;padding-right:24px}
+    .brand-sub{display:none}
+    .kpis{gap:14px}
   }
-  table.simple tbody tr:hover td{ background:transparent; }
-  table.simple tr.resaltado td{ animation:none; }
-  table.simple tr.resaltado{ animation:destello 3.4s ease; }
-
-  table.simple td{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-    width:100%;
-    padding:8px 0;
-    border-bottom:1px solid #F0F3F7;
-    text-align:right;
-    line-height:1.35;
-    overflow-wrap:anywhere;
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
   }
-  table.simple td:last-child{ border-bottom:none; padding-bottom:2px; }
-  table.simple td::before{
-    color:var(--texto-secundario);
-    font-size:11px;
-    font-weight:600;
-    text-align:left;
-    flex:0 0 92px;
-  }
-  table.simple td:nth-child(1)::before{ content:'Producto'; }
-  table.simple td:nth-child(2)::before{ content:'Proveedor'; }
-  table.simple td:nth-child(3)::before{ content:'Peso'; }
-  table.simple td:nth-child(4)::before{ content:'Estado'; }
-  table.simple td:nth-child(5)::before{ content:'Fecha'; }
-  table.simple td:nth-child(6)::before{ content:'Observaciones'; }
-  table.simple td:nth-child(7)::before{ content:'Acciones'; }
-  td.obs{ max-width:none; white-space:normal; }
-  table.simple td:last-child{ justify-content:flex-end; flex-wrap:wrap; gap:6px; }
-  table.simple td:last-child::before{ margin-right:auto; }
-
-  .action-btn{ margin:0; min-height:36px; padding:7px 12px; }
-
-  .modal-overlay{ padding:0; align-items:flex-end; }
-  .modal-card{
-    max-width:none;
-    max-height:92vh;
-    max-height:92dvh;
-    border-radius:20px 20px 0 0;
-    padding:20px;
-    padding-bottom:max(20px,env(safe-area-inset-bottom));
-  }
-  .modal-card.pequeno{ max-width:none; }
-  .form-grid{ grid-template-columns:1fr; gap:14px; }
-  .form-grid .full{ grid-column:auto; }
-  .field input,
-  .field select,
-  .field textarea{ min-height:46px; font-size:16px; }
-  .field textarea{ min-height:90px; }
-  .modal-footer{ flex-direction:column-reverse; }
-  .modal-footer .btn{ width:100%; min-height:46px; font-size:14px; }
-
-  .notification-panel{ top:70px; left:10px; right:10px; width:auto; max-width:none; }
-
-  .toast{
-    top:auto;
-    bottom:max(18px,env(safe-area-inset-bottom));
-    left:14px;
-    right:14px;
-    justify-content:center;
-    text-align:center;
-  }
-}
-
-@media (max-width:600px){
-  .kpi-grid{ grid-template-columns:1fr; gap:12px; }
-}
-
-@media (max-width:400px){
-  main{
-    padding:13px 10px 25px;
-    padding-left:max(10px,env(safe-area-inset-left));
-    padding-right:max(10px,env(safe-area-inset-right));
-    padding-bottom:max(25px,env(safe-area-inset-bottom));
-  }
-  .topbar{ grid-template-columns:39px minmax(0,1fr) auto; gap:7px; }
-  .mobile-menu-btn{ width:39px; height:39px; }
-  .topbar h1{ font-size:19px; }
-  .topbar .subtitle{ font-size:10px; }
-  .icon-btn{ width:39px; height:39px; }
-  .top-actions{ gap:5px; }
-  .panel{ padding:14px; }
-  table.simple td::before{ flex-basis:82px; }
-  .notification-panel{ left:8px; right:8px; }
-}
 </style>
 </head>
-
 <body>
 
-<div class="app">
+<!-- Iconos (se reutilizan con <use>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2 .6 3.5 2.3 3.5 5.2"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><rect x="2" y="6" width="12" height="10" rx="1"/><path d="M14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-wh" viewBox="0 0 24 24"><path d="M3 9.5 12 4l9 5.5V20H3z"/><path d="M8 20v-6h8v6"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h8a3.5 3.5 0 0 0 0-7H8a3.5 3.5 0 0 1 0-7h8"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 21 20H3z"/><path d="M12 10v4"/><circle cx="12" cy="17" r=".8"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+</svg>
 
-  <!-- ===================== MENÚ LATERAL ===================== -->
-  <aside class="sidebar" id="sidebar">
+<div class="top-zone">
 
-    <div class="sb-brand">
-      <div class="badge">
-        <img src="logo-emblema.png" alt="Deep Sea Intelligence">
-      </div>
+  <svg class="top-wave" viewBox="0 0 400 46" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 26C60 6 120 44 200 28S330 4 400 24V46H0z" fill="rgba(255,255,255,.12)"/>
+    <path d="M0 36C90 22 150 50 230 36S340 20 400 34V46H0z" fill="rgba(255,255,255,.14)"/>
+  </svg>
+
+  <!-- ===== BARRA SUPERIOR ===== -->
+  <header class="topbar">
+    <a class="brand" href="inicio.html" aria-label="Deep Sea, ir al inicio">
+      <div class="brand-badge"><span><img src="logo-emblema.png" alt=""></span></div>
       <div>
-        <div class="name">Deep <span>Sea</span></div>
-        <div class="sub">Gestión de recursos marinos</div>
+        <div class="brand-name">Deep <span>Sea</span></div>
+        <div class="brand-sub">Gestión de recursos marinos</div>
       </div>
-    </div>
+    </a>
 
-    <nav class="sb-nav" id="sbNav">
+    <label class="tb-search">
+      <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+      <input type="search" id="searchInput" placeholder="Buscar producto o proveedor…" maxlength="100" autocomplete="off" aria-label="Buscar recepción">
+    </label>
 
-      <a class="sb-link" data-view="inicio" href="inicio.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="1.7"/><path d="M5 10v10h14V10" stroke="currentColor" stroke-width="1.7"/></svg>
-        Inicio
-      </a>
+    <div class="tb-space"></div>
 
-      <a class="sb-link" data-view="productos" href="productos.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.7"/></svg>
-        Productos
-      </a>
-
-      <a class="sb-link" data-view="proveedores" href="proveedores.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6" stroke="currentColor" stroke-width="1.7"/></svg>
-        Proveedores
-      </a>
-
-      <a class="sb-link active" data-view="recepciones" href="recepciones.html" aria-current="page">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
-        Recepciones
-      </a>
-
-      <a class="sb-link" data-view="almacenamiento" href="almacenamiento.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"/></svg>
-        Almacenamiento
-      </a>
-
-      <a class="sb-link" data-view="ventas" href="ventas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M2 3h3l2.6 12.2A2 2 0 0 0 9.5 17h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.7"/></svg>
-        Ventas
-      </a>
-
-      <a class="sb-link" data-view="trazabilidad" href="trazabilidad.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="1.7"/><circle cx="20" cy="18" r="1.6" fill="currentColor"/></svg>
-        Trazabilidad
-      </a>
-
-      <a class="sb-link" data-view="reportes" href="reportes.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M12 20V4M20 20v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        Reportes
-      </a>
-
-      <a class="sb-link" data-view="normas" href="normas.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7"/></svg>
-        Normas y Calidad
-      </a>
-
-      <a class="sb-link" data-view="usuarios" href="usuarios.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="8" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M16 14.3c2.6.4 4.5 2 4.5 5.7" stroke="currentColor" stroke-width="1.5"/></svg>
-        Usuarios
-      </a>
-
-      <a class="sb-link" data-view="configuracion" href="configuracion.html">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-        Configuración
-      </a>
-
-    </nav>
-
-    <div class="sb-footer">
-      <div class="sb-user">
-        <div class="avatar" id="sbAvatar">C</div>
-        <div class="info">
-          <strong id="sbUserName">Cargando...</strong>
-          <span>En línea</span>
+    <div class="notif-wrap" id="notifWrap">
+      <button class="icon-btn" id="notificationBtn" type="button" aria-label="Notificaciones" aria-haspopup="true" aria-expanded="false">
+        <svg class="i" aria-hidden="true"><use href="#i-bell"/></svg>
+        <span class="badge-n" id="notificationBadge"></span>
+      </button>
+      <div class="notif-panel" id="notificationPanel" role="dialog" aria-label="Notificaciones">
+        <div class="np-head">
+          <strong>Notificaciones</strong>
+          <button type="button" class="link" id="markAllRead">Marcar todas como leídas</button>
+          <button type="button" class="x" id="closeNotifications" aria-label="Cerrar notificaciones">×</button>
+        </div>
+        <div class="np-body" id="notificationContent">
+          <div class="notification-empty">Cargando notificaciones...</div>
         </div>
       </div>
     </div>
+    <a class="uchip" href="cuenta.html" aria-label="Mi cuenta">
+      <div class="av" id="topAvatar">C</div>
+      <div><b id="topUserName">Cargando...</b><small>● En línea</small></div>
+    </a>
+  </header>
 
-  </aside>
-
-  <div class="mobile-overlay" id="mobileOverlay"></div>
-
-  <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
-  <main>
-
-    <div class="topbar">
-
-      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" title="Abrir menú">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
-
-      <div>
+  <!-- ===== BIENVENIDA ===== -->
+  <div class="hero-wrap">
+    <section class="hero">
+      <svg class="w" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 50C150 10 300 90 480 55S800 5 1000 45 1150 70 1200 40V90H0z" fill="rgba(255,255,255,.12)"/>
+        <path d="M0 70C200 40 340 100 560 68S900 30 1200 66V90H0z" fill="rgba(255,255,255,.14)"/>
+      </svg>
+      <div class="hero-txt">
         <h1>Recepciones</h1>
-        <div class="subtitle">
-          <span id="saludo">Registro y control de ingreso</span> —
-          <span id="todayDate"></span>
-          <span class="sync-wrap">· <span id="syncEstado"></span></span>
-        </div>
+        <p><span class="sd">Controla cada ingreso de producto con peso, estado y fecha.</span><span class="sm">Cada ingreso, con peso y estado</span></p>
       </div>
-
-      <div class="top-actions">
-
-        <button class="icon-btn" id="notificationBtn" title="Notificaciones" type="button" aria-label="Notificaciones" aria-expanded="false">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 8a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z" stroke="currentColor" stroke-width="1.6"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="badge-notif" id="notificationBadge"></span>
-        </button>
-
-        <a href="configuracion.html" class="top-user" title="Ir a configuración">
-          <div class="avatar" id="topAvatar">C</div>
-          <span id="topUserName">Cargando...</span>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- Panel de notificaciones -->
-    <div class="notification-panel" id="notificationPanel">
-      <div class="notification-header">
-        <strong>Notificaciones</strong>
-        <div class="nh-actions">
-          <button id="markAllRead" type="button" style="display:none">Marcar todas como leídas</button>
-          <button id="closeNotifications" type="button" aria-label="Cerrar">×</button>
-        </div>
-      </div>
-      <div class="notification-list" id="notificationContent">
-        <div class="notification-empty">Cargando notificaciones...</div>
-      </div>
-    </div>
-
-    <!-- Aviso de error de carga -->
-    <div class="aviso" id="aviso" role="alert">
-      <span id="avisoTexto"></span>
-      <button id="avisoBtn" type="button">Reintentar</button>
-    </div>
-
-    <div class="module-header">
-      <div class="module-title">
-        <h2>Gestión de recepciones</h2>
-        <p>Registra el ingreso de productos, peso, estado y proveedor de origen.</p>
-      </div>
-
-      <button class="btn btn-primary" id="newReceptionBtn" type="button">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-        Nueva recepción
-      </button>
-    </div>
-
-    <!-- KPI -->
-    <div class="kpi-grid">
-
-      <div class="kpi-card c1">
-        <div class="top-row">
-          <div>
-            <div class="value loading-val" id="totalCount">0000</div>
-            <div class="label">Recepciones registradas</div>
-            <div class="delta">Registros de entrada</div>
-          </div>
-          <div class="icon-wrap">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.7"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-card c2">
-        <div class="top-row">
-          <div>
-            <div class="value loading-val" id="receivedCount">0000</div>
-            <div class="label">Productos recibidos</div>
-            <div class="delta">Aceptados en recepción</div>
-          </div>
-          <div class="icon-wrap">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-card c3">
-        <div class="top-row">
-          <div>
-            <div class="value loading-val" id="totalWeight">0000</div>
-            <div class="label">Peso total recibido</div>
-            <div class="delta neutral">Total acumulado</div>
-          </div>
-          <div class="icon-wrap">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 8h12l1 12H5L6 8z" stroke="currentColor" stroke-width="1.7"/><path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.7"/></svg>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Lista -->
-    <section class="panel">
-
-      <div class="panel-head">
-        <h3>
-          Registros de recepción
-          <span class="count-badge" id="countBadge" aria-live="polite">0</span>
-        </h3>
-
-        <div class="search-box">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <input type="search" id="searchInput" placeholder="Buscar producto o proveedor..." maxlength="100" autocomplete="off" aria-label="Buscar recepción">
-        </div>
-      </div>
-
-      <!-- Esqueleto mientras carga -->
-      <div id="loadingState" aria-busy="true">
-        <div class="sk-row"></div>
-        <div class="sk-row"></div>
-        <div class="sk-row"></div>
-        <div class="sk-row"></div>
-      </div>
-
-      <div id="emptyState" class="empty-state" hidden></div>
-
-      <div class="table-wrap">
-        <table class="simple" id="tablaRecepciones" hidden>
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Proveedor</th>
-              <th>Peso</th>
-              <th>Estado</th>
-              <th>Fecha de recepción</th>
-              <th>Observaciones</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="receptionTable"></tbody>
-        </table>
-      </div>
-
-      <div class="mas-wrap" id="masWrap" hidden>
-        <button class="btn btn-secondary" id="btnMas" type="button">Mostrar más</button>
-      </div>
-
+      <button type="button" class="b1" id="btnNuevo"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Nueva recepción</button>
     </section>
-
-  </main>
-
+  </div>
 </div>
 
-<!-- ===================== VENTANA: NUEVA / EDITAR ===================== -->
-<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-card">
+<!-- ===== CONTENIDO ===== -->
+<main class="main">
 
-    <div class="modal-head">
-      <h3 id="modalTitle">Nueva recepción</h3>
-      <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+  <div class="aviso" id="aviso" role="alert">
+    <span id="avisoTexto">—</span>
+    <button type="button" id="avisoBtn">Reintentar</button>
+  </div>
+
+  <section class="kpis" aria-label="Resumen del mes">
+    <div class="k"><div class="ic ic-azul"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></div><div><b id="kMes" class="loading-val">00</b><span>Recepciones del mes</span></div></div>
+    <div class="k k-hm"><div class="ic ic-verde"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg></div><div><b id="kPeso" class="loading-val">00</b><span>Peso recibido</span></div></div>
+    <div class="k"><div class="ic ic-morado"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></div><div><b id="kAprob" class="loading-val">00</b><span>Aprobadas</span></div></div>
+    <div class="k k-hm"><div class="ic ic-rojo"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg></div><div><b id="kRech" class="loading-val">00</b><span>Rechazadas</span></div></div>
+  </section>
+
+  <!-- Lista -->
+  <section class="c c-tabla">
+    <h3>Registros de recepción</h3>
+
+    <div id="loadingState" aria-busy="true">
+      <div class="sk-row"></div><div class="sk-row"></div><div class="sk-row"></div><div class="sk-row"></div>
     </div>
 
-    <form id="receptionForm" novalidate>
+    <div id="emptyState" class="empty-state" hidden></div>
 
+    <div class="tbl-wrap">
+      <table id="tablaRecepciones" hidden>
+        <thead>
+          <tr><th>Producto</th><th>Proveedor</th><th>Peso</th><th>Estado</th><th>Fecha de recepción</th><th>Observaciones</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="receptionTable"></tbody>
+      </table>
+    </div>
+
+    <div class="cards" id="receptionCards" hidden></div>
+
+    <div class="mas-wrap" id="masWrap" hidden>
+      <button class="btn btn-secondary" id="btnMas" type="button">Mostrar más</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- Botón flotante (celular) -->
+<button type="button" class="fab" id="fabNuevo" aria-label="Nueva recepción"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
+
+<!-- ===== BARRA DE MÓDULOS (computador) ===== -->
+<nav class="dock" aria-label="Módulos">
+  <a href="inicio.html" style="--g:linear-gradient(135deg,#1E66F5,#3FA9FF)"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg><span class="tip">Inicio</span></a>
+  <a href="productos.html" style="--g:linear-gradient(135deg,#0EA5E9,#5CC8FF)"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span class="tip">Productos</span></a>
+  <a href="proveedores.html" style="--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg><span class="tip">Proveedores</span></a>
+  <a href="recepciones.html" aria-current="page" style="--g:linear-gradient(135deg,#17A673,#5BDDA0)"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg><span class="tip">Recepciones</span></a>
+  <a href="almacenamiento.html" style="--g:linear-gradient(135deg,#4F46E5,#818CF8)"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg><span class="tip">Almacenamiento</span></a>
+  <a href="ventas.html" style="--g:linear-gradient(135deg,#F08A24,#FFC46B)"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg><span class="tip">Ventas</span></a>
+  <a href="trazabilidad.html" style="--g:linear-gradient(135deg,#0D9488,#2DD4BF)"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg><span class="tip">Trazabilidad</span></a>
+  <a href="reportes.html" style="--g:linear-gradient(135deg,#1D4ED8,#60A5FA)"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span class="tip">Reportes</span></a>
+  <a href="normas.html" style="--g:linear-gradient(135deg,#0891B2,#67E8F9)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span class="tip">Normas y Calidad</span></a>
+  <span class="sep"></span>
+  <a href="cuenta.html" style="--g:linear-gradient(135deg,#062B5B,#2F6FD0)"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><span class="tip">Mi cuenta</span></a>
+</nav>
+
+<!-- ===== MENÚ INFERIOR (celular) + iconos flotantes de "Más" ===== -->
+<div class="fan" id="fan">
+  <div class="fan-overlay" id="fanOverlay"></div>
+  <div class="fan-list">
+    <a class="fan-item" href="proveedores.html" style="--i:5;--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><span class="fan-label">Proveedores</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span></a>
+    <a class="fan-item" href="recepciones.html" style="--i:4;--g:linear-gradient(135deg,#17A673,#5BDDA0)"><span class="fan-label">Recepciones</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></span></a>
+    <a class="fan-item" href="almacenamiento.html" style="--i:3;--g:linear-gradient(135deg,#7B5CC7,#A98CF0)"><span class="fan-label">Almacenamiento</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg></span></a>
+    <a class="fan-item" href="ventas.html" style="--i:2;--g:linear-gradient(135deg,#F08A24,#FFC46B)"><span class="fan-label">Ventas</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></span></a>
+    <a class="fan-item" href="normas.html" style="--i:1;--g:linear-gradient(135deg,#1E66F5,#3FA9FF)"><span class="fan-label">Normas y Calidad</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span></a>
+    <a class="fan-item" href="cuenta.html" style="--i:0;--g:linear-gradient(135deg,#1E66F5,#3FA9FF)"><span class="fan-label">Mi cuenta</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span></a>
+  </div>
+</div>
+
+<nav class="bnav" aria-label="Módulos">
+  <a href="inicio.html"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Inicio</a>
+  <a href="productos.html"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg>Productos</a>
+  <a href="trazabilidad.html"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg>Rastreo</a>
+  <a href="reportes.html"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Reportes</a>
+  <button type="button" id="fanBtn" class="cur" aria-expanded="false" aria-controls="fan">
+    <svg class="i ico-grid" aria-hidden="true"><use href="#i-grid"/></svg>
+    <svg class="i ico-x" aria-hidden="true"><use href="#i-x"/></svg>
+    <span id="fanBtnLabel">Más</span>
+  </button>
+</nav>
+
+<!-- ===== VENTANA: NUEVA / EDITAR ===== -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="form-card">
+    <div class="fc-head">
+      <div>
+        <h3 id="modalTitle">Nueva recepción</h3>
+        <p id="modalSub">Registra el ingreso de un producto.</p>
+      </div>
+      <button type="button" class="fc-x" id="modalClose" aria-label="Cerrar">×</button>
+    </div>
+
+    <div class="msg" id="formMsg" role="alert"></div>
+
+    <form id="receptionForm" novalidate>
       <input type="hidden" id="receptionId">
 
       <div class="form-grid">
 
         <div class="field" id="fieldProducto">
           <label for="producto">Producto *</label>
-          <select id="producto">
-            <option value="">Seleccionar producto</option>
-          </select>
+          <select id="producto"><option value="">Seleccionar producto</option></select>
           <div class="field-error">Selecciona un producto.</div>
         </div>
 
         <div class="field" id="fieldProveedor">
           <label for="proveedor">Proveedor</label>
-          <select id="proveedor">
-            <option value="">Seleccionar proveedor</option>
-          </select>
+          <select id="proveedor"><option value="">Seleccionar proveedor</option></select>
           <div class="field-error">Selecciona un proveedor válido.</div>
         </div>
 
@@ -1228,11 +546,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
         <div class="field" id="fieldEstado">
           <label for="estado">Estado del producto *</label>
-          <select id="estado">
-            <option value="Recibido">Recibido</option>
-            <option value="En revisión">En revisión</option>
-            <option value="Rechazado">Rechazado</option>
-          </select>
+          <select id="estado"></select>
           <div class="field-error">Selecciona un estado.</div>
         </div>
 
@@ -1245,28 +559,27 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
         <div class="field full" id="fieldObservaciones">
           <label for="observaciones">Observaciones</label>
           <textarea id="observaciones" placeholder="Observaciones sobre el producto recibido..." maxlength="500"></textarea>
-          <div class="ayuda">Solo letras, números y signos básicos ( . , ; : ( ) ! ? - / % # & + @ _ ' " ).</div>
+          <div class="field-hint">Solo letras, números y signos básicos ( . , ; : ( ) ! ? - / % # &amp; + @ _ ' " ).</div>
           <div class="field-error">Revisa las observaciones.</div>
         </div>
 
       </div>
 
-      <div class="modal-footer">
+      <p class="nota">Los campos con * son obligatorios.</p>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost-danger fa-left" id="formDelete" hidden>Eliminar</button>
         <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
         <button type="submit" class="btn btn-primary" id="saveBtn">Guardar recepción</button>
       </div>
-
     </form>
-
   </div>
 </div>
 
-<!-- ===================== VENTANA: CONFIRMAR ELIMINAR ===================== -->
+<!-- ===== VENTANA: CONFIRMAR ELIMINAR ===== -->
 <div class="modal-overlay" id="confirmOverlay" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitulo">
-  <div class="modal-card pequeno">
-    <div class="modal-head">
-      <h3 id="confirmTitulo">Eliminar recepción</h3>
-    </div>
+  <div class="modal-card">
+    <h3 id="confirmTitulo">Eliminar recepción</h3>
     <p class="confirm-texto" id="confirmTexto"></p>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" id="confirmCancelar">Cancelar</button>
@@ -1277,63 +590,56 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- El SDK se carga al final: la página se dibuja primero y no queda
-     bloqueada esperando la descarga del script. -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 (function(){
   'use strict';
 
   const $ = function(id){ return document.getElementById(id); };
 
-  // Si el SDK no cargó (sin internet) se avisa y se ofrece recargar
-  if (typeof supabase === 'undefined') {
-    $('avisoTexto').textContent = 'No se pudo cargar el sistema. Revisa tu conexión e intenta de nuevo.';
-    $('avisoBtn').textContent = 'Recargar';
-    $('aviso').classList.add('show');
-    $('avisoBtn').addEventListener('click', function(){ window.location.reload(); });
-    $('loadingState').hidden = true;
-    return;
-  }
-
   const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const COLUMNAS   = 'id,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,observaciones,productos(nombre),proveedores(nombre)';
-  const ESTADOS    = ['Recibido', 'En revisión', 'Rechazado'];
-  const PESO_MAX   = 100000;     // kg
-  const TAM_PAGINA = 25;         // filas que se dibujan por tanda
-  const LIMITE_MS  = 15000;      // tiempo máximo de espera por una consulta
+  // Solo las columnas necesarias, en una sola consulta con los nombres ya unidos
+  const COLUMNAS = 'id,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,observaciones,productos(nombre),proveedores(nombre)';
+  const ESTADOS_FORM = ['Fresco', 'Congelado', 'En revisión', 'Rechazado'];
+  const APROBADOS = ['fresco', 'congelado', 'recibido'];   // "recibido" = registros anteriores
+  const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const PESO_MAX = 100000;      // kg
+  const TAM_PAGINA = 25;        // filas que se dibujan por tanda
+  const LIMITE_FILAS = 500;     // las más recientes: suficiente y mucho más rápido
+  const LIMITE_MS = 15000;
+  const CLAVE_UID = 'dsi_uid';
 
   const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mqMovil = window.matchMedia('(max-width:1000px)');
 
   // ---------------------------------------------------------------
   // ESTADO DE LA PÁGINA
   // ---------------------------------------------------------------
-  let usuarioActual = null;
-  let recepciones = [];          // todas las recepciones
-  let productos = [];            // para el formulario y las notificaciones
-  let proveedores = [];          // para el formulario y las notificaciones
-  let totalRegistros = 0;
+  let supabaseClient = null;
+  let uid = null;
+  let nombreUsuario = '';
+  let recepciones = [];
+  let productos = [];
+  let proveedores = [];
   let filtrados = [];
   let limiteMostrar = TAM_PAGINA;
   let datosListos = false;
+  let productosListos = false;
   let errorCarga = false;
   let cargando = false;
   let guardando = false;
   let eliminando = false;
   let formSucio = false;
   let idPorEliminar = null;
-  let idPendiente = null;        // recepción a resaltar (viene de una notificación)
-  let firmaDatos = '';
+  let idPendiente = null;
+  let sigRec = '', sigProd = '', sigProv = '';
   let ultimaActualizacion = 0;
   let notifsActuales = [];
   let menuAbierto = false;
   let toastTimer = null;
   let debounceTimer = null;
-  const indice = new WeakMap();  // texto normalizado de cada recepción para buscar rápido
+  let indice = new WeakMap();
 
   // ---------------------------------------------------------------
   // UTILIDADES
@@ -1343,20 +649,19 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
-
-  // Quita tildes y pasa a minúsculas (buscar "revision" encuentra "En revisión")
   function normalizar(texto){
     return String(texto == null ? '' : texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   }
-
-  function colapsar(texto){
-    return String(texto == null ? '' : texto).replace(/\s+/g, ' ').trim();
+  const pad = function(n){ return String(n).padStart(2, '0'); };
+  const fmtNumero = function(n){ return Math.round(n).toLocaleString('es-CO'); };
+  const fmtPeso = function(n){ return (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg'; };
+  function fmtPesoKpi(kg){
+    return kg >= 1000
+      ? (kg / 1000).toLocaleString('es-CO', { maximumFractionDigits: 1 }) + ' t'
+      : fmtNumero(kg) + ' kg';
   }
 
-  const fmtNumero = function(n){ return Math.round(n).toLocaleString('es-CO'); };
-  const fmtPeso   = function(n){ return (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg'; };
-
-  // Si llega solo "2026-09-23" se toma como fecha LOCAL (si no, en Colombia se vería un día antes)
+  // Una fecha sola ("2026-09-23") se toma como fecha local (si no, se vería un día antes)
   function parsearFecha(valor){
     if (!valor) return null;
     if (/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
@@ -1366,29 +671,22 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     const f = new Date(valor);
     return isNaN(f.getTime()) ? null : f;
   }
-  function formatearFecha(valor){
-    const f = parsearFecha(valor);
-    return f ? f.toLocaleDateString('es-CO') : '-';
-  }
-  function formatearFechaHora(valor){
+  // "12 oct 2026 · 07:30" (computador) o "12 oct · 07:30" (celular)
+  function fechaCorta(valor, conAnio){
     const f = parsearFecha(valor);
     if (!f) return '-';
-    return f.toLocaleDateString('es-CO') + ' ' + f.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    let t = pad(f.getDate()) + ' ' + MESES[f.getMonth()] + (conAnio ? ' ' + f.getFullYear() : '');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(valor)) t += ' · ' + pad(f.getHours()) + ':' + pad(f.getMinutes());
+    return t;
   }
-
-  // Formato que entiende <input type="datetime-local"> (hora local)
   function aInputFecha(f){
-    const p = function(n){ return String(n).padStart(2, '0'); };
-    return f.getFullYear() + '-' + p(f.getMonth() + 1) + '-' + p(f.getDate()) + 'T' + p(f.getHours()) + ':' + p(f.getMinutes());
+    return f.getFullYear() + '-' + pad(f.getMonth() + 1) + '-' + pad(f.getDate()) + 'T' + pad(f.getHours()) + ':' + pad(f.getMinutes());
   }
-
-  // Lo que devuelve Supabase al unir tablas puede ser un objeto o una lista
   function nombreRel(rel){
     const r = Array.isArray(rel) ? rel[0] : rel;
     return (r && r.nombre) || '';
   }
 
-  // Cancela la espera si la conexión se cuelga
   function conTiempo(promesa){
     let t;
     const limite = new Promise(function(_, rechazar){
@@ -1397,15 +695,15 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     return Promise.race([promesa, limite]).finally(function(){ clearTimeout(t); });
   }
 
-  // Convierte los errores técnicos de Supabase en mensajes claros
   function mensajeError(error, accion){
     const msg = String((error && error.message) || '').toLowerCase();
     const code = error && error.code;
     if (accion === 'eliminar' && (code === '23503' || msg.indexOf('foreign key') !== -1)) {
       return 'No se puede eliminar: la recepción está asociada a otros registros (por ejemplo, almacenamiento o trazabilidad).';
     }
-    if (accion === 'guardar' && code === '23503') {
-      return 'El producto o el proveedor elegido ya no existe. Actualiza la página.';
+    if (accion === 'guardar' && code === '23503') return 'El producto o el proveedor elegido ya no existe. Actualiza la página.';
+    if (code === '23514' || msg.indexOf('check constraint') !== -1) {
+      return 'La base de datos no acepta alguno de los valores (revisa el estado).';
     }
     if (code === '42501' || msg.indexOf('row-level security') !== -1 || msg.indexOf('permission') !== -1) {
       return 'No tienes permiso para realizar esta acción.';
@@ -1428,99 +726,112 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     toastTimer = setTimeout(function(){ t.className = 'toast'; }, 3400);
   }
 
+  const ICONO_ALERTA = '<svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>';
+  function mostrarMsg(texto){
+    const m = $('formMsg');
+    m.className = 'msg show error';
+    m.innerHTML = ICONO_ALERTA + '<span>' + escapeHTML(texto) + '</span>';
+  }
+  function ocultarMsg(){
+    $('formMsg').className = 'msg';
+    $('formMsg').innerHTML = '';
+  }
+
   function mostrarAviso(texto){ $('avisoTexto').textContent = texto; $('aviso').classList.add('show'); }
   function ocultarAviso(){ $('aviso').classList.remove('show'); }
 
-  // Bloquea el scroll de la página cuando hay una ventana o el menú abierto
   function actualizarScroll(){
-    const bloquear = menuAbierto ||
-      $('modalOverlay').classList.contains('show') ||
-      $('confirmOverlay').classList.contains('show');
-    document.body.classList.toggle('sin-scroll', bloquear);
+    document.body.classList.toggle('sin-scroll',
+      menuAbierto || $('modalOverlay').classList.contains('show') || $('confirmOverlay').classList.contains('show'));
   }
 
-  // Número que sube suavemente hasta su valor final
-  function animarNumero(el, destino, formato){
-    el.classList.remove('loading-val');
-    const inicio = Number(el.dataset.v || 0);
-    el.dataset.v = destino;
-    const id = (el._anim = (el._anim || 0) + 1);
-    if (reducirMovimiento || inicio === destino) { el.textContent = formato(destino); return; }
-    const duracion = 600, t0 = performance.now();
-    (function paso(t){
-      if (el._anim !== id) return;
-      const p = Math.min((t - t0) / duracion, 1);
-      const suave = 1 - Math.pow(1 - p, 3);
-      el.textContent = formato(inicio + (destino - inicio) * suave);
-      if (p < 1) requestAnimationFrame(paso);
-    })(t0);
-  }
-
-  function saludar(){
-    const h = new Date().getHours();
-    return h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
-  }
-  function colocarFecha(){
-    $('todayDate').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+  function pintarUsuario(nombre){
+    nombreUsuario = nombre || nombreUsuario;
+    if (!nombreUsuario) return;
+    $('topUserName').textContent = nombreUsuario;
+    $('topAvatar').textContent = nombreUsuario.charAt(0).toUpperCase();
   }
 
   // ---------------------------------------------------------------
-  // USUARIO
+  // CACHÉ LOCAL
+  // Al abrir la página se dibuja al instante lo último guardado (sin
+  // esperar a internet ni al SDK) y después se actualiza por detrás.
   // ---------------------------------------------------------------
-  function pintarUsuario(){
-    const u = usuarioActual;
-    const meta = u.user_metadata || {};
-    const nombre = (meta.full_name || meta.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario';
-    const inicial = nombre.charAt(0).toUpperCase();
-    $('sbUserName').textContent  = nombre;
-    $('topUserName').textContent = nombre;
-    $('sbAvatar').textContent    = inicial;
-    $('topAvatar').textContent   = inicial;
-    $('saludo').textContent      = saludar() + ', ' + nombre.split(/\s+/)[0];
-  }
+  const claveCache = function(u){ return 'dsi_rec2_' + u; };
 
-  // ---------------------------------------------------------------
-  // CACHÉ LOCAL: al volver a la página se ve al instante lo último
-  // guardado y en segundo plano se piden los datos nuevos.
-  // ---------------------------------------------------------------
-  const claveCache = function(){ return 'dsi_rec_' + usuarioActual.id; };
-
-  function leerCache(){
+  function leerCache(u){
     try {
-      const c = JSON.parse(localStorage.getItem(claveCache()) || 'null');
+      const c = JSON.parse(localStorage.getItem(claveCache(u)) || 'null');
       if (c && Array.isArray(c.recepciones) && Array.isArray(c.productos) && Array.isArray(c.proveedores)) return c;
-    } catch (e) { /* caché dañada: se ignora */ }
+    } catch (e) { /* caché dañada */ }
     return null;
   }
   function guardarCache(){
+    if (!uid) return;
     try {
-      localStorage.setItem(claveCache(), JSON.stringify({
-        recepciones: recepciones, productos: productos, proveedores: proveedores, total: totalRegistros
+      localStorage.setItem(claveCache(uid), JSON.stringify({
+        nombre: nombreUsuario, recepciones: recepciones, productos: productos, proveedores: proveedores
       }));
     } catch (e) { /* sin espacio */ }
   }
+  function borrarLocal(){
+    try {
+      if (uid) localStorage.removeItem(claveCache(uid));
+      localStorage.removeItem(CLAVE_UID);
+    } catch (e) { /* se ignora */ }
+  }
 
-  // ---------------------------------------------------------------
-  // RESUMEN (tarjetas)
-  // ---------------------------------------------------------------
-  function actualizarResumen(){
-    let recibidas = 0, peso = 0;
-    recepciones.forEach(function(r){
-      if (normalizar(r.estado_producto) === 'recibido') recibidas++;
-      peso += Number(r.peso) || 0;
-    });
-    animarNumero($('totalCount'),    Math.max(totalRegistros, recepciones.length), fmtNumero);
-    animarNumero($('receivedCount'), recibidas, fmtNumero);
-    animarNumero($('totalWeight'),   peso, fmtPeso);
+  function aplicarCache(c){
+    recepciones = c.recepciones;
+    productos = c.productos;
+    proveedores = c.proveedores;
+    sigRec = JSON.stringify(recepciones);
+    sigProd = JSON.stringify(productos);
+    sigProv = JSON.stringify(proveedores);
+    productosListos = true;
+    datosListos = true;
+    if (c.nombre) pintarUsuario(c.nombre);
+    $('loadingState').hidden = true;
+    actualizarResumen();
+    aplicarFiltros(true);
+    renderNotificaciones();
   }
 
   // ---------------------------------------------------------------
-  // LISTAS DEL FORMULARIO (productos y proveedores)
+  // RESUMEN DEL MES
   // ---------------------------------------------------------------
-  function llenarSelects(productoSel, proveedorSel){
-    const selProd = $('producto');
-    const selProv = $('proveedor');
+  function setKpi(id, texto){
+    const el = $(id);
+    el.classList.remove('loading-val');
+    el.textContent = texto;
+  }
 
+  function actualizarResumen(){
+    const hoy = new Date();
+    const mes = hoy.getMonth(), anio = hoy.getFullYear();
+    let total = 0, aprobadas = 0, rechazadas = 0, peso = 0;
+
+    for (let i = 0; i < recepciones.length; i++) {
+      const r = recepciones[i];
+      const f = parsearFecha(r.fecha_recepcion);
+      if (!f || f.getMonth() !== mes || f.getFullYear() !== anio) continue;
+      total++;
+      const e = normalizar(r.estado_producto);
+      if (e === 'rechazado') rechazadas++;
+      else peso += Number(r.peso) || 0;
+      if (APROBADOS.indexOf(e) !== -1) aprobadas++;
+    }
+
+    setKpi('kMes', fmtNumero(total));
+    setKpi('kPeso', fmtPesoKpi(peso));
+    setKpi('kAprob', (total ? Math.round(aprobadas * 100 / total) : 0) + '%');
+    setKpi('kRech', fmtNumero(rechazadas));
+  }
+
+  // ---------------------------------------------------------------
+  // LISTAS DEL FORMULARIO
+  // ---------------------------------------------------------------
+  function llenarSelects(productoSel, proveedorSel, estadoSel){
     const ordenar = function(a, b){ return String(a.nombre || '').localeCompare(String(b.nombre || ''), 'es'); };
 
     let htmlProd = '<option value="">Seleccionar producto</option>';
@@ -1528,110 +839,136 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
       const inactivo = normalizar(p.estado) === 'inactivo';
       htmlProd += '<option value="' + escapeHTML(p.id) + '">' + escapeHTML(p.nombre) + (inactivo ? ' (inactivo)' : '') + '</option>';
     });
-    selProd.innerHTML = htmlProd;
+    $('producto').innerHTML = htmlProd;
 
-    // Solo proveedores activos; si la recepción ya tenía uno inactivo se conserva para no perderlo al editar
+    // Proveedores inactivos solo si la recepción ya tenía uno (para no perderlo al editar)
     let htmlProv = '<option value="">Seleccionar proveedor</option>';
     proveedores.slice().sort(ordenar).forEach(function(p){
       const inactivo = normalizar(p.estado) === 'inactivo';
       if (inactivo && String(p.id) !== String(proveedorSel)) return;
       htmlProv += '<option value="' + escapeHTML(p.id) + '">' + escapeHTML(p.nombre) + (inactivo ? ' (inactivo)' : '') + '</option>';
     });
-    selProv.innerHTML = htmlProv;
+    $('proveedor').innerHTML = htmlProv;
 
-    if (productoSel) selProd.value = productoSel;
-    if (proveedorSel) selProv.value = proveedorSel;
+    // Estados: los nuevos, más el estado anterior del registro si era otro (ej. "Recibido")
+    let htmlEst = ESTADOS_FORM.map(function(e){ return '<option value="' + e + '">' + e + '</option>'; }).join('');
+    if (estadoSel && ESTADOS_FORM.indexOf(estadoSel) === -1) {
+      htmlEst += '<option value="' + escapeHTML(estadoSel) + '">' + escapeHTML(estadoSel) + '</option>';
+    }
+    $('estado').innerHTML = htmlEst;
   }
 
   // ---------------------------------------------------------------
   // BÚSQUEDA
   // ---------------------------------------------------------------
-  function indexar(){
-    recepciones.forEach(function(r){
-      indice.set(r, normalizar([
-        nombreRel(r.productos), nombreRel(r.proveedores), r.estado_producto, r.observaciones, formatearFecha(r.fecha_recepcion)
-      ].join(' ')));
-    });
+  // El texto de búsqueda se prepara la primera vez que se necesita
+  function textoBusqueda(r){
+    let t = indice.get(r);
+    if (t === undefined) {
+      t = normalizar([nombreRel(r.productos), nombreRel(r.proveedores), r.estado_producto, r.observaciones].join(' '));
+      indice.set(r, t);
+    }
+    return t;
   }
 
   function aplicarFiltros(reiniciar){
     const q = normalizar($('searchInput').value);
-
     filtrados = q
-      ? recepciones.filter(function(r){ return (indice.get(r) || '').indexOf(q) !== -1; })
+      ? recepciones.filter(function(r){ return textoBusqueda(r).indexOf(q) !== -1; })
       : recepciones.slice();
-
     if (reiniciar) limiteMostrar = TAM_PAGINA;
     renderTabla();
   }
 
   // ---------------------------------------------------------------
-  // TABLA
+  // TABLA (computador) Y TARJETAS (celular): solo se dibuja la que se ve
   // ---------------------------------------------------------------
   function claseEstado(estado){
     const e = normalizar(estado);
-    if (e === 'recibido') return 'recibido';
-    if (e === 'rechazado') return 'rechazado';
-    return 'revision';
+    if (e === 'rechazado') return 'bad';
+    if (e === 'congelado') return 'cold';
+    if (e === 'fresco' || e === 'recibido') return 'ok';
+    return 'warn';
   }
 
   function filaHTML(r){
     const id = escapeHTML(r.id);
-    const producto  = nombreRel(r.productos) || 'Sin producto';
-    const proveedor = nombreRel(r.proveedores) || 'Sin proveedor';
-    const obs = r.observaciones ? escapeHTML(r.observaciones) : '-';
-
+    const producto = nombreRel(r.productos) || 'Sin producto';
+    const prod = escapeHTML(producto);
+    const obs = r.observaciones ? escapeHTML(r.observaciones) : '—';
     return '<tr data-id="' + id + '">' +
-      '<td><strong>' + escapeHTML(producto) + '</strong></td>' +
-      '<td>' + escapeHTML(proveedor) + '</td>' +
-      '<td>' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</td>' +
+      '<td>' + prod + '</td>' +
+      '<td>' + escapeHTML(nombreRel(r.proveedores) || 'Sin proveedor') + '</td>' +
+      '<td class="nowrap">' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</td>' +
       '<td><span class="pill ' + claseEstado(r.estado_producto) + '">' + escapeHTML(r.estado_producto || '-') + '</span></td>' +
-      '<td>' + escapeHTML(formatearFechaHora(r.fecha_recepcion)) + '</td>' +
+      '<td class="nowrap">' + escapeHTML(fechaCorta(r.fecha_recepcion, true)) + '</td>' +
       '<td class="obs" title="' + (r.observaciones ? escapeHTML(r.observaciones) : '') + '">' + obs + '</td>' +
-      '<td>' +
-        '<button class="action-btn edit-btn" type="button" data-action="editar" data-id="' + id + '" aria-label="Editar recepción de ' + escapeHTML(producto) + '">Editar</button>' +
-        '<button class="action-btn delete-btn" type="button" data-action="eliminar" data-id="' + id + '" aria-label="Eliminar recepción de ' + escapeHTML(producto) + '">Eliminar</button>' +
-      '</td>' +
+      '<td><div class="acts">' +
+        '<button class="action-btn edit-btn" type="button" data-action="editar" data-id="' + id + '" aria-label="Editar recepción de ' + prod + '"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></button>' +
+        '<button class="action-btn delete-btn" type="button" data-action="eliminar" data-id="' + id + '" aria-label="Eliminar recepción de ' + prod + '"><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg></button>' +
+      '</div></td>' +
     '</tr>';
+  }
+
+  function tarjetaHTML(r){
+    const id = escapeHTML(r.id);
+    const producto = nombreRel(r.productos) || 'Sin producto';
+    return '<div class="pcard" role="button" tabindex="0" data-action="editar" data-id="' + id + '" aria-label="Editar recepción de ' + escapeHTML(producto) + '">' +
+      '<div class="pc-top">' +
+        '<div class="pc-ic"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></div>' +
+        '<div class="pc-info"><strong>' + escapeHTML(producto) + '</strong><span>' + escapeHTML(nombreRel(r.proveedores) || 'Sin proveedor') + '</span></div>' +
+        '<span class="pill ' + claseEstado(r.estado_producto) + '">' + escapeHTML(r.estado_producto || '-') + '</span>' +
+      '</div>' +
+      '<div class="pc-bot"><span>Peso <b>' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</b></span><b>' + escapeHTML(fechaCorta(r.fecha_recepcion, false)) + '</b></div>' +
+    '</div>';
   }
 
   function renderTabla(){
     const total = recepciones.length;
     const tabla = $('tablaRecepciones');
+    const tarjetas = $('receptionCards');
     const vacio = $('emptyState');
 
-    $('countBadge').textContent = (filtrados.length === total) ? String(total) : (filtrados.length + ' de ' + total);
-
-    if (!total) {
+    if (!total || !filtrados.length) {
       tabla.hidden = true;
+      tarjetas.hidden = true;
       $('masWrap').hidden = true;
       vacio.hidden = false;
-      vacio.innerHTML = errorCarga
-        ? '<div class="icon">⚠️</div>No se pudo cargar la información.'
-        : '<div class="icon">📦</div>No hay recepciones registradas todavía.<br>Crea la primera con "Nueva recepción".';
+      if (!total) {
+        vacio.innerHTML = errorCarga
+          ? '<div class="icon">⚠️</div>No se pudo cargar la información.'
+          : '<div class="icon">📦</div>No hay recepciones registradas todavía.<br>' +
+            '<button class="btn btn-primary" type="button" data-action="nuevo">Registrar la primera</button>';
+      } else {
+        vacio.innerHTML = '<div class="icon">🔎</div>No se encontraron recepciones con esa búsqueda.' +
+          '<br><button class="btn btn-secondary" type="button" data-action="limpiar">Limpiar búsqueda</button>';
+      }
       return;
     }
 
-    if (!filtrados.length) {
-      tabla.hidden = true;
-      $('masWrap').hidden = true;
-      vacio.hidden = false;
-      vacio.innerHTML = '<div class="icon">🔎</div>No se encontraron recepciones con esa búsqueda.' +
-        '<br><button class="btn btn-secondary" type="button" data-action="limpiar">Limpiar búsqueda</button>';
-      return;
-    }
-
+    const visibles = filtrados.slice(0, limiteMostrar);
+    const movil = mqMovil.matches;
     vacio.hidden = true;
-    tabla.hidden = false;
+    tabla.hidden = movil;
+    tarjetas.hidden = !movil;
 
-    $('receptionTable').innerHTML = filtrados.slice(0, limiteMostrar).map(filaHTML).join('');
+    if (movil) {
+      $('receptionTable').innerHTML = '';
+      tarjetas.innerHTML = visibles.map(tarjetaHTML).join('');
+    } else {
+      tarjetas.innerHTML = '';
+      $('receptionTable').innerHTML = visibles.map(filaHTML).join('');
+    }
 
     const restantes = filtrados.length - limiteMostrar;
     $('masWrap').hidden = restantes <= 0;
     if (restantes > 0) $('btnMas').textContent = 'Mostrar más (' + restantes + ' restantes)';
   }
 
-  // Resalta una fila (al guardar o al llegar desde una notificación)
+  // Al girar el teléfono o cambiar el tamaño de la ventana se dibuja la vista que corresponde
+  if (mqMovil.addEventListener) mqMovil.addEventListener('change', renderTabla);
+  else if (mqMovil.addListener) mqMovil.addListener(renderTabla);
+
   function resaltarRecepcion(id){
     const sid = String(id);
     let idx = filtrados.findIndex(function(r){ return String(r.id) === sid; });
@@ -1648,52 +985,72 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
     if (idx >= limiteMostrar) { limiteMostrar = idx + 1; renderTabla(); }
 
-    const fila = Array.prototype.find.call($('receptionTable').children, function(tr){ return tr.dataset.id === sid; });
-    if (!fila) return;
+    const cont = mqMovil.matches ? $('receptionCards') : $('receptionTable');
+    const el = Array.prototype.find.call(cont.children, function(x){ return x.dataset.id === sid; });
+    if (!el) return;
 
-    fila.scrollIntoView({ behavior: reducirMovimiento ? 'auto' : 'smooth', block: 'center' });
-    fila.classList.remove('resaltado');
-    void fila.offsetWidth;                       // reinicia la animación
-    fila.classList.add('resaltado');
-    setTimeout(function(){ fila.classList.remove('resaltado'); }, 3600);
+    el.scrollIntoView({ behavior: reducirMovimiento ? 'auto' : 'smooth', block: 'center' });
+    el.classList.remove('resaltado');
+    void el.offsetWidth;
+    el.classList.add('resaltado');
+    setTimeout(function(){ el.classList.remove('resaltado'); }, 3600);
   }
 
   // ---------------------------------------------------------------
   // CARGA DE DATOS
-  // Recepciones, productos y proveedores se piden en paralelo, y con
-  // esos mismos datos se calculan las tarjetas, las listas del
-  // formulario y las notificaciones. Si no cambiaron, no se redibuja.
+  // Las tres consultas salen a la vez y cada una se dibuja apenas
+  // llega (la tabla no espera a las demás). Solo se redibuja lo que cambió.
   // ---------------------------------------------------------------
   async function cargarDatos(){
-    if (cargando) return;
+    if (cargando || !supabaseClient) return;
     cargando = true;
     if (!datosListos) $('loadingState').hidden = false;
-    $('syncEstado').textContent = 'Actualizando…';
 
-    let hayError = false;
-    try {
-      const res = await conTiempo(Promise.all([
-        supabaseClient
-          .from('recepciones')
-          .select(COLUMNAS, { count: 'exact' })
-          .order('fecha_recepcion', { ascending: false, nullsFirst: false }),
-        supabaseClient.from('productos').select('id,nombre,estado').order('nombre', { ascending: true }),
-        supabaseClient.from('proveedores').select('id,nombre,estado').order('nombre', { ascending: true })
-      ]));
+    let hayError = false, cambio = false;
 
-      if (res[0].error) { hayError = true; console.error('Error recepciones:', res[0].error); }
-      else {
-        recepciones = res[0].data || [];
-        totalRegistros = res[0].count != null ? res[0].count : recepciones.length;
+    const pRec = conTiempo(
+      supabaseClient.from('recepciones').select(COLUMNAS)
+        .order('fecha_recepcion', { ascending: false, nullsFirst: false })
+        .limit(LIMITE_FILAS)
+    ).then(function(res){
+      if (res.error) { hayError = true; console.error('Error recepciones:', res.error); return; }
+      const datos = res.data || [];
+      const sig = JSON.stringify(datos);
+      $('loadingState').hidden = true;
+      if (sig !== sigRec || !datosListos) {
+        sigRec = sig;
+        recepciones = datos;
+        indice = new WeakMap();
+        cambio = true;
+        datosListos = true;
+        actualizarResumen();
+        aplicarFiltros(false);
+        renderNotificaciones();
       }
-      if (res[1].error) { hayError = true; console.error('Error productos:', res[1].error); }
-      else productos = res[1].data || [];
-      if (res[2].error) { hayError = true; console.error('Error proveedores:', res[2].error); }
-      else proveedores = res[2].data || [];
-    } catch (err) {
-      hayError = true;
-      console.error('Error cargando recepciones:', err);
-    }
+      datosListos = true;
+      if (idPendiente) { const id = idPendiente; idPendiente = null; resaltarRecepcion(id); }
+    }).catch(function(err){ hayError = true; console.error('Error cargando recepciones:', err); });
+
+    const pProd = conTiempo(
+      supabaseClient.from('productos').select('id,nombre,estado')
+    ).then(function(res){
+      if (res.error) { hayError = true; console.error('Error productos:', res.error); return; }
+      const datos = res.data || [];
+      const sig = JSON.stringify(datos);
+      productosListos = true;
+      if (sig !== sigProd) { sigProd = sig; productos = datos; cambio = true; renderNotificaciones(); }
+    }).catch(function(err){ hayError = true; console.error('Error cargando productos:', err); });
+
+    const pProv = conTiempo(
+      supabaseClient.from('proveedores').select('id,nombre,estado')
+    ).then(function(res){
+      if (res.error) { hayError = true; console.error('Error proveedores:', res.error); return; }
+      const datos = res.data || [];
+      const sig = JSON.stringify(datos);
+      if (sig !== sigProv) { sigProv = sig; proveedores = datos; cambio = true; renderNotificaciones(); }
+    }).catch(function(err){ hayError = true; console.error('Error cargando proveedores:', err); });
+
+    await Promise.all([pRec, pProd, pProv]);
 
     cargando = false;
     $('loadingState').hidden = true;
@@ -1701,35 +1058,19 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
     if (hayError) {
       mostrarAviso('No se pudieron actualizar los datos. Revisa tu conexión.');
-      $('syncEstado').textContent = 'Sin actualizar';
       if (!datosListos) { datosListos = true; actualizarResumen(); renderTabla(); }
       return;
     }
 
     ocultarAviso();
-    datosListos = true;
     ultimaActualizacion = Date.now();
-    $('syncEstado').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-
-    const firma = JSON.stringify([recepciones, productos, proveedores]);
-    if (firma !== firmaDatos) {
-      firmaDatos = firma;
-      podarLeidas();          // limpia notificaciones leídas que ya no existen
-      guardarCache();
-      indexar();
-      actualizarResumen();
-      aplicarFiltros(false);
-      renderNotificaciones();
-    }
-
-    if (idPendiente) { const id = idPendiente; idPendiente = null; resaltarRecepcion(id); }
+    if (cambio) { podarLeidas(); guardarCache(); }
   }
 
-  // Después de crear/editar/eliminar: se actualiza la lista al instante
-  // sin volver a pedirlo todo al servidor.
+  // Después de crear/editar/eliminar se actualiza la lista al instante
   function despuesDeCambio(){
-    firmaDatos = JSON.stringify([recepciones, productos, proveedores]);
-    indexar();
+    sigRec = JSON.stringify(recepciones);
+    indice = new WeakMap();
     actualizarResumen();
     guardarCache();
     aplicarFiltros(false);
@@ -1737,9 +1078,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   }
 
   // ---------------------------------------------------------------
-  // NOTIFICACIONES (mismo comportamiento que en Inicio)
-  // Se calculan con los datos ya cargados, se marcan como leídas al
-  // hacer clic (se recuerda en este navegador) y llevan a su módulo.
+  // NOTIFICACIONES
   // ---------------------------------------------------------------
   const PALABRAS_PROBLEMA  = ['rechaz', 'dano', 'danad', 'deterior', 'vencid', 'cancelad', 'inactiv', 'no apto'];
   const PALABRAS_PENDIENTE = ['pendiente', 'evaluacion', 'revision', 'observ'];
@@ -1751,7 +1090,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     return 'ok';
   }
 
-  const claveLeidas = function(){ return 'dsi_notif_leidas_' + usuarioActual.id; };
+  const claveLeidas = function(){ return 'dsi_notif_leidas_' + uid; };
 
   function leerLeidas(){
     try { return new Set(JSON.parse(localStorage.getItem(claveLeidas()) || '[]')); }
@@ -1765,15 +1104,15 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     const lista = [];
 
     recepciones.forEach(function(r){
-      const estado = r.estado_producto || 'Recibido';
+      const estado = r.estado_producto || 'Fresco';
       const clase = clasificarEstado(estado);
-      if (clase === 'ok') return;                         // solo lo que requiere atención
+      if (clase === 'ok') return;
       lista.push({
         key: 'rec:' + r.id + ':' + normalizar(estado),
         tipo: clase,
         titulo: 'Recepción ' + estado.toLowerCase(),
         texto: (nombreRel(r.productos) || 'Producto') + ' — ' + fmtPeso(Number(r.peso) || 0),
-        fecha: formatearFecha(r.fecha_recepcion),
+        fecha: fechaCorta(r.fecha_recepcion, true),
         href: 'recepciones.html?id=' + encodeURIComponent(r.id),
         refId: r.id
       });
@@ -1782,35 +1121,24 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     productos.forEach(function(p){
       if (normalizar(p.estado) !== 'inactivo') return;
       lista.push({
-        key: 'prod:' + p.id,
-        tipo: 'info',
-        titulo: 'Producto inactivo',
-        texto: p.nombre || 'Producto',
-        fecha: '',
-        href: 'productos.html?id=' + encodeURIComponent(p.id),
-        refId: null
+        key: 'prod:' + p.id, tipo: 'info', titulo: 'Producto inactivo', texto: p.nombre || 'Producto', fecha: '',
+        href: 'productos.html?id=' + encodeURIComponent(p.id), refId: null
       });
     });
 
     proveedores.forEach(function(p){
       if (normalizar(p.estado) !== 'inactivo') return;
       lista.push({
-        key: 'prov:' + p.id,
-        tipo: 'info',
-        titulo: 'Proveedor inactivo',
-        texto: p.nombre || 'Proveedor',
-        fecha: '',
-        href: 'proveedores.html?id=' + encodeURIComponent(p.id),
-        refId: null
+        key: 'prov:' + p.id, tipo: 'info', titulo: 'Proveedor inactivo', texto: p.nombre || 'Proveedor', fecha: '',
+        href: 'proveedores.html?id=' + encodeURIComponent(p.id), refId: null
       });
     });
 
     return lista;
   }
 
-  // Elimina de la lista de "leídas" las que ya no existen (mantiene el registro corto)
   function podarLeidas(){
-    if (!usuarioActual) return;
+    if (!uid) return;
     const vigentes = new Set(construirNotificaciones().map(function(n){ return n.key; }));
     const leidas = leerLeidas();
     const nuevas = new Set(Array.from(leidas).filter(function(k){ return vigentes.has(k); }));
@@ -1820,9 +1148,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   function actualizarGlobo(){
     const leidas = leerLeidas();
     const total = notifsActuales.filter(function(n){ return !leidas.has(n.key); }).length;
-    const globo = $('notificationBadge');
-    globo.textContent = total > 9 ? '9+' : String(total);
-    globo.classList.toggle('show', total > 0);
+    $('notificationBadge').classList.toggle('show', total > 0);
     $('notificationBtn').setAttribute('aria-label', total ? 'Notificaciones (' + total + ' sin leer)' : 'Notificaciones');
     $('markAllRead').style.display = total ? '' : 'none';
   }
@@ -1834,7 +1160,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   }
 
   function renderNotificaciones(){
-    if (!usuarioActual) return;
+    if (!uid) return;
     const leidas = leerLeidas();
     notifsActuales = construirNotificaciones().filter(function(n){ return !leidas.has(n.key); }).slice(0, 30);
     actualizarGlobo();
@@ -1876,7 +1202,6 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     if (!panelNotif.contains(e.target) && !btnNotif.contains(e.target)) cerrarPanel();
   });
 
-  // Clic en una notificación: se marca como leída, desaparece y se abre el módulo
   $('notificationContent').addEventListener('click', function(e){
     const item = e.target.closest('.notification-item');
     if (!item) return;
@@ -1928,31 +1253,31 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   function limpiarErrores(){
     CAMPOS.forEach(function(c){ $(c[0]).classList.remove('invalid'); });
   }
-
   function ponerError(idCampo, mensaje){
     const f = $(idCampo);
     f.classList.add('invalid');
     if (mensaje) f.querySelector('.field-error').textContent = mensaje;
   }
 
-  // Al escribir en un campo se le quita el error
   CAMPOS.forEach(function(c){
     const el = $(c[1]);
-    el.addEventListener('input',  function(){ $(c[0]).classList.remove('invalid'); });
-    el.addEventListener('change', function(){ $(c[0]).classList.remove('invalid'); });
+    const quitar = function(){
+      $(c[0]).classList.remove('invalid');
+      if ($('formMsg').classList.contains('show') && !form.querySelector('.field.invalid')) ocultarMsg();
+    };
+    el.addEventListener('input', quitar);
+    el.addEventListener('change', quitar);
   });
   form.addEventListener('input', function(){ formSucio = true; });
   form.addEventListener('change', function(){ formSucio = true; });
 
-  // El peso solo admite números: se bloquean e, E, + y - (el navegador los deja escribir)
+  // El peso solo admite números: se bloquean e, E, + y -
   $('peso').addEventListener('keydown', function(e){
     if (['e', 'E', '+', '-'].indexOf(e.key) !== -1) e.preventDefault();
   });
 
-  // Observaciones: letras, números, espacios, saltos de línea y signos básicos
   const OBS_PERMITIDO = /^[\p{L}\p{N}\s.,;:()¡!¿?"'%°#&\/+@_-]*$/u;
 
-  // Limpia el texto de observaciones: espacios repetidos y líneas en blanco de más
   function limpiarObservaciones(texto){
     return String(texto || '')
       .replace(/\r\n?/g, '\n')
@@ -1964,73 +1289,68 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
   function validarFormulario(){
     limpiarErrores();
-    let ok = true;
+    const fallidos = [];
     let primero = null;
 
-    function fallo(idCampo, mensaje, input){
+    function fallo(idCampo, nombreCampo, mensaje, input){
       ponerError(idCampo, mensaje);
-      ok = false;
+      if (fallidos.indexOf(nombreCampo) === -1) fallidos.push(nombreCampo);
       if (!primero) primero = input;
     }
 
-    // Producto: obligatorio y debe existir
     const productoId = $('producto').value;
     if (!productoId) {
-      fallo('fieldProducto', 'Selecciona un producto.', $('producto'));
+      fallo('fieldProducto', 'Producto', 'Selecciona un producto.', $('producto'));
     } else if (!productos.some(function(p){ return String(p.id) === String(productoId); })) {
-      fallo('fieldProducto', 'El producto elegido ya no existe. Actualiza la página.', $('producto'));
+      fallo('fieldProducto', 'Producto', 'El producto elegido ya no existe. Actualiza la página.', $('producto'));
     }
 
-    // Proveedor: opcional, pero si se elige debe existir
     const proveedorId = $('proveedor').value;
     if (proveedorId && !proveedores.some(function(p){ return String(p.id) === String(proveedorId); })) {
-      fallo('fieldProveedor', 'El proveedor elegido ya no existe. Actualiza la página.', $('proveedor'));
+      fallo('fieldProveedor', 'Proveedor', 'El proveedor elegido ya no existe. Actualiza la página.', $('proveedor'));
     }
 
-    // Peso: solo números, mayor a 0, máximo 2 decimales
     const pesoTxt = String($('peso').value).trim();
     const peso = Number(pesoTxt);
     if (!pesoTxt) {
-      fallo('fieldPeso', 'El peso es obligatorio.', $('peso'));
+      fallo('fieldPeso', 'Peso', 'El peso es obligatorio.', $('peso'));
     } else if (!/^\d+(\.\d{1,2})?$/.test(pesoTxt)) {
-      fallo('fieldPeso', 'Ingresa solo números, con máximo 2 decimales (ej. 25.50).', $('peso'));
+      fallo('fieldPeso', 'Peso', 'Ingresa solo números, con máximo 2 decimales (ej. 25.50).', $('peso'));
     } else if (!isFinite(peso) || peso <= 0) {
-      fallo('fieldPeso', 'El peso debe ser mayor a 0.', $('peso'));
+      fallo('fieldPeso', 'Peso', 'El peso debe ser mayor a 0.', $('peso'));
     } else if (peso > PESO_MAX) {
-      fallo('fieldPeso', 'El peso no puede superar ' + PESO_MAX.toLocaleString('es-CO') + ' kg.', $('peso'));
+      fallo('fieldPeso', 'Peso', 'El peso no puede superar ' + PESO_MAX.toLocaleString('es-CO') + ' kg.', $('peso'));
     }
 
-    // Estado: solo los valores permitidos
-    if (ESTADOS.indexOf($('estado').value) === -1) {
-      fallo('fieldEstado', 'Selecciona un estado.', $('estado'));
+    const estadoVal = $('estado').value;
+    const estadoOk = Array.prototype.some.call($('estado').options, function(o){ return o.value === estadoVal; });
+    if (!estadoVal || !estadoOk) {
+      fallo('fieldEstado', 'Estado', 'Selecciona un estado.', $('estado'));
     }
 
-    // Fecha: obligatoria, válida y no futura
     const fechaTxt = $('fecha').value;
     const fecha = fechaTxt ? new Date(fechaTxt) : null;
     if (!fechaTxt) {
-      fallo('fieldFecha', 'La fecha de recepción es obligatoria.', $('fecha'));
+      fallo('fieldFecha', 'Fecha', 'La fecha de recepción es obligatoria.', $('fecha'));
     } else if (!fecha || isNaN(fecha.getTime()) || fecha.getFullYear() < 1990) {
-      fallo('fieldFecha', 'Ingresa una fecha válida.', $('fecha'));
+      fallo('fieldFecha', 'Fecha', 'Ingresa una fecha válida.', $('fecha'));
     } else if (fecha.getTime() > Date.now() + 60000) {
-      fallo('fieldFecha', 'La fecha de recepción no puede ser futura.', $('fecha'));
+      fallo('fieldFecha', 'Fecha', 'La fecha de recepción no puede ser futura.', $('fecha'));
     }
 
-    // Observaciones: opcional; sin caracteres raros ni etiquetas
     const obs = limpiarObservaciones($('observaciones').value);
     if (obs) {
       if (obs.length > 500) {
-        fallo('fieldObservaciones', 'Máximo 500 caracteres.', $('observaciones'));
+        fallo('fieldObservaciones', 'Observaciones', 'Máximo 500 caracteres.', $('observaciones'));
       } else if (!OBS_PERMITIDO.test(obs)) {
-        fallo('fieldObservaciones', 'Hay caracteres no permitidos (por ejemplo < > { } [ ] $ = * | \\ ~). Usa letras, números y signos básicos.', $('observaciones'));
+        fallo('fieldObservaciones', 'Observaciones', 'Hay caracteres no permitidos (por ejemplo < > { } [ ] $ = * | \\ ~). Usa letras, números y signos básicos.', $('observaciones'));
       } else if (!/[\p{L}\p{N}]/u.test(obs)) {
-        fallo('fieldObservaciones', 'Las observaciones deben contener letras o números.', $('observaciones'));
+        fallo('fieldObservaciones', 'Observaciones', 'Las observaciones deben contener letras o números.', $('observaciones'));
       }
     }
 
-    // Evita registros idénticos (mismo producto, proveedor, peso y minuto),
-    // por ejemplo al tocar "Guardar" dos veces.
-    if (ok) {
+    // Evita registros idénticos (mismo producto, proveedor, peso y minuto), por ejemplo al tocar "Guardar" dos veces
+    if (!fallidos.length) {
       const idEditando = $('receptionId').value;
       const minuto = Math.floor(fecha.getTime() / 60000);
       const repetida = recepciones.some(function(r){
@@ -2042,53 +1362,58 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
           f && Math.floor(f.getTime() / 60000) === minuto;
       });
       if (repetida) {
-        fallo('fieldProducto', 'Ya existe una recepción idéntica (mismo producto, proveedor, peso y hora).', $('producto'));
+        fallo('fieldProducto', 'Producto', 'Ya existe una recepción idéntica (mismo producto, proveedor, peso y hora).', $('producto'));
       }
     }
 
     if (primero) primero.focus();
-    return ok;
+    return fallidos;
   }
 
   // ---------------------------------------------------------------
   // VENTANA NUEVA / EDITAR
   // ---------------------------------------------------------------
-  function abrirModal(modo, rec){
+  function abrirModal(rec){
     if (!productos.length) {
-      showToast('Primero registra al menos un producto en el módulo Productos.', 'error');
+      showToast(productosListos
+        ? 'Primero registra al menos un producto en el módulo Productos.'
+        : 'Cargando productos, intenta de nuevo en un momento.', 'error');
       return;
     }
 
     form.reset();
     limpiarErrores();
+    ocultarMsg();
     formSucio = false;
-    $('fecha').max = aInputFecha(new Date());      // no se puede recibir en el futuro
+    $('fecha').max = aInputFecha(new Date());
 
-    if (modo === 'editar' && rec) {
-      llenarSelects(rec.producto_id, rec.proveedor_id);
+    if (rec) {
+      llenarSelects(rec.producto_id, rec.proveedor_id, rec.estado_producto);
       $('modalTitle').textContent = 'Editar recepción';
+      $('modalSub').textContent = 'Modifica los datos de esta recepción.';
       $('saveBtn').textContent = 'Actualizar recepción';
-      $('receptionId').value     = rec.id;
-      $('producto').value        = rec.producto_id || '';
-      $('proveedor').value       = rec.proveedor_id || '';
-      $('peso').value            = rec.peso != null ? rec.peso : '';
-      $('estado').value          = ESTADOS.indexOf(rec.estado_producto) !== -1 ? rec.estado_producto : 'Recibido';
-      $('observaciones').value   = rec.observaciones || '';
+      $('formDelete').hidden = false;
+      $('receptionId').value   = rec.id;
+      $('producto').value      = rec.producto_id || '';
+      $('proveedor').value     = rec.proveedor_id || '';
+      $('peso').value          = rec.peso != null ? rec.peso : '';
+      $('estado').value        = rec.estado_producto || 'Fresco';
+      $('observaciones').value = rec.observaciones || '';
       const f = parsearFecha(rec.fecha_recepcion);
       $('fecha').value = f ? aInputFecha(f) : '';
     } else {
       llenarSelects();
       $('modalTitle').textContent = 'Nueva recepción';
+      $('modalSub').textContent = 'Registra el ingreso de un producto.';
       $('saveBtn').textContent = 'Guardar recepción';
+      $('formDelete').hidden = true;
       $('receptionId').value = '';
-      $('estado').value = 'Recibido';
+      $('estado').value = 'Fresco';
       $('fecha').value = aInputFecha(new Date());
     }
 
     $('modalOverlay').classList.add('show');
     actualizarScroll();
-
-    // En computador se enfoca el primer campo; en celular no (evita abrir el teclado solo)
     if (window.matchMedia('(pointer:fine)').matches) setTimeout(function(){ $('producto').focus(); }, 60);
   }
 
@@ -2097,9 +1422,14 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     actualizarScroll();
   }
 
-  $('newReceptionBtn').addEventListener('click', function(){ abrirModal('nuevo'); });
+  $('btnNuevo').addEventListener('click', function(){ abrirModal(null); });
+  $('fabNuevo').addEventListener('click', function(){ abrirModal(null); });
   $('modalClose').addEventListener('click', cerrarModal);
   $('cancelBtn').addEventListener('click', cerrarModal);
+  $('formDelete').addEventListener('click', function(){
+    const id = $('receptionId').value;
+    if (id) pedirEliminar(id);
+  });
 
   // Tocar fuera de la ventana la cierra, salvo que ya haya datos escritos
   $('modalOverlay').addEventListener('click', function(e){
@@ -2112,11 +1442,16 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     if (guardando) return;
+    if (!supabaseClient) { showToast('Conectando… intenta de nuevo en un momento.', 'error'); return; }
 
-    if (!validarFormulario()) {
-      showToast('Revisa los campos marcados en rojo.', 'error');
+    const fallidos = validarFormulario();
+    if (fallidos.length) {
+      mostrarMsg(fallidos.length === 1
+        ? 'Revisa el campo marcado en rojo: ' + fallidos[0] + '.'
+        : 'Revisa los campos marcados en rojo: ' + fallidos.join(', ') + '.');
       return;
     }
+    ocultarMsg();
 
     const idEditando = $('receptionId').value;
     const payload = {
@@ -2146,16 +1481,15 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     $('saveBtn').textContent = idEditando ? 'Actualizar recepción' : 'Guardar recepción';
 
     if (resultado.error) {
-      showToast(mensajeError(resultado.error, 'guardar'), 'error');
+      mostrarMsg(mensajeError(resultado.error, 'guardar'));
       return;
     }
 
     const fila = resultado.data && resultado.data[0];
 
     if (idEditando && !fila) {
-      // La actualización no afectó ninguna fila (fue eliminada o no hay permiso)
-      showToast('No se pudo actualizar: la recepción ya no existe o no tienes permiso.', 'error');
       cerrarModal();
+      showToast('No se pudo actualizar: la recepción ya no existe o no tienes permiso.', 'error');
       cargarDatos();
       return;
     }
@@ -2166,12 +1500,10 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     if (fila) {
       if (idEditando) {
         const i = recepciones.findIndex(function(r){ return String(r.id) === String(idEditando); });
-        if (i > -1) recepciones[i] = fila; else { recepciones.unshift(fila); totalRegistros++; }
+        if (i > -1) recepciones[i] = fila; else recepciones.unshift(fila);
       } else {
         recepciones.unshift(fila);
-        totalRegistros++;
       }
-      // Se mantiene el orden por fecha (la recepción puede tener una fecha anterior)
       recepciones.sort(function(a, b){
         const fa = parsearFecha(a.fecha_recepcion), fb = parsearFecha(b.fecha_recepcion);
         return (fb ? fb.getTime() : 0) - (fa ? fa.getTime() : 0);
@@ -2179,13 +1511,13 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
       despuesDeCambio();
       resaltarRecepcion(fila.id);
     } else {
-      firmaDatos = '';
-      cargarDatos();      // se insertó pero el servidor no devolvió la fila: se recarga la lista
+      sigRec = '';
+      cargarDatos();
     }
   });
 
   // ---------------------------------------------------------------
-  // ELIMINAR (con ventana de confirmación)
+  // ELIMINAR
   // ---------------------------------------------------------------
   function pedirEliminar(id){
     const r = recepciones.find(function(x){ return String(x.id) === String(id); });
@@ -2195,7 +1527,6 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     $('confirmOverlay').classList.add('show');
     actualizarScroll();
   }
-
   function cerrarConfirmacion(){
     $('confirmOverlay').classList.remove('show');
     idPorEliminar = null;
@@ -2209,6 +1540,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
   $('confirmOk').addEventListener('click', async function(){
     if (eliminando || idPorEliminar === null) return;
+    if (!supabaseClient) { showToast('Conectando… intenta de nuevo en un momento.', 'error'); return; }
     eliminando = true;
     const id = idPorEliminar;
     $('confirmOk').disabled = true;
@@ -2236,8 +1568,9 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
       return;
     }
 
+    if ($('modalOverlay').classList.contains('show') && String($('receptionId').value) === String(id)) cerrarModal();
+
     recepciones = recepciones.filter(function(r){ return String(r.id) !== String(id); });
-    totalRegistros = Math.max(0, totalRegistros - 1);
     despuesDeCambio();
     showToast('Recepción eliminada correctamente.', 'success');
   });
@@ -2245,22 +1578,32 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
   // ---------------------------------------------------------------
   // EVENTOS DE LA LISTA Y LA BÚSQUEDA
   // ---------------------------------------------------------------
-  $('receptionTable').addEventListener('click', function(e){
+  function clickLista(e){
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
     if (btn.dataset.action === 'editar') {
       const r = recepciones.find(function(x){ return String(x.id) === String(btn.dataset.id); });
-      if (r) abrirModal('editar', r);
+      if (r) abrirModal(r); else showToast('Esa recepción ya no existe.', 'error');
     } else if (btn.dataset.action === 'eliminar') {
       pedirEliminar(btn.dataset.id);
     }
+  }
+  $('receptionTable').addEventListener('click', clickLista);
+  $('receptionCards').addEventListener('click', clickLista);
+  $('receptionCards').addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = e.target.closest('.pcard');
+    if (!card) return;
+    e.preventDefault();
+    const r = recepciones.find(function(x){ return String(x.id) === String(card.dataset.id); });
+    if (r) abrirModal(r);
   });
 
   $('emptyState').addEventListener('click', function(e){
-    if (e.target.closest('[data-action="limpiar"]')) {
-      $('searchInput').value = '';
-      aplicarFiltros(true);
-    }
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    if (btn.dataset.action === 'limpiar') { $('searchInput').value = ''; aplicarFiltros(true); }
+    else if (btn.dataset.action === 'nuevo') abrirModal(null);
   });
 
   $('btnMas').addEventListener('click', function(){
@@ -2268,82 +1611,96 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     renderTabla();
   });
 
-  // Búsqueda mientras se escribe (con una pequeña pausa para no trabajar de más)
   $('searchInput').addEventListener('input', function(){
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(function(){ aplicarFiltros(true); }, 200);
+    debounceTimer = setTimeout(function(){ aplicarFiltros(true); }, 120);
   });
 
-  $('avisoBtn').addEventListener('click', cargarDatos);
+  $('avisoBtn').addEventListener('click', function(){
+    if (supabaseClient) cargarDatos(); else window.location.reload();
+  });
 
   // ---------------------------------------------------------------
-  // MENÚ MÓVIL
+  // MENÚ "MÁS" EN CELULAR
   // ---------------------------------------------------------------
-  const sidebar = $('sidebar');
-  const overlay = $('mobileOverlay');
-  const btnMenu = $('mobileMenuBtn');
+  const fan = $('fan');
+  const fanBtn = $('fanBtn');
 
-  function abrirMenuMovil(){
+  function abrirFan(){
     menuAbierto = true;
-    sidebar.classList.add('mobile-open');
-    overlay.classList.add('show');
-    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+    fan.classList.add('open');
+    fanBtn.classList.add('open');
+    fanBtn.setAttribute('aria-expanded', 'true');
+    $('fanBtnLabel').textContent = 'Cerrar';
     actualizarScroll();
   }
-  function cerrarMenuMovil(){
+  function cerrarFan(){
     menuAbierto = false;
-    sidebar.classList.remove('mobile-open');
-    overlay.classList.remove('show');
-    btnMenu.setAttribute('aria-label', 'Abrir menú');
+    fan.classList.remove('open');
+    fanBtn.classList.remove('open');
+    fanBtn.setAttribute('aria-expanded', 'false');
+    $('fanBtnLabel').textContent = 'Más';
     actualizarScroll();
   }
 
-  btnMenu.addEventListener('click', function(){ menuAbierto ? cerrarMenuMovil() : abrirMenuMovil(); });
-  overlay.addEventListener('click', cerrarMenuMovil);
-  document.querySelectorAll('.sb-link').forEach(function(l){ l.addEventListener('click', cerrarMenuMovil); });
-  window.addEventListener('resize', function(){ if (window.innerWidth > 800 && menuAbierto) cerrarMenuMovil(); });
+  fanBtn.addEventListener('click', function(){ fan.classList.contains('open') ? cerrarFan() : abrirFan(); });
+  $('fanOverlay').addEventListener('click', cerrarFan);
+  window.addEventListener('resize', function(){ if (window.innerWidth > 1000 && menuAbierto) cerrarFan(); });
 
-  // Tecla Escape: cierra lo último que se abrió
   document.addEventListener('keydown', function(e){
     if (e.key !== 'Escape') return;
     if ($('confirmOverlay').classList.contains('show')) { cerrarConfirmacion(); return; }
-    if ($('modalOverlay').classList.contains('show'))   { cerrarModal(); return; }
+    if ($('modalOverlay').classList.contains('show')) { cerrarModal(); return; }
     cerrarPanel();
-    cerrarMenuMovil();
+    cerrarFan();
   });
 
   // ---------------------------------------------------------------
-  // SESIÓN Y REFRESCO AUTOMÁTICO
+  // REFRESCO AUTOMÁTICO
   // ---------------------------------------------------------------
-  supabaseClient.auth.onAuthStateChange(function(evento){
-    if (evento === 'SIGNED_OUT') window.location.replace('login.html');
-  });
-
   window.addEventListener('pageshow', function(e){
-    if (e.persisted && usuarioActual) { renderNotificaciones(); cargarDatos(); }
+    if (e.persisted && uid) { renderNotificaciones(); cargarDatos(); }
   });
   document.addEventListener('visibilitychange', function(){
-    if (!document.hidden && usuarioActual && Date.now() - ultimaActualizacion > 30000) cargarDatos();
+    if (!document.hidden && uid && Date.now() - ultimaActualizacion > 30000) cargarDatos();
   });
-  window.addEventListener('online', function(){ if (usuarioActual) cargarDatos(); });
+  window.addEventListener('online', function(){ if (uid) cargarDatos(); });
 
   // ---------------------------------------------------------------
   // INICIO
   // ---------------------------------------------------------------
-  async function iniciar(){
-    colocarFecha();
-
-    // Si se llega desde una notificación (?id=...), se recuerda qué resaltar
-    // y se limpia la dirección para que al recargar no se repita.
+  // 1) Sin esperar al SDK: se dibuja lo último guardado en este dispositivo
+  function arranqueRapido(){
     try {
-      const id = new URLSearchParams(window.location.search).get('id');
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
       if (id) {
         idPendiente = id;
         window.history.replaceState(null, '', window.location.pathname);
       }
-    } catch (e) { /* navegador sin URLSearchParams: se ignora */ }
+    } catch (e) { /* se ignora */ }
 
-    // La sesión se lee del navegador (rápido). Sin sesión → login.
+    let u = null;
+    try { u = localStorage.getItem(CLAVE_UID); } catch (e) { /* se ignora */ }
+    if (!u) return;
+    uid = u;
+    const c = leerCache(u);
+    if (!c) return;
+    aplicarCache(c);
+    if (idPendiente && recepciones.some(function(r){ return String(r.id) === String(idPendiente); })) {
+      const id = idPendiente; idPendiente = null; resaltarRecepcion(id);
+    }
+  }
+
+  // 2) Cuando el SDK está listo: se confirma la sesión y se piden los datos nuevos
+  async function conectar(){
+    if (supabaseClient || typeof supabase === 'undefined') return;
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    supabaseClient.auth.onAuthStateChange(function(evento){
+      if (evento === 'SIGNED_OUT') { borrarLocal(); window.location.replace('login.html'); }
+    });
+
     let session = null;
     try {
       const res = await supabaseClient.auth.getSession();
@@ -2352,34 +1709,49 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
       console.error('No se pudo leer la sesión:', err);
     }
 
-    if (!session) { window.location.replace('login.html'); return; }
+    if (!session) { borrarLocal(); window.location.replace('login.html'); return; }
 
-    usuarioActual = session.user;
-    pintarUsuario();
+    const u = session.user;
+    const meta = u.user_metadata || {};
+    pintarUsuario((meta.full_name || meta.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario');
 
-    // 1) Se muestra al instante lo último guardado (si existe)
-    const cache = leerCache();
-    if (cache) {
-      recepciones = cache.recepciones;
-      productos = cache.productos;
-      proveedores = cache.proveedores;
-      totalRegistros = cache.total || recepciones.length;
-      datosListos = true;
-      $('loadingState').hidden = true;
-      indexar();
-      actualizarResumen();
-      aplicarFiltros(true);
-      renderNotificaciones();
-      if (idPendiente && recepciones.some(function(r){ return String(r.id) === String(idPendiente); })) {
-        const id = idPendiente; idPendiente = null; resaltarRecepcion(id);
+    if (uid !== u.id) {
+      // Otra cuenta distinta a la guardada: se descarta lo dibujado
+      if (uid) {
+        recepciones = []; productos = []; proveedores = [];
+        sigRec = sigProd = sigProv = '';
+        datosListos = false; productosListos = false;
+        $('tablaRecepciones').hidden = true;
+        $('receptionCards').hidden = true;
+        $('emptyState').hidden = true;
+        $('loadingState').hidden = false;
       }
+      uid = u.id;
+      const c = leerCache(uid);
+      if (c) aplicarCache(c);
     }
+    try { localStorage.setItem(CLAVE_UID, uid); } catch (e) { /* se ignora */ }
 
-    // 2) Se piden los datos frescos en segundo plano
     await cargarDatos();
   }
 
-  iniciar();
+  function sinSDK(){
+    if (supabaseClient) return;
+    $('loadingState').hidden = true;
+    mostrarAviso('No se pudo cargar el sistema. Revisa tu conexión e intenta de nuevo.');
+    $('avisoBtn').textContent = 'Recargar';
+  }
+
+  arranqueRapido();
+
+  if (typeof supabase !== 'undefined') {
+    conectar();
+  } else {
+    const sdk = $('sdk');
+    sdk.addEventListener('load', conectar);
+    sdk.addEventListener('error', sinSDK);
+    setTimeout(function(){ if (!supabaseClient) sinSDK(); }, 15000);
+  }
 })();
 </script>
 

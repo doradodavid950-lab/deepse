@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#062B5B">
+<meta name="robots" content="noindex">
+<title>Trazabilidad del producto — Deep Sea</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
+
+<style>
+  :root{
+    --azul-oscuro:#062B5B;
+    --azul-medio:#1E66F5;
+    --azul-claro:#5CC0FF;
+    --celeste:#3FD0F2;
+    --fondo:#E6F0FA;
+    --borde:#DCE8F6;
+    --texto:#0F2540;
+    --texto-2:#5B7089;
+    --texto-3:#3D5573;
+    --verde:#17A673;
+    --rojo:#E53935;
+    --g-azul:linear-gradient(135deg,#1E66F5,#3FA9FF);
+    --g-verde:linear-gradient(135deg,#17A673,#5BDDA0);
+    --g-morado:linear-gradient(135deg,#7B5CC7,#B494F5);
+    --g-naranja:linear-gradient(135deg,#F08A24,#FFC46B);
+    --sombra:0 8px 22px rgba(6,43,91,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;
+    color:var(--texto);background:var(--fondo);min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));
+  }
+  [hidden]{display:none!important}
+  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* ---------- Encabezado ---------- */
+  .hero{
+    background:linear-gradient(120deg,#062B5B 0%,#0B4DB5 52%,#2FA8F0 100%);
+    color:#fff;border-radius:0 0 32px 32px;position:relative;overflow:hidden;
+    padding:calc(env(safe-area-inset-top,0px) + 18px) 20px 60px;
+    box-shadow:0 14px 28px rgba(11,77,181,.25);
+  }
+  .hero svg.w{position:absolute;left:0;bottom:0;width:100%;height:48px;opacity:.9}
+  .brand{display:flex;align-items:center;gap:12px;max-width:520px;margin:0 auto;position:relative}
+  .brand-badge{width:44px;height:44px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 14px rgba(0,0,0,.25);flex:none}
+  .brand-badge img{width:33px;height:33px}
+  .brand-name{font-size:19px;font-weight:700;line-height:1}
+  .brand-name span{color:var(--azul-claro)}
+  .brand-sub{font-size:12px;color:#9CC8F2;margin-top:3px}
+  .chip-pub{margin-left:auto;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);font-size:12px;font-weight:700;white-space:nowrap}
+  .hero h1{font-size:25px;font-weight:700;margin-top:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative}
+  .hero p{font-size:14px;color:#CFE6FF;margin-top:3px;max-width:520px;margin-left:auto;margin-right:auto;position:relative}
+
+  /* ---------- Contenido ---------- */
+  main{max-width:520px;margin:0 auto;padding:0 16px;margin-top:-34px;position:relative;z-index:2;display:flex;flex-direction:column;gap:14px}
+  .card{background:#fff;border-radius:22px;border:1px solid var(--borde);box-shadow:var(--sombra);padding:18px}
+  .card h2{font-size:16px;font-weight:700;margin-bottom:12px}
+
+  .prod{display:flex;align-items:center;gap:14px}
+  .prod-ic{width:56px;height:56px;border-radius:18px;background:var(--g-azul);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 10px 20px rgba(30,102,245,.3)}
+  .prod-ic svg.i{width:26px;height:26px}
+  .prod b{font-size:19px;display:block;line-height:1.2}
+  .prod i{font-size:13px;color:var(--texto-2)}
+  .prod small{display:block;font-size:13px;color:var(--texto-2);margin-top:3px}
+
+  .verif{margin-top:14px;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;border:1px solid #BDEBD0;background:linear-gradient(135deg,#D6F7E2,#E9FBF1)}
+  .verif .vic{width:34px;height:34px;border-radius:50%;background:var(--g-verde);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .verif b{display:block;color:#12804F;font-size:15px}
+  .verif span{font-size:12.5px;color:#3F8A68}
+  .verif.pend{background:#FFF6E0;border-color:#F5D58A}
+  .verif.pend .vic{background:linear-gradient(135deg,#F08A24,#FFC46B)}
+  .verif.pend b{color:#9A6200}
+  .verif.pend span{color:#8A5A10}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+  .stat{background:#F5F9FE;border:1px solid #E1ECF8;border-radius:14px;padding:9px 10px}
+  .stat small{display:block;font-size:10.5px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .stat b{display:block;font-size:14px;margin-top:2px}
+
+  /* ---------- Recorrido ---------- */
+  .tl{position:relative;display:flex;flex-direction:column;gap:12px}
+  .tl-item{display:flex;gap:12px;position:relative}
+  .tl-item:not(:last-child)::after{content:"";position:absolute;left:19px;top:42px;bottom:-12px;width:3px;border-radius:3px;background:linear-gradient(#1E66F5,#3FD0F2)}
+  .tl-circle{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 14px rgba(30,102,245,.28);position:relative;z-index:1}
+  .tl-circle svg.i{width:18px;height:18px}
+  .tl-circle.azul{background:var(--g-azul)}
+  .tl-circle.verde{background:var(--g-verde)}
+  .tl-circle.morado{background:var(--g-morado)}
+  .tl-circle.naranja{background:var(--g-naranja)}
+  .tl-box{flex:1;min-width:0;background:#F5F9FE;border:1px solid #E1ECF8;border-radius:14px;padding:9px 13px}
+  .tl-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .tl-top h3{font-size:15px}
+  .tl-top time{font-size:12.5px;font-weight:700;color:var(--azul-medio);white-space:nowrap}
+  .tl-box p{font-size:13px;color:var(--texto-2);margin-top:3px;line-height:1.4}
+  .tl-box ul{list-style:none;margin-top:5px}
+  .tl-box li{font-size:13px;color:var(--texto-2);padding:4px 0;border-top:1px dashed #D7E4F3;display:flex;justify-content:space-between;gap:8px}
+  .tl-box li:first-child{border-top:0}
+  .tl-box li b{color:var(--texto);font-weight:700;white-space:nowrap}
+
+  .empty{text-align:center;color:var(--texto-2);font-size:14px;line-height:1.5;padding:24px 8px}
+  .empty .ico{width:58px;height:58px;border-radius:18px;margin:0 auto 10px;background:#EAF3FF;color:var(--azul-medio);display:flex;align-items:center;justify-content:center}
+  .empty .ico svg.i{width:28px;height:28px}
+  .empty button{margin-top:14px;height:44px;padding:0 20px;border-radius:14px;border:0;background:var(--g-azul);color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 8px 18px rgba(30,102,245,.3)}
+
+  /* Esqueleto de carga */
+  .sk{height:72px;border-radius:16px;margin-bottom:12px;background:linear-gradient(90deg,#E8F0FA 25%,#F6FAFF 50%,#E8F0FA 75%);background-size:200% 100%;animation:brillo 1.2s linear infinite}
+  @keyframes brillo{to{background-position:-200% 0}}
+  @media (prefers-reduced-motion:reduce){.sk{animation:none}}
+
+  .pie{text-align:center;font-size:12.5px;color:var(--texto-2);line-height:1.5;padding:4px 10px}
+  .pie b{color:var(--azul-medio)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="w" viewBox="0 0 400 48" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 26C60 6 120 44 200 28S330 4 400 24V48H0z" fill="rgba(255,255,255,.12)"/>
+    <path d="M0 36C90 22 150 50 230 36S340 20 400 34V48H0z" fill="rgba(255,255,255,.14)"/>
+  </svg>
+  <div class="brand">
+    <div class="brand-badge"><img src="logo-emblema.png" alt="Deep Sea"></div>
+    <div>
+      <div class="brand-name">Deep <span>Sea</span></div>
+      <div class="brand-sub">Gestión de recursos marinos</div>
+    </div>
+    <span class="chip-pub">Consulta pública</span>
+  </div>
+  <h1>Conoce tu producto</h1>
+  <p>Recorrido del lote, desde su captura hasta hoy.</p>
+</header>
+
+<main>
+
+  <!-- Estado: cargando -->
+  <section class="card" id="vCargando">
+    <div class="sk"></div><div class="sk" style="height:110px"></div><div class="sk" style="height:140px"></div>
+  </section>
+
+  <!-- Estado: sin lote o lote no válido / no encontrado / error -->
+  <section class="card empty" id="vVacio" hidden>
+    <div class="ico"><svg class="i" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+    <b id="vVacioTitulo" style="display:block;font-size:16px;color:var(--texto);margin-bottom:4px">No encontramos este lote</b>
+    <span id="vVacioTexto">Revisa que el código esté completo o pide uno nuevo a quien te vendió el producto.</span>
+    <div><button type="button" id="btnReintentar" hidden>Intentar de nuevo</button></div>
+  </section>
+
+  <!-- Estado: contenido -->
+  <div id="vContenido" hidden style="display:flex;flex-direction:column;gap:14px">
+
+    <section class="card">
+      <div class="prod">
+        <div class="prod-ic"><svg class="i" aria-hidden="true"><path d="M3 12c3-5 8-6 12-4l4-3v14l-4-3c-4 2-9 1-12-4z"/><circle cx="9" cy="11" r=".8"/></svg></div>
+        <div style="min-width:0">
+          <b id="pNombre">—</b>
+          <i id="pCientifico"></i>
+          <small id="pCategoria"></small>
+        </div>
+      </div>
+      <div class="verif" id="verif">
+        <div class="vic"><svg class="i" aria-hidden="true" style="width:18px;height:18px"><path d="M5 12l5 5 9-10"/></svg></div>
+        <div><b id="verifTitulo">Lote verificado</b><span id="verifTexto">Pasó el control de calidad</span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Origen</small><b id="sOrigen">—</b></div>
+        <div class="stat"><small>Peso del lote</small><b id="sPeso">—</b></div>
+        <div class="stat"><small>Estado</small><b id="sEstado">—</b></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Recorrido del lote</h2>
+      <div class="tl" id="timeline"></div>
+    </section>
+
+    <p class="pie">Información verificada por <b>Deep Sea Intelligence</b><br>Gestión inteligente de recursos marinos</p>
+  </div>
+
+</main>
+
+<!-- SDK de Supabase: solo se usa para leer el lote a través de la función pública -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  const REGEX_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  function escapeHTML(t){
+    return String(t ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  }
+  function normalizar(t){
+    return String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+  // Fechas tipo "2026-10-21" se leen como fecha local (evita el día anterior)
+  function fecha(v){
+    if (!v) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) { const [a, m, d] = v.split('-').map(Number); return new Date(a, m - 1, d); }
+    const f = new Date(v);
+    return isNaN(f.getTime()) ? null : f;
+  }
+  function fmtFecha(v){
+    const f = fecha(v);
+    return f ? f.toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+  }
+  function fmtFechaHora(v){
+    const f = fecha(v);
+    if (!f) return '—';
+    const soloFecha = /^\d{4}-\d{2}-\d{2}$/.test(v);
+    return soloFecha ? fmtFecha(v) : f.toLocaleString('es-CO', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+  }
+  function fmtPeso(n){
+    return (Math.round(Number(n || 0) * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg';
+  }
+  function fmtTemp(n){
+    if (n === null || n === undefined || n === '') return '—';
+    return Number(n).toLocaleString('es-CO', { maximumFractionDigits: 1 }) + ' °C';
+  }
+
+  const ICONO = {
+    captura: '<svg class="i" aria-hidden="true"><path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/></svg>',
+    recepcion: '<svg class="i" aria-hidden="true"><rect x="2" y="6" width="12" height="10" rx="1"/><path d="M14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>',
+    calidad: '<svg class="i" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+    almacen: '<svg class="i" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5V20H3z"/><path d="M8 20v-6h8v6"/></svg>'
+  };
+
+  function esAprobado(resultado){
+    return normalizar(resultado).includes('aprob');
+  }
+
+  function pintar(d){
+    const p = d.producto || {}, l = d.lote || {};
+    const alm = Array.isArray(d.almacenamiento) ? d.almacenamiento : [];
+    const cal = Array.isArray(d.calidad) ? d.calidad : [];
+
+    $('pNombre').textContent = p.nombre || 'Producto';
+    $('pCientifico').textContent = p.nombre_cientifico || '';
+    $('pCientifico').hidden = !p.nombre_cientifico;
+    $('pCategoria').textContent = p.categoria ? 'Categoría: ' + p.categoria : '';
+    $('sOrigen').textContent = p.origen || '—';
+    $('sPeso').textContent = fmtPeso(l.peso);
+    $('sEstado').textContent = l.estado || '—';
+
+    // Calidad: verificado si el control más reciente fue aprobado
+    const ultimo = cal[0];
+    const verif = $('verif');
+    if (ultimo && esAprobado(ultimo.resultado)) {
+      verif.classList.remove('pend');
+      $('verifTitulo').textContent = 'Lote verificado';
+      $('verifTexto').textContent = 'Pasó el control de calidad el ' + fmtFecha(ultimo.fecha);
+    } else if (ultimo) {
+      verif.classList.add('pend');
+      $('verifTitulo').textContent = 'Control de calidad: ' + (ultimo.resultado || 'en revisión');
+      $('verifTexto').textContent = 'Último control el ' + fmtFecha(ultimo.fecha);
+    } else {
+      verif.classList.add('pend');
+      $('verifTitulo').textContent = 'Sin control de calidad registrado';
+      $('verifTexto').textContent = 'Este lote aún no tiene un control de calidad.';
+    }
+
+    // Recorrido: captura → recepción → calidad → almacenamiento
+    const pasos = [];
+
+    pasos.push(`<div class="tl-item"><div class="tl-circle azul">${ICONO.captura}</div>
+      <div class="tl-box"><div class="tl-top"><h3>Captura</h3><time>${fmtFecha(p.fecha_captura)}</time></div>
+      <p>Producto capturado${p.origen ? ' en <b>' + escapeHTML(p.origen) + '</b>' : ''}.</p></div></div>`);
+
+    pasos.push(`<div class="tl-item"><div class="tl-circle verde">${ICONO.recepcion}</div>
+      <div class="tl-box"><div class="tl-top"><h3>Recepción</h3><time>${fmtFechaHora(l.fecha_recepcion)}</time></div>
+      <p>${l.proveedor ? 'Proveedor: <b>' + escapeHTML(l.proveedor) + '</b>. ' : ''}Peso recibido: ${fmtPeso(l.peso)}. Estado: ${escapeHTML(l.estado || '—')}.</p></div></div>`);
+
+    pasos.push(`<div class="tl-item"><div class="tl-circle morado">${ICONO.calidad}</div>
+      <div class="tl-box"><div class="tl-top"><h3>Control de calidad</h3><time>${cal.length ? fmtFecha(cal[0].fecha) : 'Pendiente'}</time></div>
+      ${cal.length
+        ? '<ul>' + cal.map(c => `<li><span>${fmtFechaHora(c.fecha)}</span><b>${escapeHTML(c.resultado || '—')}</b></li>`).join('') + '</ul>'
+        : '<p>Aún no hay controles registrados para este lote.</p>'}
+      </div></div>`);
+
+    pasos.push(`<div class="tl-item"><div class="tl-circle naranja">${ICONO.almacen}</div>
+      <div class="tl-box"><div class="tl-top"><h3>Almacenamiento</h3><time>${alm.length ? fmtFecha(alm[0].fecha) : 'Pendiente'}</time></div>
+      ${alm.length
+        ? '<ul>' + alm.map(a => `<li><span>${escapeHTML(a.ubicacion || 'Ubicación sin registrar')} · ${fmtFechaHora(a.fecha)}</span><b>${fmtTemp(a.temperatura)}</b></li>`).join('') + '</ul>'
+        : '<p>Aún no hay registros de almacenamiento.</p>'}
+      </div></div>`);
+
+    $('timeline').innerHTML = pasos.join('');
+    mostrar('contenido');
+    document.title = (p.nombre ? p.nombre + ' — ' : '') + 'Trazabilidad · Deep Sea';
+  }
+
+  function mostrar(vista, opciones){
+    $('vCargando').hidden = vista !== 'cargando';
+    $('vVacio').hidden    = vista !== 'vacio';
+    $('vContenido').hidden = vista !== 'contenido';
+    if (vista === 'vacio') {
+      const o = opciones || {};
+      $('vVacioTitulo').textContent = o.titulo || 'No encontramos este lote';
+      $('vVacioTexto').textContent  = o.texto || 'Revisa que el código esté completo o pide uno nuevo a quien te vendió el producto.';
+      $('btnReintentar').hidden = !o.reintentar;
+    }
+  }
+
+  let lote = null;
+
+  // Lee el lote SOLO a través de la función pública trazabilidad_publica
+  async function consultar(){
+    mostrar('cargando');
+    if (!lote) {
+      mostrar('vacio', { titulo: 'Falta el código del lote', texto: 'Escanea el código QR que está en el empaque del producto.' });
+      return;
+    }
+    if (!REGEX_UUID.test(lote)) {
+      mostrar('vacio', { titulo: 'El código no es válido', texto: 'Revisa que el código QR esté completo o escanéalo de nuevo.' });
+      return;
+    }
+
+    let res;
+    try {
+      const cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      res = await Promise.race([
+        cliente.rpc('trazabilidad_publica', { p_lote: lote }),
+        new Promise((_, rechazar) => setTimeout(() => rechazar(new Error('tiempo')), 15000))
+      ]);
+    } catch (err) {
+      console.error('Error consultando el lote:', err);
+      mostrar('vacio', { titulo: 'No se pudo consultar', texto: 'Revisa tu conexión a internet e intenta de nuevo.', reintentar: true });
+      return;
+    }
+
+    if (res.error) {
+      console.error('Error de la función pública:', res.error);
+      mostrar('vacio', { titulo: 'No se pudo consultar', texto: 'Intenta de nuevo en unos minutos.', reintentar: true });
+      return;
+    }
+    if (!res.data) {
+      mostrar('vacio', { titulo: 'No encontramos este lote', texto: 'El código no corresponde a ningún lote registrado.' });
+      return;
+    }
+    pintar(res.data);
+  }
+
+  $('btnReintentar').addEventListener('click', consultar);
+
+  // El código viene en la dirección: trazabilidad-publica.html?lote=ID
+  lote = new URLSearchParams(window.location.search).get('lote');
+  if (lote) lote = lote.trim();
+
+  if (typeof window.supabase === 'undefined') {
+    mostrar('vacio', { titulo: 'No se pudo cargar la página', texto: 'Revisa tu conexión a internet e intenta de nuevo.', reintentar: true });
+    $('btnReintentar').addEventListener('click', () => window.location.reload(), { once: true });
+  } else {
+    consultar();
+  }
+})();
+</script>
+
+</body>
+</html>

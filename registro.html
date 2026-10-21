@@ -3,561 +3,499 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#062B5B">
 <link rel="icon" type="image/png" href="logo-emblema.png">
 <title>Deep Sea Intelligence — Crear cuenta</title>
 <style>
   :root{
+    --azul-noche:#031632;
     --azul-oscuro:#062B5B;
     --azul-medio:#1E66F5;
-    --azul-claro:#D9ECFF;
-    --verde-suave:#B9F5C5;
+    --azul-claro:#5CC0FF;
+    --celeste:#3FD0F2;
+    --fondo-claro:#E6F0FA;
+    --campo:#F5F9FE;
+    --borde:#D3E3F5;
+    --texto:#0F2540;
+    --texto-2:#5B7089;
+    --texto-3:#3D5573;
     --rojo:#E53935;
-    --naranja:#FFA94D;
-    --amarillo:#FFD76A;
-    --morado:#E7D7FF;
-    --gris-claro:#F3F5F9;
-    --blanco:#FFFFFF;
-    --texto-principal:#0F2540;
-    --texto-secundario:#5B7089;
-    --sombra: 0 18px 45px rgba(6,43,91,.18);
-    --radio: 18px;
+    --verde:#17A673;
   }
-
-  *{box-sizing:border-box;}
-
-  html,body{
-    margin:0;
-    padding:0;
-    height:100%;
-    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    color:var(--texto-principal);
-    background:var(--gris-claro);
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;
+    color:var(--texto);background:var(--fondo-claro);
+    -webkit-font-smoothing:antialiased;
   }
+  [hidden]{display:none!important}
 
+  /* ---------- FONDO (océano) ---------- */
+  .page{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden}
+  .bg{
+    position:absolute;inset:0;overflow:hidden;
+    background:linear-gradient(125deg,var(--azul-noche) 0%,#06306A 38%,#0B5FC4 72%,#2FC3F0 100%);
+  }
+  .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);animation:flotar 9s ease-in-out infinite}
+  .b1{left:4%;top:72%;width:90px;height:90px}
+  .b2{left:26%;top:84%;width:46px;height:46px;animation-delay:-3s}
+  .b3{left:10%;top:13%;width:34px;height:34px;animation-delay:-5s}
+  .b4{left:58%;top:6%;width:120px;height:120px;animation-delay:-2s}
+  .b5{right:3%;top:80%;width:150px;height:150px;animation-delay:-6s}
+  .b6{left:76%;top:4%;width:40px;height:40px;animation-delay:-4s}
+  .b7{left:48%;top:88%;width:70px;height:70px;animation-delay:-1s}
+  @keyframes flotar{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .waves{position:absolute;left:0;bottom:0;width:100%;height:220px}
+
+  /* ---------- LAYOUT (computador) ---------- */
   .layout{
-    min-height:100vh;
-    min-height:100dvh;
-    display:grid;
-    grid-template-columns: 1.1fr 1fr;
+    position:relative;z-index:1;max-width:1320px;margin:0 auto;
+    min-height:100vh;min-height:100dvh;padding:40px 72px;
+    display:flex;align-items:center;justify-content:space-between;gap:56px;
   }
-
-  /* ---------- PANEL IZQUIERDO (OCEANO) ---------- */
-  .ocean-panel{
-    position:relative;
-    overflow:hidden;
-    background:
-      radial-gradient(circle at 20% 15%, rgba(255,255,255,.10), transparent 40%),
-      linear-gradient(160deg, #041E40 0%, #062B5B 45%, #0A3E82 100%);
-    color:var(--blanco);
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    padding:clamp(32px,5vw,56px) clamp(32px,5vw,60px);
-  }
-
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:14px;
-  }
-
-  /* Insignia blanca con el emblema del logo */
+  .copy{color:#fff;max-width:600px;flex:1}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:84px}
   .brand-badge{
-    flex:0 0 auto;
-    width:60px;height:60px;border-radius:16px;
-    background:var(--blanco);
-    padding:5px;
+    width:62px;height:62px;border-radius:18px;background:#fff;flex:none;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.3);
+  }
+  .brand-badge img{width:46px;height:46px;display:block}
+  .brand-name{font-size:28px;font-weight:700;line-height:1}
+  .brand-name span{color:var(--azul-claro)}
+  .brand-tag{font-size:14px;color:#9CC8F2;margin-top:6px}
+  .copy h1{font-size:clamp(36px,4vw,52px);font-weight:700;line-height:1.08}
+  .copy h1 em{font-style:normal;color:#7FD6FF}
+  .copy p{font-size:18px;line-height:1.5;color:#CFE6FF;margin-top:22px;max-width:540px}
+  .stats{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
+  .stat{
+    padding:14px 18px;border-radius:18px;min-width:128px;
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  }
+  .stat strong{display:block;font-size:28px;line-height:1.1}
+  .stat span{font-size:13px;color:#D6EAFF}
+
+  /* ---------- TARJETA ---------- */
+  .card{
+    width:100%;max-width:540px;flex:none;background:#fff;border-radius:28px;
+    padding:36px 40px 30px;box-shadow:0 40px 80px rgba(2,16,42,.45);
+    animation:subir .6s ease both;
+  }
+  @keyframes subir{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .card-bar{width:54px;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--azul-medio),var(--celeste));margin-bottom:16px}
+  .card h2{font-size:29px;color:var(--azul-oscuro);line-height:1.15}
+  .lead{color:var(--texto-2);margin:5px 0 22px;font-size:15px}
+
+  /* Indicador de pasos (computador) */
+  .dsteps{display:flex;align-items:center;margin-bottom:26px}
+  .ds{display:flex;align-items:center;gap:9px;flex:none}
+  .ds .dn{
+    width:32px;height:32px;border-radius:50%;flex:none;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 8px 20px rgba(0,0,0,.25);
+    font-size:14px;font-weight:700;background:#E4ECF6;color:var(--texto-2);
+    transition:background .2s,color .2s,box-shadow .2s;
   }
-  .brand-badge img{
-    width:100%;height:100%;
-    object-fit:contain;
-    display:block;
-  }
+  .ds .dl{font-size:13.5px;font-weight:700;color:var(--texto-2);transition:color .2s}
+  .ds.on .dn{background:linear-gradient(135deg,#1E66F5,#3FA9FF);color:#fff;box-shadow:0 6px 14px rgba(30,102,245,.35)}
+  .ds.on .dl{color:var(--azul-oscuro)}
+  .ds.done .dn{background:#D6F7E2;color:#12804F}
+  .ds.done .dl{color:var(--texto-3)}
+  .ds.done{cursor:pointer}
+  .dline{flex:1;height:3px;border-radius:3px;background:var(--borde);margin:0 12px;position:relative;overflow:hidden}
+  .dline::after{content:"";position:absolute;inset:0;background:var(--verde);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .dline.done::after{transform:scaleX(1)}
 
-  .brand-name{
-    font-size:22px;
-    font-weight:700;
-    letter-spacing:.3px;
+  /* Pasos */
+  .step:not([hidden]){animation:subir .35s ease both}
+  .step-intro{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .si-ic{
+    width:54px;height:54px;border-radius:17px;flex:none;color:#fff;
+    background:linear-gradient(135deg,#1E66F5,#3FA9FF);box-shadow:0 10px 20px rgba(30,102,245,.3);
+    display:flex;align-items:center;justify-content:center;
   }
-  .brand-name span{color:var(--amarillo);}
+  .si-ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .step-intro h3{font-size:23px;color:var(--azul-oscuro);line-height:1.1}
+  .step-intro p{font-size:14px;color:var(--texto-2);margin-top:3px}
 
-  .brand-tag{
-    font-size:12.5px;
-    color:rgba(255,255,255,.65);
-    margin-top:2px;
-  }
-
-  .ocean-copy{
-    max-width:430px;
-  }
-  .ocean-copy h1{
-    font-size:clamp(26px,2.6vw,34px);
-    line-height:1.25;
-    margin:0 0 14px;
-    font-weight:700;
-  }
-  .ocean-copy p{
-    font-size:15px;
-    line-height:1.6;
-    color:rgba(255,255,255,.72);
-    margin:0;
-  }
-
-  .stat-row{
-    display:flex;
-    gap:34px;
-    margin-top:34px;
-  }
-  .stat-row div{
-    border-left:2px solid rgba(255,255,255,.25);
-    padding-left:14px;
-  }
-  .stat-row strong{
-    display:block;
-    font-size:22px;
-  }
-  .stat-row span{
-    font-size:12px;
-    color:rgba(255,255,255,.6);
-  }
-
-  .waves{
-    position:absolute;
-    left:0; right:0; bottom:0;
-    height:180px;
-    opacity:.5;
-  }
-
-  .fish-drift{
-    position:absolute;
-    animation: drift 14s ease-in-out infinite;
-  }
-  @keyframes drift{
-    0%,100%{ transform: translate(0,0) rotate(0deg); }
-    50%{ transform: translate(18px,-10px) rotate(4deg); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .fish-drift{ animation:none; }
-  }
-
-  /* ---------- PANEL DERECHO (FORMULARIO) ---------- */
-  /* Fondo suave con degradado para que la tarjeta blanca resalte */
-  .form-panel{
-    position:relative;
-    z-index:2;                      /* queda por encima del panel oceano */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:clamp(12px,3vh,32px) 32px;
-    background:
-      radial-gradient(circle at 85% 10%, rgba(30,102,245,.10), transparent 45%),
-      linear-gradient(160deg, #EAF3FF 0%, var(--gris-claro) 100%);
-  }
-
-  /* TARJETA FLOTANTE */
-  .form-card{
-    position:relative;
-    width:100%;
-    max-width:410px;
-    background:var(--blanco);
-    border-radius:24px;
-    padding:clamp(18px,3vh,30px) clamp(24px,3vw,36px) clamp(16px,2.8vh,26px);
-    box-shadow:
-      0 30px 70px rgba(6,43,91,.22),
-      0 8px 20px rgba(6,43,91,.10);
-    border:1px solid rgba(6,43,91,.06);
-    overflow:visible;
-    animation: cardIn .6s ease both;
-    transition: transform .25s ease, box-shadow .25s ease;
-  }
-  @media (hover:hover){
-    .form-card:hover{
-      transform: translateY(-4px);
-      box-shadow:
-        0 38px 80px rgba(6,43,91,.26),
-        0 10px 24px rgba(6,43,91,.12);
-    }
-  }
-
-  /* Franja de color en la parte superior de la tarjeta */
-  .form-card::before{
-    content:"";
-    position:absolute;
-    top:0; left:0; right:0;
-    height:6px;
-    border-radius:24px 24px 0 0;
-    background:linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio), var(--amarillo));
-  }
-
-  /* Logo oficial de Deep Sea en la parte superior de la tarjeta.
-     Su ancho se adapta al tamaño de la pantalla. */
-  .card-logo{
-    display:block;
-    width:clamp(58px, 10vh, 100px);
-    height:auto;
-    margin:0 auto 6px;
-  }
-
-  @keyframes cardIn{
-    from{ opacity:0; transform: translateY(24px); }
-    to{ opacity:1; transform: translateY(0); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .form-card{ animation:none; transition:none; }
-    .form-card:hover{ transform:none; }
-  }
-
-  /* En pantallas grandes la tarjeta se monta un poco sobre el panel azul */
-  @media (min-width: 1100px){
-    .form-card{ margin-left:-60px; }
-  }
-
-  .form-card h2{
-    font-size:clamp(21px,3.4vh,25px);
-    margin:0 0 4px;
-    font-weight:700;
-    color:var(--azul-oscuro);
-    text-align:center;
-  }
-  .form-card > p.lead{
-    margin:0 0 clamp(10px,2.2vh,20px);
-    color:var(--texto-secundario);
-    font-size:14px;
-    text-align:center;
-  }
-
-  .field{
-    margin-bottom:clamp(6px,1.5vh,12px);
-  }
-  .field label{
-    display:block;
-    font-size:12.5px;
-    font-weight:600;
-    margin-bottom:5px;
-    color:var(--azul-oscuro);
-  }
+  /* Campos */
+  .grid2{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"n" "e" "p"}
+  .g-n{grid-area:n}.g-p{grid-area:p}.g-e{grid-area:e}
+  .field{margin-bottom:16px;min-width:0}
+  .field label.lbl{display:block;font-size:13px;font-weight:700;color:var(--texto-3);margin-bottom:7px}
+  .opc{font-weight:400;color:#8DA0B8}
   .field-input{
-    position:relative;
-    display:flex;
-    align-items:center;
-    border:1.5px solid #DFE6ee;
-    border-radius:12px;
-    background:var(--gris-claro);
-    transition:border-color .15s, box-shadow .15s, background .15s;
+    height:50px;display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:14px;
+    background:var(--campo);border:1px solid var(--borde);color:#7A90AB;
+    transition:border-color .15s,box-shadow .15s,background .15s;
   }
-  .field-input:focus-within{
-    border-color:var(--azul-medio);
-    background:var(--blanco);
-    box-shadow:0 0 0 4px rgba(30,102,245,.12);
-  }
-  .field-input svg{
-    flex:0 0 auto;
-    margin-left:14px;
-    color:var(--texto-secundario);
-  }
-  .field-input input{
-    flex:1;
-    border:none;
-    background:transparent;
-    outline:none;
-    padding:9px 12px;
-    font-size:14.5px;
-    color:var(--texto-principal);
-    min-width:0;
-  }
-  .toggle-pass{
-    background:none;
-    border:none;
-    cursor:pointer;
-    color:var(--texto-secundario);
-    padding:0 14px;
-    min-width:46px;
-    min-height:46px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .toggle-pass:hover{ color:var(--azul-medio); }
+  .field-input:focus-within{background:#fff;border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.15);color:var(--azul-medio)}
+  .field-input svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .field-input input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--texto)}
+  .field-input input::placeholder{color:#8DA0B8}
+  .toggle-pass{border:0;background:transparent;color:#7A90AB;cursor:pointer;display:flex;padding:4px;border-radius:8px}
+  .toggle-pass:hover{color:var(--azul-medio)}
+  .field-error{display:none;font-size:12.5px;color:var(--rojo);margin-top:5px}
+  .field.invalid .field-input{border-color:var(--rojo);background:#FFF5F5;color:var(--rojo)}
+  .field.invalid .field-error{display:block}
+  .field.invalid .opt-in{border-color:var(--rojo)}
 
-  .field-error{
-    display:none;
-    color:var(--rojo);
-    font-size:12px;
-    margin-top:3px;
-  }
-  .field.invalid .field-input{
-    border-color:var(--rojo);
-    background:#FFF4F3;
-  }
-  .field.invalid .field-error{
-    display:block;
-  }
+  /* Bloque del establecimiento */
+  .block{background:#F0F7FF;border:1px solid var(--borde);border-radius:18px;padding:14px 14px 2px;margin-bottom:12px}
+  .block-title{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--azul-medio);letter-spacing:.5px;margin-bottom:10px}
+  .block-title svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .block .field-input{background:#fff}
 
-  .row-between{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px 16px;
-    align-items:center;
-    justify-content:space-between;
-    margin:0 0 clamp(10px,2vh,18px);
-    font-size:13px;
+  /* Tipo de establecimiento (tarjetas) */
+  .tipo{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{position:relative;cursor:pointer}
+  .opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
+  .opt-in{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    padding:7px 14px;border-radius:20px;background:#fff;border:1px solid var(--borde);
+    font-size:13px;font-weight:700;color:var(--texto-3);transition:all .15s;
   }
-  .checkbox-line{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--texto-secundario);
-    cursor:pointer;
-    user-select:none;
+  .opt-in svg{display:none;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .opt:hover .opt-in{border-color:var(--azul-medio)}
+  .opt input:checked + .opt-in{
+    background:linear-gradient(135deg,#1E66F5,#3FA9FF);color:#fff;border-color:transparent;
+    box-shadow:0 6px 14px rgba(30,102,245,.3);
   }
-  .checkbox-line input{
-    width:16px;height:16px;
-    accent-color:var(--azul-medio);
-  }
-  .link-muted{
-    color:var(--azul-medio);
-    text-decoration:none;
-    font-weight:600;
-  }
-  .link-muted:hover{ text-decoration:underline; }
+  .opt input:focus-visible + .opt-in{outline:3px solid rgba(30,102,245,.35);outline-offset:2px}
+  #tipoField{margin-bottom:14px}
 
+  /* Contraseña */
+  .strength{display:flex;gap:6px;margin:-2px 0 4px}
+  .strength i{flex:1;height:5px;border-radius:5px;background:var(--borde);transition:background .2s}
+  .strength-label{font-size:12.5px;font-weight:700;color:var(--texto-2);margin-bottom:12px;min-height:16px}
+  .reqs{display:block}
+  .req{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--texto-3);margin-bottom:7px}
+  .req .ck{width:20px;height:20px;border-radius:50%;background:#E4ECF6;color:transparent;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+  .req.ok .ck{background:#D6F7E2;color:#12804F}
+
+  /* Botones */
+  .actions{margin-top:22px}
+  .actions-in{display:flex;gap:12px}
+  .btn-primary,.btn-back{
+    height:50px;border-radius:15px;cursor:pointer;
+    font:inherit;font-size:16px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    transition:transform .12s,box-shadow .12s,filter .12s,background .12s;
+  }
   .btn-primary{
-    width:100%;
-    border:none;
-    border-radius:12px;
-    padding:11px;
-    min-height:44px;
-    background:var(--azul-oscuro);
-    color:var(--blanco);
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    box-shadow:0 10px 22px rgba(6,43,91,.28);
-    transition:background .15s, transform .1s, box-shadow .15s;
+    flex:1;border:0;color:#fff;
+    background:linear-gradient(135deg,#1E66F5,#3FA9FF);
+    box-shadow:0 10px 22px rgba(30,102,245,.35);
   }
-  .btn-primary:hover{ background:var(--azul-medio); box-shadow:0 12px 26px rgba(30,102,245,.35); }
-  .btn-primary:active{ transform: scale(.98); }
-  .btn-primary:disabled{
-    opacity:.65;
-    cursor:not-allowed;
+  .btn-primary:hover{filter:brightness(1.06)}
+  .btn-primary:active,.btn-back:active{transform:scale(.98)}
+  .btn-primary:disabled{opacity:.7;cursor:wait}
+  .btn-primary .arrow{display:none;width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .btn-primary .arrow.show{display:block}
+  .btn-back{
+    flex:none;padding:0 22px;color:var(--texto-3);
+    background:#fff;border:1px solid var(--borde);
   }
+  .btn-back:hover{background:var(--campo);border-color:var(--azul-medio);color:var(--azul-medio)}
+  .btn-back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .signup-line{text-align:center;margin-top:16px;font-size:14.5px;color:var(--texto-2)}
+  .link-muted{color:var(--azul-medio);font-weight:700;text-decoration:none}
+  .link-muted:hover{text-decoration:underline}
 
-  .signup-line{
-    text-align:center;
-    margin:clamp(10px,2.2vh,20px) 0 0;
-    padding-top:clamp(8px,1.8vh,14px);
-    border-top:1px solid var(--gris-claro);
-    font-size:13.5px;
-    color:var(--texto-secundario);
-  }
+  /* Elementos que solo existen en el celular */
+  .wiz-head{display:none}
 
+  /* Toast */
   .toast{
-    position:fixed;
-    top:22px;
-    right:22px;
-    background:var(--azul-oscuro);
-    color:#fff;
-    padding:14px 20px;
-    border-radius:12px;
-    font-size:14px;
-    box-shadow:var(--sombra);
-    display:flex;
-    align-items:center;
-    gap:10px;
-    transform: translateY(-140%);
-    opacity:0;
-    transition: transform .35s ease, opacity .35s ease;
-    z-index:50;
-    max-width:calc(100vw - 24px);
+    position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);
+    max-width:calc(100% - 32px);padding:13px 20px;border-radius:14px;
+    background:var(--azul-oscuro);color:#fff;font-size:14.5px;font-weight:600;
+    box-shadow:0 14px 30px rgba(2,16,42,.4);
+    opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:30;
   }
-  .toast.show{ transform: translateY(0); opacity:1; }
-  .toast.error{ background:var(--rojo); }
-  .toast.success{ background:#1B8A5A; }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .toast.error{background:#C62828}
+  .toast.success{background:#12804F}
 
-  /* ============================================================
-     RESPONSIVE (se adapta a cualquier dispositivo)
-     ============================================================ */
-
-  /* Pantallas muy grandes */
-  @media (min-width: 1600px){
-    .form-card{ max-width:480px; }
+  /* Computador con poca altura */
+  @media (min-width:1001px) and (max-height:700px){
+    .layout{padding-top:20px;padding-bottom:20px}
+    .card{padding:26px 34px 22px}
+    .brand{margin-bottom:48px}
+    .dsteps{margin-bottom:18px}
+    .step-intro{margin-bottom:14px}
+    .field{margin-bottom:12px}
   }
 
-  /* Laptops con poca altura: compacta el panel izquierdo */
-  @media (min-width: 881px) and (max-height: 700px){
-    .ocean-panel{ padding-top:28px; padding-bottom:28px; }
-    .ocean-copy h1{ font-size:26px; }
-    .stat-row{ margin-top:20px; }
-    .form-panel{ padding-top:24px; padding-bottom:24px; }
-  }
+  /* ---------- CELULAR / TABLET: registro por pasos ---------- */
+  @media (max-width:1000px){
+    .page{background:var(--fondo-claro);min-height:0}
+    .bg,.copy,.dsteps,.btn-back{display:none}
 
-  /* Tablets verticales y celulares:
-     se oculta el panel izquierdo y toda la pantalla toma el fondo oceano,
-     así la tarjeta blanca resalta como flotando sobre el mar. */
-  @media (max-width: 880px){
-    .layout{ grid-template-columns: 1fr; }
-    .ocean-panel{ display:none; }
-    .form-panel{
-      padding:
-        max(14px, env(safe-area-inset-top))
-        max(20px, env(safe-area-inset-right))
-        max(14px, env(safe-area-inset-bottom))
-        max(20px, env(safe-area-inset-left));
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255,255,255,.12), transparent 45%),
-        linear-gradient(160deg, #041E40 0%, #062B5B 45%, #0A3E82 100%);
+    .wiz-head{
+      display:block;position:relative;z-index:2;color:#fff;
+      background:linear-gradient(135deg,#062B5B 0%,#0B4DB5 55%,#2FA8F0 100%);
+      border-radius:0 0 30px 30px;box-shadow:0 14px 28px rgba(11,77,181,.25);
+      padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 20px;
     }
-    .form-card{ max-width:460px; }
-    /* 16px evita que iPhone haga zoom automático al tocar un campo */
-    .field-input input{ font-size:16px; }
-    .toast{ top:max(12px, env(safe-area-inset-top)); right:12px; left:12px; max-width:none; justify-content:center; }
-  }
+    .wh-top{display:flex;align-items:center;gap:12px;max-width:480px;margin:0 auto}
+    .wh-back{
+      width:38px;height:38px;border-radius:12px;flex:none;cursor:pointer;color:#fff;
+      background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .wh-back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .wh-title{flex:1}
+    .wh-title b{display:block;font-size:19px;line-height:1.1}
+    .wh-title span{font-size:12.5px;color:#CFE6FF}
+    .wiz-head .brand-badge{width:38px;height:38px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+    .wiz-head .brand-badge img{width:29px;height:29px}
+    .wh-progress{display:flex;gap:6px;margin:16px auto 0;max-width:480px}
+    .wh-progress i{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.3);transition:background .25s}
+    .wh-progress i.on{background:#fff}
 
-  /* Celulares */
-  @media (max-width: 480px){
-    .form-panel{ padding-left:14px; padding-right:14px; }
-    .form-card{ padding:18px 18px 16px; border-radius:20px; }
-    .form-card::before{ border-radius:20px 20px 0 0; }
-    .form-card > p.lead{ font-size:13.5px; }
-  }
+    .layout{
+      display:block;min-height:0;padding:22px 22px calc(150px + env(safe-area-inset-bottom,0px));
+    }
+    .card{max-width:480px;margin:0 auto;padding:0;background:transparent;box-shadow:none;border-radius:0;animation:none}
+    .card-bar,.desk-title,.lead{display:none}
+    .step-intro{margin-bottom:18px;gap:13px}
+    .si-ic{width:52px;height:52px}
+    .step-intro p{font-size:13.5px;margin-top:2px}
 
-  /* Pantallas muy bajas: se oculta el subtítulo para que todo quepa */
-  @media (max-height: 600px){
-    .form-card > p.lead{ display:none; }
-    .form-card h2{ margin-bottom:10px; }
-  }
+    .field{margin-bottom:12px}
+    .field-input{height:48px}
+    .field-input input{font-size:16px} /* evita el zoom en iPhone */
 
-  /* Celulares muy pequeños */
-  @media (max-width: 360px){
-    .form-card{ padding:16px 14px 14px; }
-    .row-between{ justify-content:flex-start; }
-  }
+    .block{background:transparent;border:0;padding:0;margin:0}
+    .block-title{display:none}
+    .block .field-input{background:var(--campo)}
+    .tipo{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:16px}
+    .opt-in{flex-direction:column;gap:5px;padding:12px 6px;border-radius:16px;font-size:13.5px;text-align:center}
+    .opt-in svg{display:block}
+    .opt input:checked + .opt-in{box-shadow:0 10px 20px rgba(30,102,245,.32)}
+    .opt input:checked + .opt-in::after{
+      content:"✓";position:absolute;top:6px;right:6px;width:19px;height:19px;border-radius:50%;
+      background:#fff;color:var(--azul-medio);font-size:12px;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+    }
+    #tipoField{margin-bottom:12px}
 
-  /* Celulares girados (horizontal): tarjeta alineada arriba con scroll */
-  @media (max-width: 880px) and (max-height: 520px){
-    .form-panel{ align-items:flex-start; }
-    .card-logo{ width:64px; margin-bottom:4px; }
+    .actions{
+      position:fixed;left:0;right:0;bottom:0;z-index:5;background:#fff;margin:0;
+      border-top:1px solid var(--borde);box-shadow:0 -10px 24px rgba(6,43,91,.08);
+      padding:12px 22px calc(16px + env(safe-area-inset-bottom,0px));
+    }
+    .actions-in{display:block;max-width:480px;margin:0 auto}
+    .btn-primary{width:100%}
+    .signup-line{margin-top:11px;font-size:14px}
   }
-
-  /* ---- Ajustes propios del registro (tiene 4 campos, así que es más compacto) ---- */
-  .btn-primary{ margin-top:clamp(2px,.8vh,6px); }
-
-  /* Pantallas bajas: se oculta el subtítulo para que todo quepa sin deslizar */
-  @media (max-height: 620px){
-    .form-card > p.lead{ display:none; }
-    .form-card h2{ margin-bottom:8px; }
+  @media (max-width:1000px) and (max-height:700px){
+    .step-intro{margin-bottom:12px}
+    .field{margin-bottom:9px}
+    .field-input{height:44px}
+    .layout{padding-top:16px}
   }
-  /* Pantallas muy bajas: el logo se reduce aún más */
-  @media (max-height: 540px){
-    .card-logo{ width:46px; margin-bottom:2px; }
+  @media (prefers-reduced-motion:reduce){
+    .bubble,.card,.step{animation:none!important}
+    *{transition:none!important}
   }
 </style>
 </head>
 <body>
 
-<div class="layout">
+<!-- Encabezado con pasos (solo celular) -->
+<header class="wiz-head" id="wizHead">
+  <div class="wh-top">
+    <button type="button" class="wh-back" id="wizBack" aria-label="Volver">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="wh-title"><b>Crear cuenta</b><span id="wizCount">Paso 1 de 3</span></div>
+    <div class="brand-badge"><img src="logo-emblema.png" alt="Deep Sea"></div>
+  </div>
+  <div class="wh-progress" id="wizProgress" aria-hidden="true"><i></i><i></i><i></i></div>
+</header>
 
-  <!-- PANEL IZQUIERDO -->
-  <section class="ocean-panel">
-    <div class="brand">
-      <div class="brand-badge">
-        <img src="logo-emblema.png" alt="Emblema Deep Sea Intelligence">
-      </div>
-      <div>
-        <div class="brand-name">Deep Sea <span>Intelligence</span></div>
-        <div class="brand-tag">Gestión inteligente de recursos marinos</div>
-      </div>
-    </div>
+<div class="page">
 
-    <div class="ocean-copy">
-      <h1>Únete y empieza<br>a controlar tus productos.</h1>
-      <p>Crea tu cuenta para registrar productos, controlar la calidad, gestionar el almacenamiento y llevar tus ventas al día.</p>
-
-      <div class="stat-row">
-        <div><strong>+320</strong><span>Productos activos</span></div>
-        <div><strong>98.5%</strong><span>Disponibilidad</span></div>
-        <div><strong>24/7</strong><span>Monitoreo</span></div>
-      </div>
-    </div>
-
-    <svg class="waves" viewBox="0 0 600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 90 Q 75 60 150 90 T 300 90 T 450 90 T 600 90 V180 H0 Z" fill="rgba(255,255,255,.06)"/>
-      <path d="M0 120 Q 75 95 150 120 T 300 120 T 450 120 T 600 120 V180 H0 Z" fill="rgba(255,255,255,.09)"/>
-      <g class="fish-drift">
-        <path d="M480 40 q14 -10 26 0 q-6 8 -13 8 q-7 0 -13 -8z" fill="rgba(255,215,106,.6)"/>
-      </g>
+  <!-- FONDO OCÉANO (computador) -->
+  <div class="bg" aria-hidden="true">
+    <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span>
+    <span class="bubble b4"></span><span class="bubble b5"></span><span class="bubble b6"></span>
+    <span class="bubble b7"></span>
+    <svg class="waves" viewBox="0 0 1440 220" preserveAspectRatio="none">
+      <path d="M0 120C200 70 380 190 640 130S1100 60 1440 120V220H0z" fill="rgba(255,255,255,.07)"/>
+      <path d="M0 160C260 120 480 210 760 160S1200 120 1440 165V220H0z" fill="rgba(255,255,255,.08)"/>
     </svg>
-  </section>
+  </div>
 
-    <!-- PANEL DERECHO -->
-  <section class="form-panel">
-    <div class="form-card">
+  <div class="layout">
 
-      <!-- Logo oficial de Deep Sea -->
-      <img class="card-logo" src="logo.png" alt="Deep Sea — Gestión inteligente de recursos marinos" width="200" height="214">
+    <!-- PANEL IZQUIERDO (computador) -->
+    <section class="copy">
+      <div class="brand">
+        <div class="brand-badge"><img src="logo-emblema.png" alt="Emblema Deep Sea Intelligence"></div>
+        <div>
+          <div class="brand-name">Deep <span>Sea</span> Intelligence</div>
+          <div class="brand-tag">Gestión inteligente de recursos marinos</div>
+        </div>
+      </div>
+      <h1>Únete y empieza<br><em>a controlar tus productos.</em></h1>
+      <p>Crea tu cuenta para registrar productos, controlar la calidad, gestionar el almacenamiento y llevar tus ventas al día.</p>
+      <div class="stats">
+        <div class="stat"><strong>+320</strong><span>Productos activos</span></div>
+        <div class="stat"><strong>98.5%</strong><span>Disponibilidad</span></div>
+        <div class="stat"><strong>24/7</strong><span>Monitoreo</span></div>
+      </div>
+    </section>
 
-      <h2>Crea tu cuenta</h2>
-      <p class="lead">Completa tus datos para empezar a usar el sistema.</p>
+    <!-- TARJETA -->
+    <section class="card">
+      <div class="card-bar"></div>
+      <h2 class="desk-title">Crea tu cuenta</h2>
+      <p class="lead">Completa tus datos en 3 pasos sencillos.</p>
+
+      <!-- Indicador de pasos (computador) -->
+      <div class="dsteps" id="dSteps">
+        <div class="ds on" data-i="1"><span class="dn">1</span><span class="dl">Tus datos</span></div>
+        <div class="dline"></div>
+        <div class="ds" data-i="2"><span class="dn">2</span><span class="dl">Establecimiento</span></div>
+        <div class="dline"></div>
+        <div class="ds" data-i="3"><span class="dn">3</span><span class="dl">Contraseña</span></div>
+      </div>
 
       <form id="registerForm" novalidate>
 
-        <div class="field" id="nameField">
-          <label for="name">Nombre completo</label>
-          <div class="field-input">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="1.6"/></svg>
-            <input type="text" id="name" placeholder="Tu nombre completo" autocomplete="name" maxlength="80">
+        <!-- PASO 1: datos personales -->
+        <section class="step" data-step="1">
+          <div class="step-intro">
+            <div class="si-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></div>
+            <div><h3>Tus datos</h3><p>Cuéntanos quién eres</p></div>
           </div>
-          <div class="field-error">Ingresa tu nombre completo.</div>
-        </div>
+          <div class="grid2">
+            <div class="field g-n" id="nameField">
+              <label class="lbl" for="name">Nombre completo</label>
+              <div class="field-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+                <input type="text" id="name" placeholder="Tu nombre completo" autocomplete="name" maxlength="80">
+              </div>
+              <div class="field-error">Ingresa tu nombre completo.</div>
+            </div>
 
-        <div class="field" id="emailField">
-          <label for="email">Correo electrónico</label>
-          <div class="field-input">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18v12H3z" stroke="currentColor" stroke-width="1.6"/><path d="m3 7 9 6 9-6" stroke="currentColor" stroke-width="1.6"/></svg>
-            <input type="email" id="email" placeholder="ejemplo@correo.com" autocomplete="email" maxlength="120">
+            <div class="field g-p" id="phoneField">
+              <label class="lbl" for="phone">Teléfono <span class="opc">(opcional)</span></label>
+              <div class="field-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+                <input type="tel" id="phone" placeholder="+57 300 000 0000" autocomplete="tel" inputmode="tel" maxlength="20">
+              </div>
+              <div class="field-error">Ingresa un teléfono válido.</div>
+            </div>
+
+            <div class="field g-e" id="emailField">
+              <label class="lbl" for="email">Correo electrónico</label>
+              <div class="field-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                <input type="email" id="email" placeholder="ejemplo@correo.com" autocomplete="email" inputmode="email" maxlength="120">
+              </div>
+              <div class="field-error">Ingresa un correo electrónico válido.</div>
+            </div>
           </div>
-          <div class="field-error">Ingresa un correo electrónico válido.</div>
-        </div>
+        </section>
 
-        <div class="field" id="passField">
-          <label for="password">Contraseña</label>
-          <div class="field-input">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
-            <input type="password" id="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
-            <button type="button" class="toggle-pass" id="togglePass" aria-label="Mostrar contraseña">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+        <!-- PASO 2: establecimiento -->
+        <section class="step" data-step="2">
+          <div class="step-intro">
+            <div class="si-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9h16v2a3 3 0 0 1-5.3 1.9A3 3 0 0 1 12 14a3 3 0 0 1-2.7-1.1A3 3 0 0 1 4 11z"/><path d="M5 14v6h14v-6"/></svg></div>
+            <div><h3>Tu establecimiento</h3><p>Dinos qué tipo de negocio tienes</p></div>
+          </div>
+          <div class="block">
+            <div class="block-title">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9h16v2a3 3 0 0 1-5.3 1.9A3 3 0 0 1 12 14a3 3 0 0 1-2.7-1.1A3 3 0 0 1 4 11z"/><path d="M5 14v6h14v-6"/></svg>
+              TU ESTABLECIMIENTO
+            </div>
+
+            <div class="field" id="tipoField">
+              <span class="lbl" style="display:block;font-size:13px;font-weight:700;color:var(--texto-3);margin-bottom:8px">Tipo de establecimiento</span>
+              <div class="tipo" role="radiogroup" aria-label="Tipo de establecimiento">
+                <label class="opt"><input type="radio" name="tipo" value="Restaurante"><span class="opt-in"><svg viewBox="0 0 24 24"><path d="M6 3v8a2 2 0 0 0 2 2v8M10 3v8M8 3v18M17 21V3c-2 2-3 5-3 8h3"/></svg>Restaurante</span></label>
+                <label class="opt"><input type="radio" name="tipo" value="Hotel"><span class="opt-in"><svg viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16M15 10h4a1 1 0 0 1 1 1v10M3 21h18M8 8h3M8 12h3M8 16h3"/></svg>Hotel</span></label>
+                <label class="opt"><input type="radio" name="tipo" value="Supermercado"><span class="opt-in"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6"/></svg>Supermercado</span></label>
+                <label class="opt"><input type="radio" name="tipo" value="Pescadería"><span class="opt-in"><svg viewBox="0 0 24 24"><path d="M3 12c3-5 8-6 12-4l4-3v14l-4-3c-4 2-9 1-12-4z"/><circle cx="9" cy="11" r=".8"/></svg>Pescadería</span></label>
+                <label class="opt"><input type="radio" name="tipo" value="Distribuidor"><span class="opt-in"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="12" height="10" rx="1"/><path d="M14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>Distribuidor</span></label>
+                <label class="opt"><input type="radio" name="tipo" value="Otro"><span class="opt-in"><svg viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9h16v2a3 3 0 0 1-5.3 1.9A3 3 0 0 1 12 14a3 3 0 0 1-2.7-1.1A3 3 0 0 1 4 11z"/><path d="M5 14v6h14v-6"/></svg>Otro</span></label>
+              </div>
+              <div class="field-error">Elige el tipo de establecimiento.</div>
+            </div>
+
+            <div class="field" id="negocioField">
+              <label class="lbl" for="negocio">Nombre del establecimiento</label>
+              <div class="field-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9h16v2a3 3 0 0 1-5.3 1.9A3 3 0 0 1 12 14a3 3 0 0 1-2.7-1.1A3 3 0 0 1 4 11z"/><path d="M5 14v6h14v-6"/></svg>
+                <input type="text" id="negocio" placeholder="Ej: Restaurante El Faro" autocomplete="organization" maxlength="80">
+              </div>
+              <div class="field-error">Ingresa el nombre de tu establecimiento.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PASO 3: contraseña -->
+        <section class="step" data-step="3">
+          <div class="step-intro">
+            <div class="si-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+            <div><h3>Crea tu contraseña</h3><p>Último paso para terminar</p></div>
+          </div>
+          <div class="grid2 row-pass" style="grid-template-areas:none">
+            <div class="field" id="passField">
+              <label class="lbl" for="password">Contraseña</label>
+              <div class="field-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                <input type="password" id="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                <button type="button" class="toggle-pass" id="togglePass" aria-label="Mostrar contraseña">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              <div class="field-error">La contraseña debe tener al menos 6 caracteres.</div>
+            </div>
+
+            <div class="field" id="confirmField">
+              <label class="lbl" for="confirmPassword">Confirmar contraseña</label>
+              <div class="field-input">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                <input type="password" id="confirmPassword" placeholder="Repite tu contraseña" autocomplete="new-password">
+              </div>
+              <div class="field-error">Las contraseñas no coinciden.</div>
+            </div>
+          </div>
+
+          <div class="strength" id="strength" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <div class="strength-label" id="strengthLabel"></div>
+          <div class="reqs">
+            <div class="req" id="reqLen"><span class="ck">✓</span>Mínimo 6 caracteres</div>
+            <div class="req" id="reqMatch"><span class="ck">✓</span>Las dos contraseñas coinciden</div>
+          </div>
+        </section>
+
+        <!-- Botones -->
+        <div class="actions">
+          <div class="actions-in">
+            <button type="button" class="btn-back" id="btnBack" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+              Atrás
+            </button>
+            <button type="submit" class="btn-primary" id="submitBtn">
+              <span id="submitLabel">Siguiente</span>
+              <svg class="arrow" id="submitArrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </button>
           </div>
-          <div class="field-error">La contraseña debe tener al menos 6 caracteres.</div>
+          <p class="signup-line">¿Ya tienes cuenta? <a href="login.html" class="link-muted">Inicia sesión</a></p>
         </div>
-
-        <div class="field" id="confirmField">
-          <label for="confirmPassword">Confirmar contraseña</label>
-          <div class="field-input">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <input type="password" id="confirmPassword" placeholder="Repite tu contraseña" autocomplete="new-password">
-          </div>
-          <div class="field-error">Las contraseñas no coinciden.</div>
-        </div>
-
-        <button type="submit" class="btn-primary" id="submitBtn">
-          <span id="submitLabel">Crear cuenta</span>
-        </button>
       </form>
+    </section>
 
-      <p class="signup-line">¿Ya tienes cuenta? <a href="login.html" class="link-muted">Inicia sesión</a></p>
-    </div>
-  </section>
-
+  </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- SDK de Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -566,22 +504,43 @@
   const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>
-
 <script>
 (function(){
   const form         = document.getElementById('registerForm');
   const nameField    = document.getElementById('nameField');
+  const phoneField   = document.getElementById('phoneField');
   const emailField   = document.getElementById('emailField');
+  const tipoField    = document.getElementById('tipoField');
+  const negocioField = document.getElementById('negocioField');
   const passField    = document.getElementById('passField');
   const confirmField = document.getElementById('confirmField');
   const nameInput    = document.getElementById('name');
+  const phoneInput   = document.getElementById('phone');
   const emailInput   = document.getElementById('email');
+  const negocioInput = document.getElementById('negocio');
   const passInput    = document.getElementById('password');
   const confirmInput = document.getElementById('confirmPassword');
   const togglePass   = document.getElementById('togglePass');
   const submitBtn    = document.getElementById('submitBtn');
   const submitLabel  = document.getElementById('submitLabel');
+  const submitArrow  = document.getElementById('submitArrow');
+  const btnBack      = document.getElementById('btnBack');
   const toast        = document.getElementById('toast');
+  const steps        = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  const wizCount     = document.getElementById('wizCount');
+  const wizBars      = document.querySelectorAll('#wizProgress i');
+  const wizBack      = document.getElementById('wizBack');
+  const dItems       = Array.prototype.slice.call(document.querySelectorAll('#dSteps .ds'));
+  const dLines       = Array.prototype.slice.call(document.querySelectorAll('#dSteps .dline'));
+  const strengthBars = document.querySelectorAll('#strength i');
+  const strengthLbl  = document.getElementById('strengthLabel');
+  const reqLen       = document.getElementById('reqLen');
+  const reqMatch     = document.getElementById('reqMatch');
+
+  const TIPOS = ['Restaurante','Hotel','Supermercado','Pescadería','Distribuidor','Otro'];
+  const mq = window.matchMedia('(max-width: 1000px)');
+  let current = 1;     // paso actual (computador y celular)
+  let loading = false;
 
   function showToast(message, type){
     toast.textContent = message;
@@ -593,18 +552,85 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  // VALIDACIÓN AGREGADA: el nombre solo admite letras (con tildes y ñ),
-  // espacios, apóstrofes, puntos y guiones. Evita nombres como "123" o "@@".
+  // El nombre solo admite letras (con tildes y ñ), espacios, apóstrofes, puntos y guiones.
   function isValidName(value){
     return /^\p{L}[\p{L}\s'.-]+$/u.test(value);
   }
 
-  // Marca un campo en rojo y, si se indica, cambia el mensaje de error
+  // Nombre del negocio: letras, números y signos comunes (& . , # ' -)
+  function isValidBusiness(value){
+    return /^[\p{L}\p{N}][\p{L}\p{N}\s'&.,#-]{1,79}$/u.test(value);
+  }
+
+  // Teléfono opcional: 7 a 15 dígitos, puede llevar +, espacios, paréntesis y guiones
+  function isValidPhone(value){
+    if (!/^\+?[\d\s()-]+$/.test(value)) return false;
+    const digits = value.replace(/\D/g, '');
+    return digits.length >= 7 && digits.length <= 15;
+  }
+
   function setInvalid(field, message){
     field.classList.add('invalid');
     if (message) field.querySelector('.field-error').textContent = message;
   }
 
+  function selectedTipo(){
+    const r = form.querySelector('input[name="tipo"]:checked');
+    return r ? r.value : '';
+  }
+
+  /* ---------- Pasos (computador y celular) ---------- */
+  function render(){
+    steps.forEach(function(s){
+      s.hidden = Number(s.dataset.step) !== current;
+    });
+    // Celular
+    wizCount.textContent = 'Paso ' + current + ' de 3';
+    wizBars.forEach(function(b, i){ b.classList.toggle('on', i < current); });
+    // Computador
+    dItems.forEach(function(it, i){
+      const n = i + 1;
+      it.classList.toggle('on', n === current);
+      it.classList.toggle('done', n < current);
+      it.querySelector('.dn').textContent = n < current ? '✓' : String(n);
+    });
+    dLines.forEach(function(l, i){ l.classList.toggle('done', i + 1 < current); });
+    btnBack.hidden = current === 1;
+
+    const siguiente = current < 3;
+    submitLabel.textContent = loading ? 'Creando cuenta...' : (siguiente ? 'Siguiente' : 'Crear cuenta');
+    submitArrow.classList.toggle('show', siguiente && !loading);
+  }
+
+  function goTo(step, focus){
+    current = step;
+    render();
+    if (focus){
+      const first = steps[current - 1].querySelector('input:not([type="radio"])');
+      if (first) first.focus({ preventScroll: true });
+      if (mq.matches) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  mq.addEventListener ? mq.addEventListener('change', render) : mq.addListener(render);
+
+  wizBack.addEventListener('click', function(){
+    if (current > 1) goTo(current - 1, false);
+    else window.location.href = 'login.html';
+  });
+
+  btnBack.addEventListener('click', function(){
+    if (!loading && current > 1) goTo(current - 1, true);
+  });
+
+  // En computador se puede volver a un paso ya completado haciendo clic en el indicador
+  dItems.forEach(function(it, i){
+    it.addEventListener('click', function(){
+      if (!loading && (i + 1) < current) goTo(i + 1, true);
+    });
+  });
+
+  /* ---------- Contraseña ---------- */
   togglePass.addEventListener('click', function(){
     const isPassword = passInput.type === 'password';
     passInput.type = isPassword ? 'text' : 'password';
@@ -612,22 +638,73 @@
     togglePass.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
   });
 
-  [nameField, emailField, passField, confirmField].forEach(function(field){
-    const input = field.querySelector('input');
-    input.addEventListener('input', () => field.classList.remove('invalid'));
+  function strengthScore(p){
+    if (!p) return 0;
+    let s = 0;
+    if (p.length >= 6) s++;
+    if (p.length >= 10) s++;
+    if (/[a-z]/i.test(p) && /\d/.test(p)) s++;
+    if (/[A-Z]/.test(p) && /[^A-Za-z0-9]/.test(p)) s++;
+    return Math.max(s, p.length >= 1 ? 1 : 0);
+  }
+  function updateStrength(){
+    const p = passInput.value;
+    const sc = strengthScore(p);
+    const colors = ['#E53935','#F5A524','#17A673','#17A673'];
+    const labels = ['', 'Débil', 'Media', 'Segura', 'Muy segura'];
+    strengthBars.forEach(function(b, i){
+      b.style.background = i < sc ? colors[sc - 1] : '';
+    });
+    strengthLbl.textContent = p ? labels[sc] : '';
+    strengthLbl.style.color = p ? colors[sc - 1] : '';
+    reqLen.classList.toggle('ok', p.length >= 6);
+    reqMatch.classList.toggle('ok', p.length > 0 && p === confirmInput.value);
+  }
+  passInput.addEventListener('input', updateStrength);
+  confirmInput.addEventListener('input', updateStrength);
+
+  // Al escribir se quita el aviso rojo del campo
+  [[nameField, nameInput],[phoneField, phoneInput],[emailField, emailInput],
+   [negocioField, negocioInput],[passField, passInput],[confirmField, confirmInput]
+  ].forEach(function(par){
+    par[1].addEventListener('input', function(){ par[0].classList.remove('invalid'); });
+  });
+  form.querySelectorAll('input[name="tipo"]').forEach(function(r){
+    r.addEventListener('change', function(){ tipoField.classList.remove('invalid'); });
   });
 
-  function startLoading(){
-    submitBtn.disabled = true;
-    submitLabel.textContent = 'Creando cuenta...';
-  }
-  function stopLoading(){
-    submitBtn.disabled = false;
-    submitLabel.textContent = 'Crear cuenta';
+  /* ---------- Validación por paso ---------- */
+  function validateStep(n){
+    let ok = true;
+    if (n === 1){
+      const fullName = nameInput.value.trim().replace(/\s+/g, ' ');
+      const email = emailInput.value.trim().toLowerCase();
+      const phone = phoneInput.value.trim();
+      if (!isValidName(fullName)) { setInvalid(nameField, 'Ingresa tu nombre completo (solo letras y espacios).'); ok = false; }
+      if (!isValidEmail(email))   { setInvalid(emailField, 'Ingresa un correo electrónico válido.'); ok = false; }
+      if (phone && !isValidPhone(phone)) { setInvalid(phoneField, 'Ingresa un teléfono válido (7 a 15 números).'); ok = false; }
+    }
+    if (n === 2){
+      if (TIPOS.indexOf(selectedTipo()) === -1) { setInvalid(tipoField, 'Elige el tipo de establecimiento.'); ok = false; }
+      const negocio = negocioInput.value.trim().replace(/\s+/g, ' ');
+      if (!isValidBusiness(negocio)) { setInvalid(negocioField, 'Ingresa el nombre de tu establecimiento.'); ok = false; }
+    }
+    if (n === 3){
+      const pass = passInput.value;
+      // La contraseña no puede empezar/terminar con espacios (el login las recorta)
+      // ni pasar de 72 caracteres (límite real de Supabase).
+      if (pass.length < 6) { setInvalid(passField, 'La contraseña debe tener al menos 6 caracteres.'); ok = false; }
+      else if (pass !== pass.trim()) { setInvalid(passField, 'La contraseña no puede empezar ni terminar con espacios.'); ok = false; }
+      else if (pass.length > 72) { setInvalid(passField, 'La contraseña no puede superar los 72 caracteres.'); ok = false; }
+      if (confirmInput.value.length === 0 || confirmInput.value !== pass) { setInvalid(confirmField, 'Las contraseñas no coinciden.'); ok = false; }
+    }
+    return ok;
   }
 
-  // VALIDACIÓN AGREGADA: traduce los errores de Supabase (vienen en inglés)
-  // a mensajes claros y no muestra textos técnicos al usuario.
+  function startLoading(){ loading = true; submitBtn.disabled = true; btnBack.disabled = true; render(); }
+  function stopLoading(){ loading = false; submitBtn.disabled = false; btnBack.disabled = false; render(); }
+
+  // Traduce los errores de Supabase (vienen en inglés) a mensajes claros.
   function traducirError(error){
     const msg = (error.message || '').toLowerCase();
     if (error.code === 'user_already_exists' || msg.includes('already registered')) {
@@ -647,57 +724,49 @@
     return 'No se pudo crear la cuenta. Intenta de nuevo.';
   }
 
+  /* ---------- Envío ---------- */
   form.addEventListener('submit', async function(e){
     e.preventDefault();
-    let valid = true;
+    if (loading) return;
 
-    // Se limpian espacios repetidos del nombre: "Juan   Perez" -> "Juan Perez"
-    const fullName = nameInput.value.trim().replace(/\s+/g, ' ');
-    const email    = emailInput.value.trim().toLowerCase();
-    const pass     = passInput.value;
-
-    if (!isValidName(fullName)) {
-      setInvalid(nameField, 'Ingresa tu nombre completo (solo letras y espacios).');
-      valid = false;
-    }
-    if (!isValidEmail(email)) {
-      setInvalid(emailField, 'Ingresa un correo electrónico válido.');
-      valid = false;
+    // Los pasos 1 y 2 solo avanzan
+    if (current < 3){
+      if (validateStep(current)) { goTo(current + 1, true); }
+      else { showToast('Revisa los campos marcados en rojo.', 'error'); }
+      return;
     }
 
-    // VALIDACIÓN AGREGADA: la contraseña no puede empezar/terminar con espacios
-    // (el login las recorta, y la cuenta quedaría imposible de abrir) ni pasar
-    // de 72 caracteres (límite real de Supabase).
-    if (pass.length < 6) {
-      setInvalid(passField, 'La contraseña debe tener al menos 6 caracteres.');
-      valid = false;
-    } else if (pass !== pass.trim()) {
-      setInvalid(passField, 'La contraseña no puede empezar ni terminar con espacios.');
-      valid = false;
-    } else if (pass.length > 72) {
-      setInvalid(passField, 'La contraseña no puede superar los 72 caracteres.');
-      valid = false;
-    }
-
-    if (confirmInput.value.length === 0 || confirmInput.value !== pass) {
-      setInvalid(confirmField, 'Las contraseñas no coinciden.');
-      valid = false;
-    }
-
-    if (!valid) {
+    // Se validan todos los pasos (así se marcan todos los errores)
+    const resultados = [1, 2, 3].map(validateStep);
+    const primerError = resultados.indexOf(false);
+    if (primerError !== -1){
+      goTo(primerError + 1, false);
       showToast('Revisa los campos marcados en rojo.', 'error');
       return;
     }
 
+    const fullName = nameInput.value.trim().replace(/\s+/g, ' ');
+    const email    = emailInput.value.trim().toLowerCase();
+    const phone    = phoneInput.value.trim();
+    const tipo     = selectedTipo();
+    const negocio  = negocioInput.value.trim().replace(/\s+/g, ' ');
+    const pass     = passInput.value;
+
     startLoading();
 
-    // VALIDACIÓN AGREGADA: try/catch por si falla la conexión
+    // Los datos del perfil viajan como metadatos; un trigger en Supabase los guarda en "perfiles".
+    // El rol NO se envía desde aquí: lo asigna la base de datos.
     let result;
     try {
       result = await supabaseClient.auth.signUp({
         email: email,
         password: pass,
-        options: { data: { full_name: fullName } }
+        options: { data: {
+          full_name: fullName,
+          telefono: phone,
+          tipo_establecimiento: tipo,
+          nombre_establecimiento: negocio
+        } }
       });
     } catch (err) {
       stopLoading();
@@ -709,30 +778,35 @@
 
     if (error) {
       stopLoading();
-      showToast(traducirError(error), 'error');
+      const mensaje = traducirError(error);
+      if (emailField.classList.contains('invalid')) goTo(1, false);
+      showToast(mensaje, 'error');
       return;
     }
 
-    // VALIDACIÓN AGREGADA: si el correo ya existe y Supabase tiene "Confirm email"
-    // activado, NO devuelve error: responde "éxito" pero sin identidades.
-    // Sin esto, el usuario creería que se registró cuando en realidad no.
+    // Si el correo ya existe y Supabase tiene "Confirm email" activado, NO devuelve
+    // error: responde "éxito" pero sin identidades.
     if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
       stopLoading();
       setInvalid(emailField, 'Este correo ya está registrado.');
+      goTo(1, false);
       showToast('Ese correo ya tiene una cuenta. Inicia sesión.', 'error');
       return;
     }
 
-    // Si Supabase abrió sesión automáticamente (cuando "Confirm email" está
-    // desactivado), la cerramos para que el usuario pase por el inicio de sesión
-    // y no entre directo al sistema.
+    // Si Supabase abrió sesión automáticamente, la cerramos para que el usuario
+    // pase por el inicio de sesión y no entre directo al sistema.
     const sessionAbierta = !!data.session;
     if (sessionAbierta) {
       try { await supabaseClient.auth.signOut({ scope: 'local' }); } catch (err) { /* no bloquea */ }
     }
 
     // El botón queda bloqueado mientras se redirige (evita crear la cuenta dos veces)
+    loading = true;
+    submitBtn.disabled = true;
+    btnBack.disabled = true;
     submitLabel.textContent = 'Redirigiendo...';
+    submitArrow.classList.remove('show');
     showToast(
       sessionAbierta
         ? 'Cuenta creada correctamente. Ahora inicia sesión.'
@@ -741,6 +815,8 @@
     );
     setTimeout(() => { window.location.href = 'login.html'; }, 2000);
   });
+
+  render();
 })();
 </script>
 

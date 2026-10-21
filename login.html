@@ -3,492 +3,258 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#062B5B">
 <link rel="icon" type="image/png" href="logo-emblema.png">
 <title>Deep Sea Intelligence — Iniciar sesión</title>
 <style>
   :root{
+    --azul-noche:#031632;
     --azul-oscuro:#062B5B;
     --azul-medio:#1E66F5;
-    --azul-claro:#D9ECFF;
-    --verde-suave:#B9F5C5;
+    --azul-claro:#5CC0FF;
+    --celeste:#3FD0F2;
+    --fondo-claro:#E6F0FA;
+    --campo:#F5F9FE;
+    --borde:#D3E3F5;
+    --texto:#0F2540;
+    --texto-2:#5B7089;
+    --texto-3:#3D5573;
     --rojo:#E53935;
-    --naranja:#FFA94D;
-    --amarillo:#FFD76A;
-    --morado:#E7D7FF;
-    --gris-claro:#F3F5F9;
-    --blanco:#FFFFFF;
-    --texto-principal:#0F2540;
-    --texto-secundario:#5B7089;
-    --sombra: 0 18px 45px rgba(6,43,91,.18);
-    --radio: 18px;
+    --verde:#17A673;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;
+    color:var(--texto);
+    background:var(--fondo-claro);
+    -webkit-font-smoothing:antialiased;
   }
 
-  *{box-sizing:border-box;}
-
-  html,body{
-    margin:0;
-    padding:0;
-    height:100%;
-    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    color:var(--texto-principal);
-    background:var(--gris-claro);
-  }
-
-  .layout{
-    min-height:100vh;
-    min-height:100dvh;
-    display:grid;
-    grid-template-columns: 1.1fr 1fr;
-  }
-
-  /* ---------- PANEL IZQUIERDO (OCEANO) ---------- */
-  .ocean-panel{
-    position:relative;
+  /* ---------- FONDO (océano) ---------- */
+  .page{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden}
+  .bg{
+    position:absolute;inset:0;
+    background:linear-gradient(125deg,var(--azul-noche) 0%,#06306A 38%,#0B5FC4 72%,#2FC3F0 100%);
     overflow:hidden;
-    background:
-      radial-gradient(circle at 20% 15%, rgba(255,255,255,.10), transparent 40%),
-      linear-gradient(160deg, #041E40 0%, #062B5B 45%, #0A3E82 100%);
-    color:var(--blanco);
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    padding:clamp(32px,5vw,56px) clamp(32px,5vw,60px);
+  }
+  .bubble{
+    position:absolute;border-radius:50%;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.18);
+    animation:flotar 9s ease-in-out infinite;
+  }
+  .b1{left:4%;top:72%;width:90px;height:90px}
+  .b2{left:26%;top:84%;width:46px;height:46px;animation-delay:-3s}
+  .b3{left:10%;top:13%;width:34px;height:34px;animation-delay:-5s}
+  .b4{left:58%;top:8%;width:120px;height:120px;animation-delay:-2s}
+  .b5{right:4%;top:78%;width:150px;height:150px;animation-delay:-6s}
+  .b6{left:76%;top:5%;width:40px;height:40px;animation-delay:-4s}
+  .b7{left:48%;top:86%;width:70px;height:70px;animation-delay:-1s}
+  @keyframes flotar{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .waves{position:absolute;left:0;bottom:0;width:100%;height:220px}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    position:relative;z-index:1;
+    max-width:1320px;margin:0 auto;
+    min-height:100vh;min-height:100dvh;
+    padding:56px 72px;
+    display:flex;align-items:center;justify-content:space-between;gap:56px;
   }
 
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:14px;
-  }
-
-  /* Insignia blanca con el emblema del logo */
+  /* Panel izquierdo */
+  .copy{color:#fff;max-width:620px;flex:1}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:84px}
   .brand-badge{
-    flex:0 0 auto;
-    width:60px;height:60px;border-radius:16px;
-    background:var(--blanco);
-    padding:5px;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 8px 20px rgba(0,0,0,.25);
+    width:62px;height:62px;border-radius:18px;background:#fff;
+    display:flex;align-items:center;justify-content:center;flex:none;
+    box-shadow:0 8px 22px rgba(0,0,0,.3);
   }
-  .brand-badge img{
-    width:100%;height:100%;
-    object-fit:contain;
-    display:block;
+  .brand-badge img{width:46px;height:46px;display:block}
+  .brand-name{font-size:28px;font-weight:700;line-height:1}
+  .brand-name span{color:var(--azul-claro)}
+  .brand-tag{font-size:14px;color:#9CC8F2;margin-top:6px}
+  .copy h1{font-size:clamp(36px,4vw,52px);font-weight:700;line-height:1.08}
+  .copy h1 em{font-style:normal;color:#7FD6FF}
+  .copy p{font-size:18px;line-height:1.5;color:#CFE6FF;margin-top:22px;max-width:540px}
+  .stats{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
+  .stat{
+    padding:14px 18px;border-radius:18px;min-width:128px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   }
+  .stat strong{display:block;font-size:28px;line-height:1.1}
+  .stat span{font-size:13px;color:#D6EAFF}
 
-  .brand-name{
-    font-size:22px;
-    font-weight:700;
-    letter-spacing:.3px;
+  /* Tarjeta del formulario */
+  .card{
+    width:100%;max-width:470px;flex:none;
+    background:#fff;border-radius:28px;
+    padding:38px 38px 34px;
+    box-shadow:0 40px 80px rgba(2,16,42,.45);
+    animation:subir .6s ease both;
   }
-  .brand-name span{color:var(--amarillo);}
+  @keyframes subir{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .card-bar{width:54px;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--azul-medio),var(--celeste));margin-bottom:20px}
+  .card h2{font-size:30px;color:var(--azul-oscuro);line-height:1.15}
+  .lead{color:var(--texto-2);margin:6px 0 24px;font-size:15.5px}
 
-  .brand-tag{
-    font-size:12.5px;
-    color:rgba(255,255,255,.65);
-    margin-top:2px;
-  }
-
-  .ocean-copy{
-    max-width:430px;
-  }
-  .ocean-copy h1{
-    font-size:clamp(26px,2.6vw,34px);
-    line-height:1.25;
-    margin:0 0 14px;
-    font-weight:700;
-  }
-  .ocean-copy p{
-    font-size:15px;
-    line-height:1.6;
-    color:rgba(255,255,255,.72);
-    margin:0;
-  }
-
-  .stat-row{
-    display:flex;
-    gap:34px;
-    margin-top:34px;
-  }
-  .stat-row div{
-    border-left:2px solid rgba(255,255,255,.25);
-    padding-left:14px;
-  }
-  .stat-row strong{
-    display:block;
-    font-size:22px;
-  }
-  .stat-row span{
-    font-size:12px;
-    color:rgba(255,255,255,.6);
-  }
-
-  .waves{
-    position:absolute;
-    left:0; right:0; bottom:0;
-    height:180px;
-    opacity:.5;
-  }
-
-  .fish-drift{
-    position:absolute;
-    animation: drift 14s ease-in-out infinite;
-  }
-  @keyframes drift{
-    0%,100%{ transform: translate(0,0) rotate(0deg); }
-    50%{ transform: translate(18px,-10px) rotate(4deg); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .fish-drift{ animation:none; }
-  }
-
-  /* ---------- PANEL DERECHO (FORMULARIO) ---------- */
-  /* Fondo suave con degradado para que la tarjeta blanca resalte */
-  .form-panel{
-    position:relative;
-    z-index:2;                      /* queda por encima del panel oceano */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:clamp(12px,3vh,32px) 32px;
-    background:
-      radial-gradient(circle at 85% 10%, rgba(30,102,245,.10), transparent 45%),
-      linear-gradient(160deg, #EAF3FF 0%, var(--gris-claro) 100%);
-  }
-
-  /* TARJETA FLOTANTE */
-  .form-card{
-    position:relative;
-    width:100%;
-    max-width:410px;
-    background:var(--blanco);
-    border-radius:24px;
-    padding:clamp(18px,3vh,30px) clamp(24px,3vw,36px) clamp(16px,2.8vh,26px);
-    box-shadow:
-      0 30px 70px rgba(6,43,91,.22),
-      0 8px 20px rgba(6,43,91,.10);
-    border:1px solid rgba(6,43,91,.06);
-    overflow:visible;
-    animation: cardIn .6s ease both;
-    transition: transform .25s ease, box-shadow .25s ease;
-  }
-  @media (hover:hover){
-    .form-card:hover{
-      transform: translateY(-4px);
-      box-shadow:
-        0 38px 80px rgba(6,43,91,.26),
-        0 10px 24px rgba(6,43,91,.12);
-    }
-  }
-
-  /* Franja de color en la parte superior de la tarjeta */
-  .form-card::before{
-    content:"";
-    position:absolute;
-    top:0; left:0; right:0;
-    height:6px;
-    border-radius:24px 24px 0 0;
-    background:linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio), var(--amarillo));
-  }
-
-  /* Logo oficial de Deep Sea en la parte superior de la tarjeta.
-     Su ancho se adapta al tamaño de la pantalla. */
-  .card-logo{
-    display:block;
-    width:clamp(80px, 16vh, 140px);
-    height:auto;
-    margin:0 auto 6px;
-  }
-
-  @keyframes cardIn{
-    from{ opacity:0; transform: translateY(24px); }
-    to{ opacity:1; transform: translateY(0); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .form-card{ animation:none; transition:none; }
-    .form-card:hover{ transform:none; }
-  }
-
-  /* En pantallas grandes la tarjeta se monta un poco sobre el panel azul */
-  @media (min-width: 1100px){
-    .form-card{ margin-left:-60px; }
-  }
-
-  .form-card h2{
-    font-size:clamp(21px,3.4vh,25px);
-    margin:0 0 4px;
-    font-weight:700;
-    color:var(--azul-oscuro);
-    text-align:center;
-  }
-  .form-card > p.lead{
-    margin:0 0 clamp(10px,2.2vh,20px);
-    color:var(--texto-secundario);
-    font-size:14px;
-    text-align:center;
-  }
-
-  .field{
-    margin-bottom:clamp(8px,1.8vh,14px);
-  }
-  .field label{
-    display:block;
-    font-size:12.5px;
-    font-weight:600;
-    margin-bottom:5px;
-    color:var(--azul-oscuro);
-  }
+  /* Campos */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:13px;font-weight:700;color:var(--texto-3);margin-bottom:6px}
   .field-input{
-    position:relative;
-    display:flex;
-    align-items:center;
-    border:1.5px solid #DFE6ee;
-    border-radius:12px;
-    background:var(--gris-claro);
-    transition:border-color .15s, box-shadow .15s, background .15s;
+    height:48px;display:flex;align-items:center;gap:10px;
+    padding:0 14px;border-radius:14px;
+    background:var(--campo);border:1px solid var(--borde);
+    color:#7A90AB;transition:border-color .15s,box-shadow .15s,background .15s;
   }
   .field-input:focus-within{
-    border-color:var(--azul-medio);
-    background:var(--blanco);
-    box-shadow:0 0 0 4px rgba(30,102,245,.12);
+    background:#fff;border-color:var(--azul-medio);
+    box-shadow:0 0 0 4px rgba(30,102,245,.15);color:var(--azul-medio);
   }
-  .field-input svg{
-    flex:0 0 auto;
-    margin-left:14px;
-    color:var(--texto-secundario);
-  }
+  .field-input svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   .field-input input{
-    flex:1;
-    border:none;
-    background:transparent;
-    outline:none;
-    padding:10px 12px;
-    font-size:14.5px;
-    color:var(--texto-principal);
-    min-width:0;
+    flex:1;min-width:0;border:0;outline:0;background:transparent;
+    font:inherit;font-size:15px;color:var(--texto);
   }
-  .toggle-pass{
-    background:none;
-    border:none;
-    cursor:pointer;
-    color:var(--texto-secundario);
-    padding:0 14px;
-    min-width:46px;
-    min-height:46px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .toggle-pass:hover{ color:var(--azul-medio); }
+  .field-input input::placeholder{color:#8DA0B8}
+  .toggle-pass{border:0;background:transparent;color:#7A90AB;cursor:pointer;display:flex;padding:4px;border-radius:8px}
+  .toggle-pass:hover{color:var(--azul-medio)}
+  .field-error{display:none;font-size:12.5px;color:var(--rojo);margin-top:5px}
+  .field.invalid .field-input{border-color:var(--rojo);background:#FFF5F5;color:var(--rojo)}
+  .field.invalid .field-error{display:block}
 
-  .field-error{
-    display:none;
-    color:var(--rojo);
-    font-size:12px;
-    margin-top:3px;
-  }
-  .field.invalid .field-input{
-    border-color:var(--rojo);
-    background:#FFF4F3;
-  }
-  .field.invalid .field-error{
-    display:block;
-  }
-
-  .row-between{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px 16px;
-    align-items:center;
-    justify-content:space-between;
-    margin:0 0 clamp(10px,2vh,18px);
-    font-size:13px;
-  }
-  .checkbox-line{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--texto-secundario);
-    cursor:pointer;
-    user-select:none;
-  }
-  .checkbox-line input{
-    width:16px;height:16px;
-    accent-color:var(--azul-medio);
-  }
-  .link-muted{
-    color:var(--azul-medio);
-    text-decoration:none;
-    font-weight:600;
-  }
-  .link-muted:hover{ text-decoration:underline; }
+  .row-between{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:2px 0 18px;font-size:13.5px;color:var(--texto-3)}
+  .checkbox-line{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .checkbox-line input{width:17px;height:17px;accent-color:var(--azul-medio)}
+  .link-muted{color:var(--azul-medio);font-weight:700;text-decoration:none}
+  .link-muted:hover{text-decoration:underline}
 
   .btn-primary{
-    width:100%;
-    border:none;
-    border-radius:12px;
-    padding:11px;
-    min-height:44px;
-    background:var(--azul-oscuro);
-    color:var(--blanco);
-    font-size:15px;
-    font-weight:700;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    box-shadow:0 10px 22px rgba(6,43,91,.28);
-    transition:background .15s, transform .1s, box-shadow .15s;
+    width:100%;height:50px;border:0;border-radius:15px;cursor:pointer;
+    font:inherit;font-size:16px;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,#1E66F5,#3FA9FF);
+    box-shadow:0 10px 22px rgba(30,102,245,.35);
+    transition:transform .12s,box-shadow .12s,filter .12s;
   }
-  .btn-primary:hover{ background:var(--azul-medio); box-shadow:0 12px 26px rgba(30,102,245,.35); }
-  .btn-primary:active{ transform: scale(.98); }
-  .btn-primary:disabled{
-    opacity:.65;
-    cursor:not-allowed;
-  }
+  .btn-primary:hover{filter:brightness(1.06);box-shadow:0 14px 28px rgba(30,102,245,.42)}
+  .btn-primary:active{transform:scale(.98)}
+  .btn-primary:disabled{opacity:.7;cursor:wait}
+  .signup-line{text-align:center;margin-top:18px;font-size:14.5px;color:var(--texto-2)}
 
-  .signup-line{
-    text-align:center;
-    margin:clamp(10px,2.2vh,20px) 0 0;
-    padding-top:clamp(8px,1.8vh,14px);
-    border-top:1px solid var(--gris-claro);
-    font-size:13.5px;
-    color:var(--texto-secundario);
-  }
-
+  /* Aviso (toast) */
   .toast{
-    position:fixed;
-    top:22px;
-    right:22px;
-    background:var(--azul-oscuro);
-    color:#fff;
-    padding:14px 20px;
-    border-radius:12px;
-    font-size:14px;
-    box-shadow:var(--sombra);
-    display:flex;
-    align-items:center;
-    gap:10px;
-    transform: translateY(-140%);
-    opacity:0;
-    transition: transform .35s ease, opacity .35s ease;
-    z-index:50;
-    max-width:calc(100vw - 24px);
+    position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);
+    max-width:calc(100% - 32px);padding:13px 20px;border-radius:14px;
+    background:var(--azul-oscuro);color:#fff;font-size:14.5px;font-weight:600;
+    box-shadow:0 14px 30px rgba(2,16,42,.4);
+    opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:20;
   }
-  .toast.show{ transform: translateY(0); opacity:1; }
-  .toast.error{ background:var(--rojo); }
-  .toast.success{ background:#1B8A5A; }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .toast.error{background:#C62828}
+  .toast.success{background:#12804F}
 
-  /* ============================================================
-     RESPONSIVE (se adapta a cualquier dispositivo)
-     ============================================================ */
-
-  /* Pantallas muy grandes */
-  @media (min-width: 1600px){
-    .form-card{ max-width:480px; }
-  }
-
-  /* Laptops con poca altura: compacta el panel izquierdo */
-  @media (min-width: 881px) and (max-height: 700px){
-    .ocean-panel{ padding-top:28px; padding-bottom:28px; }
-    .ocean-copy h1{ font-size:26px; }
-    .stat-row{ margin-top:20px; }
-    .form-panel{ padding-top:24px; padding-bottom:24px; }
-  }
-
-  /* Tablets verticales y celulares:
-     se oculta el panel izquierdo y toda la pantalla toma el fondo oceano,
-     así la tarjeta blanca resalta como flotando sobre el mar. */
-  @media (max-width: 880px){
-    .layout{ grid-template-columns: 1fr; }
-    .ocean-panel{ display:none; }
-    .form-panel{
-      padding:
-        max(14px, env(safe-area-inset-top))
-        max(20px, env(safe-area-inset-right))
-        max(14px, env(safe-area-inset-bottom))
-        max(20px, env(safe-area-inset-left));
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255,255,255,.12), transparent 45%),
-        linear-gradient(160deg, #041E40 0%, #062B5B 45%, #0A3E82 100%);
+  /* ---------- TABLET / CELULAR ---------- */
+  @media (max-width:1000px){
+    .page{background:var(--fondo-claro)}
+    .bg{
+      inset:0 0 auto 0;height:318px;
+      border-radius:0 0 44px 44px;
     }
-    .form-card{ max-width:460px; }
-    /* 16px evita que iPhone haga zoom automático al tocar un campo */
-    .field-input input{ font-size:16px; }
-    .toast{ top:max(12px, env(safe-area-inset-top)); right:12px; left:12px; max-width:none; justify-content:center; }
+    .waves{height:60px}
+    .bubble{display:none}
+    .b4,.b3,.b6{display:block}
+    .b4{left:auto;right:6%;top:54px;width:64px;height:64px}
+    .b3{left:7%;top:150px;width:26px;height:26px}
+    .b6{left:auto;right:8%;top:190px;width:34px;height:34px}
+
+    .layout{
+      flex-direction:column;justify-content:flex-start;align-items:center;gap:0;
+      padding:calc(env(safe-area-inset-top,0px) + 34px) 18px 28px;
+    }
+    .copy{max-width:none;width:100%;flex:none;text-align:center}
+    .brand{flex-direction:column;gap:12px;margin-bottom:0;height:226px;justify-content:flex-start}
+    .brand-badge{width:84px;height:84px;border-radius:26px;box-shadow:0 14px 30px rgba(0,0,0,.35)}
+    .brand-badge img{width:64px;height:64px}
+    .brand-name{font-size:27px}
+    .brand-tag{font-size:13px;margin-top:6px}
+    .copy h1,.copy p,.stats{display:none}
+
+    .card{max-width:440px;margin-top:-62px;padding:22px 22px 20px;border-radius:28px;box-shadow:0 22px 44px rgba(6,43,91,.22)}
+    .card-bar{display:none}
+    .card h2{font-size:23px}
+    .lead{font-size:13.5px;margin:2px 0 16px}
+    .field-input input{font-size:16px} /* evita el zoom en iPhone */
+    .signup-line{font-size:14.5px;color:var(--texto-3);margin-top:16px}
   }
 
-  /* Celulares */
-  @media (max-width: 480px){
-    .form-panel{ padding-left:14px; padding-right:14px; }
-    .form-card{ padding:18px 18px 16px; border-radius:20px; }
-    .form-card::before{ border-radius:20px 20px 0 0; }
-    .form-card > p.lead{ font-size:13.5px; }
+  /* Pantallas bajitas: compactar para no tener que deslizar */
+  @media (max-width:1000px) and (max-height:720px){
+    .bg{height:250px}
+    .layout{padding-top:calc(env(safe-area-inset-top,0px) + 18px)}
+    .brand{height:178px}
+    .brand-badge{width:64px;height:64px;border-radius:20px}
+    .brand-badge img{width:48px;height:48px}
+    .brand-name{font-size:23px}
+    .card{margin-top:-50px;padding:18px 20px 16px}
+    .lead{margin-bottom:12px}
+    .field{margin-bottom:10px}
+    .field-input{height:44px}
+    .row-between{margin-bottom:12px}
+    .btn-primary{height:46px}
+    .signup-line{margin-top:12px}
   }
 
-  /* Pantallas muy bajas: se oculta el subtítulo para que todo quepa */
-  @media (max-height: 600px){
-    .form-card > p.lead{ display:none; }
-    .form-card h2{ margin-bottom:10px; }
-  }
-
-  /* Celulares muy pequeños */
-  @media (max-width: 360px){
-    .form-card{ padding:16px 14px 14px; }
-    .row-between{ justify-content:flex-start; }
-  }
-
-  /* Celulares girados (horizontal): tarjeta alineada arriba con scroll */
-  @media (max-width: 880px) and (max-height: 520px){
-    .form-panel{ align-items:flex-start; }
-    .card-logo{ width:64px; margin-bottom:4px; }
+  @media (prefers-reduced-motion:reduce){
+    .bubble,.card{animation:none}
+    *{transition:none!important}
   }
 </style>
 </head>
 <body>
 
-<div class="layout">
+<div class="page">
 
-  <!-- PANEL IZQUIERDO -->
-  <section class="ocean-panel">
-    <div class="brand">
-      <div class="brand-badge">
-        <img src="logo-emblema.png" alt="Emblema Deep Sea Intelligence">
-      </div>
-      <div>
-        <div class="brand-name">Deep Sea <span>Intelligence</span></div>
-        <div class="brand-tag">Gestión inteligente de recursos marinos</div>
-      </div>
-    </div>
+  <!-- FONDO OCÉANO -->
+  <div class="bg" aria-hidden="true">
+    <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span>
+    <span class="bubble b4"></span><span class="bubble b5"></span><span class="bubble b6"></span>
+    <span class="bubble b7"></span>
+    <svg class="waves" viewBox="0 0 1440 220" preserveAspectRatio="none">
+      <path d="M0 120C200 70 380 190 640 130S1100 60 1440 120V220H0z" fill="rgba(255,255,255,.07)"/>
+      <path d="M0 160C260 120 480 210 760 160S1200 120 1440 165V220H0z" fill="rgba(255,255,255,.08)"/>
+    </svg>
+  </div>
 
-    <div class="ocean-copy">
-      <h1>Trazabilidad completa,<br>desde la captura hasta la venta.</h1>
+  <div class="layout">
+
+    <!-- PANEL IZQUIERDO: marca + mensaje -->
+    <section class="copy">
+      <div class="brand">
+        <div class="brand-badge">
+          <img src="logo-emblema.png" alt="Emblema Deep Sea Intelligence">
+        </div>
+        <div>
+          <div class="brand-name">Deep <span>Sea</span> Intelligence</div>
+          <div class="brand-tag">Gestión inteligente de recursos marinos</div>
+        </div>
+      </div>
+
+      <h1>Trazabilidad completa,<br><em>desde la captura hasta la venta.</em></h1>
       <p>Registra productos, controla la calidad, gestiona el almacenamiento y da seguimiento a cada venta desde un solo sistema.</p>
 
-      <div class="stat-row">
-        <div><strong>+320</strong><span>Productos activos</span></div>
-        <div><strong>98.5%</strong><span>Disponibilidad</span></div>
-        <div><strong>24/7</strong><span>Monitoreo</span></div>
+      <div class="stats">
+        <div class="stat"><strong>+320</strong><span>Productos activos</span></div>
+        <div class="stat"><strong>98.5%</strong><span>Disponibilidad</span></div>
+        <div class="stat"><strong>24/7</strong><span>Monitoreo</span></div>
       </div>
-    </div>
+    </section>
 
-    <svg class="waves" viewBox="0 0 600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 90 Q 75 60 150 90 T 300 90 T 450 90 T 600 90 V180 H0 Z" fill="rgba(255,255,255,.06)"/>
-      <path d="M0 120 Q 75 95 150 120 T 300 120 T 450 120 T 600 120 V180 H0 Z" fill="rgba(255,255,255,.09)"/>
-      <g class="fish-drift">
-        <path d="M480 40 q14 -10 26 0 q-6 8 -13 8 q-7 0 -13 -8z" fill="rgba(255,215,106,.6)"/>
-      </g>
-    </svg>
-  </section>
-
-  <!-- PANEL DERECHO -->
-  <section class="form-panel">
-    <div class="form-card">
-
-      <!-- Logo oficial de Deep Sea -->
-      <img class="card-logo" src="logo.png" alt="Deep Sea — Gestión inteligente de recursos marinos" width="200" height="214">
-
+    <!-- TARJETA DEL FORMULARIO -->
+    <section class="card">
+      <div class="card-bar"></div>
       <h2>Bienvenido de nuevo</h2>
       <p class="lead">Ingresa tu correo y contraseña para continuar.</p>
 
@@ -497,8 +263,8 @@
         <div class="field" id="emailField">
           <label for="email">Correo electrónico</label>
           <div class="field-input">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6h18v12H3z" stroke="currentColor" stroke-width="1.6"/><path d="m3 7 9 6 9-6" stroke="currentColor" stroke-width="1.6"/></svg>
-            <input type="email" id="email" placeholder="ejemplo@correo.com" autocomplete="username">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <input type="email" id="email" placeholder="ejemplo@correo.com" autocomplete="username" inputmode="email">
           </div>
           <div class="field-error">Ingresa un correo electrónico válido.</div>
         </div>
@@ -506,10 +272,10 @@
         <div class="field" id="passField">
           <label for="password">Contraseña</label>
           <div class="field-input">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
             <input type="password" id="password" placeholder="Ingresa tu contraseña" autocomplete="current-password">
             <button type="button" class="toggle-pass" id="togglePass" aria-label="Mostrar contraseña">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
           <div class="field-error">La contraseña debe tener al menos 4 caracteres.</div>
@@ -529,12 +295,12 @@
       </form>
 
       <p class="signup-line">¿No tienes cuenta? <a href="registro.html" class="link-muted">Regístrate aquí</a></p>
-    </div>
-  </section>
+    </section>
 
+  </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- SDK de Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -543,7 +309,6 @@
   const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>
-
 <script>
 (async function(){
   const form        = document.getElementById('loginForm');
@@ -558,9 +323,7 @@
   const toast       = document.getElementById('toast');
 
   // Si ya hay una sesión activa de Supabase, saltar directo al dashboard.
-  // VALIDACIÓN AGREGADA: try/catch. Si no hay internet o Supabase falla,
-  // antes el script se detenía aquí y el formulario quedaba sin eventos
-  // (el botón recargaba la página). Ahora continúa y el login sigue funcionando.
+  // try/catch: si no hay internet o Supabase falla, el login sigue funcionando.
   try {
     const { data: { session: existingSession } } = await supabaseClient.auth.getSession();
     if (existingSession) {
@@ -620,8 +383,7 @@
 
     startLoading();
 
-    // VALIDACIÓN AGREGADA: try/catch. Si la petición falla por red,
-    // el botón se quedaba en "Verificando..." para siempre.
+    // try/catch: si la petición falla por red, el botón no se queda en "Verificando..."
     let error;
     try {
       const result = await supabaseClient.auth.signInWithPassword({
