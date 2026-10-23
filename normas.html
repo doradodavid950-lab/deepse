@@ -609,6 +609,8 @@
     table.simple tr:hover td{background:transparent}
     .action-btn{height:36px;padding:0 14px}
   }
+  /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
+  .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
 </style>
 </head>
 <body>
@@ -1766,5 +1768,6 @@
 })();
 </script>
 
+<script src="sesion-inactividad.js"></script>
 </body>
 </html>

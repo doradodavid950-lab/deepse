@@ -579,6 +579,8 @@
     table.simple td.empty::before{content:none}
     table.simple tr.vacio{background:transparent;border:0;box-shadow:none;padding:0}
   }
+  /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
+  .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
 </style>
 </head>
 <body>
@@ -799,8 +801,8 @@
   <a href="inicio.html"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Inicio</a>
   <a href="productos.html"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg>Productos</a>
   <a href="trazabilidad.html"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg>Rastreo</a>
-  <a href="reportes.html"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Reportes</a>
-  <button type="button" id="fanBtn" class="cur" aria-expanded="false" aria-controls="fan">
+  <a href="reportes.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Reportes</a>
+  <button type="button" id="fanBtn" aria-expanded="false" aria-controls="fan">
     <svg class="i ico-grid" aria-hidden="true"><use href="#i-grid"/></svg>
     <svg class="i ico-x" aria-hidden="true"><use href="#i-x"/></svg>
     <span id="fanBtnLabel">Más</span>
@@ -1962,5 +1964,6 @@
 })();
 </script>
 
+<script src="sesion-inactividad.js"></script>
 </body>
 </html>

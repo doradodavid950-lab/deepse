@@ -558,6 +558,8 @@
     table.vta td.empty{grid-area:1/1/-1/-1;text-align:center;padding:20px 8px}
     table.vta tr:has(td.empty){display:block}
   }
+  /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
+  .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
 </style>
 </head>
 <body>
@@ -1717,5 +1719,6 @@
 })();
 </script>
 
+<script src="sesion-inactividad.js"></script>
 </body>
 </html>
