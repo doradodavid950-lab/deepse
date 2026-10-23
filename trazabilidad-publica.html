@@ -251,21 +251,21 @@
     $('sPeso').textContent = fmtPeso(l.peso);
     $('sEstado').textContent = l.estado || '—';
 
-    // Calidad: verificado si el control más reciente fue aprobado
-    const ultimo = cal[0];
+    // Verificación: solo cuenta si un auditor la aprobó (no el resultado del laboratorio)
     const verif = $('verif');
-    if (ultimo && esAprobado(ultimo.resultado)) {
+    const v = d.verificacion;
+    if (v) {
       verif.classList.remove('pend');
-      $('verifTitulo').textContent = 'Lote verificado';
-      $('verifTexto').textContent = 'Pasó el control de calidad el ' + fmtFecha(ultimo.fecha);
-    } else if (ultimo) {
+      $('verifTitulo').textContent = 'Lote verificado' + (v.auditor ? ' por ' + v.auditor : '');
+      $('verifTexto').textContent = 'Aprobado por un auditor el ' + fmtFecha(v.fecha);
+    } else if (cal.some(function(c){ return c.estado_revision === 'Rechazado'; })) {
       verif.classList.add('pend');
-      $('verifTitulo').textContent = 'Control de calidad: ' + (ultimo.resultado || 'en revisión');
-      $('verifTexto').textContent = 'Último control el ' + fmtFecha(ultimo.fecha);
+      $('verifTitulo').textContent = 'Control de calidad rechazado';
+      $('verifTexto').textContent = 'Este lote no pasó la revisión del auditor.';
     } else {
       verif.classList.add('pend');
-      $('verifTitulo').textContent = 'Sin control de calidad registrado';
-      $('verifTexto').textContent = 'Este lote aún no tiene un control de calidad.';
+      $('verifTitulo').textContent = 'Pendiente de verificación';
+      $('verifTexto').textContent = 'Este lote aún no ha sido verificado por un auditor.';
     }
 
     // Recorrido: captura → recepción → calidad → almacenamiento
@@ -282,7 +282,7 @@
     pasos.push(`<div class="tl-item"><div class="tl-circle morado">${ICONO.calidad}</div>
       <div class="tl-box"><div class="tl-top"><h3>Control de calidad</h3><time>${cal.length ? fmtFecha(cal[0].fecha) : 'Pendiente'}</time></div>
       ${cal.length
-        ? '<ul>' + cal.map(c => `<li><span>${fmtFechaHora(c.fecha)}</span><b>${escapeHTML(c.resultado || '—')}</b></li>`).join('') + '</ul>'
+        ? '<ul>' + cal.map(c => `<li><span>${fmtFechaHora(c.fecha)} · ${escapeHTML(c.estado_revision || 'Pendiente')}</span><b>${escapeHTML(c.resultado || '—')}</b></li>`).join('') + '</ul>'
         : '<p>Aún no hay controles registrados para este lote.</p>'}
       </div></div>`);
 

@@ -611,6 +611,10 @@
   }
   /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
   .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
+  .pill.bad{background:#FFE3E0;color:#C2302B}
+  .ok-btn{background:#D6F7E2;color:#12804F}
+  .rev-texto{font-size:13px;font-weight:700;color:var(--texto-2)}
+  .rev-pill{margin-left:6px}
 </style>
 </head>
 <body>
@@ -1765,6 +1769,109 @@
   }
 
   iniciar();
+
+  // ---------------------------------------------------------------
+  // REVISIÓN POR AUDITOR
+  // El auditor aprueba o rechaza; el establecimiento solo edita lo pendiente.
+  // La base de datos hace cumplir estas reglas (no depende de esta pantalla).
+  // ---------------------------------------------------------------
+  let esAuditor = false;
+  let revMap = new Map();
+
+  function mostrarToastRev(texto, tipo){
+    const t = $('toast');
+    t.textContent = texto;
+    t.className = 'toast show' + (tipo ? ' ' + tipo : '');
+    clearTimeout(mostrarToastRev.timer);
+    mostrarToastRev.timer = setTimeout(function(){ t.className = 'toast'; }, 3400);
+  }
+
+  function pillRevision(estado){
+    if (estado === 'Aprobado') return '<span class="pill ok rev-pill">Aprobado</span>';
+    if (estado === 'Rechazado') return '<span class="pill bad rev-pill">Rechazado</span>';
+    return '<span class="pill warn rev-pill">Pendiente de revisión</span>';
+  }
+
+  function decorarRevision(){
+    const tbody = $('tablaControles');
+    if (!tbody || !revMap.size) return;
+    tbody.querySelectorAll('tr').forEach(function(tr){
+      const ref = tr.querySelector('[data-id]');
+      if (!ref) return;
+      const id = String(ref.dataset.id);
+      const c = revMap.get(id);
+      if (!c) return;
+      const pendiente = c.estado_revision === 'Pendiente';
+
+      const res = tr.querySelector('td[data-label="Resultado"]');
+      if (res) {
+        res.querySelectorAll('.rev-pill').forEach(function(p){ p.remove(); });
+        res.insertAdjacentHTML('beforeend', pillRevision(c.estado_revision));
+      }
+
+      const acc = tr.querySelector('td[data-label="Acciones"]');
+      if (!acc) return;
+      if (esAuditor) {
+        acc.innerHTML = pendiente
+          ? '<button class="action-btn ok-btn" type="button" data-accion="aprobar" data-id="' + id + '">Aprobar</button>' +
+            '<button class="action-btn delete-btn" type="button" data-accion="rechazar" data-id="' + id + '">Rechazar</button>'
+          : '<span class="rev-texto">Revisado</span>';
+      } else {
+        acc.innerHTML = pendiente
+          ? '<button class="action-btn edit-btn" type="button" data-accion="editar" data-id="' + id + '">Editar</button>' +
+            '<button class="action-btn delete-btn" type="button" data-accion="eliminar" data-id="' + id + '">Eliminar</button>'
+          : '<span class="rev-texto">Revisado</span>';
+      }
+    });
+  }
+
+  async function revisar(id, decision){
+    let comentario;
+    if (decision === 'Rechazado') {
+      comentario = window.prompt('Motivo del rechazo (obligatorio):', '');
+      if (comentario === null) return;
+      if (!comentario.trim()) { mostrarToastRev('El motivo del rechazo es obligatorio.', 'error'); return; }
+    } else {
+      comentario = window.prompt('Comentario de aprobación (opcional):', '');
+      if (comentario === null) return;
+    }
+    const { error } = await supabaseClient.from('controles_calidad')
+      .update({ estado_revision: decision, comentario_revision: comentario.trim() || null })
+      .eq('id', id);
+    if (error) { mostrarToastRev('No se pudo guardar la revisión. Intenta de nuevo.', 'error'); return; }
+    mostrarToastRev(decision === 'Aprobado' ? 'Control aprobado.' : 'Control rechazado.', 'success');
+    await cargarRevision();
+  }
+
+  async function cargarRevision(){
+    try {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (user) {
+        const { data: perf } = await supabaseClient.from('perfiles').select('rol').eq('id', user.id).maybeSingle();
+        esAuditor = !!(perf && perf.rol === 'auditor');
+      }
+      const { data: cs, error } = await supabaseClient.from('controles_calidad').select('id,estado_revision');
+      if (!error && cs) revMap = new Map(cs.map(function(c){ return [String(c.id), c]; }));
+    } catch (e) {
+      console.warn('No se pudo cargar la revisión:', e);
+    }
+    $('btnNuevo').hidden = esAuditor;
+    $('btnNuevoFab').hidden = esAuditor;
+    decorarRevision();
+  }
+
+  $('tablaControles').addEventListener('click', function(e){
+    const b = e.target.closest('[data-accion]');
+    if (!b) return;
+    if (b.dataset.accion === 'aprobar') revisar(b.dataset.id, 'Aprobado');
+    else if (b.dataset.accion === 'rechazar') revisar(b.dataset.id, 'Rechazado');
+  });
+
+  new MutationObserver(decorarRevision).observe($('tablaControles'), { childList: true });
+
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'INITIAL_SESSION' || evento === 'SIGNED_IN') cargarRevision();
+  });
 })();
 </script>
 
