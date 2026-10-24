@@ -615,6 +615,11 @@
   .ok-btn{background:#D6F7E2;color:#12804F}
   .rev-texto{font-size:13px;font-weight:700;color:var(--texto-2)}
   .rev-pill{margin-left:6px}
+  .rev-linea{display:block;font-size:12.5px;color:var(--texto-2);margin-top:6px}
+  .rev-linea b.r-ok{color:#12804F}
+  .rev-linea b.r-bad{color:#C2302B}
+  .rev-linea b.r-pend{color:#9A6200}
+  .rev-motivo{display:block;font-size:12px;color:#C2302B;margin-top:4px;max-width:240px;white-space:normal}
 </style>
 </head>
 <body>
@@ -1787,9 +1792,15 @@
   }
 
   function pillRevision(estado){
-    if (estado === 'Aprobado') return '<span class="pill ok rev-pill">Aprobado</span>';
-    if (estado === 'Rechazado') return '<span class="pill bad rev-pill">Rechazado</span>';
-    return '<span class="pill warn rev-pill">Pendiente de revisión</span>';
+    if (estado === 'Aprobado') return '<span class="rev-linea">Verificación: <b class="r-ok">Aprobada por auditor</b></span>';
+    if (estado === 'Rechazado') return '<span class="rev-linea">Verificación: <b class="r-bad">Rechazada por auditor</b></span>';
+    return '<span class="rev-linea">Verificación: <b class="r-pend">Pendiente</b></span>';
+  }
+
+  function textoRevisado(c){
+    const motivo = (c.estado_revision === 'Rechazado' && c.comentario_revision)
+      ? '<small class="rev-motivo">Motivo: ' + escapeHTML(c.comentario_revision) + '</small>' : '';
+    return '<span class="rev-texto">Revisado</span>' + motivo;
   }
 
   function decorarRevision(){
@@ -1805,7 +1816,7 @@
 
       const res = tr.querySelector('td[data-label="Resultado"]');
       if (res) {
-        res.querySelectorAll('.rev-pill').forEach(function(p){ p.remove(); });
+        res.querySelectorAll('.rev-linea').forEach(function(p){ p.remove(); });
         res.insertAdjacentHTML('beforeend', pillRevision(c.estado_revision));
       }
 
@@ -1815,12 +1826,12 @@
         acc.innerHTML = pendiente
           ? '<button class="action-btn ok-btn" type="button" data-accion="aprobar" data-id="' + id + '">Aprobar</button>' +
             '<button class="action-btn delete-btn" type="button" data-accion="rechazar" data-id="' + id + '">Rechazar</button>'
-          : '<span class="rev-texto">Revisado</span>';
+          : textoRevisado(c);
       } else {
         acc.innerHTML = pendiente
           ? '<button class="action-btn edit-btn" type="button" data-accion="editar" data-id="' + id + '">Editar</button>' +
             '<button class="action-btn delete-btn" type="button" data-accion="eliminar" data-id="' + id + '">Eliminar</button>'
-          : '<span class="rev-texto">Revisado</span>';
+          : textoRevisado(c);
       }
     });
   }
@@ -1850,7 +1861,7 @@
         const { data: perf } = await supabaseClient.from('perfiles').select('rol').eq('id', user.id).maybeSingle();
         esAuditor = !!(perf && perf.rol === 'auditor');
       }
-      const { data: cs, error } = await supabaseClient.from('controles_calidad').select('id,estado_revision');
+      const { data: cs, error } = await supabaseClient.from('controles_calidad').select('id,estado_revision,comentario_revision');
       if (!error && cs) revMap = new Map(cs.map(function(c){ return [String(c.id), c]; }));
     } catch (e) {
       console.warn('No se pudo cargar la revisión:', e);
