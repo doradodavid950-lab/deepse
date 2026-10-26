@@ -187,13 +187,12 @@
 
 <!-- SDK de Supabase: solo se usa para leer el lote a través de la función pública -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
 (function(){
   'use strict';
 
   const $ = id => document.getElementById(id);
-  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
   const REGEX_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
   function escapeHTML(t){
@@ -326,7 +325,7 @@
 
     let res;
     try {
-      const cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const cliente = DSI.cliente();
       res = await Promise.race([
         cliente.rpc('trazabilidad_publica', { p_lote: lote }),
         new Promise((_, rechazar) => setTimeout(() => rechazar(new Error('tiempo')), 15000))

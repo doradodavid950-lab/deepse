@@ -15,12 +15,17 @@
 
   const CLAVE = 'deepsea_ultima_actividad';
   const CLAVE_MOTIVO = 'deepsea_motivo_cierre';
-  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
+  if (!window.DSI) return;   // requiere supabase-config.js
 
-  if (typeof window.supabase === 'undefined') return;
+  // El SDK puede cargar después (p. ej. recepciones.html lo carga en async): se espera al cliente único.
+  let intentos = 0;
+  (function esperar(){
+    const cliente = window.DSI.cliente();
+    if (cliente) { iniciar(cliente); return; }
+    if (intentos++ < 200) setTimeout(esperar, 50);
+  })();
 
-  const cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  function iniciar(cliente){
   const enLogin = /login\.html$/i.test(window.location.pathname) || window.location.pathname === '/';
   const minutosEnMs = m => m * 60 * 1000;
 
@@ -128,4 +133,5 @@
   // ---- Arranque ----
   setInterval(revisar, 60 * 1000);
   revisar();
+  }
 })();

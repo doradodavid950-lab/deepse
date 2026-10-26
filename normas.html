@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
+<link rel="stylesheet" href="estilos.css">
 <style>
   :root{
     --azul-noche:#031632;
@@ -29,8 +30,6 @@
     --g-morado:linear-gradient(135deg,#7B5CC7,#B494F5);
     --g-naranja:linear-gradient(135deg,#F08A24,#FFC46B);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
   body{
     font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;
     color:var(--texto);background:var(--fondo);
@@ -38,28 +37,11 @@
     padding-bottom:128px;
     min-height:100vh;
   }
-  a{color:inherit;text-decoration:none}
   button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
-  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
-  [hidden]{display:none!important}
-
-  /* ================= ENCABEZADO ================= */
-  .top-zone{position:relative}
-  .top-wave{display:none}
   .topbar{
     display:flex;align-items:center;gap:16px;
     padding:16px 36px 12px;max-width:1500px;margin:0 auto;position:relative;z-index:20;
   }
-  .brand{display:flex;align-items:center;gap:12px;flex:none}
-  .brand-badge{
-    width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(135deg,#062B5B,#0B4DB5);box-shadow:0 8px 18px rgba(6,43,91,.25);
-  }
-  .brand-badge span{width:36px;height:36px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center}
-  .brand-badge img{width:28px;height:28px;display:block}
-  .brand-name{font-size:21px;font-weight:700;line-height:1;color:var(--azul-oscuro)}
-  .brand-name span{color:var(--azul-medio)}
-  .brand-sub{font-size:11.5px;color:var(--texto-2);margin-top:3px}
 
   /* Buscador */
   .search{position:relative;flex:1;max-width:460px;margin-left:24px}
@@ -83,60 +65,22 @@
   .sr-item b{display:block;font-size:14px}
   .sr-item span.sub{font-size:12.5px;color:var(--texto-2)}
   .sr-vacio{padding:16px 12px;font-size:13.5px;color:var(--texto-2);text-align:center}
-
-  .tb-space{flex:1}
   .icon-btn{
     width:44px;height:44px;border-radius:15px;background:#fff;border:1px solid #D3E3F5;color:#0B3C74;
     display:flex;align-items:center;justify-content:center;position:relative;
   }
-  .icon-btn:hover{border-color:var(--azul-medio)}
   .badge-n{
     position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;
     background:var(--rojo);color:#fff;font-size:11px;font-weight:700;border:2px solid var(--fondo);
     display:none;align-items:center;justify-content:center;
   }
   .badge-n.show{display:flex}
-  .uchip{
-    display:flex;align-items:center;gap:10px;padding:5px 16px 5px 5px;border-radius:30px;
-    background:#fff;border:1px solid #D3E3F5;
-  }
-  .uchip:hover{border-color:var(--azul-medio)}
-  .av{
-    width:36px;height:36px;border-radius:50%;flex:none;color:#fff;font-weight:700;font-size:15px;
-    background:linear-gradient(135deg,#5CC0FF,#1E66F5);display:flex;align-items:center;justify-content:center;
-  }
   .uchip b{display:block;font-size:13.5px;line-height:1.1;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .uchip small{font-size:11.5px;color:#17A673;font-weight:700}
-
-  /* Panel de notificaciones */
-  .notif-wrap{position:relative}
-  .notif-panel{
-    position:absolute;right:0;top:calc(100% + 10px);width:380px;max-width:calc(100vw - 24px);
-    background:#fff;border-radius:20px;border:1px solid var(--borde);box-shadow:0 24px 54px rgba(6,43,91,.24);
-    display:none;z-index:80;overflow:hidden;
-  }
   .notif-panel.show{display:block;animation:aparecer .2s ease both}
   @keyframes aparecer{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-  .np-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #EDF2F8}
-  .np-head strong{font-size:16px;flex:1}
-  .np-head .link{font-size:12.5px;font-weight:700;color:var(--azul-medio)}
-  .np-head .x{width:30px;height:30px;border-radius:10px;font-size:20px;line-height:1;color:var(--texto-2)}
   .np-head .x:hover{background:#F1F6FC}
-  .np-body{max-height:380px;overflow:auto;padding:6px}
-  .notification-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;transition:opacity .17s,transform .17s}
   .notification-item:hover{background:#F3F8FF}
-  .notification-item.removing{opacity:0;transform:translateX(14px)}
-  .ni-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none}
-  .t-warn{background:#FFE3E0;color:#D93A35}.t-pend{background:#FFF1D1;color:#B27300}.t-info{background:#DCEBFF;color:#1E66F5}
-  .ni-body{flex:1;min-width:0}
-  .ni-body strong{display:block;font-size:14px}
   .ni-body span{display:block;font-size:12.5px;color:var(--texto-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ni-body em{font-style:normal;font-size:11.5px;color:#8DA0B8}
-  .ni-go{color:#9AB0C9;font-size:20px}
-  .notification-empty{padding:28px 16px;text-align:center;color:var(--texto-2);font-size:14px}
-
-  /* ================= HERO ================= */
-  .hero-wrap{max-width:1500px;margin:0 auto;padding:0 36px}
   .hero{
     border-radius:24px;color:#fff;padding:24px 32px;position:relative;overflow:hidden;
     display:flex;justify-content:space-between;gap:24px;
@@ -144,26 +88,17 @@
     box-shadow:0 18px 40px rgba(11,77,181,.28);
   }
   .hero svg.w{position:absolute;left:0;bottom:0;width:100%;height:80px;opacity:.9;pointer-events:none}
-  .hero-txt{position:relative}
-  .hero h1{font-size:32px;font-weight:700;line-height:1.15}
   .hero p{font-size:16px;color:#CFE6FF;margin-top:4px}
   .hero-meta{font-size:12.5px;color:#A9D3FF;margin-top:6px;text-transform:capitalize}
   .hero-meta span{text-transform:none}
   .btns{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
   .b1{background:#fff;color:#0B3C74;padding:11px 20px;border-radius:13px;font-weight:700;display:inline-flex;align-items:center;gap:8px}
-  .b1:hover{filter:brightness(.97)}
   .b2{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:11px 20px;border-radius:13px;font-weight:700;color:#fff}
   .b2:hover{background:rgba(255,255,255,.24)}
   .glass{position:relative;display:flex;gap:14px;align-self:flex-start}
   .gl{width:150px;padding:12px 16px;border-radius:18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
   .gl b{display:block;font-size:28px;line-height:1.1}
   .gl span{font-size:13px;color:#D9ECFF}
-
-  /* ================= CONTENIDO ================= */
-  .aviso{
-    display:none;align-items:center;gap:12px;justify-content:space-between;
-    padding:12px 16px;border-radius:14px;background:#FFF1D1;border:1px solid #F5D58A;color:#7A5200;font-size:14px;font-weight:600;
-  }
   .aviso.show{display:flex}
   .aviso button{padding:7px 14px;border-radius:10px;background:#fff;border:1px solid #F5D58A;font-weight:700;font-size:13px}
   .main{max-width:1500px;margin:0 auto;padding:16px 36px 0;display:flex;flex-direction:column;gap:16px}
@@ -176,7 +111,6 @@
   .k b{display:block;font-size:26px;line-height:1.05}
   .k span{font-size:13.5px;color:var(--texto-2)}
   .loading-val{color:transparent!important;border-radius:8px;background:linear-gradient(90deg,#E8F0FA 25%,#F6FAFF 50%,#E8F0FA 75%);background-size:200% 100%;animation:brillo 1.2s linear infinite;min-width:70px}
-  @keyframes brillo{to{background-position:-200% 0}}
 
   .row{display:grid;gap:16px}
   .row2{grid-template-columns:1.65fr 1fr}
@@ -201,15 +135,9 @@
   .legend{font-size:14px;line-height:2;min-width:0}
   .legend>div{display:flex;align-items:center;gap:8px}
   .swatch{width:10px;height:10px;border-radius:50%;flex:none}
-
-  /* Tabla de actividad */
-  .tbl-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse}
   th{text-align:left;font-size:12px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.6px;padding:8px 10px;background:#F1F6FC}
   th:first-child{border-radius:10px 0 0 10px}th:last-child{border-radius:0 10px 10px 0}
   td{padding:9px 10px;border-bottom:1px solid #EDF2F8;font-size:14px}
-  tr:last-child td{border:0}
-  td:first-child{font-weight:700}
   td.empty{text-align:center;color:var(--texto-2);padding:22px 10px;font-weight:400}
   .pill{display:inline-block;padding:3px 11px;border-radius:20px;font-size:12.5px;font-weight:700;white-space:nowrap}
   .pill.ok{background:#D6F7E2;color:#12804F}.pill.pend{background:#FFF1D1;color:#9A6200}.pill.warn{background:#FFE3E0;color:#C2302B}
@@ -230,35 +158,12 @@
   .st:hover div{transform:translateY(-4px) scale(1.06)}
   .st span{font-size:13px;font-weight:700}
   .ln{flex:1;min-width:12px;height:3px;border-radius:3px;background:linear-gradient(90deg,#1E66F5,#3FD0F2);margin-bottom:26px}
-
-  /* ================= DOCK (computador) ================= */
-  .dock{
-    position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:50;
-    display:flex;align-items:flex-end;gap:10px;padding:10px 16px;border-radius:30px;
-    background:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.95);
-    box-shadow:0 18px 50px rgba(6,43,91,.3),inset 0 1px 0 rgba(255,255,255,.9);
-  }
-  .dock a{
-    position:relative;width:56px;height:56px;border-radius:17px;display:flex;align-items:center;justify-content:center;
-    color:#fff;background:var(--g);box-shadow:0 8px 16px rgba(6,43,91,.22);
-    transform-origin:50% 100%;
-    transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
-  }
   .dock a svg.i{width:26px;height:26px}
   .dock a:hover,.dock a:focus-visible{transform:translateY(-16px) scale(1.3);box-shadow:0 20px 30px rgba(6,43,91,.38);outline:0}
   .dock a:hover + a,.dock a:has(+ a:hover){transform:translateY(-6px) scale(1.12)}
-  .dock a[aria-current="page"]{box-shadow:0 0 0 3px rgba(255,255,255,.95),0 0 0 5px rgba(30,102,245,.55),0 10px 20px rgba(6,43,91,.28)}
   .dock a[aria-current="page"]::after{content:"";position:absolute;bottom:-8px;left:50%;margin-left:-3px;width:6px;height:6px;border-radius:50%;background:var(--azul-medio);box-shadow:0 0 8px var(--azul-medio)}
-  .dock .tip{
-    position:absolute;bottom:calc(100% + 16px);left:50%;transform:translate(-50%,10px) scale(.85);opacity:0;pointer-events:none;white-space:nowrap;
-    background:linear-gradient(135deg,#062B5B,#0B4DB5);color:#fff;font-size:13px;font-weight:700;padding:7px 13px;border-radius:11px;
-    box-shadow:0 10px 22px rgba(6,43,91,.4);
-    transition:opacity .22s,transform .3s cubic-bezier(.34,1.56,.64,1);
-  }
   .dock .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#0B4DB5}
   .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.78)}
-  .dock .sep{width:1px;height:42px;background:rgba(6,43,91,.18);align-self:center;margin:0 4px}
 
   /* Menú inferior y iconos flotantes (celular) */
   .bnav,.fan{display:none}
@@ -273,19 +178,12 @@
       border-radius:0 0 30px 30px;box-shadow:0 14px 28px rgba(11,77,181,.25);
       padding:env(safe-area-inset-top,0px) 0 54px;overflow:hidden;
     }
-    .top-wave{display:block;position:absolute;left:0;bottom:0;width:100%;height:46px;opacity:.9;pointer-events:none}
     .topbar{padding:14px 18px 0;gap:11px}
-    .brand-badge{width:42px;height:42px;border-radius:13px;background:#fff;box-shadow:0 5px 14px rgba(0,0,0,.25)}
-    .brand-badge span{width:auto;height:auto;background:none}
-    .brand-badge img{width:32px;height:32px}
     .brand-name{color:#fff;font-size:19px}.brand-name span{color:var(--azul-claro)}
     .brand-sub{color:#9CC8F2}
     .search,.uchip{display:none}
     .icon-btn{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff;width:40px;height:40px;border-radius:13px}
     .badge-n{border-color:#0B4DB5}
-    .notif-panel{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 66px);width:auto;max-width:none}
-
-    .hero-wrap{padding:0 18px}
     .hero{background:none;box-shadow:none;padding:16px 0 0;display:block;border-radius:0;overflow:visible}
     .hero svg.w,.hero .btns{display:none}
     .hero h1{font-size:27px}
@@ -323,28 +221,10 @@
     .bnav button.open .ico-x{display:block}.bnav button.open .ico-grid{display:none}
 
     .fan{display:block;position:fixed;inset:0;z-index:55;pointer-events:none}
-    .fan-overlay{position:absolute;inset:0;background:rgba(4,26,58,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;transition:opacity .25s}
-    .fan-list{position:absolute;right:19px;bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:11px;align-items:flex-end}
-    .fan-item{
-      display:flex;align-items:center;gap:12px;
-      opacity:0;transform:translateY(24px) scale(.6);transform-origin:100% 100%;
-      transition:opacity .22s,transform .32s cubic-bezier(.34,1.56,.64,1);transition-delay:calc(var(--i) * 35ms);
-    }
-    .fan-label{background:#fff;padding:8px 15px;border-radius:14px;font-weight:700;font-size:14.5px;color:var(--azul-oscuro);box-shadow:0 8px 20px rgba(2,16,42,.25)}
-    .fan-ic{width:52px;height:52px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 22px rgba(2,16,42,.4),0 0 0 4px rgba(255,255,255,.18)}
-    .fan-ic svg.i{width:24px;height:24px}
-    .fan.open{pointer-events:auto}
-    .fan.open .fan-overlay{opacity:1}
-    .fan.open .fan-item{opacity:1;transform:none}
-  }
+    .fan-ic svg.i{width:24px;height:24px}}
   @media (min-width:1001px) and (max-width:1180px){
-    .topbar{padding-left:24px;padding-right:24px}.hero-wrap,.main{padding-left:24px;padding-right:24px}
     .search{margin-left:8px}.brand-sub{display:none}
-    .row3{grid-template-columns:1fr 1fr}.row3 .c:last-child{grid-column:1/-1}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none!important;transition:none!important}
-  }
+    .row3{grid-template-columns:1fr 1fr}.row3 .c:last-child{grid-column:1/-1}}
 
   /* ================= PRODUCTOS ================= */
   .hero.compact{padding:22px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -451,8 +331,7 @@
   .toast.error{background:#C62828}.toast.success{background:#12804F}
 
   @media (min-width:1001px) and (max-width:1180px){
-    .filters{grid-template-columns:1fr 1fr}.f-search{grid-column:1/-1}.f-actions{grid-column:1/-1;justify-content:flex-end}
-  }
+    .filters{grid-template-columns:1fr 1fr}.f-search{grid-column:1/-1}.f-actions{grid-column:1/-1;justify-content:flex-end}}
   @media (max-width:1000px){
     .hero.compact{display:block;padding:16px 0 0}
     .hero.compact h1{font-size:27px}
@@ -505,8 +384,7 @@
     .form-grid .field>textarea{font-size:16px}
     .modal-footer{position:sticky;bottom:-20px;background:#fff;padding-top:12px}
     .modal-footer .bp,.modal-footer .bg,.modal-footer .bd{flex:1}
-    .field-input input,.field-input select{font-size:16px}
-  }
+    .field-input input,.field-input select{font-size:16px}}
 
   /* ================= NORMAS Y CALIDAD ================= */
   .kpis.cuatro{grid-template-columns:repeat(4,1fr)}
@@ -607,8 +485,7 @@
     table.simple td.empty::before{content:none}
     table.simple td.solo-movil{display:flex}
     table.simple tr:hover td{background:transparent}
-    .action-btn{height:36px;padding:0 14px}
-  }
+    .action-btn{height:36px;padding:0 14px}}
   /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
   .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
   .pill.bad{background:#FFE3E0;color:#C2302B}
@@ -620,6 +497,114 @@
   .rev-linea b.r-bad{color:#C2302B}
   .rev-linea b.r-pend{color:#9A6200}
   .rev-motivo{display:block;font-size:12px;color:#C2302B;margin-top:4px;max-width:240px;white-space:normal}
+
+  /* ===== PESTAÑAS ===== */
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding:5px;background:#fff;border:1px solid var(--borde);border-radius:18px;box-shadow:var(--sombra);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:14px;background:transparent;color:var(--texto-2);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+  .tab:hover{background:#F1F6FC;color:var(--azul-oscuro)}
+  .tab.on{background:var(--g-azul);color:#fff;box-shadow:0 6px 14px rgba(30,102,245,.28)}
+  .tab:focus-visible{outline:3px solid rgba(30,102,245,.35);outline-offset:2px}
+  .nbadge{display:none;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#E53935;color:#fff;font-size:12px;font-weight:700;align-items:center;justify-content:center}
+  .nbadge.show{display:inline-flex}
+  .tab-panel{display:flex;flex-direction:column;gap:16px}
+  .tab-panel[hidden]{display:none}
+  body:not(.tab-controles) .fab{display:none!important}
+
+  /* ===== AVISOS Y ETIQUETAS ===== */
+  .nota{display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:16px;background:#EAF3FF;border:1px solid #D3E3F5;color:#0B3C74;font-size:14px;font-weight:600}
+  .nota svg.i{width:20px;height:20px;flex:none;stroke:#1E66F5;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .pill.info{background:#DCEBFF;color:#1558D6}
+  .pill.neutro{background:#E4ECF6;color:#5B7089}
+  .tp-san{background:#DCEBFF;color:#1558D6}
+  .tp-leg{background:#EBE3FB;color:#6B45B8}
+  .tp-cal{background:#D6F7E2;color:#12804F}
+  .tp-amb{background:#FFF1D1;color:#9A6200}
+  .tp-int{background:#E4ECF6;color:#5B7089}
+  .sub{display:block;font-size:12.5px;color:var(--texto-2);margin-top:2px;font-weight:400}
+  .lk{background:none;border:0;color:var(--azul-medio);font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;padding:6px 2px}
+  .lk:hover{text-decoration:underline}
+  .vacio-n{text-align:center;color:var(--texto-2);padding:28px 10px;font-size:14.5px}
+
+  /* ===== TABLA DEL CATÁLOGO ===== */
+  .ntabla{width:100%;border-collapse:collapse}
+  .ntabla th{text-align:left;font-size:12px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.6px;padding:8px 10px;background:#F1F6FC;white-space:nowrap}
+  .ntabla td{padding:11px 10px;border-bottom:1px solid #EDF2F8;font-size:14px;vertical-align:middle}
+  .ntabla tr:last-child td{border:0}
+  .ntabla tbody tr:hover td{background:#F7FAFF}
+  .ntabla td.empty{text-align:center;color:var(--texto-2);padding:26px 10px}
+  .ntabla td:last-child{text-align:right;white-space:nowrap}
+
+  /* ===== NORMAS DE CADA PRODUCTO ===== */
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .plist{display:flex;flex-direction:column;gap:12px}
+  .pcard{border:1px solid var(--borde);border-radius:18px;background:#fff;overflow:hidden}
+  .pcard-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;background:none;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+  .pcard-h:hover{background:#F7FAFF}
+  .pcard-h .t{flex:1;min-width:0}
+  .pcard-h .t b{display:block;font-size:15.5px}
+  .pcard-h .t small{display:block;color:var(--texto-2);font-size:13px;margin-top:2px}
+  .pcard-h .chev{width:18px;height:18px;flex:none;stroke:#7A90AB;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transform:rotate(90deg);transition:transform .2s}
+  .pcard.open .chev{transform:rotate(-90deg)}
+  .pcard-b{display:none;border-top:1px solid #EDF2F8;padding:4px 16px 14px}
+  .pcard.open .pcard-b{display:block}
+  .nrow{display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:12px 0;border-bottom:1px solid #EDF2F8;align-items:start}
+  .nrow .nm b{font-size:14.5px}
+  .nrow .nm small{display:block;font-size:12.5px;color:var(--texto-2);margin-top:2px}
+  .nrow .nm small.mot{color:#C2302B;font-weight:600}
+  .nrow .st{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .nrow .ac{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+  .mini{height:36px;padding:0 14px;border-radius:11px;border:0;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .mini:hover{filter:brightness(.96)}
+  .mini.p{background:var(--g-azul);color:#fff}
+  .mini.g{background:#DCEBFF;color:#1558D6}
+  .mini.v{background:#D6F7E2;color:#12804F}
+  .mini.d{background:#FFE3E0;color:#C2302B}
+  .agregar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .agregar select{flex:1;min-width:200px;height:40px;border-radius:12px;border:1px solid #D3E3F5;background:var(--campo);padding:0 12px;font:inherit;font-size:14px;color:var(--texto)}
+  .dl{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+  .dl .full{grid-column:1/-1}
+  .dl span{display:block;font-size:12px;font-weight:700;color:var(--texto-2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+  .dl b{font-weight:600;font-size:14.5px;word-break:break-word}
+  .sub-modal{font-size:14px;color:var(--texto-2);margin:-6px 0 14px}
+
+  @media (max-width:1000px){
+    .tab{padding:0 14px;font-size:14px}
+    .dl{grid-template-columns:1fr}
+    .ntabla thead{display:none}
+    .ntabla,.ntabla tbody{display:block}
+    .ntabla tr{display:block;background:#fff;border:1px solid var(--borde);border-radius:18px;padding:8px 14px;margin-bottom:10px;box-shadow:var(--sombra)}
+    .ntabla tr.vacio{background:transparent;border:0;box-shadow:none;padding:0}
+    .ntabla td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;border:0;font-size:14px;text-align:right}
+    .ntabla td::before{content:attr(data-label);font-size:11.5px;font-weight:700;color:var(--texto-2);text-transform:uppercase;letter-spacing:.4px;text-align:left;flex:none}
+    .ntabla td.empty{display:block;text-align:center}
+    .ntabla td.empty::before{content:none}
+    .ntabla td:last-child{justify-content:flex-end}
+    .ntabla td:last-child::before{content:none}
+    .ntabla tbody tr:hover td{background:transparent}
+    .pcard-h{padding:12px 14px}
+    .pcard-b{padding:2px 14px 12px}}
+
+  @media (max-width:560px){
+    .tab{padding:0 10px;font-size:13.5px;gap:6px}
+    .tab svg.i{display:none}
+    .tab .tx{display:none}}
+  .cm-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 12px;flex-wrap:wrap}
+  .cm-overlay{position:fixed;inset:0;background:rgba(4,26,58,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:1200}
+  .cm-overlay.show{display:flex}
+  .cm-card{background:#fff;border-radius:24px;width:100%;max-width:640px;max-height:calc(100dvh - 32px);overflow:auto;padding:22px;box-shadow:0 30px 70px rgba(2,16,42,.35)}
+  .cm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .cm-head h3{font-size:19px;color:var(--azul-oscuro)}
+  .cm-x{width:36px;height:36px;border-radius:12px;border:0;background:#F1F6FC;font-size:22px;color:var(--texto-2)}
+  .cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-top:12px}
+  .cm-full{grid-column:1/-1}
+  .cm-l{display:block;font-size:12.5px;font-weight:700;color:var(--texto-3);margin:6px 0 4px}
+  .cm-in{width:100%;height:42px;border-radius:12px;border:1px solid #D3E3F5;background:#F5F9FE;padding:0 12px;font:inherit;color:var(--texto)}
+  textarea.cm-in{height:auto;padding:10px 12px}
+  .cm-reglas{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
+  .cm-acc{display:flex;justify-content:flex-end;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .cm-err{color:#C2302B;font-size:12.5px;font-weight:700;margin-top:6px}
+  @media (max-width:1000px){ .cm-grid{grid-template-columns:1fr} .cm-reglas{grid-template-columns:1fr 1fr} .cm-acc .bp,.cm-acc .bg{flex:1} }
 </style>
 </head>
 <body>
@@ -701,10 +686,11 @@
         </div>
       </div>
     </div>
-    <a class="uchip" href="cuenta.html" aria-label="Mi cuenta">
+    <button type="button" class="uchip" id="userChip" aria-label="Menú de usuario">
       <div class="av" id="topAvatar">C</div>
       <div><b id="topUserName">Cargando...</b><small>● En línea</small></div>
-    </a>
+    </button>
+    <button type="button" class="um-mini" id="userMini" aria-label="Menú de usuario"><span class="av">C</span></button>
   </header>
 
   <div class="hero-wrap">
@@ -729,22 +715,81 @@
     <button type="button" id="avisoBtn">Reintentar</button>
   </div>
 
+  <nav class="tabs" role="tablist" aria-label="Secciones de normas y calidad">
+    <button class="tab on" id="tab-catalogo" role="tab" type="button" aria-selected="true" aria-controls="panel-catalogo" data-tab="catalogo"><svg class="i" aria-hidden="true" style="width:18px;height:18px"><use href="#i-file"/></svg><span>Catálogo<span class="tx"> de normas</span></span></button>
+    <button class="tab" id="tab-productos" role="tab" type="button" aria-selected="false" aria-controls="panel-productos" data-tab="productos" tabindex="-1"><svg class="i" aria-hidden="true" style="width:18px;height:18px"><use href="#i-shield"/></svg><span id="tabProductosTxt">Mis normas</span><span class="nbadge" id="tabBadge" aria-label="Pendientes de revisión"></span></button>
+    <button class="tab" id="tab-controles" role="tab" type="button" aria-selected="false" aria-controls="panel-controles" data-tab="controles" tabindex="-1"><svg class="i" aria-hidden="true" style="width:18px;height:18px"><use href="#i-check"/></svg><span>Controles<span class="tx"> de calidad</span></span></button>
+  </nav>
+
+  <!-- ===== PESTAÑA: CATÁLOGO DE NORMAS (solo consulta) ===== -->
+  <div class="tab-panel" id="panel-catalogo" role="tabpanel" aria-labelledby="tab-catalogo">
+    <div class="nota"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span>Solo consulta: las normas las administra Deep Sea. Cada producto debe cumplir las obligatorias de su categoría.</span></div>
+
+    <div class="cm-bar" id="catAdminBar" hidden><button class="bp" id="btnCatNueva" type="button">+ Nueva norma</button><span class="gris">Solo administrador</span></div>
+    <section class="kpis cuatro" aria-label="Resumen del catálogo">
+      <div class="k"><div class="ic" style="background:var(--g-azul)"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg></div><div><b id="catTotal">–</b><span>Normas en el catálogo</span></div></div>
+      <div class="k"><div class="ic" style="background:var(--g-verde)"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></div><div><b id="catVigentes">–</b><span>Vigentes</span></div></div>
+      <div class="k"><div class="ic" style="background:var(--g-morado)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></div><div><b id="catSanitarias">–</b><span>Sanitarias</span></div></div>
+      <div class="k"><div class="ic" style="background:var(--g-naranja)"><svg class="i" aria-hidden="true"><use href="#i-cal"/></svg></div><div><b id="catActualizado">–</b><span>Última actualización</span></div></div>
+    </section>
+
+    <section class="c">
+      <div class="filtros">
+        <div class="trz-search">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="catBuscar" maxlength="60" autocomplete="off" placeholder="Buscar por nombre, código o entidad…" aria-label="Buscar norma">
+        </div>
+        <select id="catTipo" aria-label="Filtrar por tipo">
+          <option value="">Todos los tipos</option>
+          <option>Sanitaria</option><option>Legal</option><option>Calidad</option><option>Ambiental</option><option>Internacional</option>
+        </select>
+        <select id="catEntidad" aria-label="Filtrar por entidad"><option value="">Todas las entidades</option></select>
+        <select id="catEstado" aria-label="Filtrar por estado">
+          <option value="Vigente">Vigentes</option>
+          <option value="Inactiva">Inactivas</option>
+          <option value="">Todas</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="ntabla">
+          <thead><tr><th>Código</th><th>Norma</th><th>Tipo</th><th>Entidad</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="tablaCatalogo"><tr class="vacio"><td colspan="6" class="empty">Cargando catálogo…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="tabla-pie" id="catPie" style="display:none">
+        <span id="catInfo"></span>
+        <button class="bg" id="catMas" type="button">Ver más</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== PESTAÑA: NORMAS DE MIS PRODUCTOS (el auditor ve las de todos) ===== -->
+  <div class="tab-panel" id="panel-productos" role="tabpanel" aria-labelledby="tab-productos" hidden>
+    <div class="nota"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span id="pdNota">Cada producto queda aprobado cuando el auditor verifica todas sus normas obligatorias.</span></div>
+    <section class="c">
+      <div class="panel-head">
+        <h3 id="pdTitulo">Normas de mis productos</h3>
+        <div class="chips" id="pdChips"></div>
+      </div>
+      <div class="filtros">
+        <div class="trz-search">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="pdBuscar" maxlength="60" autocomplete="off" placeholder="Buscar producto…" aria-label="Buscar producto">
+        </div>
+        <select id="pdFiltro" aria-label="Filtrar productos"></select>
+      </div>
+      <div class="plist" id="pdLista"><div class="vacio-n">Cargando…</div></div>
+    </section>
+  </div>
+
+  <!-- ===== PESTAÑA: CONTROLES DE CALIDAD (lo que ya tenías) ===== -->
+  <div class="tab-panel" id="panel-controles" role="tabpanel" aria-labelledby="tab-controles" hidden>
   <!-- ===== INDICADORES ===== -->
   <section class="kpis cuatro" aria-label="Resumen">
     <div class="k"><div class="ic" style="background:var(--g-azul)"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></div><div><b id="totalControles" class="loading-val">0000</b><span>Controles realizados</span><small class="delta" id="dTotal">Registros de calidad</small></div></div>
     <div class="k"><div class="ic" style="background:var(--g-verde)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></div><div><b id="totalAprobados" class="loading-val">0000</b><span>Controles aprobados</span><small class="delta up" id="dAprobados">Calidad verificada</small></div></div>
     <div class="k"><div class="ic" style="background:linear-gradient(135deg,#E8453F,#FF8F6B)"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg></div><div><b id="totalRechazados" class="loading-val">0000</b><span>Controles rechazados</span><small class="delta" id="dRechazados">Requieren seguimiento</small></div></div>
     <div class="k"><div class="ic" style="background:var(--g-naranja)"><svg class="i" aria-hidden="true"><use href="#i-thermo"/></svg></div><div><b id="totalPendientes" class="loading-val">0000</b><span>Controles pendientes</span><small class="delta" id="dPendientes">Pendientes de revisión</small></div></div>
-  </section>
-
-  <!-- ===== NORMAS ===== -->
-  <section class="c">
-    <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Normas y regulaciones</h3>
-    <div class="normas">
-      <div class="norma"><div class="ic" style="background:var(--g-azul)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></div><div><h4>Control sanitario</h4><p>Seguimiento de las condiciones de calidad de los productos recibidos y registro de las verificaciones realizadas.</p></div></div>
-      <div class="norma"><div class="ic" style="background:var(--g-verde)"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></div><div><h4>Estándares de calidad</h4><p>Registro de características del producto como color, olor, textura y resultado de la evaluación.</p></div></div>
-      <div class="norma"><div class="ic" style="background:var(--g-morado)"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg></div><div><h4>Seguimiento de calidad</h4><p>Consulta de los controles registrados para facilitar el seguimiento y control de los productos marinos.</p></div></div>
-    </div>
   </section>
 
   <!-- ===== REGISTRO ===== -->
@@ -776,7 +821,35 @@
       <button class="bg" id="verMas" type="button">Ver más</button>
     </div>
   </section>
+  </div>
 
+
+<div class="cm-overlay" id="catModal" role="dialog" aria-modal="true" aria-labelledby="cmTitulo">
+  <div class="cm-card">
+    <div class="cm-head"><h3 id="cmTitulo">Nueva norma</h3><button class="cm-x" id="cmCerrar" type="button" aria-label="Cerrar">×</button></div>
+    <label class="cm-l">Editar una norma existente</label>
+    <select id="cmSelect" class="cm-in"><option value="">— Nueva norma —</option></select>
+    <form id="cmForm" novalidate>
+      <div class="cm-grid">
+        <div><label class="cm-l" for="cmCodigo">Código *</label><input class="cm-in" id="cmCodigo" maxlength="12" placeholder="NOR-0019"></div>
+        <div><label class="cm-l" for="cmEntidad">Entidad *</label><input class="cm-in" id="cmEntidad" maxlength="60" placeholder="ICA, ICONTEC, MinSalud"></div>
+        <div class="cm-full"><label class="cm-l" for="cmNombre">Nombre de la norma *</label><input class="cm-in" id="cmNombre" maxlength="120"></div>
+        <div><label class="cm-l" for="cmTipo">Tipo *</label><select class="cm-in" id="cmTipo"><option>Sanitaria</option><option>Legal</option><option>Calidad</option><option>Ambiental</option><option>Internacional</option></select></div>
+        <div><label class="cm-l" for="cmEstado">Estado</label><select class="cm-in" id="cmEstado"><option value="Vigente">Vigente</option><option value="Inactiva">Inactiva</option></select></div>
+        <div class="cm-full"><label class="cm-l" for="cmDesc">Descripción</label><textarea class="cm-in" id="cmDesc" maxlength="300" rows="2"></textarea></div>
+      </div>
+      <p class="cm-l" style="margin-top:12px"><b>¿A qué categorías aplica?</b></p>
+      <p class="gris">Obligatoria: el producto debe cumplirla y no se puede quitar. Recomendada: se puede quitar. No aplica: no sale en esa categoría.</p>
+      <div class="cm-reglas">
+        <div><span class="cm-l">Peces</span><select class="cm-in" data-cat="Peces"><option value="">No aplica</option><option>Recomendada</option><option>Obligatoria</option></select></div>
+        <div><span class="cm-l">Mariscos</span><select class="cm-in" data-cat="Mariscos"><option value="">No aplica</option><option>Recomendada</option><option>Obligatoria</option></select></div>
+        <div><span class="cm-l">Moluscos</span><select class="cm-in" data-cat="Moluscos"><option value="">No aplica</option><option>Recomendada</option><option>Obligatoria</option></select></div>
+        <div><span class="cm-l">Otros</span><select class="cm-in" data-cat="Otros"><option value="">No aplica</option><option>Recomendada</option><option>Obligatoria</option></select></div>
+      </div>
+      <div class="cm-acc"><button type="button" class="bg" id="cmCancelar">Cancelar</button><button type="submit" class="bp" id="cmGuardar">Guardar norma</button></div>
+    </form>
+  </div>
+</div>
 </main>
 
 <button type="button" class="fab" id="btnNuevoFab" aria-label="Nuevo control de calidad"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
@@ -791,19 +864,16 @@
   <a href="trazabilidad.html" style="--g:linear-gradient(135deg,#0D9488,#2DD4BF)"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg><span class="tip">Trazabilidad</span></a>
   <a href="reportes.html" style="--g:linear-gradient(135deg,#1D4ED8,#60A5FA)"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span class="tip">Reportes</span></a>
   <a href="normas.html" aria-current="page" style="--g:linear-gradient(135deg,#0891B2,#67E8F9)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span class="tip">Normas y Calidad</span></a>
-  <span class="sep"></span>
-  <a href="cuenta.html" style="--g:linear-gradient(135deg,#062B5B,#2F6FD0)"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><span class="tip">Mi cuenta</span></a>
 </nav>
 
 <div class="fan" id="fan">
   <div class="fan-overlay" id="fanOverlay"></div>
   <div class="fan-list">
-    <a class="fan-item" href="proveedores.html" style="--i:5;--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><span class="fan-label">Proveedores</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span></a>
-    <a class="fan-item" href="recepciones.html" style="--i:4;--g:linear-gradient(135deg,#17A673,#5BDDA0)"><span class="fan-label">Recepciones</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></span></a>
-    <a class="fan-item" href="almacenamiento.html" style="--i:3;--g:linear-gradient(135deg,#4F46E5,#818CF8)"><span class="fan-label">Almacenamiento</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg></span></a>
-    <a class="fan-item" href="ventas.html" style="--i:2;--g:linear-gradient(135deg,#F08A24,#FFC46B)"><span class="fan-label">Ventas</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></span></a>
-    <a class="fan-item" href="normas.html" style="--i:1;--g:linear-gradient(135deg,#0891B2,#67E8F9)"><span class="fan-label">Normas y Calidad</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span></a>
-    <a class="fan-item" href="cuenta.html" style="--i:0;--g:linear-gradient(135deg,#062B5B,#2F6FD0)"><span class="fan-label">Mi cuenta</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span></a>
+    <a class="fan-item" href="proveedores.html" style="--i:4;--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><span class="fan-label">Proveedores</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span></a>
+    <a class="fan-item" href="recepciones.html" style="--i:3;--g:linear-gradient(135deg,#17A673,#5BDDA0)"><span class="fan-label">Recepciones</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></span></a>
+    <a class="fan-item" href="almacenamiento.html" style="--i:2;--g:linear-gradient(135deg,#4F46E5,#818CF8)"><span class="fan-label">Almacenamiento</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg></span></a>
+    <a class="fan-item" href="ventas.html" style="--i:1;--g:linear-gradient(135deg,#F08A24,#FFC46B)"><span class="fan-label">Ventas</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></span></a>
+    <a class="fan-item" href="normas.html" style="--i:0;--g:linear-gradient(135deg,#0891B2,#67E8F9)"><span class="fan-label">Normas y Calidad</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span></a>
   </div>
 </div>
 
@@ -854,12 +924,11 @@
           <small class="field-error"></small>
         </div>
         <div class="field">
-          <label for="resultado">Resultado *</label>
-          <select id="resultado">
-            <option value="Pendiente">Pendiente</option>
-            <option value="Aprobado">Aprobado</option>
-            <option value="Rechazado">Rechazado</option>
+          <label for="resultado">Resultado</label>
+          <select id="resultado" disabled>
+            <option value="Pendiente" selected>Pendiente de revisión</option>
           </select>
+          <span class="hint">Lo decide el administrador después de revisarlo.</span>
           <small class="field-error"></small>
         </div>
         <div class="field full">
@@ -892,12 +961,99 @@
   </div>
 </div>
 
+<!-- ===================== VENTANA: DETALLE DE NORMA ===================== -->
+<div class="modal" id="modalNorma" role="dialog" aria-modal="true" aria-labelledby="dNombre">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="dNombre">Norma</h3>
+      <button class="close" type="button" data-cerrar="modalNorma" aria-label="Cerrar">×</button>
+    </div>
+    <div class="dl">
+      <div><span>Código</span><b id="dCodigo"></b></div>
+      <div><span>Entidad</span><b id="dEntidad"></b></div>
+      <div><span>Tipo</span><b id="dTipo"></b></div>
+      <div><span>Estado</span><b id="dEstado"></b></div>
+      <div class="full"><span>Descripción</span><b id="dDesc"></b></div>
+      <div class="full"><span>Obligatoria en</span><b id="dObl"></b></div>
+      <div class="full"><span>Recomendada en</span><b id="dRec"></b></div>
+      <div class="full"><span>Última actualización</span><b id="dAct"></b></div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="bg" data-cerrar="modalNorma">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== VENTANA: DECLARAR CUMPLIMIENTO ===================== -->
+<div class="modal" id="modalDecl" role="dialog" aria-modal="true" aria-labelledby="dcTitulo">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="dcTitulo">Declarar cumplimiento</h3>
+      <button class="close" type="button" data-cerrar="modalDecl" aria-label="Cerrar">×</button>
+    </div>
+    <p class="sub-modal" id="dcInfo"></p>
+    <form id="formDecl" novalidate autocomplete="off">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="dcCert">Certificado o documento *</label>
+          <input type="text" id="dcCert" maxlength="80" placeholder="Ej. Certificado BPM N.º 12345">
+          <small class="field-error"></small>
+        </div>
+        <div class="field full">
+          <label for="dcEmisora">Entidad emisora</label>
+          <input type="text" id="dcEmisora" maxlength="80" placeholder="Ej. INVIMA">
+        </div>
+        <div class="field">
+          <label for="dcEmision">Fecha de emisión *</label>
+          <input type="date" id="dcEmision">
+          <small class="field-error"></small>
+        </div>
+        <div class="field">
+          <label for="dcVence">Fecha de vencimiento *</label>
+          <input type="date" id="dcVence">
+          <small class="field-error"></small>
+        </div>
+      </div>
+      <span class="hint">El auditor revisará esta declaración. Hasta entonces la norma queda en revisión.</span>
+      <div class="modal-actions">
+        <button type="button" class="bg" data-cerrar="modalDecl">Cancelar</button>
+        <button type="submit" class="bp" id="dcGuardar">Enviar a revisión</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== VENTANA: REVISIÓN DEL AUDITOR ===================== -->
+<div class="modal" id="modalRev" role="dialog" aria-modal="true" aria-labelledby="rvTitulo">
+  <div class="modal-box small">
+    <div class="modal-head">
+      <h3 id="rvTitulo">Revisar norma</h3>
+      <button class="close" type="button" data-cerrar="modalRev" aria-label="Cerrar">×</button>
+    </div>
+    <p class="sub-modal" id="rvInfo"></p>
+    <form id="formRev" novalidate autocomplete="off">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="rvTexto" id="rvLabel">Comentario</label>
+          <textarea id="rvTexto" maxlength="300"></textarea>
+          <small class="field-error"></small>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="bg" data-cerrar="modalRev">Cancelar</button>
+        <button type="submit" class="bp" id="rvOk">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 
 
 <!-- El SDK se carga al final: la página se dibuja primero y no queda bloqueada esperando la descarga del script. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
 (function(){
   'use strict';
@@ -911,9 +1067,7 @@
     return;
   }
 
-  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = DSI.cliente();
 
   const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1190,7 +1344,7 @@
         supabaseClient.from('productos').select('id,nombre,estado').order('nombre', { ascending: true }),
         supabaseClient
           .from('controles_calidad')
-          .select('id,producto_id,color,olor,textura,resultado,observaciones,fecha_control,productos(nombre)')
+          .select('id,producto_id,color,olor,textura,resultado,observaciones,fecha_control,creado_por,productos(nombre)')
           .order('fecha_control', { ascending: false, nullsFirst: false }),
         // Solo para las notificaciones
         supabaseClient
@@ -1843,8 +1997,9 @@
       if (comentario === null) return;
       if (!comentario.trim()) { mostrarToastRev('El motivo del rechazo es obligatorio.', 'error'); return; }
     } else {
-      comentario = window.prompt('Comentario de aprobación (opcional):', '');
+      comentario = window.prompt('Motivo de la aprobación (obligatorio):', '');
       if (comentario === null) return;
+      if (!comentario.trim()) { mostrarToastRev('El motivo de la aprobación es obligatorio.', 'error'); return; }
     }
     const { error } = await supabaseClient.from('controles_calidad')
       .update({ estado_revision: decision, comentario_revision: comentario.trim() || null })
@@ -1859,7 +2014,7 @@
       const { data: { user } } = await supabaseClient.auth.getUser();
       if (user) {
         const { data: perf } = await supabaseClient.from('perfiles').select('rol').eq('id', user.id).maybeSingle();
-        esAuditor = !!(perf && perf.rol === 'auditor');
+        esAuditor = !!(perf && (perf.rol === 'auditor' || perf.rol === 'administrador'));
       }
       const { data: cs, error } = await supabaseClient.from('controles_calidad').select('id,estado_revision,comentario_revision');
       if (!error && cs) revMap = new Map(cs.map(function(c){ return [String(c.id), c]; }));
@@ -1883,9 +2038,743 @@
   supabaseClient.auth.onAuthStateChange(function(evento){
     if (evento === 'INITIAL_SESSION' || evento === 'SIGNED_IN') cargarRevision();
   });
+
+
+  // ===============================================================
+  // PESTAÑAS · CATÁLOGO DE NORMAS · NORMAS DE CADA PRODUCTO
+  // Las reglas de verdad (quién puede declarar, verificar o rechazar)
+  // las hace cumplir la base de datos; esta pantalla solo las muestra.
+  // ===============================================================
+  const TABS = ['catalogo', 'productos', 'controles'];
+  let miRol = null;
+  let rolPromesa = null;
+  const soyAuditor = () => miRol === 'auditor' || miRol === 'administrador';
+
+  function obtenerRol(){
+    if (rolPromesa) return rolPromesa;
+    rolPromesa = (async function(){
+      try {
+        const res = await supabaseClient.auth.getSession();
+        const uid = res.data.session && res.data.session.user.id;
+        if (!uid) return null;
+        const r = await supabaseClient.from('perfiles').select('rol').eq('id', uid).maybeSingle();
+        miRol = r.data ? r.data.rol : null;
+      } catch (e) { miRol = null; }
+      return miRol;
+    })();
+    return rolPromesa;
+  }
+
+  function hoyISO(){
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function fechaISO(s){ return s ? String(s).slice(0, 10).split('-').reverse().join('/') : ''; }
+
+  function textoError(e){
+    const m = (e && e.message) || '';
+    if (/^(Para declarar|La fecha de|Una norma|Solo el|Solo un|No se puede|Un rechazo|El auditor)/.test(m)) return m;
+    return 'No se pudo guardar. Intenta de nuevo.';
+  }
+
+  // ---------- ventanas ----------
+  function bloquearScroll(){
+    document.body.style.overflow = document.querySelector('.modal.show') ? 'hidden' : '';
+  }
+  function abrirVentana(id){
+    $(id).classList.add('show');
+    bloquearScroll();
+  }
+  function cerrarVentana(id){
+    $(id).classList.remove('show');
+    bloquearScroll();
+  }
+  document.addEventListener('click', function(e){
+    const b = e.target.closest('[data-cerrar]');
+    if (b) cerrarVentana(b.dataset.cerrar);
+  });
+  ['modalNorma', 'modalDecl', 'modalRev'].forEach(function(id){
+    $(id).addEventListener('mousedown', function(e){ if (e.target === $(id)) cerrarVentana(id); });
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    ['modalNorma', 'modalDecl', 'modalRev'].forEach(function(id){ if ($(id).classList.contains('show')) cerrarVentana(id); });
+  });
+
+  // ---------- pestañas ----------
+  function irTab(nombre, actualizarHash){
+    if (TABS.indexOf(nombre) < 0) nombre = 'catalogo';
+    TABS.forEach(function(t){
+      const activo = t === nombre;
+      $('panel-' + t).hidden = !activo;
+      const b = $('tab-' + t);
+      b.classList.toggle('on', activo);
+      b.setAttribute('aria-selected', activo ? 'true' : 'false');
+      b.tabIndex = activo ? 0 : -1;
+    });
+    document.body.classList.toggle('tab-controles', nombre === 'controles');
+    if (actualizarHash !== false) {
+      try { if (location.hash !== '#' + nombre) history.replaceState(null, '', '#' + nombre); } catch (e) { /* sin historial */ }
+    }
+    if (nombre === 'catalogo') cargarCatalogo();
+    if (nombre === 'productos') cargarProductosNormas();
+  }
+
+  document.querySelector('.tabs').addEventListener('click', function(e){
+    const b = e.target.closest('[data-tab]');
+    if (b) irTab(b.dataset.tab);
+  });
+  document.querySelector('.tabs').addEventListener('keydown', function(e){
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const actual = TABS.findIndex(function(t){ return $('tab-' + t).classList.contains('on'); });
+    const sig = (actual + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length;
+    irTab(TABS[sig]);
+    $('tab-' + TABS[sig]).focus();
+  });
+  window.addEventListener('hashchange', function(){ irTab(location.hash.slice(1), false); });
+
+  // ===============================================================
+  // CATÁLOGO
+  // ===============================================================
+  const CLAVE_CAT = 'dsi_catalogo_normas_v1';
+  const CLAVE_REGLAS = 'dsi_reglas_normas_v1';
+  const CLASE_TIPO = { Sanitaria: 'tp-san', Legal: 'tp-leg', Calidad: 'tp-cal', Ambiental: 'tp-amb', Internacional: 'tp-int' };
+  const CAT_POR_PAGINA = 30;
+  let catalogo = [];
+  let reglas = [];
+  let mapaCat = new Map();
+  let catalogoListo = false;
+  let catCargando = null;
+  let catUltima = 0;
+  let catVisibles = CAT_POR_PAGINA;
+
+  function leerJSON(clave){
+    try { const s = localStorage.getItem(clave); return s ? JSON.parse(s) : null; } catch (e) { return null; }
+  }
+  function guardarJSON(clave, valor){
+    try { localStorage.setItem(clave, JSON.stringify(valor)); } catch (e) { /* sin espacio */ }
+  }
+
+  function cargarCatalogo(forzar){
+    if (catCargando) return catCargando;
+    if (!forzar && catalogoListo && Date.now() - catUltima < 60000) return Promise.resolve();
+
+    catCargando = (async function(){
+      // 1) al instante: lo último guardado
+      if (!catalogoListo) {
+        const c = leerJSON(CLAVE_CAT);
+        if (c && c.length) {
+          catalogo = c;
+          reglas = leerJSON(CLAVE_REGLAS) || [];
+          mapaCat = new Map(catalogo.map(function(n){ return [n.id, n]; }));
+          catalogoListo = true;
+          pintarCatalogo();
+        }
+      }
+      // 2) en segundo plano: lo más reciente
+      try {
+        const res = await Promise.all([
+          supabaseClient.from('normas_catalogo').select('id,codigo,nombre,tipo,entidad,descripcion,estado,actualizado').order('codigo', { ascending: false }),
+          supabaseClient.from('norma_categoria').select('norma_id,categoria,obligatoria')
+        ]);
+        if (res[0].error) throw res[0].error;
+        catalogo = res[0].data || [];
+        if (!res[1].error) reglas = res[1].data || [];
+        mapaCat = new Map(catalogo.map(function(n){ return [n.id, n]; }));
+        catalogoListo = true;
+        catUltima = Date.now();
+        guardarJSON(CLAVE_CAT, catalogo);
+        guardarJSON(CLAVE_REGLAS, reglas);
+        pintarCatalogo();
+      } catch (e) {
+        if (!catalogoListo) {
+          $('tablaCatalogo').innerHTML = '<tr class="vacio"><td colspan="6" class="empty">No se pudo cargar el catálogo. <button class="lk" type="button" id="catReintentar">Reintentar</button></td></tr>';
+        }
+      } finally {
+        catCargando = null;
+      }
+    })();
+    return catCargando;
+  }
+
+  function pintarCatalogo(){
+    const total = catalogo.length;
+    $('catTotal').textContent = total;
+    $('catVigentes').textContent = catalogo.filter(function(n){ return n.estado === 'Vigente'; }).length;
+    $('catSanitarias').textContent = catalogo.filter(function(n){ return n.tipo === 'Sanitaria'; }).length;
+    let ultima = '';
+    catalogo.forEach(function(n){ if (n.actualizado && n.actualizado > ultima) ultima = n.actualizado; });
+    $('catActualizado').textContent = ultima ? formatearFecha(ultima) : '–';
+
+    // entidades disponibles (se conserva la elegida)
+    const selEnt = $('catEntidad');
+    const previa = selEnt.value;
+    const entidades = Array.from(new Set(catalogo.map(function(n){ return n.entidad; }))).sort(function(a, b){ return a.localeCompare(b, 'es'); });
+    selEnt.innerHTML = '<option value="">Todas las entidades</option>' +
+      entidades.map(function(e){ return '<option>' + escapeHTML(e) + '</option>'; }).join('');
+    selEnt.value = entidades.indexOf(previa) >= 0 ? previa : '';
+
+    const q = normalizar($('catBuscar').value);
+    const tipo = $('catTipo').value;
+    const ent = selEnt.value;
+    const est = $('catEstado').value;
+    const lista = catalogo.filter(function(n){
+      if (tipo && n.tipo !== tipo) return false;
+      if (ent && n.entidad !== ent) return false;
+      if (est && n.estado !== est) return false;
+      if (q && normalizar(n.codigo + ' ' + n.nombre + ' ' + n.entidad + ' ' + (n.descripcion || '')).indexOf(q) < 0) return false;
+      return true;
+    });
+
+    const mostrar = lista.slice(0, catVisibles);
+    $('tablaCatalogo').innerHTML = mostrar.length ? mostrar.map(function(n){
+      return '<tr>' +
+        '<td data-label="Código"><strong>' + escapeHTML(n.codigo) + '</strong></td>' +
+        '<td data-label="Norma"><span>' + escapeHTML(n.nombre) + (n.descripcion ? '<span class="sub">' + escapeHTML(n.descripcion) + '</span>' : '') + '</span></td>' +
+        '<td data-label="Tipo"><span class="pill ' + (CLASE_TIPO[n.tipo] || 'tp-int') + '">' + escapeHTML(n.tipo) + '</span></td>' +
+        '<td data-label="Entidad">' + escapeHTML(n.entidad) + '</td>' +
+        '<td data-label="Estado"><span class="pill ' + (n.estado === 'Vigente' ? 'ok' : 'bad') + '">' + (n.estado === 'Vigente' ? 'Vigente' : 'Inactiva') + '</span></td>' +
+        '<td><button class="lk" type="button" data-ver="' + escapeHTML(n.id) + '">Ver detalle</button></td>' +
+        '</tr>';
+    }).join('') : '<tr class="vacio"><td colspan="6" class="empty">' + (total ? 'Ninguna norma coincide con tu búsqueda.' : 'Todavía no hay normas en el catálogo.') + '</td></tr>';
+
+    const hayMas = lista.length > mostrar.length;
+    $('catPie').style.display = lista.length ? 'flex' : 'none';
+    $('catInfo').textContent = 'Mostrando ' + mostrar.length + ' de ' + lista.length;
+    $('catMas').style.display = hayMas ? '' : 'none';
+  }
+
+  let temporizadorCat = null;
+  $('catBuscar').addEventListener('input', function(){
+    clearTimeout(temporizadorCat);
+    temporizadorCat = setTimeout(function(){ catVisibles = CAT_POR_PAGINA; pintarCatalogo(); }, 120);
+  });
+  ['catTipo', 'catEntidad', 'catEstado'].forEach(function(id){
+    $(id).addEventListener('change', function(){ catVisibles = CAT_POR_PAGINA; pintarCatalogo(); });
+  });
+  $('catMas').addEventListener('click', function(){ catVisibles += CAT_POR_PAGINA; pintarCatalogo(); });
+  $('tablaCatalogo').addEventListener('click', function(e){
+    if (e.target.id === 'catReintentar') { cargarCatalogo(true); return; }
+    const b = e.target.closest('[data-ver]');
+    if (b) abrirDetalle(b.dataset.ver);
+  });
+
+  function abrirDetalle(id){
+    const n = mapaCat.get(id);
+    if (!n) return;
+    $('dNombre').textContent = n.nombre;
+    $('dCodigo').textContent = n.codigo;
+    $('dEntidad').textContent = n.entidad;
+    $('dTipo').innerHTML = '<span class="pill ' + (CLASE_TIPO[n.tipo] || 'tp-int') + '">' + escapeHTML(n.tipo) + '</span>';
+    $('dEstado').innerHTML = '<span class="pill ' + (n.estado === 'Vigente' ? 'ok' : 'bad') + '">' + (n.estado === 'Vigente' ? 'Vigente' : 'Inactiva') + '</span>';
+    $('dDesc').textContent = n.descripcion || 'Sin descripción.';
+    const ob = reglas.filter(function(r){ return r.norma_id === id && r.obligatoria; }).map(function(r){ return r.categoria; });
+    const rec = reglas.filter(function(r){ return r.norma_id === id && !r.obligatoria; }).map(function(r){ return r.categoria; });
+    $('dObl').textContent = ob.length ? ob.join(', ') : 'Ninguna categoría';
+    $('dRec').textContent = rec.length ? rec.join(', ') : 'Ninguna categoría';
+    $('dAct').textContent = n.actualizado ? formatearFecha(n.actualizado) : '–';
+    abrirVentana('modalNorma');
+  }
+
+  // ===============================================================
+  // NORMAS DE CADA PRODUCTO
+  // ===============================================================
+  const ETIQ_ESTADO = { 'Sin declarar': 'Sin declarar', 'Declarada': 'En revisión', 'Verificada': 'Verificada', 'Rechazada': 'Rechazada', 'No aplica': 'No aplica' };
+  const CLASE_ESTADO = { 'Sin declarar': 'neutro', 'Declarada': 'info', 'Verificada': 'ok', 'Rechazada': 'bad', 'No aplica': 'neutro' };
+  const CLASE_CUMPL = { 'Aprobado': 'ok', 'Rechazado': 'bad', 'Pendiente': 'pend', 'Sin normas': 'neutro' };
+
+  let pd = { productos: [], cumpl: new Map(), normas: new Map(), duenos: new Map() };
+  let pdListo = false;
+  let pdCargando = false;
+  let pdUltima = 0;
+  const abiertos = new Set();
+  let filtroPreparado = false;
+
+  function prepararFiltroProductos(){
+    if (filtroPreparado) return;
+    filtroPreparado = true;
+    const aud = soyAuditor();
+    $('tabProductosTxt').textContent = aud ? 'Normas por revisar' : 'Mis normas';
+    $('pdTitulo').textContent = aud ? 'Normas declaradas por los establecimientos' : 'Normas de mis productos';
+    $('pdNota').textContent = aud
+      ? 'Verifica o rechaza cada norma declarada. Un producto queda aprobado solo cuando todas sus normas obligatorias están verificadas.'
+      : 'Declara cada norma obligatoria con su certificado. Tu producto queda aprobado cuando el auditor verifica todas.';
+    $('pdFiltro').innerHTML = aud
+      ? '<option value="revisar">Por revisar</option><option value="todos">Todos los productos</option>'
+      : '<option value="">Todos mis productos</option><option value="Aprobado">Aprobados</option><option value="Pendiente">Pendientes</option><option value="Rechazado">Rechazados</option>';
+  }
+
+  async function actualizarBadgeRevision(){
+    await obtenerRol();
+    prepararFiltroProductos();
+    if (!soyAuditor()) return;
+    try {
+      const r = await supabaseClient.from('producto_normas').select('id', { count: 'exact', head: true }).eq('estado', 'Declarada');
+      const n = r.count || 0;
+      const b = $('tabBadge');
+      b.textContent = n > 99 ? '99+' : String(n);
+      b.classList.toggle('show', n > 0);
+    } catch (e) { /* el contador es opcional */ }
+  }
+
+  async function cargarProductosNormas(forzar){
+    if (pdCargando) return;
+    if (!forzar && pdListo && Date.now() - pdUltima < 30000) return;
+    pdCargando = true;
+    if (!pdListo) $('pdLista').innerHTML = '<div class="vacio-n">Cargando…</div>';
+    try {
+      await obtenerRol();
+      prepararFiltroProductos();
+      const aud = soyAuditor();
+      const consultas = [
+        cargarCatalogo(),
+        supabaseClient.from('productos').select('id,nombre,categoria,creado_por').order('created_at', { ascending: false }).limit(500),
+        supabaseClient.from('productos_cumplimiento').select('producto_id,obligatorias,cumplidas,por_revisar,rechazadas,vencidas,estado_cumplimiento'),
+        supabaseClient.from('producto_normas').select('id,producto_id,norma_id,obligatoria,estado,certificado,entidad_emisora,fecha_emision,fecha_vencimiento,comentario_revision').limit(5000)
+      ];
+      if (aud) consultas.push(supabaseClient.from('perfiles').select('id,nombre,nombre_establecimiento,email'));
+      const r = await Promise.all(consultas);
+      const fallo = r.slice(1).find(function(x){ return x && x.error; });
+      if (fallo) throw fallo.error;
+
+      pd.productos = r[1].data || [];
+      pd.cumpl = new Map((r[2].data || []).map(function(c){ return [c.producto_id, c]; }));
+      pd.normas = new Map();
+      (r[3].data || []).forEach(function(n){
+        if (!pd.normas.has(n.producto_id)) pd.normas.set(n.producto_id, []);
+        pd.normas.get(n.producto_id).push(n);
+      });
+      pd.duenos = new Map(aud && r[4] ? (r[4].data || []).map(function(p){ return [p.id, p.nombre_establecimiento || p.nombre || p.email || 'Usuario']; }) : []);
+      pdListo = true;
+      pdUltima = Date.now();
+      pintarProductos();
+    } catch (e) {
+      if (!pdListo) $('pdLista').innerHTML = '<div class="vacio-n">No se pudieron cargar tus normas. <button class="lk" type="button" id="pdReintentar">Reintentar</button></div>';
+      else mostrarToast('No se pudo actualizar. Revisa tu conexión.', 'error');
+    } finally {
+      pdCargando = false;
+    }
+  }
+
+  function normasOrdenadas(idProducto){
+    const lista = (pd.normas.get(idProducto) || []).slice();
+    lista.sort(function(a, b){
+      if (a.obligatoria !== b.obligatoria) return a.obligatoria ? -1 : 1;
+      const ca = (mapaCat.get(a.norma_id) || {}).codigo || '';
+      const cb = (mapaCat.get(b.norma_id) || {}).codigo || '';
+      return ca.localeCompare(cb);
+    });
+    return lista;
+  }
+
+  function filaNorma(pn, aud){
+    const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma', entidad: '', codigo: '' };
+    const vencida = pn.estado === 'Verificada' && pn.fecha_vencimiento && pn.fecha_vencimiento < hoyISO();
+    const etiqueta = vencida ? 'Vencida' : (aud && pn.estado === 'Declarada' ? 'Por revisar' : ETIQ_ESTADO[pn.estado]);
+    const clase = vencida ? 'bad' : CLASE_ESTADO[pn.estado];
+
+    let detalle = '<small>' + escapeHTML(n.codigo) + (n.entidad ? ' · ' + escapeHTML(n.entidad) : '') + '</small>';
+    if (pn.certificado) {
+      detalle += '<small>Certificado ' + escapeHTML(pn.certificado) +
+        (pn.entidad_emisora ? ' · ' + escapeHTML(pn.entidad_emisora) : '') +
+        (pn.fecha_vencimiento ? ' · vence ' + fechaISO(pn.fecha_vencimiento) : '') + '</small>';
+    }
+    if (pn.estado === 'Rechazada' && pn.comentario_revision) {
+      detalle += '<small class="mot">Motivo del rechazo: ' + escapeHTML(pn.comentario_revision) + '</small>';
+    }
+
+    let acciones = '';
+    if (aud) {
+      if (pn.estado === 'Declarada') {
+        acciones = '<button class="mini v" type="button" data-acc="verificar" data-pn="' + pn.id + '">Verificar</button>' +
+                   '<button class="mini d" type="button" data-acc="rechazar" data-pn="' + pn.id + '">Rechazar</button>';
+      }
+    } else {
+      if (pn.estado === 'Sin declarar' || pn.estado === 'Rechazada') {
+        acciones += '<button class="mini p" type="button" data-acc="declarar" data-pn="' + pn.id + '">' + (pn.estado === 'Rechazada' ? 'Corregir y volver a declarar' : 'Declarar cumplimiento') + '</button>';
+      } else if (pn.estado === 'Declarada') {
+        acciones += '<button class="mini g" type="button" data-acc="declarar" data-pn="' + pn.id + '">Editar declaración</button>';
+      }
+      if (!pn.obligatoria && pn.estado !== 'Verificada') {
+        acciones += '<button class="mini d" type="button" data-acc="quitar" data-pn="' + pn.id + '">Quitar</button>';
+      }
+    }
+
+    return '<div class="nrow">' +
+      '<div class="nm"><b>' + escapeHTML(n.nombre) + '</b>' + detalle + '</div>' +
+      '<div class="st"><span class="pill ' + (pn.obligatoria ? 'info' : 'neutro') + '">' + (pn.obligatoria ? 'Obligatoria' : 'Recomendada') + '</span>' +
+      '<span class="pill ' + clase + '">' + etiqueta + '</span></div>' +
+      (acciones ? '<div class="ac">' + acciones + '</div>' : '') +
+      '</div>';
+  }
+
+  function tarjetaProducto(p, aud){
+    const c = pd.cumpl.get(p.id) || { obligatorias: 0, cumplidas: 0, por_revisar: 0, rechazadas: 0, vencidas: 0, estado_cumplimiento: 'Sin normas' };
+    const abierto = abiertos.has(p.id);
+    const dueno = aud ? ' · ' + escapeHTML(pd.duenos.get(p.creado_por) || 'Usuario') : '';
+    let progreso = c.obligatorias ? c.cumplidas + ' de ' + c.obligatorias + ' obligatorias verificadas' : 'Sin normas obligatorias para esta categoría';
+    if (aud && c.por_revisar) progreso += ' · ' + c.por_revisar + ' por revisar';
+    if (c.vencidas) progreso += ' · ' + c.vencidas + ' vencida' + (c.vencidas > 1 ? 's' : '');
+
+    const filas = normasOrdenadas(p.id).map(function(pn){ return filaNorma(pn, aud); }).join('');
+
+    let agregar = '';
+    if (!aud) {
+      const tiene = new Set((pd.normas.get(p.id) || []).map(function(n){ return n.norma_id; }));
+      const opciones = catalogo.filter(function(n){ return n.estado === 'Vigente' && !tiene.has(n.id); })
+        .map(function(n){ return '<option value="' + escapeHTML(n.id) + '">' + escapeHTML(n.codigo + ' · ' + n.nombre) + '</option>'; }).join('');
+      if (opciones) {
+        agregar = '<div class="agregar"><select aria-label="Agregar otra norma del catálogo" data-sel="' + p.id + '"><option value="">Agregar otra norma del catálogo…</option>' + opciones + '</select>' +
+                  '<button class="mini g" type="button" data-acc="agregar" data-id="' + p.id + '">Agregar</button></div>';
+      }
+    }
+
+    return '<article class="pcard' + (abierto ? ' open' : '') + '" data-card="' + p.id + '">' +
+      '<button class="pcard-h" type="button" data-acc="toggle" data-id="' + p.id + '" aria-expanded="' + (abierto ? 'true' : 'false') + '">' +
+        '<div class="t"><b>' + escapeHTML(p.nombre) + '</b><small>' + escapeHTML(p.categoria || '') + dueno + ' · ' + progreso + '</small></div>' +
+        '<span class="pill ' + (CLASE_CUMPL[c.estado_cumplimiento] || 'neutro') + '">' + c.estado_cumplimiento + '</span>' +
+        '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>' +
+      '</button>' +
+      '<div class="pcard-b">' + (filas || '<div class="vacio-n">Este producto no tiene normas asignadas.</div>') + agregar + '</div>' +
+    '</article>';
+  }
+
+  function pintarProductos(){
+    const aud = soyAuditor();
+    const q = normalizar($('pdBuscar').value);
+    const f = $('pdFiltro').value;
+
+    const lista = pd.productos.filter(function(p){
+      const c = pd.cumpl.get(p.id) || {};
+      if (q && normalizar(p.nombre + ' ' + (p.categoria || '') + ' ' + (aud ? (pd.duenos.get(p.creado_por) || '') : '')).indexOf(q) < 0) return false;
+      if (aud) return f === 'todos' ? true : (c.por_revisar > 0);
+      return !f || c.estado_cumplimiento === f;
+    });
+
+    const cuenta = { Aprobado: 0, Pendiente: 0, Rechazado: 0 };
+    pd.productos.forEach(function(p){ const c = pd.cumpl.get(p.id); if (c && cuenta[c.estado_cumplimiento] !== undefined) cuenta[c.estado_cumplimiento]++; });
+    $('pdChips').innerHTML = aud
+      ? '<span class="pill info">' + lista.length + ' por revisar</span>'
+      : '<span class="pill ok">' + cuenta.Aprobado + ' aprobados</span><span class="pill pend">' + cuenta.Pendiente + ' pendientes</span><span class="pill bad">' + cuenta.Rechazado + ' rechazados</span>';
+
+    if (!lista.length) {
+      $('pdLista').innerHTML = '<div class="vacio-n">' + (pd.productos.length
+        ? (aud && f !== 'todos' ? 'No hay normas por revisar. 🎉' : 'Ningún producto coincide con tu búsqueda.')
+        : (aud ? 'Todavía no hay productos registrados.' : 'Aún no tienes productos. Crea uno en Productos y aquí verás sus normas.')) + '</div>';
+      return;
+    }
+    $('pdLista').innerHTML = lista.map(function(p){ return tarjetaProducto(p, aud); }).join('');
+  }
+
+  let temporizadorPd = null;
+  $('pdBuscar').addEventListener('input', function(){
+    clearTimeout(temporizadorPd);
+    temporizadorPd = setTimeout(pintarProductos, 120);
+  });
+  $('pdFiltro').addEventListener('change', pintarProductos);
+
+  function buscarPN(id){
+    let hallada = null;
+    pd.normas.forEach(function(lista){ lista.forEach(function(n){ if (n.id === id) hallada = n; }); });
+    return hallada;
+  }
+  function nombreProductoDe(idProducto){
+    const p = pd.productos.find(function(x){ return x.id === idProducto; });
+    return p ? p.nombre : 'Producto';
+  }
+
+  $('pdLista').addEventListener('click', async function(e){
+    if (e.target.id === 'pdReintentar') { cargarProductosNormas(true); return; }
+    const b = e.target.closest('[data-acc]');
+    if (!b) return;
+    const acc = b.dataset.acc;
+
+    if (acc === 'toggle') {
+      const card = b.closest('.pcard');
+      const abierto = card.classList.toggle('open');
+      b.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+      if (abierto) abiertos.add(b.dataset.id); else abiertos.delete(b.dataset.id);
+      return;
+    }
+    if (acc === 'declarar') { abrirDeclaracion(b.dataset.pn); return; }
+    if (acc === 'verificar' || acc === 'rechazar') { abrirRevision(b.dataset.pn, acc === 'verificar' ? 'Verificada' : 'Rechazada'); return; }
+    if (acc === 'quitar') { quitarNorma(b.dataset.pn, b); return; }
+    if (acc === 'agregar') { agregarNorma(b.dataset.id, b); return; }
+  });
+
+  async function agregarNorma(idProducto, boton){
+    const sel = document.querySelector('select[data-sel="' + idProducto + '"]');
+    if (!sel || !sel.value) { mostrarToast('Elige una norma del catálogo.', 'error'); return; }
+    boton.disabled = true;
+    const { error } = await supabaseClient.from('producto_normas').insert({ producto_id: idProducto, norma_id: sel.value, obligatoria: false, estado: 'Sin declarar' });
+    boton.disabled = false;
+    if (error) { mostrarToast(textoError(error), 'error'); return; }
+    mostrarToast('Norma agregada al producto.', 'success');
+    await cargarProductosNormas(true);
+  }
+
+  async function quitarNorma(id, boton){
+    const pn = buscarPN(id);
+    if (!pn) return;
+    const n = mapaCat.get(pn.norma_id) || { nombre: 'esta norma' };
+    const tituloPrevio = $('confirmTitle').textContent;
+    const botonPrevio = $('confirmYes').textContent;
+    $('confirmTitle').textContent = 'Quitar norma';
+    $('confirmYes').textContent = 'Quitar';
+    const si = await confirmar('¿Quitar <strong>' + escapeHTML(n.nombre) + '</strong> de este producto?');
+    $('confirmTitle').textContent = tituloPrevio;
+    $('confirmYes').textContent = botonPrevio;
+    if (!si) return;
+    boton.disabled = true;
+    const { error } = await supabaseClient.from('producto_normas').delete().eq('id', id);
+    boton.disabled = false;
+    if (error) { mostrarToast(textoError(error), 'error'); return; }
+    mostrarToast('Norma quitada.', 'success');
+    await cargarProductosNormas(true);
+  }
+
+  // ---------- declarar cumplimiento (establecimiento) ----------
+  let declarandoId = null;
+  function marcarCampo(idCampo, mensaje){
+    const campo = $(idCampo).closest('.field');
+    campo.classList.toggle('invalid', !!mensaje);
+    const err = campo.querySelector('.field-error');
+    if (err) err.textContent = mensaje || '';
+  }
+
+  function abrirDeclaracion(id){
+    const pn = buscarPN(id);
+    if (!pn) return;
+    declarandoId = id;
+    const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma' };
+    $('dcInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
+    $('dcCert').value = pn.certificado || '';
+    $('dcEmisora').value = pn.entidad_emisora || '';
+    $('dcEmision').value = pn.fecha_emision || '';
+    $('dcVence').value = pn.fecha_vencimiento || '';
+    $('dcEmision').max = hoyISO();
+    ['dcCert', 'dcEmision', 'dcVence'].forEach(function(c){ marcarCampo(c, ''); });
+    abrirVentana('modalDecl');
+    setTimeout(function(){ $('dcCert').focus(); }, 60);
+  }
+
+  $('formDecl').addEventListener('submit', async function(e){
+    e.preventDefault();
+    if (!declarandoId) return;
+    const cert = $('dcCert').value.trim();
+    const emisora = $('dcEmisora').value.trim();
+    const emision = $('dcEmision').value;
+    const vence = $('dcVence').value;
+    let ok = true;
+    marcarCampo('dcCert', cert ? '' : 'Escribe el número o nombre del certificado.'); if (!cert) ok = false;
+    marcarCampo('dcEmision', !emision ? 'Indica la fecha de emisión.' : (emision > hoyISO() ? 'La emisión no puede ser futura.' : '')); if (!emision || emision > hoyISO()) ok = false;
+    let msgVence = '';
+    if (!vence) msgVence = 'Indica la fecha de vencimiento.';
+    else if (emision && vence <= emision) msgVence = 'Debe ser posterior a la emisión.';
+    else if (vence < hoyISO()) msgVence = 'El certificado ya está vencido.';
+    marcarCampo('dcVence', msgVence); if (msgVence) ok = false;
+    if (!ok) return;
+
+    const btn = $('dcGuardar');
+    btn.disabled = true;
+    const { error } = await supabaseClient.from('producto_normas')
+      .update({ estado: 'Declarada', certificado: cert, entidad_emisora: emisora || null, fecha_emision: emision, fecha_vencimiento: vence })
+      .eq('id', declarandoId);
+    btn.disabled = false;
+    if (error) { mostrarToast(textoError(error), 'error'); return; }
+    cerrarVentana('modalDecl');
+    mostrarToast('Declaración enviada al auditor.', 'success');
+    await cargarProductosNormas(true);
+  });
+
+  // ---------- verificar o rechazar (solo auditor) ----------
+  let revisandoId = null;
+  let revisandoDecision = null;
+
+  function abrirRevision(id, decision){
+    const pn = buscarPN(id);
+    if (!pn) return;
+    revisandoId = id;
+    revisandoDecision = decision;
+    const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma' };
+    const rechazo = decision === 'Rechazada';
+    $('rvTitulo').textContent = rechazo ? 'Rechazar norma' : 'Verificar norma';
+    $('rvInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
+    $('rvLabel').textContent = rechazo ? 'Motivo del rechazo *' : 'Comentario (opcional)';
+    $('rvTexto').value = '';
+    $('rvOk').textContent = rechazo ? 'Rechazar' : 'Verificar';
+    $('rvOk').className = rechazo ? 'bd' : 'bp';
+    marcarCampo('rvTexto', '');
+    abrirVentana('modalRev');
+    setTimeout(function(){ $('rvTexto').focus(); }, 60);
+  }
+
+  $('formRev').addEventListener('submit', async function(e){
+    e.preventDefault();
+    if (!revisandoId) return;
+    const texto = $('rvTexto').value.trim();
+    if (revisandoDecision === 'Rechazada' && texto.length < 3) { marcarCampo('rvTexto', 'Explica el motivo del rechazo.'); return; }
+    marcarCampo('rvTexto', '');
+    const btn = $('rvOk');
+    btn.disabled = true;
+    const { error } = await supabaseClient.from('producto_normas')
+      .update({ estado: revisandoDecision, comentario_revision: texto || null })
+      .eq('id', revisandoId);
+    btn.disabled = false;
+    if (error) { mostrarToast(textoError(error), 'error'); return; }
+    cerrarVentana('modalRev');
+    mostrarToast(revisandoDecision === 'Verificada' ? 'Norma verificada.' : 'Norma rechazada.', 'success');
+    await cargarProductosNormas(true);
+    actualizarBadgeRevision();
+  });
+
+  // ---------- arranque ----------
+  obtenerRol().then(actualizarBadgeRevision);
+  irTab(location.hash.slice(1) || 'catalogo', false);
+
+
+  // ===================== ADMINISTRACIÓN DEL CATÁLOGO (solo administrador) =====================
+  let cmEsAdmin = false;
+  const cmQ = function(id){ return document.getElementById(id); };
+
+  async function cmRevisarRol(){
+    try {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) return;
+      const { data: p } = await supabaseClient.from('perfiles').select('rol').eq('id', user.id).maybeSingle();
+      cmEsAdmin = !!(p && p.rol === 'administrador');
+      cmQ('catAdminBar').hidden = !cmEsAdmin;
+      if (cmEsAdmin) cmCargarDuenos();
+    } catch (e) { /* sin sesión: no se muestra */ }
+  }
+
+  function cmLlenarSelect(){
+    cmQ('cmSelect').innerHTML = '<option value="">— Nueva norma —</option>' + catalogo.map(function(n){
+      return '<option value="' + n.id + '">' + escapeHTML(n.codigo + ' · ' + n.nombre) + '</option>';
+    }).join('');
+  }
+
+  function cmCargarNorma(id){
+    const n = id ? catalogo.find(function(x){ return String(x.id) === String(id); }) : null;
+    cmQ('cmSelect').value = n ? n.id : '';
+    cmQ('cmCodigo').value = n ? n.codigo : '';
+    cmQ('cmCodigo').disabled = !!n;
+    cmQ('cmNombre').value = n ? n.nombre : '';
+    cmQ('cmEntidad').value = n ? n.entidad : '';
+    cmQ('cmTipo').value = n ? n.tipo : 'Sanitaria';
+    cmQ('cmEstado').value = n ? n.estado : 'Vigente';
+    cmQ('cmDesc').value = n ? (n.descripcion || '') : '';
+    cmEditando = n ? n.id : null;
+    cmQ('cmTitulo').textContent = n ? 'Editar norma' : 'Nueva norma';
+    document.querySelectorAll('#cmForm [data-cat]').forEach(function(s){
+      const r = n && reglas.find(function(x){ return x.norma_id === n.id && x.categoria === s.dataset.cat; });
+      s.value = r ? (r.obligatoria ? 'Obligatoria' : 'Recomendada') : '';
+    });
+    document.querySelectorAll('#cmForm .cm-err').forEach(function(e){ e.remove(); });
+  }
+  let cmEditando = null;
+
+  function cmAbrir(id){
+    cmLlenarSelect();
+    cmCargarNorma(id || null);
+    cmQ('catModal').classList.add('show');
+  }
+  function cmCerrar(){ cmQ('catModal').classList.remove('show'); }
+
+  cmQ('btnCatNueva').addEventListener('click', function(){ cmAbrir(null); });
+  cmQ('cmCerrar').addEventListener('click', cmCerrar);
+  cmQ('cmCancelar').addEventListener('click', cmCerrar);
+  cmQ('catModal').addEventListener('click', function(e){ if (e.target === cmQ('catModal')) cmCerrar(); });
+  cmQ('cmSelect').addEventListener('change', function(){ cmCargarNorma(this.value || null); });
+
+  cmQ('cmForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    if (!cmEsAdmin) { mostrarToastRev('Solo el administrador puede cambiar el catálogo.', 'error'); return; }
+    document.querySelectorAll('#cmForm .cm-err').forEach(function(x){ x.remove(); });
+    const codigo = cmQ('cmCodigo').value.trim().toUpperCase();
+    const nombre = cmQ('cmNombre').value.trim().replace(/\s+/g, ' ');
+    const entidad = cmQ('cmEntidad').value.trim();
+    const errores = [];
+    if (!/^NOR-\d{4}$/.test(codigo)) errores.push('El código debe tener el formato NOR-0019.');
+    if (nombre.length < 3) errores.push('Escribe el nombre de la norma.');
+    if (!entidad) errores.push('Escribe la entidad que la emite.');
+    if (errores.length) { errores.forEach(function(t){ const p = document.createElement('p'); p.className='cm-err'; p.textContent=t; cmQ('cmForm').prepend(p); }); return; }
+
+    const datos = { codigo: codigo, nombre: nombre, entidad: entidad, tipo: cmQ('cmTipo').value,
+      estado: cmQ('cmEstado').value, descripcion: cmQ('cmDesc').value.trim() || null };
+    const reglasNuevas = [];
+    document.querySelectorAll('#cmForm [data-cat]').forEach(function(s){
+      if (s.value) reglasNuevas.push({ categoria: s.dataset.cat, obligatoria: s.value === 'Obligatoria' });
+    });
+
+    cmQ('cmGuardar').disabled = true;
+    let id = cmEditando, error = null;
+    if (cmEditando) {
+      ({ error } = await supabaseClient.from('normas_catalogo').update(datos).eq('id', cmEditando));
+    } else {
+      const res = await supabaseClient.from('normas_catalogo').insert(datos).select('id').single();
+      error = res.error; id = res.data && res.data.id;
+    }
+    if (!error && id) {
+      await supabaseClient.from('norma_categoria').delete().eq('norma_id', id);
+      if (reglasNuevas.length) {
+        ({ error } = await supabaseClient.from('norma_categoria').insert(
+          reglasNuevas.map(function(r){ return { norma_id: id, categoria: r.categoria, obligatoria: r.obligatoria }; })));
+      }
+    }
+    cmQ('cmGuardar').disabled = false;
+
+    if (error) {
+      mostrarToastRev(/duplicate|unique/i.test(String(error.message)) ? 'Ya existe una norma con ese código.' : 'No se pudo guardar la norma.', 'error');
+      return;
+    }
+    cmCerrar();
+    mostrarToastRev('Norma guardada.', 'success');
+    await cargarCatalogo();
+  });
+
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'INITIAL_SESSION' || evento === 'SIGNED_IN') cmRevisarRol();
+  });
+
+  // ===================== QUIÉN REGISTRÓ CADA CONTROL (vista del administrador) =====================
+  let ctlDueno = new Map();      // id del control -> id del establecimiento
+  let perfilNombre = new Map();  // id del establecimiento -> nombre
+
+  async function cmCargarDuenos(){
+    try {
+      const [c, p] = await Promise.all([
+        supabaseClient.from('controles_calidad').select('id,creado_por'),
+        supabaseClient.from('perfiles').select('id,nombre,nombre_establecimiento')
+      ]);
+      if (!c.error && c.data) ctlDueno = new Map(c.data.map(function(x){ return [String(x.id), x.creado_por]; }));
+      if (!p.error && p.data) perfilNombre = new Map(p.data.map(function(x){
+        return [x.id, x.nombre_establecimiento || x.nombre || 'Sin nombre']; }));
+      decorarRegistradoPor();
+    } catch (e) { /* sin permiso: no se muestra */ }
+  }
+
+  function decorarRegistradoPor(){
+    if (!cmEsAdmin) return;
+    const tbody = cmQ('tablaControles');
+    if (!tbody) return;
+    tbody.querySelectorAll('tr').forEach(function(tr){
+      const ref = tr.querySelector('[data-id]');
+      if (!ref) return;
+      const dueno = ctlDueno.get(String(ref.dataset.id));
+      const nombre = dueno && perfilNombre.get(dueno);
+      const celda = tr.querySelector('td');
+      if (!celda) return;
+      celda.querySelectorAll('.reg-por').forEach(function(x){ x.remove(); });
+      if (nombre) celda.insertAdjacentHTML('beforeend', '<small class="reg-por" style="display:block;color:var(--texto-2)">Registrado por: ' + escapeHTML(nombre) + '</small>');
+    });
+  }
+  new MutationObserver(decorarRegistradoPor).observe(cmQ('tablaControles'), { childList: true });
 })();
 </script>
 
-<script src="sesion-inactividad.js"></script>
+<script src="sesion-inactividad.js" defer></script>
+<script src="campana.js" defer></script>
+<script src="menu-usuario.js" defer></script>
 </body>
 </html>

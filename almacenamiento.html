@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
+<link rel="stylesheet" href="estilos.css">
 <style>
   :root{
     --azul-noche:#031632;
@@ -29,8 +30,6 @@
     --g-morado:linear-gradient(135deg,#7B5CC7,#B494F5);
     --g-naranja:linear-gradient(135deg,#F08A24,#FFC46B);
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
   body{
     font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;
     color:var(--texto);background:var(--fondo);
@@ -38,28 +37,11 @@
     padding-bottom:128px;
     min-height:100vh;
   }
-  a{color:inherit;text-decoration:none}
   button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
-  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
-  [hidden]{display:none!important}
-
-  /* ================= ENCABEZADO ================= */
-  .top-zone{position:relative}
-  .top-wave{display:none}
   .topbar{
     display:flex;align-items:center;gap:16px;
     padding:16px 36px 12px;max-width:1500px;margin:0 auto;position:relative;z-index:20;
   }
-  .brand{display:flex;align-items:center;gap:12px;flex:none}
-  .brand-badge{
-    width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(135deg,#062B5B,#0B4DB5);box-shadow:0 8px 18px rgba(6,43,91,.25);
-  }
-  .brand-badge span{width:36px;height:36px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center}
-  .brand-badge img{width:28px;height:28px;display:block}
-  .brand-name{font-size:21px;font-weight:700;line-height:1;color:var(--azul-oscuro)}
-  .brand-name span{color:var(--azul-medio)}
-  .brand-sub{font-size:11.5px;color:var(--texto-2);margin-top:3px}
 
   /* Buscador */
   .search{position:relative;flex:1;max-width:460px;margin-left:24px}
@@ -83,60 +65,22 @@
   .sr-item b{display:block;font-size:14px}
   .sr-item span.sub{font-size:12.5px;color:var(--texto-2)}
   .sr-vacio{padding:16px 12px;font-size:13.5px;color:var(--texto-2);text-align:center}
-
-  .tb-space{flex:1}
   .icon-btn{
     width:44px;height:44px;border-radius:15px;background:#fff;border:1px solid #D3E3F5;color:#0B3C74;
     display:flex;align-items:center;justify-content:center;position:relative;
   }
-  .icon-btn:hover{border-color:var(--azul-medio)}
   .badge-n{
     position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;
     background:var(--rojo);color:#fff;font-size:11px;font-weight:700;border:2px solid var(--fondo);
     display:none;align-items:center;justify-content:center;
   }
   .badge-n.show{display:flex}
-  .uchip{
-    display:flex;align-items:center;gap:10px;padding:5px 16px 5px 5px;border-radius:30px;
-    background:#fff;border:1px solid #D3E3F5;
-  }
-  .uchip:hover{border-color:var(--azul-medio)}
-  .av{
-    width:36px;height:36px;border-radius:50%;flex:none;color:#fff;font-weight:700;font-size:15px;
-    background:linear-gradient(135deg,#5CC0FF,#1E66F5);display:flex;align-items:center;justify-content:center;
-  }
   .uchip b{display:block;font-size:13.5px;line-height:1.1;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .uchip small{font-size:11.5px;color:#17A673;font-weight:700}
-
-  /* Panel de notificaciones */
-  .notif-wrap{position:relative}
-  .notif-panel{
-    position:absolute;right:0;top:calc(100% + 10px);width:380px;max-width:calc(100vw - 24px);
-    background:#fff;border-radius:20px;border:1px solid var(--borde);box-shadow:0 24px 54px rgba(6,43,91,.24);
-    display:none;z-index:80;overflow:hidden;
-  }
   .notif-panel.show{display:block;animation:aparecer .2s ease both}
   @keyframes aparecer{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-  .np-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #EDF2F8}
-  .np-head strong{font-size:16px;flex:1}
-  .np-head .link{font-size:12.5px;font-weight:700;color:var(--azul-medio)}
-  .np-head .x{width:30px;height:30px;border-radius:10px;font-size:20px;line-height:1;color:var(--texto-2)}
   .np-head .x:hover{background:#F1F6FC}
-  .np-body{max-height:380px;overflow:auto;padding:6px}
-  .notification-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;transition:opacity .17s,transform .17s}
   .notification-item:hover{background:#F3F8FF}
-  .notification-item.removing{opacity:0;transform:translateX(14px)}
-  .ni-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none}
-  .t-warn{background:#FFE3E0;color:#D93A35}.t-pend{background:#FFF1D1;color:#B27300}.t-info{background:#DCEBFF;color:#1E66F5}
-  .ni-body{flex:1;min-width:0}
-  .ni-body strong{display:block;font-size:14px}
   .ni-body span{display:block;font-size:12.5px;color:var(--texto-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ni-body em{font-style:normal;font-size:11.5px;color:#8DA0B8}
-  .ni-go{color:#9AB0C9;font-size:20px}
-  .notification-empty{padding:28px 16px;text-align:center;color:var(--texto-2);font-size:14px}
-
-  /* ================= HERO ================= */
-  .hero-wrap{max-width:1500px;margin:0 auto;padding:0 36px}
   .hero{
     border-radius:24px;color:#fff;padding:24px 32px;position:relative;overflow:hidden;
     display:flex;justify-content:space-between;gap:24px;
@@ -144,26 +88,17 @@
     box-shadow:0 18px 40px rgba(11,77,181,.28);
   }
   .hero svg.w{position:absolute;left:0;bottom:0;width:100%;height:80px;opacity:.9;pointer-events:none}
-  .hero-txt{position:relative}
-  .hero h1{font-size:32px;font-weight:700;line-height:1.15}
   .hero p{font-size:16px;color:#CFE6FF;margin-top:4px}
   .hero-meta{font-size:12.5px;color:#A9D3FF;margin-top:6px;text-transform:capitalize}
   .hero-meta span{text-transform:none}
   .btns{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
   .b1{background:#fff;color:#0B3C74;padding:11px 20px;border-radius:13px;font-weight:700;display:inline-flex;align-items:center;gap:8px}
-  .b1:hover{filter:brightness(.97)}
   .b2{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:11px 20px;border-radius:13px;font-weight:700;color:#fff}
   .b2:hover{background:rgba(255,255,255,.24)}
   .glass{position:relative;display:flex;gap:14px;align-self:flex-start}
   .gl{width:150px;padding:12px 16px;border-radius:18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
   .gl b{display:block;font-size:28px;line-height:1.1}
   .gl span{font-size:13px;color:#D9ECFF}
-
-  /* ================= CONTENIDO ================= */
-  .aviso{
-    display:none;align-items:center;gap:12px;justify-content:space-between;
-    padding:12px 16px;border-radius:14px;background:#FFF1D1;border:1px solid #F5D58A;color:#7A5200;font-size:14px;font-weight:600;
-  }
   .aviso.show{display:flex}
   .aviso button{padding:7px 14px;border-radius:10px;background:#fff;border:1px solid #F5D58A;font-weight:700;font-size:13px}
   .main{max-width:1500px;margin:0 auto;padding:16px 36px 0;display:flex;flex-direction:column;gap:16px}
@@ -176,7 +111,6 @@
   .k b{display:block;font-size:26px;line-height:1.05}
   .k span{font-size:13.5px;color:var(--texto-2)}
   .loading-val{color:transparent!important;border-radius:8px;background:linear-gradient(90deg,#E8F0FA 25%,#F6FAFF 50%,#E8F0FA 75%);background-size:200% 100%;animation:brillo 1.2s linear infinite;min-width:70px}
-  @keyframes brillo{to{background-position:-200% 0}}
 
   .row{display:grid;gap:16px}
   .row2{grid-template-columns:1.65fr 1fr}
@@ -201,15 +135,9 @@
   .legend{font-size:14px;line-height:2;min-width:0}
   .legend>div{display:flex;align-items:center;gap:8px}
   .swatch{width:10px;height:10px;border-radius:50%;flex:none}
-
-  /* Tabla de actividad */
-  .tbl-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse}
   th{text-align:left;font-size:12px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.6px;padding:8px 10px;background:#F1F6FC}
   th:first-child{border-radius:10px 0 0 10px}th:last-child{border-radius:0 10px 10px 0}
   td{padding:9px 10px;border-bottom:1px solid #EDF2F8;font-size:14px}
-  tr:last-child td{border:0}
-  td:first-child{font-weight:700}
   td.empty{text-align:center;color:var(--texto-2);padding:22px 10px;font-weight:400}
   .pill{display:inline-block;padding:3px 11px;border-radius:20px;font-size:12.5px;font-weight:700;white-space:nowrap}
   .pill.ok{background:#D6F7E2;color:#12804F}.pill.pend{background:#FFF1D1;color:#9A6200}.pill.warn{background:#FFE3E0;color:#C2302B}
@@ -230,35 +158,12 @@
   .st:hover div{transform:translateY(-4px) scale(1.06)}
   .st span{font-size:13px;font-weight:700}
   .ln{flex:1;min-width:12px;height:3px;border-radius:3px;background:linear-gradient(90deg,#1E66F5,#3FD0F2);margin-bottom:26px}
-
-  /* ================= DOCK (computador) ================= */
-  .dock{
-    position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:50;
-    display:flex;align-items:flex-end;gap:10px;padding:10px 16px;border-radius:30px;
-    background:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.95);
-    box-shadow:0 18px 50px rgba(6,43,91,.3),inset 0 1px 0 rgba(255,255,255,.9);
-  }
-  .dock a{
-    position:relative;width:56px;height:56px;border-radius:17px;display:flex;align-items:center;justify-content:center;
-    color:#fff;background:var(--g);box-shadow:0 8px 16px rgba(6,43,91,.22);
-    transform-origin:50% 100%;
-    transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
-  }
   .dock a svg.i{width:26px;height:26px}
   .dock a:hover,.dock a:focus-visible{transform:translateY(-16px) scale(1.3);box-shadow:0 20px 30px rgba(6,43,91,.38);outline:0}
   .dock a:hover + a,.dock a:has(+ a:hover){transform:translateY(-6px) scale(1.12)}
-  .dock a[aria-current="page"]{box-shadow:0 0 0 3px rgba(255,255,255,.95),0 0 0 5px rgba(30,102,245,.55),0 10px 20px rgba(6,43,91,.28)}
   .dock a[aria-current="page"]::after{content:"";position:absolute;bottom:-8px;left:50%;margin-left:-3px;width:6px;height:6px;border-radius:50%;background:var(--azul-medio);box-shadow:0 0 8px var(--azul-medio)}
-  .dock .tip{
-    position:absolute;bottom:calc(100% + 16px);left:50%;transform:translate(-50%,10px) scale(.85);opacity:0;pointer-events:none;white-space:nowrap;
-    background:linear-gradient(135deg,#062B5B,#0B4DB5);color:#fff;font-size:13px;font-weight:700;padding:7px 13px;border-radius:11px;
-    box-shadow:0 10px 22px rgba(6,43,91,.4);
-    transition:opacity .22s,transform .3s cubic-bezier(.34,1.56,.64,1);
-  }
   .dock .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#0B4DB5}
   .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.78)}
-  .dock .sep{width:1px;height:42px;background:rgba(6,43,91,.18);align-self:center;margin:0 4px}
 
   /* Menú inferior y iconos flotantes (celular) */
   .bnav,.fan{display:none}
@@ -273,19 +178,12 @@
       border-radius:0 0 30px 30px;box-shadow:0 14px 28px rgba(11,77,181,.25);
       padding:env(safe-area-inset-top,0px) 0 54px;overflow:hidden;
     }
-    .top-wave{display:block;position:absolute;left:0;bottom:0;width:100%;height:46px;opacity:.9;pointer-events:none}
     .topbar{padding:14px 18px 0;gap:11px}
-    .brand-badge{width:42px;height:42px;border-radius:13px;background:#fff;box-shadow:0 5px 14px rgba(0,0,0,.25)}
-    .brand-badge span{width:auto;height:auto;background:none}
-    .brand-badge img{width:32px;height:32px}
     .brand-name{color:#fff;font-size:19px}.brand-name span{color:var(--azul-claro)}
     .brand-sub{color:#9CC8F2}
     .search,.uchip{display:none}
     .icon-btn{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff;width:40px;height:40px;border-radius:13px}
     .badge-n{border-color:#0B4DB5}
-    .notif-panel{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 66px);width:auto;max-width:none}
-
-    .hero-wrap{padding:0 18px}
     .hero{background:none;box-shadow:none;padding:16px 0 0;display:block;border-radius:0;overflow:visible}
     .hero svg.w,.hero .btns{display:none}
     .hero h1{font-size:27px}
@@ -323,28 +221,10 @@
     .bnav button.open .ico-x{display:block}.bnav button.open .ico-grid{display:none}
 
     .fan{display:block;position:fixed;inset:0;z-index:55;pointer-events:none}
-    .fan-overlay{position:absolute;inset:0;background:rgba(4,26,58,.62);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;transition:opacity .25s}
-    .fan-list{position:absolute;right:19px;bottom:calc(92px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:11px;align-items:flex-end}
-    .fan-item{
-      display:flex;align-items:center;gap:12px;
-      opacity:0;transform:translateY(24px) scale(.6);transform-origin:100% 100%;
-      transition:opacity .22s,transform .32s cubic-bezier(.34,1.56,.64,1);transition-delay:calc(var(--i) * 35ms);
-    }
-    .fan-label{background:#fff;padding:8px 15px;border-radius:14px;font-weight:700;font-size:14.5px;color:var(--azul-oscuro);box-shadow:0 8px 20px rgba(2,16,42,.25)}
-    .fan-ic{width:52px;height:52px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 22px rgba(2,16,42,.4),0 0 0 4px rgba(255,255,255,.18)}
-    .fan-ic svg.i{width:24px;height:24px}
-    .fan.open{pointer-events:auto}
-    .fan.open .fan-overlay{opacity:1}
-    .fan.open .fan-item{opacity:1;transform:none}
-  }
+    .fan-ic svg.i{width:24px;height:24px}}
   @media (min-width:1001px) and (max-width:1180px){
-    .topbar{padding-left:24px;padding-right:24px}.hero-wrap,.main{padding-left:24px;padding-right:24px}
     .search{margin-left:8px}.brand-sub{display:none}
-    .row3{grid-template-columns:1fr 1fr}.row3 .c:last-child{grid-column:1/-1}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none!important;transition:none!important}
-  }
+    .row3{grid-template-columns:1fr 1fr}.row3 .c:last-child{grid-column:1/-1}}
 
   /* ================= PRODUCTOS ================= */
   .hero.compact{padding:22px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -451,8 +331,7 @@
   .toast.error{background:#C62828}.toast.success{background:#12804F}
 
   @media (min-width:1001px) and (max-width:1180px){
-    .filters{grid-template-columns:1fr 1fr}.f-search{grid-column:1/-1}.f-actions{grid-column:1/-1;justify-content:flex-end}
-  }
+    .filters{grid-template-columns:1fr 1fr}.f-search{grid-column:1/-1}.f-actions{grid-column:1/-1;justify-content:flex-end}}
   @media (max-width:1000px){
     .hero.compact{display:block;padding:16px 0 0}
     .hero.compact h1{font-size:27px}
@@ -505,8 +384,7 @@
     .form-grid .field>textarea{font-size:16px}
     .modal-footer{position:sticky;bottom:-20px;background:#fff;padding-top:12px}
     .modal-footer .bp,.modal-footer .bg,.modal-footer .bd{flex:1}
-    .field-input input,.field-input select{font-size:16px}
-  }
+    .field-input input,.field-input select{font-size:16px}}
 
   /* ================= ALMACENAMIENTO ================= */
   .kpis.tres{grid-template-columns:repeat(4,1fr)}
@@ -557,10 +435,30 @@
     table.alm td:nth-child(7){grid-area:act;justify-self:end}
     table.alm td.c-meta{display:flex;grid-area:meta;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:9px;padding-top:9px;border-top:1px solid #EDF2F8;font-size:12.5px;color:var(--texto-2)}
     table.alm td.empty{grid-area:1/1/-1/-1;text-align:center;padding:20px 8px}
-    table.alm tr:has(td.empty){display:block}
-  }
+    table.alm tr:has(td.empty){display:block}}
   /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
   .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
+  /* ============ INVENTARIO ============ */
+  .pill{display:inline-block;padding:4px 13px;border-radius:20px;font-size:13px;font-weight:700;white-space:nowrap}
+  .pill.ok{background:#D6F7E2;color:#12804F}
+  .pill.warn{background:#FFF1D1;color:#9A6200}
+  .pill.bad{background:#FFE3E0;color:#C2302B}
+  .ajuste-card{background:#F5F9FE;border:1px solid #D3E3F5;border-radius:18px;padding:14px;margin-bottom:14px;display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:10px;align-items:end}
+  .ajuste-card[hidden]{display:none}
+  .ajuste-card label{display:block;font-size:12.5px;font-weight:700;color:var(--texto-3);margin-bottom:4px}
+  .ajuste-card select,.ajuste-card input{width:100%;height:44px;border-radius:12px;border:1px solid #D3E3F5;padding:0 12px;font:inherit;background:#fff}
+  .ajuste-card .hint{font-size:12px;color:var(--texto-2);margin-top:4px;display:block}
+  .min-in{width:96px;height:38px;border-radius:12px;border:1px solid #D3E3F5;padding:0 10px;font:inherit;background:#fff}
+  table.inv td strong{font-weight:700}
+  @media (max-width:1000px){
+    .ajuste-card{grid-template-columns:1fr}
+    table.inv,table.inv tbody{display:block}
+    table.inv thead{display:none}
+    table.inv tr{display:block;background:#fff;border:1px solid var(--borde);border-radius:18px;padding:8px 14px;margin-bottom:10px;box-shadow:var(--sombra)}
+    table.inv td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;border:0;font-size:14px;text-align:right}
+    table.inv td::before{content:attr(data-label);font-size:11.5px;font-weight:700;color:var(--texto-2);text-transform:uppercase;letter-spacing:.4px;text-align:left}
+    table.inv td.empty{display:block;text-align:center}
+    table.inv td.empty::before{content:none}}
 </style>
 </head>
 <body>
@@ -633,10 +531,11 @@
         </div>
       </div>
     </div>
-    <a class="uchip" href="cuenta.html" aria-label="Mi cuenta">
+    <button type="button" class="uchip" id="userChip" aria-label="Menú de usuario">
       <div class="av" id="topAvatar">C</div>
       <div><b id="topUserName">Cargando...</b><small>● En línea</small></div>
-    </a>
+    </button>
+    <button type="button" class="um-mini" id="userMini" aria-label="Menú de usuario"><span class="av">C</span></button>
   </header>
 
   <div class="hero-wrap">
@@ -685,6 +584,47 @@
       </table>
     </div>
   </section>
+
+  <!-- ===== INVENTARIO DISPONIBLE ===== -->
+  <section class="c" id="invSec" style="margin-top:14px">
+    <div class="panel-head">
+      <h3>Inventario disponible</h3>
+      <button class="bp" id="btnAjuste" type="button">Registrar ajuste</button>
+    </div>
+
+    <div class="kpis tres" style="margin-bottom:14px">
+      <div class="k"><div class="ic" style="background:var(--g-azul)"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg></div><div><b id="invTotal" class="loading-val">0000</b><span>Kg disponibles</span></div></div>
+      <div class="k"><div class="ic" style="background:var(--g-naranja)"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg></div><div><b id="invBajo" class="loading-val">0000</b><span>Productos con stock bajo</span></div></div>
+      <div class="k"><div class="ic" style="background:linear-gradient(135deg,#E8453F,#FF8F6B)"><svg class="i" aria-hidden="true"><use href="#i-alert"/></svg></div><div><b id="invAgotado" class="loading-val">0000</b><span>Productos agotados</span></div></div>
+      <div class="k"><div class="ic" style="background:var(--g-morado)"><svg class="i" aria-hidden="true"><use href="#i-thermo"/></svg></div><div><b id="invRevision" class="loading-val">0000</b><span>Kg en revisión (no suman)</span></div></div>
+    </div>
+
+    <form id="ajusteForm" class="ajuste-card" hidden novalidate>
+      <div>
+        <label for="ajProducto">Producto</label>
+        <select id="ajProducto"><option value="">Seleccionar producto</option></select>
+      </div>
+      <div>
+        <label for="ajCantidad">Cantidad (kg)</label>
+        <input type="number" id="ajCantidad" step="0.01" placeholder="+10 o -5">
+      </div>
+      <div>
+        <label for="ajMotivo">Motivo</label>
+        <input type="text" id="ajMotivo" maxlength="120" placeholder="Ej. Merma por daño, conteo físico">
+      </div>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="bg" id="ajCancelar">Cancelar</button>
+        <button type="submit" class="bp" id="ajGuardar">Guardar</button>
+      </div>
+    </form>
+
+    <div class="table-wrap">
+      <table class="simple inv">
+        <thead><tr><th>Producto</th><th>Recibido</th><th>Vendido</th><th>Ajustes</th><th>Disponible</th><th>Mínimo</th><th>Estado</th></tr></thead>
+        <tbody id="invTabla"><tr><td colspan="7" class="empty">Cargando inventario...</td></tr></tbody>
+      </table>
+    </div>
+  </section>
 </main>
 
 <button type="button" class="fab" id="newStorageFab" aria-label="Nuevo almacenamiento"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
@@ -699,19 +639,16 @@
   <a href="trazabilidad.html" style="--g:linear-gradient(135deg,#0D9488,#2DD4BF)"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg><span class="tip">Trazabilidad</span></a>
   <a href="reportes.html" style="--g:linear-gradient(135deg,#1D4ED8,#60A5FA)"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span class="tip">Reportes</span></a>
   <a href="normas.html" style="--g:linear-gradient(135deg,#0891B2,#67E8F9)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span class="tip">Normas y Calidad</span></a>
-  <span class="sep"></span>
-  <a href="cuenta.html" style="--g:linear-gradient(135deg,#062B5B,#2F6FD0)"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><span class="tip">Mi cuenta</span></a>
 </nav>
 
 <div class="fan" id="fan">
   <div class="fan-overlay" id="fanOverlay"></div>
   <div class="fan-list">
-    <a class="fan-item" href="proveedores.html" style="--i:5;--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><span class="fan-label">Proveedores</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span></a>
-    <a class="fan-item" href="recepciones.html" style="--i:4;--g:linear-gradient(135deg,#17A673,#5BDDA0)"><span class="fan-label">Recepciones</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></span></a>
-    <a class="fan-item" href="almacenamiento.html" style="--i:3;--g:linear-gradient(135deg,#4F46E5,#818CF8)"><span class="fan-label">Almacenamiento</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg></span></a>
-    <a class="fan-item" href="ventas.html" style="--i:2;--g:linear-gradient(135deg,#F08A24,#FFC46B)"><span class="fan-label">Ventas</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></span></a>
-    <a class="fan-item" href="normas.html" style="--i:1;--g:linear-gradient(135deg,#0891B2,#67E8F9)"><span class="fan-label">Normas y Calidad</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span></a>
-    <a class="fan-item" href="cuenta.html" style="--i:0;--g:linear-gradient(135deg,#062B5B,#2F6FD0)"><span class="fan-label">Mi cuenta</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span></a>
+    <a class="fan-item" href="proveedores.html" style="--i:4;--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><span class="fan-label">Proveedores</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span></a>
+    <a class="fan-item" href="recepciones.html" style="--i:3;--g:linear-gradient(135deg,#17A673,#5BDDA0)"><span class="fan-label">Recepciones</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></span></a>
+    <a class="fan-item" href="almacenamiento.html" style="--i:2;--g:linear-gradient(135deg,#4F46E5,#818CF8)"><span class="fan-label">Almacenamiento</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg></span></a>
+    <a class="fan-item" href="ventas.html" style="--i:1;--g:linear-gradient(135deg,#F08A24,#FFC46B)"><span class="fan-label">Ventas</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></span></a>
+    <a class="fan-item" href="normas.html" style="--i:0;--g:linear-gradient(135deg,#0891B2,#67E8F9)"><span class="fan-label">Normas y Calidad</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span></a>
   </div>
 </div>
 
@@ -811,6 +748,7 @@
 
 <!-- El SDK se carga al final: la página se dibuja primero y no queda bloqueada esperando la descarga del script. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
 (function(){
   'use strict';
@@ -825,9 +763,7 @@
     return;
   }
 
-  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = DSI.cliente();
 
   const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1714,9 +1650,132 @@
   }
 
   iniciar();
+
+  // ---------------------------------------------------------------
+  // INVENTARIO DISPONIBLE
+  // Disponible = recibido aprobado − vendido ± ajustes (lo calcula la base de datos).
+  // Solo el dueño de la cuenta registra ajustes; el auditor solo consulta.
+  // ---------------------------------------------------------------
+  let invEsAuditor = false;
+  let invFilas = [];
+
+  function mostrarToastInv(texto, tipo){
+    const t = $('toast');
+    t.textContent = texto;
+    t.className = 'toast show' + (tipo ? ' ' + tipo : '');
+    clearTimeout(mostrarToastInv.timer);
+    mostrarToastInv.timer = setTimeout(function(){ t.className = 'toast'; }, 3600);
+  }
+  const fmtKgInv = function(n){ return (Math.round(Number(n || 0) * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }) + ' kg'; };
+  const fmtNumInv = function(n){ return (Math.round(Number(n || 0) * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 }); };
+  function pillStockInv(e){
+    if (e === 'Agotado') return '<span class="pill bad">Agotado</span>';
+    if (e === 'Bajo') return '<span class="pill warn">Bajo</span>';
+    return '<span class="pill ok">OK</span>';
+  }
+
+  function pintarInventario(filas){
+    invFilas = filas;
+    const total = filas.reduce(function(s, f){ return s + Number(f.disponible || 0); }, 0);
+    const bajo = filas.filter(function(f){ return f.estado_stock === 'Bajo'; }).length;
+    const agotado = filas.filter(function(f){ return f.estado_stock === 'Agotado'; }).length;
+    const revision = filas.reduce(function(s, f){ return s + Number(f.en_revision || 0); }, 0);
+
+    [['invTotal', fmtNumInv(total) + ' kg'], ['invBajo', String(bajo)], ['invAgotado', String(agotado)], ['invRevision', fmtNumInv(revision) + ' kg']]
+      .forEach(function(par){ const el = $(par[0]); el.classList.remove('loading-val'); el.textContent = par[1]; });
+
+    $('invTabla').innerHTML = filas.length ? filas.map(function(f){
+      const minimo = invEsAuditor
+        ? fmtKgInv(f.stock_minimo)
+        : '<input type="number" class="min-in" min="0" step="0.5" value="' + Number(f.stock_minimo) + '" data-id="' + escapeHTML(f.producto_id) + '" aria-label="Stock mínimo de ' + escapeHTML(f.nombre) + '">';
+      return '<tr data-id="' + escapeHTML(f.producto_id) + '">' +
+        '<td data-label="Producto"><strong>' + escapeHTML(f.nombre) + '</strong></td>' +
+        '<td data-label="Recibido">' + fmtKgInv(f.recibido) + '</td>' +
+        '<td data-label="Vendido">' + fmtKgInv(f.vendido) + '</td>' +
+        '<td data-label="Ajustes">' + fmtKgInv(f.ajustes) + '</td>' +
+        '<td data-label="Disponible"><strong>' + fmtKgInv(f.disponible) + '</strong></td>' +
+        '<td data-label="Mínimo">' + minimo + '</td>' +
+        '<td data-label="Estado">' + pillStockInv(f.estado_stock) + '</td>' +
+      '</tr>';
+    }).join('') : '<tr><td colspan="7" class="empty">No hay productos registrados.</td></tr>';
+  }
+
+  async function cargarInventario(){
+    if (!supabaseClient) return;
+    try {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (user) {
+        const { data: perf } = await supabaseClient.from('perfiles').select('rol').eq('id', user.id).maybeSingle();
+        invEsAuditor = !!(perf && perf.rol === 'auditor');
+      }
+      const { data, error } = await supabaseClient.from('inventario_productos')
+        .select('producto_id,nombre,stock_minimo,recibido,vendido,ajustes,en_revision,disponible,estado_stock')
+        .order('nombre', { ascending: true });
+      if (error) { console.warn('No se pudo cargar el inventario:', error); return; }
+      pintarInventario(data || []);
+    } catch (e) {
+      console.warn('Inventario no disponible:', e);
+    }
+    $('btnAjuste').hidden = invEsAuditor;
+  }
+
+  // Cambiar el stock mínimo de un producto (se guarda al salir del campo)
+  $('invTabla').addEventListener('change', async function(e){
+    const inp = e.target.closest('.min-in');
+    if (!inp) return;
+    const v = Number(inp.value);
+    if (!isFinite(v) || v < 0) { mostrarToastInv('El mínimo debe ser 0 o mayor.', 'error'); cargarInventario(); return; }
+    const { error } = await supabaseClient.from('productos').update({ stock_minimo: v }).eq('id', inp.dataset.id);
+    if (error) { mostrarToastInv('No se pudo guardar el mínimo.', 'error'); cargarInventario(); return; }
+    mostrarToastInv('Stock mínimo actualizado.', 'success');
+    cargarInventario();
+  });
+
+  $('btnAjuste').addEventListener('click', function(){
+    $('ajProducto').innerHTML = '<option value="">Seleccionar producto</option>' + invFilas.map(function(f){
+      return '<option value="' + escapeHTML(f.producto_id) + '">' + escapeHTML(f.nombre) + '</option>';
+    }).join('');
+    $('ajCantidad').value = '';
+    $('ajMotivo').value = '';
+    $('ajusteForm').hidden = false;
+    $('ajCantidad').focus();
+  });
+  $('ajCancelar').addEventListener('click', function(){ $('ajusteForm').hidden = true; });
+
+  $('ajusteForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const pid = $('ajProducto').value;
+    const cant = Number($('ajCantidad').value);
+    const motivo = $('ajMotivo').value.trim();
+    if (!pid) { mostrarToastInv('Selecciona un producto.', 'error'); return; }
+    if (!isFinite(cant) || cant === 0) { mostrarToastInv('La cantidad debe ser distinta de 0. Usa negativo para restar.', 'error'); return; }
+    if (motivo.length < 3) { mostrarToastInv('Escribe el motivo del ajuste (mínimo 3 letras).', 'error'); return; }
+
+    $('ajGuardar').disabled = true;
+    const { error } = await supabaseClient.from('ajustes_inventario')
+      .insert({ producto_id: pid, cantidad: cant, motivo: motivo });
+    $('ajGuardar').disabled = false;
+
+    if (error) {
+      const msg = String(error.message || '');
+      mostrarToastInv(/negativo/i.test(msg) ? msg : 'No se pudo registrar el ajuste.', 'error');
+      return;
+    }
+    $('ajusteForm').hidden = true;
+    mostrarToastInv('Ajuste registrado.', 'success');
+    cargarInventario();
+  });
+
+  supabaseClient.auth.onAuthStateChange(function(evento){
+    if (evento === 'INITIAL_SESSION' || evento === 'SIGNED_IN') cargarInventario();
+  });
+
 })();
 </script>
 
-<script src="sesion-inactividad.js"></script>
+<script src="sesion-inactividad.js" defer></script>
+<script src="campana.js" defer></script>
+<script src="vista-administrador.js" defer></script>
+<script src="menu-usuario.js" defer></script>
 </body>
 </html>

@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#062B5B">
 <link rel="icon" type="image/png" href="logo-emblema.png">
 <title>Deep Sea Intelligence — Crear cuenta</title>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <style>
   :root{
     --azul-noche:#031632;
@@ -499,10 +501,9 @@
 
 <!-- SDK de Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
-  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = DSI.cliente();
 </script>
 <script>
 (function(){

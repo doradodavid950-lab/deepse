@@ -1121,6 +1121,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 <!-- El SDK se carga al final: la página se dibuja primero y no queda
      bloqueada esperando la descarga del script. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 
 <script>
 (function(){
@@ -1138,9 +1139,7 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
     return;
   }
 
-  const SUPABASE_URL = 'https://lohxgdeuohhczejyxwgr.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_QpRophkYS0o554DGxKBWmQ_P1fs8NPW';
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = DSI.cliente();
 
   const TIEMPO_ONLINE = 45000;     // sin señal de vida en 45 s = desconectado
   const CICLO_MS      = 15000;     // cada cuánto se envía la presencia y se refresca la lista
@@ -1632,11 +1631,10 @@ a.notification-item.removing{ opacity:0; transform:translateX(26px); }
 
   // Elimina de la lista de "leídas" las que ya no existen (mantiene el registro corto)
   function podarLeidas(){
-    if (!usuarioActual) return;
-    const vigentes = new Set(construirNotificaciones().map(function(n){ return n.key; }));
-    const leidas = leerLeidas();
-    const nuevas = new Set(Array.from(leidas).filter(function(k){ return vigentes.has(k); }));
-    if (nuevas.size !== leidas.size) guardarLeidas(nuevas);
+    // Desactivado: cada página solo conoce una parte de las notificaciones y, al podar,
+    // borraba como "leídas" las que no conocía (p. ej. controles rechazados), por eso reaparecían.
+    // La limpieza ahora la hace campana.js, que conoce la lista completa.
+    return;
   }
 
   function actualizarGlobo(){

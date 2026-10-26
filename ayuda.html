@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#062B5B">
+<title>Ayuda — Deep Sea</title>
+<link rel="icon" type="image/png" href="logo-emblema.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
+<link rel="stylesheet" href="estilos.css">
+<style>
+  :root{
+    --azul-oscuro:#062B5B;--azul-medio:#1E66F5;--azul-claro:#5CC0FF;--fondo:#E6F0FA;--borde:#DCE8F6;
+    --texto:#0F2540;--texto-2:#5B7089;--texto-3:#3D5573;--sombra:0 8px 22px rgba(6,43,91,.07);
+    --g-azul:linear-gradient(135deg,#1E66F5,#3FA9FF);
+  }
+  body{font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;color:var(--texto);background:var(--fondo);-webkit-font-smoothing:antialiased;padding-bottom:128px;min-height:100vh}
+  button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+  .topbar{display:flex;align-items:center;gap:16px;padding:16px 36px 12px;max-width:1500px;margin:0 auto;position:relative;z-index:20}
+  .uchip b{display:block;font-size:13.5px;line-height:1.1;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hero{border-radius:24px;color:#fff;padding:22px 32px;position:relative;overflow:hidden;background:linear-gradient(115deg,#062B5B 0%,#0B4DB5 45%,#1E8CF5 78%,#3FD0F2 100%);box-shadow:0 18px 40px rgba(11,77,181,.28)}
+  .hero svg.w{position:absolute;left:0;bottom:0;width:100%;height:80px;opacity:.9;pointer-events:none}
+  .hero h1{font-size:30px;font-weight:700;line-height:1.15}
+  .hero p{font-size:16px;color:#CFE6FF;margin-top:4px}
+  .main{max-width:1500px;margin:0 auto;padding:16px 36px 0;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}
+  .col{display:flex;flex-direction:column;gap:16px;min-width:0}
+  .c{background:#fff;border-radius:20px;border:1px solid var(--borde);box-shadow:var(--sombra);padding:16px 20px;min-width:0}
+  .c h3{font-size:17px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+  .gi{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;flex:none}
+  .buscar{height:46px;display:flex;align-items:center;gap:10px;padding:0 16px;border-radius:15px;background:#fff;border:1px solid #D3E3F5;color:#7A90AB;box-shadow:var(--sombra);transition:border-color .15s,box-shadow .15s}
+  .buscar:focus-within{border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.14);color:var(--azul-medio)}
+  .buscar input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--texto)}
+  .q{border-top:1px solid #EDF2F8}
+  .q:first-of-type{border-top:0}
+  .q summary{list-style:none;cursor:pointer;padding:13px 4px;font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .q summary::-webkit-details-marker{display:none}
+  .q summary::after{content:"";width:9px;height:9px;border-right:2px solid #7A90AB;border-bottom:2px solid #7A90AB;transform:rotate(45deg);transition:transform .2s;flex:none;margin-right:4px}
+  .q[open] summary::after{transform:rotate(-135deg)}
+  .q summary:hover{color:var(--azul-medio)}
+  .q p{padding:0 4px 14px;color:var(--texto-3);font-size:14.5px;line-height:1.55}
+  .vacio{display:none;text-align:center;color:var(--texto-2);padding:30px 16px}
+  .vacio.show{display:block}
+  .soporte{background:linear-gradient(135deg,#062B5B,#0B4DB5);color:#fff;border:0}
+  .soporte p{color:#CFE6FF;font-size:14px;line-height:1.5;margin-bottom:14px}
+  .soporte a.mail{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0B3C74;font-weight:700;padding:11px 18px;border-radius:13px;word-break:break-all}
+  .atajos a{display:flex;align-items:center;gap:12px;padding:11px 8px;border-radius:13px;font-weight:600;font-size:14.5px}
+  .atajos a:hover{background:#F3F8FF}
+  .atajos .gi{width:34px;height:34px}
+  .atajos small{display:block;font-weight:400;font-size:12.5px;color:var(--texto-2)}
+  .dock a svg.i{width:26px;height:26px}
+  .dock a:hover,.dock a:focus-visible{transform:translateY(-16px) scale(1.3);box-shadow:0 20px 30px rgba(6,43,91,.38);outline:0}
+  .dock a:hover + a,.dock a:has(+ a:hover){transform:translateY(-6px) scale(1.12)}
+  .dock .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#0B4DB5}
+  .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.78)}
+  .bnav,.fan{display:none}
+  .sin-scroll{overflow:hidden}
+  @media (max-width:1000px){
+    body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+    .dock{display:none}
+    .top-zone{background:linear-gradient(120deg,#062B5B 0%,#0B4DB5 52%,#2FA8F0 100%);border-radius:0 0 30px 30px;box-shadow:0 14px 28px rgba(11,77,181,.25);padding:env(safe-area-inset-top,0px) 0 54px;overflow:hidden}
+    .topbar{padding:14px 18px 0;gap:11px}
+    .brand-name{color:#fff;font-size:19px}.brand-name span{color:var(--azul-claro)}
+    .brand-sub{color:#9CC8F2}
+    .uchip{display:none}
+    .hero{background:none;box-shadow:none;padding:16px 0 0;border-radius:0;overflow:visible}
+    .hero svg.w{display:none}
+    .hero h1{font-size:27px}.hero p{font-size:14px}
+    .main{grid-template-columns:1fr;padding:0 16px;margin-top:-36px;gap:12px;position:relative;z-index:2}
+    .col{gap:12px}
+    .c{padding:14px 16px;border-radius:18px}
+    .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;height:calc(78px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #D3E3F5;box-shadow:0 -8px 24px rgba(6,43,91,.08);padding:8px 8px calc(14px + env(safe-area-inset-bottom,0px))}
+    .bnav a,.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;color:#6B7F99;border-radius:16px}
+    .bnav svg.i{width:22px;height:22px}
+    .bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
+    .bnav .ico-x{display:none}.bnav button.open .ico-x{display:block}.bnav button.open .ico-grid{display:none}
+    .fan{display:block;position:fixed;inset:0;z-index:55;pointer-events:none}
+    .fan-ic svg.i{width:24px;height:24px}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2 .6 3.5 2.3 3.5 5.2"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><rect x="2" y="6" width="12" height="10" rx="1"/><path d="M14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-wh" viewBox="0 0 24 24"><path d="M3 9.5 12 4l9 5.5V20H3z"/><path d="M8 20v-6h8v6"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h8a3.5 3.5 0 0 0 0-7H8a3.5 3.5 0 0 1 0-7h8"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+  <symbol id="i-fish" viewBox="0 0 24 24"><path d="M3 12c3-5 8-6 12-4l4-3v14l-4-3c-4 2-9 1-12-4z"/><circle cx="9" cy="11" r=".8"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></symbol>
+</svg>
+
+<div class="top-zone">
+  <svg class="top-wave" viewBox="0 0 400 46" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 26C60 6 120 44 200 28S330 4 400 24V46H0z" fill="rgba(255,255,255,.12)"/>
+    <path d="M0 36C90 22 150 50 230 36S340 20 400 34V46H0z" fill="rgba(255,255,255,.14)"/>
+  </svg>
+
+  <header class="topbar">
+    <a class="brand" href="inicio.html" aria-label="Deep Sea, ir al inicio">
+      <div class="brand-badge"><span><img src="logo-emblema.png" alt=""></span></div>
+      <div>
+        <div class="brand-name">Deep <span>Sea</span></div>
+        <div class="brand-sub">Gestión de recursos marinos</div>
+      </div>
+    </a>
+    <div class="tb-space"></div>
+    <button type="button" class="uchip" id="userChip" aria-label="Menú de usuario">
+      <div class="av" id="topAvatar">C</div>
+      <div><b id="topUserName">Cargando...</b><small>● En línea</small></div>
+    </button>
+    <button type="button" class="um-mini" id="userMini" aria-label="Menú de usuario"><span class="av">C</span></button>
+  </header>
+
+  <div class="hero-wrap">
+    <section class="hero">
+      <svg class="w" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 50C150 10 300 90 480 55S800 5 1000 45 1150 70 1200 40V90H0z" fill="rgba(255,255,255,.12)"/>
+        <path d="M0 70C200 40 340 100 560 68S900 30 1200 66V90H0z" fill="rgba(255,255,255,.14)"/>
+      </svg>
+      <div class="hero-txt">
+        <h1>Ayuda</h1>
+        <p>Guías y preguntas frecuentes para usar Deep Sea Intelligence.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<main class="main">
+  <div class="col">
+    <label class="buscar"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+      <input type="search" id="buscarAyuda" placeholder="Buscar en la ayuda…" autocomplete="off" aria-label="Buscar en la ayuda"></label>
+    <section class="c grupo" data-grupo><h3><span class="gi" style="background:linear-gradient(135deg,#1E66F5,#3FA9FF)"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span>Primeros pasos</h3>
+  <details class="q"><summary>¿Cómo me muevo entre los módulos?</summary><p>En computador usa la barra de iconos de abajo: al pasar el mouse sobre cada icono verás su nombre. En celular usa el menú inferior (Inicio, Productos, Rastreo, Reportes) y el botón <b>Más</b> para ver el resto de módulos.</p></details>
+  <details class="q"><summary>¿Dónde veo mis datos y mi cuenta?</summary><p>Toca tu avatar arriba a la derecha y elige <b>Mi cuenta</b>. Allí están tus datos personales, la seguridad (cambio de contraseña) y la información del sistema.</p></details>
+  <details class="q"><summary>¿Qué muestra la campana?</summary><p>Las alertas del sistema: recepciones con problemas o pendientes, productos o proveedores inactivos, stock bajo o agotado y revisiones de calidad. Al tocar una alerta te lleva al módulo correspondiente.</p></details>
+</section>
+<section class="c grupo" data-grupo><h3><span class="gi" style="background:linear-gradient(135deg,#0EA5E9,#5CC8FF)"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg></span>Productos y proveedores</h3>
+  <details class="q"><summary>¿Cómo registro un producto?</summary><p>Entra a <b>Productos</b>, pulsa <b>Nuevo producto</b>, completa el nombre y la categoría (son obligatorios) y guarda. Puedes buscar y filtrar la lista por nombre, categoría o estado.</p></details>
+  <details class="q"><summary>¿Cómo registro un proveedor?</summary><p>En <b>Proveedores</b> pulsa el botón de nuevo proveedor, llena los datos y guarda. Un proveedor inactivo deja de aparecer como opción al registrar productos.</p></details>
+</section>
+<section class="c grupo" data-grupo><h3><span class="gi" style="background:linear-gradient(135deg,#17A673,#5BDDA0)"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></span>Recepción, almacenamiento y ventas</h3>
+  <details class="q"><summary>¿Cuál es el orden recomendado?</summary><p>Primero registra el producto y su proveedor, luego la <b>recepción</b> del lote, después su <b>almacenamiento</b> y finalmente la <b>venta</b>. Así la trazabilidad queda completa.</p></details>
+  <details class="q"><summary>¿Qué pasa si una recepción tiene problemas?</summary><p>Aparece en la campana de notificaciones y puedes consultarla en <b>Recepciones</b> para revisar su estado y los detalles.</p></details>
+</section>
+<section class="c grupo" data-grupo><h3><span class="gi" style="background:linear-gradient(135deg,#0D9488,#2DD4BF)"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg></span>Trazabilidad, reportes y normas</h3>
+  <details class="q"><summary>¿Para qué sirve la trazabilidad?</summary><p>Para seguir el recorrido de un lote desde su captura hasta la venta, y compartir una vista pública de consulta con un código QR.</p></details>
+  <details class="q"><summary>¿Cómo obtengo un reporte?</summary><p>En <b>Reportes</b> elige el tipo de informe y el rango de fechas; podrás consultarlo en pantalla y exportarlo.</p></details>
+  <details class="q"><summary>¿Qué son Normas y Calidad?</summary><p>Es el catálogo de normas aplicables a cada producto y sus controles de calidad, con su estado de revisión.</p></details>
+</section>
+<section class="c grupo" data-grupo><h3><span class="gi" style="background:linear-gradient(135deg,#7B5CC7,#B494F5)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span>Cuenta y seguridad</h3>
+  <details class="q"><summary>¿Cómo cambio mi contraseña?</summary><p>Ve a <b>Mi cuenta → Seguridad y preferencias → Contraseña</b>, escribe la nueva contraseña y confírmala.</p></details>
+  <details class="q"><summary>¿Por qué se cerró mi sesión sola?</summary><p>Por seguridad, la sesión se cierra tras <b>2 horas sin usar el sistema</b>. Cinco minutos antes verás un aviso; toca la pantalla para continuar.</p></details>
+  <details class="q"><summary>¿Cómo cierro sesión?</summary><p>Toca tu avatar arriba a la derecha y elige <b>Cerrar sesión</b> (en computador). En celular encuentras el botón al final de <b>Mi cuenta</b>.</p></details>
+  <details class="q"><summary>La información se ve desactualizada</summary><p>Para ir más rápido, el sistema guarda en tu dispositivo lo último que viste y lo actualiza en segundo plano. Si algo no cuadra, en <b>Mi cuenta</b> usa <b>Limpiar datos guardados</b>.</p></details>
+</section>
+
+    <div class="c vacio" id="vacio">No encontramos resultados. Prueba con otra palabra o escríbenos a soporte.</div>
+  </div>
+
+  <aside class="col">
+    <section class="c soporte">
+      <h3>¿Necesitas más ayuda?</h3>
+      <p>Si no encuentras lo que buscas, escríbenos y te respondemos lo antes posible.</p>
+      <a class="mail" href="mailto:DeepSea@gmail.com">DeepSea@gmail.com</a>
+    </section>
+    <section class="c atajos">
+      <h3>Atajos</h3>
+      <a href="cuenta.html"><span class="gi" style="background:linear-gradient(135deg,#062B5B,#2F6FD0)"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg></span><span>Mi cuenta<small>Datos, seguridad y sistema</small></span></a>
+      <a href="inicio.html"><span class="gi" style="background:linear-gradient(135deg,#1E66F5,#3FA9FF)"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg></span><span>Inicio<small>Resumen general</small></span></a>
+    </section>
+  </aside>
+</main>
+
+<nav class="dock" aria-label="Módulos">
+  <a href="inicio.html" style="--g:linear-gradient(135deg,#1E66F5,#3FA9FF)"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg><span class="tip">Inicio</span></a>
+  <a href="productos.html" style="--g:linear-gradient(135deg,#0EA5E9,#5CC8FF)"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span class="tip">Productos</span></a>
+  <a href="proveedores.html" style="--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg><span class="tip">Proveedores</span></a>
+  <a href="recepciones.html" style="--g:linear-gradient(135deg,#17A673,#5BDDA0)"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg><span class="tip">Recepciones</span></a>
+  <a href="almacenamiento.html" style="--g:linear-gradient(135deg,#4F46E5,#818CF8)"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg><span class="tip">Almacenamiento</span></a>
+  <a href="ventas.html" style="--g:linear-gradient(135deg,#F08A24,#FFC46B)"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg><span class="tip">Ventas</span></a>
+  <a href="trazabilidad.html" style="--g:linear-gradient(135deg,#0D9488,#2DD4BF)"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg><span class="tip">Trazabilidad</span></a>
+  <a href="reportes.html" style="--g:linear-gradient(135deg,#1D4ED8,#60A5FA)"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span class="tip">Reportes</span></a>
+  <a href="normas.html" style="--g:linear-gradient(135deg,#0891B2,#67E8F9)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><span class="tip">Normas y Calidad</span></a>
+</nav>
+
+<div class="fan" id="fan">
+  <div class="fan-overlay" id="fanOverlay"></div>
+  <div class="fan-list">
+    <a class="fan-item" href="proveedores.html" style="--i:4;--g:linear-gradient(135deg,#7B5CC7,#B494F5)"><span class="fan-label">Proveedores</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span></a>
+    <a class="fan-item" href="recepciones.html" style="--i:3;--g:linear-gradient(135deg,#17A673,#5BDDA0)"><span class="fan-label">Recepciones</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></span></a>
+    <a class="fan-item" href="almacenamiento.html" style="--i:2;--g:linear-gradient(135deg,#4F46E5,#818CF8)"><span class="fan-label">Almacenamiento</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-wh"/></svg></span></a>
+    <a class="fan-item" href="ventas.html" style="--i:1;--g:linear-gradient(135deg,#F08A24,#FFC46B)"><span class="fan-label">Ventas</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></span></a>
+    <a class="fan-item" href="normas.html" style="--i:0;--g:linear-gradient(135deg,#0891B2,#67E8F9)"><span class="fan-label">Normas y Calidad</span><span class="fan-ic"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span></a>
+  </div>
+</div>
+
+
+<nav class="bnav" aria-label="Módulos">
+  <a href="inicio.html"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Inicio</a>
+  <a href="productos.html" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg>Productos</a>
+  <a href="trazabilidad.html"><svg class="i" aria-hidden="true"><use href="#i-route"/></svg>Rastreo</a>
+  <a href="reportes.html"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Reportes</a>
+  <button type="button" id="fanBtn" aria-expanded="false" aria-controls="fan">
+    <svg class="i ico-grid" aria-hidden="true"><use href="#i-grid"/></svg>
+    <svg class="i ico-x" aria-hidden="true"><use href="#i-x"/></svg>
+    <span id="fanBtnLabel">Más</span>
+  </button>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const cliente = DSI.cliente();
+
+  // Sesión: se lee del almacenamiento local (sin red). Sin sesión, al login.
+  cliente.auth.getSession().then(function(r){
+    const s = r.data && r.data.session;
+    if (!s) { window.location.replace('login.html'); return; }
+    const u = s.user, m = u.user_metadata || {};
+    const nombre = (m.full_name || m.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario';
+    $('topUserName').textContent = nombre;
+    $('topAvatar').textContent = nombre.charAt(0).toUpperCase();
+  });
+  cliente.auth.onAuthStateChange(function(ev){ if (ev === 'SIGNED_OUT') window.location.replace('login.html'); });
+
+  // Buscador de la ayuda (en el propio navegador)
+  const norm = t => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const preguntas = Array.prototype.map.call(document.querySelectorAll('.q'), function(d){ return { el: d, txt: norm(d.textContent) }; });
+  let tm;
+  $('buscarAyuda').addEventListener('input', function(){
+    clearTimeout(tm);
+    const v = norm(this.value.trim());
+    tm = setTimeout(function(){
+      let total = 0;
+      preguntas.forEach(function(p){ const ok = !v || p.txt.indexOf(v) !== -1; p.el.hidden = !ok; if (ok) total++; if (v && ok) p.el.open = true; else if (!v) p.el.open = false; });
+      document.querySelectorAll('[data-grupo]').forEach(function(g){ g.hidden = !g.querySelector('.q:not([hidden])'); });
+      $('vacio').classList.toggle('show', total === 0);
+    }, 120);
+  });
+
+  // Menú "Más" del celular
+  const fan = $('fan'), fanBtn = $('fanBtn');
+  function abrirFan(){ fan.classList.add('open'); fanBtn.classList.add('open'); fanBtn.setAttribute('aria-expanded','true'); $('fanBtnLabel').textContent='Cerrar'; document.body.classList.add('sin-scroll'); }
+  function cerrarFan(){ fan.classList.remove('open'); fanBtn.classList.remove('open'); fanBtn.setAttribute('aria-expanded','false'); $('fanBtnLabel').textContent='Más'; document.body.classList.remove('sin-scroll'); }
+  fanBtn.addEventListener('click', function(){ fan.classList.contains('open') ? cerrarFan() : abrirFan(); });
+  $('fanOverlay').addEventListener('click', cerrarFan);
+  window.addEventListener('resize', function(){ if (window.innerWidth > 1000) cerrarFan(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') cerrarFan(); });
+})();
+</script>
+<script src="sesion-inactividad.js" defer></script>
+<script src="menu-usuario.js" defer></script>
+</body>
+</html>
