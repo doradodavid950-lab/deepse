@@ -315,8 +315,8 @@
   .modal-card.pequeno{max-width:420px}
   .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
   .modal-head h3{font-size:21px;color:var(--azul-oscuro)}
-  .modal-close{width:36px;height:36px;border-radius:12px;color:var(--texto-2);display:flex;align-items:center;justify-content:center}
-  .modal-close:hover{background:#F1F6FC}
+  .modal-close{width:30px;height:30px;min-width:30px;border:0;border-radius:10px;padding:0;background:transparent;color:var(--texto-2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,color .18s}
+  .modal-close:hover,.modal-close:focus-visible{background:#F1F6FC;color:var(--azul-oscuro);outline:none}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form-grid .full{grid-column:1/-1}
   .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
@@ -399,6 +399,9 @@
   .sug-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer}
   .sug-item.activo,.sug-item:hover{background:#EEF5FF}
   .sug-item strong{font-size:14.5px}
+  .sug-item{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .sug-item strong{min-width:0;flex:1}
+  .sug-item .sug-proveedor{flex:0 1 45%;text-align:right;font-size:12px;color:var(--texto-2);white-space:normal}
   .sug-item span{font-size:12.5px;color:var(--texto-2)}
   .sug-msg{padding:12px;font-size:13.5px;color:var(--texto-2);text-align:center}
   .search-row .bp{height:48px;padding:0 24px;flex:none}
@@ -499,6 +502,21 @@
   /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
   .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
 </style>
+
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 
@@ -2020,6 +2038,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   let sugActiva = -1;
   let urlAbierta = false;
   let proveedoresBusqueda = [];   // para el buscador de la barra superior
+  const proveedorPorProducto = new Map(); // proveedor más reciente conocido por producto
 
   // Preferencias que se cambian en "Mi cuenta" (se guardan en este dispositivo)
   const PREF_NOTIF = 'deepsea_notificaciones';
@@ -2175,6 +2194,30 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     indice = productos.map(p => ({ p: p, n: normalizar(p.nombre), c: normalizar(p.nombre_cientifico) }));
   }
 
+  function actualizarProveedoresDesdeRecepciones(registros){
+    if (!Array.isArray(registros)) return;
+    registros.forEach(r => {
+      const id = r.producto_id ?? (Array.isArray(r.productos) ? r.productos[0]?.id : r.productos?.id);
+      const prov = Array.isArray(r.proveedores) ? r.proveedores[0] : r.proveedores;
+      if (id != null && prov?.nombre && !proveedorPorProducto.has(String(id))) {
+        proveedorPorProducto.set(String(id), prov.nombre);
+      }
+    });
+  }
+
+  function proveedorProducto(prod){
+    if (!prod) return 'Sin proveedor registrado';
+    const desdeSeleccion = datosTraza?.recepciones?.[0];
+    if (seleccionado && String(seleccionado.id) === String(prod.id) && desdeSeleccion) {
+      const prov = Array.isArray(desdeSeleccion.proveedores) ? desdeSeleccion.proveedores[0] : desdeSeleccion.proveedores;
+      if (prov?.nombre) {
+        proveedorPorProducto.set(String(prod.id), prov.nombre);
+        return prov.nombre;
+      }
+    }
+    return proveedorPorProducto.get(String(prod.id)) || 'Sin proveedor registrado';
+  }
+
   async function cargarBase(){
     if (cargandoBase) return;
     cargandoBase = true;
@@ -2186,7 +2229,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
           .select('id,nombre,nombre_cientifico,categoria,fecha_captura,origen,estado')
           .order('nombre'),
         supabaseClient.from('recepciones')
-          .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
+          .select('id,producto_id,peso,estado_producto,fecha_recepcion,productos(id,nombre),proveedores(nombre)')
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
           .limit(100)
       ]));
@@ -2195,7 +2238,11 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
       else { productos = prod.data || []; construirIndice(); }
 
       if (rec.error) console.error('Error recepciones (notificaciones):', rec.error);
-      else recepcionesNotif = rec.data || [];
+      else {
+        recepcionesNotif = rec.data || [];
+        proveedorPorProducto.clear();
+        actualizarProveedoresDesdeRecepciones(recepcionesNotif);
+      }
     } catch (err) {
       hayError = true;
       console.error('Error cargando base:', err);
@@ -2257,7 +2304,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
       cajaSug.innerHTML = sugerenciasActuales.map((p, i) => `
         <div class="sug-item${i === sugActiva ? ' activo' : ''}" role="option" id="sug-${i}" data-i="${i}">
           <strong>${escapeHTML(p.nombre)}</strong>
-          <span>${escapeHTML(p.categoria || '')}</span>
+          <span class="sug-proveedor">Proveedor: ${escapeHTML(proveedorProducto(p))}</span>
         </div>`).join('');
     }
     cajaSug.classList.add('show');
@@ -2483,7 +2530,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   // ---------------------------------------------------------------
   function pintarCabecera(prod){
     $('productoNombre').textContent = prod.nombre;
-    let detalle = 'Categoría: ' + (prod.categoria || 'Sin categoría');
+    let detalle = 'Proveedor: ' + proveedorProducto(prod) + ' · Categoría: ' + (prod.categoria || 'Sin categoría');
     if (prod.origen) detalle += ' · Origen: ' + prod.origen;
     if (prod.nombre_cientifico) detalle += ' · Nombre científico: ' + prod.nombre_cientifico;
     $('productoDetalle').textContent = detalle;
@@ -2622,6 +2669,8 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     firmaTraza = firma;
 
     datosTraza = d;
+    actualizarProveedoresDesdeRecepciones(d.recepciones);
+    pintarCabecera(prod);
     pintarTimeline(construirEtapas(prod, d));
     pintarContadores(d);
     pintarTabla(true);

@@ -315,8 +315,8 @@
   .modal-card.pequeno{max-width:420px}
   .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
   .modal-head h3{font-size:21px;color:var(--azul-oscuro)}
-  .modal-close{width:36px;height:36px;border-radius:12px;color:var(--texto-2);display:flex;align-items:center;justify-content:center}
-  .modal-close:hover{background:#F1F6FC}
+  .modal-close{width:30px;height:30px;min-width:30px;border:0;border-radius:10px;padding:0;background:transparent;color:var(--texto-2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,color .18s}
+  .modal-close:hover,.modal-close:focus-visible{background:#F1F6FC;color:var(--azul-oscuro);outline:none}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form-grid .full{grid-column:1/-1}
   .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
@@ -629,6 +629,21 @@
   .lote-nuevo:hover{text-decoration:underline}
   @media (max-width:640px){.gd-det{grid-template-columns:1fr}}
 </style>
+
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 
@@ -835,8 +850,8 @@
     </div>
     <div class="table-wrap">
       <table class="simple">
-        <thead><tr><th>Producto</th><th>Color</th><th>Olor</th><th>Textura</th><th>Resultado</th><th>Fecha</th><th>Acciones</th></tr></thead>
-        <tbody id="tablaControles"><tr class="vacio"><td colspan="7" class="empty">Cargando controles...</td></tr></tbody>
+        <thead><tr><th>Producto</th><th>Proveedor / Lote</th><th>Color</th><th>Olor</th><th>Textura</th><th>Resultado</th><th>Fecha</th><th>Acciones</th></tr></thead>
+        <tbody id="tablaControles"><tr class="vacio"><td colspan="8" class="empty">Cargando controles...</td></tr></tbody>
       </table>
     </div>
     <div class="tabla-pie" id="tablaPie" style="display:none">
@@ -1459,7 +1474,7 @@
           .from('recepciones')
           .select('id,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,proveedores(nombre)')
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
-          .limit(300)
+          .limit(500)
       ]), tiempoAgotado]);
 
       if (prod.error) { hayError = true; console.error('Error productos:', prod.error); }
@@ -1552,7 +1567,7 @@
       let msg = 'No hay controles de calidad registrados.';
       if (errorCarga && !datos.controles.length) msg = 'No se pudieron cargar los controles.';
       else if (datos.controles.length) msg = 'No se encontraron resultados para la búsqueda.';
-      tbody.innerHTML = `<tr class="vacio"><td colspan="7" class="empty">${msg}</td></tr>`;
+      tbody.innerHTML = `<tr class="vacio"><td colspan="8" class="empty">${msg}</td></tr>`;
       $('tablaPie').style.display = 'none';
       return;
     }
@@ -1567,6 +1582,7 @@
 
       return `<tr${anim}>
         <td data-label="Producto"><strong>${escapeHTML(nombreProducto(c))}</strong></td>
+        <td data-label="Proveedor / Lote">${proveedorLoteDe(c)}</td>
         <td data-label="Color">${escapeHTML(c.color || '-')}</td>
         <td data-label="Olor">${escapeHTML(c.olor || '-')}</td>
         <td data-label="Textura">${escapeHTML(c.textura || '-')}</td>
@@ -1650,6 +1666,17 @@
       g.lotes.push({ r: r, n: g.lotes.length + 1, bloqueado: bloqueados.has(String(r.id)) });
     });
     return Array.from(grupos.values());
+  }
+  // Proveedor y número de lote de un control (según la recepción a la que está ligado)
+  function proveedorLoteDe(c){
+    if (!c.recepcion_id) return '—';
+    const rec = datos.recepciones.find(x => String(x.id) === String(c.recepcion_id));
+    if (!rec) return '—';
+    const grupos = agruparLotes(datos.recepciones.filter(r => String(r.producto_id) === String(rec.producto_id)), new Set());
+    let n = '';
+    grupos.forEach(g => g.lotes.forEach(l => { if (String(l.r.id) === String(rec.id)) n = l.n; }));
+    const prov = (rec.proveedores && rec.proveedores.nombre) || 'Sin proveedor';
+    return escapeHTML(prov) + (n ? '<br><small>Lote ' + n + '</small>' : '');
   }
   function llenarLotes(pid, item){
     const sel = $('lote'), hint = $('loteHint');

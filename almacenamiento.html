@@ -315,8 +315,8 @@
   .modal-card.pequeno{max-width:420px}
   .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
   .modal-head h3{font-size:21px;color:var(--azul-oscuro)}
-  .modal-close{width:36px;height:36px;border-radius:12px;color:var(--texto-2);display:flex;align-items:center;justify-content:center}
-  .modal-close:hover{background:#F1F6FC}
+  .modal-close{width:30px;height:30px;min-width:30px;border:0;border-radius:10px;padding:0;background:transparent;color:var(--texto-2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,color .18s}
+  .modal-close:hover,.modal-close:focus-visible{background:#F1F6FC;color:var(--azul-oscuro);outline:none}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form-grid .full{grid-column:1/-1}
   .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
@@ -460,6 +460,21 @@
     table.inv td.empty{display:block;text-align:center}
     table.inv td.empty::before{content:none}}
 </style>
+
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 
@@ -1066,7 +1081,7 @@
 
     try {
       const [prod, alm, rec, prov] = await Promise.race([Promise.all([
-        supabaseClient.from('productos').select('id,nombre,estado').order('nombre', { ascending: true }),
+        supabaseClient.from('productos').select('id,nombre,estado,proveedor').order('nombre', { ascending: true }),
         supabaseClient
           .from('almacenamientos')
           .select('id,producto_id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento,observaciones,productos(nombre)')
@@ -1225,16 +1240,25 @@
 
   function llenarProductos(item){
     const select = $('producto');
-    if (!datos.productos.length) {
-      select.innerHTML = '<option value="">No hay productos registrados</option>';
+    // En un almacenamiento nuevo solo aparecen productos que aún no están
+    // registrados. Al editar, se conserva disponible el producto del registro actual.
+    const yaAlmacenados = new Set(datos.almacenamientos
+      .filter(a => !item || String(a.id) !== String(item.id))
+      .map(a => String(a.producto_id)));
+    const disponibles = datos.productos.filter(p =>
+      !yaAlmacenados.has(String(p.id)) || (item && String(item.producto_id) === String(p.id))
+    );
+    if (!disponibles.length) {
+      select.innerHTML = '<option value="">Todos los productos ya están en almacenamiento</option>';
       return;
     }
-    select.innerHTML = '<option value="">Seleccionar producto</option>' + datos.productos.map(p => {
+    select.innerHTML = '<option value="">Seleccionar producto</option>' + disponibles.map(p => {
       const inactivo = normalizar(p.estado) === 'inactivo';
       const actual = item && String(item.producto_id) === String(p.id);
-      // Un producto inactivo no se puede elegir en registros nuevos
       const bloqueado = inactivo && !actual;
-      return `<option value="${escapeHTML(p.id)}"${bloqueado ? ' disabled' : ''}>${escapeHTML(p.nombre)}${inactivo ? ' (inactivo)' : ''}</option>`;
+      const proveedor = String(p.proveedor || '').trim();
+      const detalleProveedor = proveedor ? ` — Proveedor: ${proveedor}` : ' — Sin proveedor';
+      return `<option value="${escapeHTML(p.id)}"${bloqueado ? ' disabled' : ''}>${escapeHTML(p.nombre)}${escapeHTML(detalleProveedor)}${inactivo ? ' (inactivo)' : ''}</option>`;
     }).join('');
   }
 
@@ -1303,6 +1327,25 @@
 
     let resultado;
     try {
+      // Segunda validación contra la base de datos para evitar duplicados
+      // aunque los datos de la pantalla estén desactualizados.
+      const duplicadosQuery = supabaseClient.from('almacenamientos')
+        .select('id')
+        .eq('producto_id', payload.producto_id);
+      if (editandoId !== null) duplicadosQuery.neq('id', editandoId);
+      const { data: duplicados, error: errorDuplicados } = await duplicadosQuery.limit(1);
+
+      if (errorDuplicados) throw errorDuplicados;
+      if (duplicados && duplicados.length) {
+        guardando = false;
+        btn.disabled = false;
+        btn.classList.remove('loading');
+        btn.textContent = textoOriginal;
+        mostrarToast('Este producto ya está registrado en almacenamiento.', 'error');
+        await refrescar();
+        return;
+      }
+
       resultado = editandoId !== null
         ? await supabaseClient.from('almacenamientos').update(payload).eq('id', editandoId)
         : await supabaseClient.from('almacenamientos').insert([payload]);

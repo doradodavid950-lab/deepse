@@ -155,8 +155,8 @@
   .fc-head > div{flex:1}
   .fc-head h3{font-size:20px;color:var(--azul-oscuro)}
   .fc-head p{font-size:13.5px;color:var(--texto-2);margin-top:3px}
-  .fc-x{width:38px;height:38px;border-radius:12px;font-size:24px;line-height:1;color:var(--texto-2);background:#F1F6FC}
-  .fc-x:hover{background:#E4EEF9}
+  .fc-x{width:30px;height:30px;min-width:30px;border:0;border-radius:10px;padding:0;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;color:var(--texto-2);background:transparent;cursor:pointer;transition:background .18s,color .18s}
+  .fc-x:hover,.fc-x:focus-visible{background:#F1F6FC;color:var(--azul-oscuro);outline:none}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
   .field{display:flex;flex-direction:column;gap:6px;min-width:0}
   .field.full{grid-column:1/-1}
@@ -271,6 +271,20 @@
     .brand-sub{display:none}
     .kpis{gap:14px}}
 </style>
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 
@@ -605,6 +619,8 @@
   let eliminando = false;
   let idPorEliminar = null;
   let idPendiente = null;
+  let volverAProductos = false;   // se llegó desde Productos para registrar un proveedor nuevo
+  let abrirNuevo = false;
   let firmaDatos = '';
   let ultimaActualizacion = 0;
   let productosNotif = [];
@@ -1190,8 +1206,12 @@
 
   $('btnNuevo').addEventListener('click', nuevoProveedor);
   $('fabNuevo').addEventListener('click', nuevoProveedor);
-  $('cancelBtn').addEventListener('click', cerrarFormulario);
-  $('formClose').addEventListener('click', cerrarFormulario);
+  function cancelarFormulario(){
+    if (volverAProductos && proveedorEditando === null) { window.location.href = 'productos.html'; return; }
+    cerrarFormulario();
+  }
+  $('cancelBtn').addEventListener('click', cancelarFormulario);
+  $('formClose').addEventListener('click', cancelarFormulario);
   $('formDelete').addEventListener('click', function(){
     if (proveedorEditando !== null) pedirEliminar(proveedorEditando);
   });
@@ -1251,6 +1271,13 @@
       cerrarFormulario();
       showToast('No se pudo actualizar: el proveedor ya no existe o no tienes permiso.', 'error');
       cargarProveedores();
+      return;
+    }
+
+    // Venía de Productos: se guarda el nombre y se vuelve para seguir con el producto
+    if (volverAProductos && idEditando === null && fila) {
+      try { sessionStorage.setItem('dsi_prov_nuevo', fila.nombre); } catch (e) { /* se ignora */ }
+      window.location.href = 'productos.html';
       return;
     }
 
@@ -1617,11 +1644,14 @@
   async function iniciar(){
     // Si se llega con ?id=..., se recuerda qué resaltar y se limpia la dirección
     try {
-      const id = new URLSearchParams(window.location.search).get('id');
-      if (id) {
-        idPendiente = id;
-        window.history.replaceState(null, '', window.location.pathname);
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (id) idPendiente = id;
+      if (params.get('nuevo') === '1') {
+        abrirNuevo = true;
+        volverAProductos = params.get('volver') === 'productos';
       }
+      if (id || abrirNuevo) window.history.replaceState(null, '', window.location.pathname);
     } catch (e) { /* se ignora */ }
 
     let session = null;
@@ -1637,6 +1667,7 @@
     usuarioActual = session.user;
     aplicarPrefs();
     pintarUsuario();
+    if (abrirNuevo) { abrirNuevo = false; nuevoProveedor(); }
 
     // 1) Se muestra al instante lo último guardado (si existe)
     const cache = leerCache();

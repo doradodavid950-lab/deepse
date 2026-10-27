@@ -143,8 +143,8 @@
   .fc-head > div{flex:1}
   .fc-head h3{font-size:20px;color:var(--azul-oscuro)}
   .fc-head p{font-size:13.5px;color:var(--texto-2);margin-top:3px}
-  .fc-x{width:38px;height:38px;border-radius:12px;font-size:24px;line-height:1;color:var(--texto-2);background:#F1F6FC}
-  .fc-x:hover{background:#E4EEF9}
+  .fc-x{width:30px;height:30px;min-width:30px;border:0;border-radius:10px;padding:0;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;color:var(--texto-2);background:transparent;cursor:pointer;transition:background .18s,color .18s}
+  .fc-x:hover,.fc-x:focus-visible{background:#F1F6FC;color:var(--azul-oscuro);outline:none}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
   .field{display:flex;flex-direction:column;gap:6px;min-width:0}
   .field.full{grid-column:1/-1}
@@ -256,7 +256,26 @@
   @media (min-width:1001px) and (max-width:1180px){
     .brand-sub{display:none}
     .kpis{gap:14px}}
+  .chk{display:flex;align-items:center;gap:10px;font-weight:600;cursor:pointer;color:var(--texto)}
+  .chk input{width:20px;height:20px;accent-color:var(--azul-medio,#1E6FD9);flex:none;margin:0}
+  #obsBox{margin-top:10px}
+  #tablaRecepciones.sin-obs th.col-obs,#tablaRecepciones.sin-obs td.obs{display:none}
+  .lote-tag{display:inline-block;padding:3px 10px;border-radius:999px;background:#EAF2FF;color:#1B4F9C;font-weight:700;font-size:13px;white-space:nowrap}
 </style>
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 
@@ -373,7 +392,7 @@
     <div class="tbl-wrap">
       <table id="tablaRecepciones" hidden>
         <thead>
-          <tr><th>Producto</th><th>Proveedor</th><th>Peso</th><th>Estado</th><th>Fecha de recepción</th><th>Observaciones</th><th>Acciones</th></tr>
+          <tr><th>Producto</th><th>Proveedor</th><th>Lote</th><th>Peso</th><th>Estado</th><th>Fecha de recepción</th><th class="col-obs">Observaciones</th><th>Acciones</th></tr>
         </thead>
         <tbody id="receptionTable"></tbody>
       </table>
@@ -455,6 +474,7 @@
         <div class="field" id="fieldProveedor">
           <label for="proveedor">Proveedor</label>
           <select id="proveedor"><option value="">Seleccionar proveedor</option></select>
+          <small id="proveedorHint" style="display:none;font-size:12.5px;color:var(--texto-2,#5B7089)"></small>
           <div class="field-error">Selecciona un proveedor válido.</div>
         </div>
 
@@ -477,10 +497,12 @@
         </div>
 
         <div class="field full" id="fieldObservaciones">
-          <label for="observaciones">Observaciones</label>
-          <textarea id="observaciones" placeholder="Observaciones sobre el producto recibido..." maxlength="500"></textarea>
-          <div class="field-hint">Solo letras, números y signos básicos ( . , ; : ( ) ! ? - / % # &amp; + @ _ ' " ).</div>
-          <div class="field-error">Revisa las observaciones.</div>
+          <label class="chk" for="conObs"><input type="checkbox" id="conObs"> Agregar observaciones</label>
+          <div id="obsBox" hidden>
+            <textarea id="observaciones" placeholder="Observaciones sobre el producto recibido..." maxlength="500"></textarea>
+            <div class="field-hint">Solo letras, números y signos básicos ( . , ; : ( ) ! ? - / % # &amp; + @ _ ' " ).</div>
+            <div class="field-error">Revisa las observaciones.</div>
+          </div>
         </div>
 
       </div>
@@ -748,24 +770,95 @@
   // ---------------------------------------------------------------
   // LISTAS DEL FORMULARIO
   // ---------------------------------------------------------------
+  // Los productos que se repiten con el mismo nombre (uno por proveedor) se muestran una sola vez
+  function claveNombre(n){ return normalizar(String(n == null ? '' : n).replace(/\s+/g, ' ')); }
+  function gruposProductos(){
+    const mapa = new Map();
+    productos.forEach(function(p){
+      const k = claveNombre(p.nombre) || ('id:' + p.id);
+      let g = mapa.get(k);
+      if (!g) { g = { nombre: p.nombre, filas: [] }; mapa.set(k, g); }
+      g.filas.push(p);
+    });
+    return Array.from(mapa.values());
+  }
+  function filasDelProducto(productoId){
+    const p = productos.find(function(x){ return String(x.id) === String(productoId); });
+    if (!p) return [];
+    const k = claveNombre(p.nombre);
+    if (!k) return [p];
+    return productos.filter(function(x){ return claveNombre(x.nombre) === k; });
+  }
+
+  // Proveedores del producto elegido. Si el producto no tiene ninguno registrado, se muestran todos.
+  function llenarProveedores(productoId, proveedorSel, autoElegir){
+    const ordenar = function(a, b){ return String(a.nombre || '').localeCompare(String(b.nombre || ''), 'es'); };
+    const hint = $('proveedorHint');
+
+    // Proveedores inactivos solo si la recepción ya tenía uno (para no perderlo al editar)
+    const base = proveedores.filter(function(p){
+      return !(normalizar(p.estado) === 'inactivo' && String(p.id) !== String(proveedorSel));
+    });
+    const delProducto = new Set();
+    if (productoId) filasDelProducto(productoId).forEach(function(f){ const k = claveNombre(f.proveedor); if (k) delProducto.add(k); });
+    const propios = base.filter(function(p){ return delProducto.has(claveNombre(p.nombre)); });
+    const filtrado = propios.length > 0;
+    const opciones = (filtrado ? propios : base).slice();
+
+    // Si la recepción ya tenía un proveedor distinto, se conserva para no perderlo al editar
+    if (proveedorSel && !opciones.some(function(p){ return String(p.id) === String(proveedorSel); })) {
+      const extra = proveedores.find(function(p){ return String(p.id) === String(proveedorSel); });
+      if (extra) opciones.push(extra);
+    }
+    opciones.sort(ordenar);
+
+    let html = '<option value="">Seleccionar proveedor</option>';
+    opciones.forEach(function(p){
+      const inactivo = normalizar(p.estado) === 'inactivo';
+      html += '<option value="' + escapeHTML(p.id) + '">' + escapeHTML(p.nombre) + (inactivo ? ' (inactivo)' : '') + '</option>';
+    });
+    $('proveedor').innerHTML = html;
+
+    if (proveedorSel) $('proveedor').value = proveedorSel;
+    else if (autoElegir && filtrado && opciones.length === 1) $('proveedor').value = opciones[0].id;
+
+    let texto = '';
+    if (productoId && filtrado) texto = opciones.length === 1 ? 'Proveedor registrado para este producto.' : 'Se muestran los proveedores de este producto.';
+    else if (productoId) texto = 'Este producto no tiene proveedor registrado: se muestran todos.';
+    hint.textContent = texto;
+    hint.style.display = texto ? 'block' : 'none';
+  }
+
+  // El producto elegido es una fila de "productos"; si hay varias con el mismo nombre,
+  // se usa la que corresponde al proveedor elegido.
+  function productoIdFinal(){
+    const sel = $('producto').value;
+    const provId = $('proveedor').value;
+    if (!sel || !provId) return sel;
+    const prov = proveedores.find(function(p){ return String(p.id) === String(provId); });
+    if (!prov) return sel;
+    const kp = claveNombre(prov.nombre);
+    const filas = filasDelProducto(sel);
+    const actual = filas.find(function(f){ return String(f.id) === String(sel); });
+    if (actual && claveNombre(actual.proveedor) === kp) return sel;
+    const otra = filas.find(function(f){ return claveNombre(f.proveedor) === kp; });
+    return otra ? otra.id : sel;
+  }
+
   function llenarSelects(productoSel, proveedorSel, estadoSel){
     const ordenar = function(a, b){ return String(a.nombre || '').localeCompare(String(b.nombre || ''), 'es'); };
 
     let htmlProd = '<option value="">Seleccionar producto</option>';
-    productos.slice().sort(ordenar).forEach(function(p){
-      const inactivo = normalizar(p.estado) === 'inactivo';
-      htmlProd += '<option value="' + escapeHTML(p.id) + '">' + escapeHTML(p.nombre) + (inactivo ? ' (inactivo)' : '') + '</option>';
+    gruposProductos().sort(ordenar).forEach(function(g){
+      const activas = g.filas.filter(function(f){ return normalizar(f.estado) !== 'inactivo'; });
+      const inactivo = !activas.length;
+      // El valor es el id de una fila del grupo: la que ya tenía la recepción al editar, o una activa
+      const rep = g.filas.find(function(f){ return String(f.id) === String(productoSel); }) || activas[0] || g.filas[0];
+      htmlProd += '<option value="' + escapeHTML(rep.id) + '">' + escapeHTML(g.nombre) + (inactivo ? ' (inactivo)' : '') + '</option>';
     });
     $('producto').innerHTML = htmlProd;
 
-    // Proveedores inactivos solo si la recepción ya tenía uno (para no perderlo al editar)
-    let htmlProv = '<option value="">Seleccionar proveedor</option>';
-    proveedores.slice().sort(ordenar).forEach(function(p){
-      const inactivo = normalizar(p.estado) === 'inactivo';
-      if (inactivo && String(p.id) !== String(proveedorSel)) return;
-      htmlProv += '<option value="' + escapeHTML(p.id) + '">' + escapeHTML(p.nombre) + (inactivo ? ' (inactivo)' : '') + '</option>';
-    });
-    $('proveedor').innerHTML = htmlProv;
+    llenarProveedores(productoSel || '', proveedorSel, false);
 
     // Estados: los nuevos, más el estado anterior del registro si era otro (ej. "Recibido")
     let htmlEst = ESTADOS_FORM.map(function(e){ return '<option value="' + e + '">' + e + '</option>'; }).join('');
@@ -808,14 +901,31 @@
     return 'warn';
   }
 
+  // Lote = número de recepción de ese producto con ese proveedor, por orden de fecha
+  // (misma regla que usa Normas y calidad). Un proveedor nuevo empieza en Lote 1.
+  let lotesMapa = new Map();
+  function calcularLotes(){
+    const cont = {}, mapa = new Map();
+    recepciones.slice().sort(function(a, b){
+      return String(a.fecha_recepcion || '').localeCompare(String(b.fecha_recepcion || ''));
+    }).forEach(function(r){
+      const k = String(r.producto_id || '') + '|' + String(r.proveedor_id || '');
+      cont[k] = (cont[k] || 0) + 1;
+      mapa.set(String(r.id), cont[k]);
+    });
+    return mapa;
+  }
+  function loteDe(r){ return lotesMapa.get(String(r.id)) || 1; }
+
   function filaHTML(r){
     const id = escapeHTML(r.id);
     const producto = nombreRel(r.productos) || 'Sin producto';
     const prod = escapeHTML(producto);
-    const obs = r.observaciones ? escapeHTML(r.observaciones) : '—';
+    const obs = r.observaciones ? escapeHTML(r.observaciones) : '';
     return '<tr data-id="' + id + '">' +
       '<td>' + prod + '</td>' +
       '<td>' + escapeHTML(nombreRel(r.proveedores) || 'Sin proveedor') + '</td>' +
+      '<td><span class="lote-tag">Lote ' + loteDe(r) + '</span></td>' +
       '<td class="nowrap">' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</td>' +
       '<td><span class="pill ' + claseEstado(r.estado_producto) + '">' + escapeHTML(r.estado_producto || '-') + '</span></td>' +
       '<td class="nowrap">' + escapeHTML(fechaCorta(r.fecha_recepcion, true)) + '</td>' +
@@ -836,7 +946,7 @@
         '<div class="pc-info"><strong>' + escapeHTML(producto) + '</strong><span>' + escapeHTML(nombreRel(r.proveedores) || 'Sin proveedor') + '</span></div>' +
         '<span class="pill ' + claseEstado(r.estado_producto) + '">' + escapeHTML(r.estado_producto || '-') + '</span>' +
       '</div>' +
-      '<div class="pc-bot"><span>Peso <b>' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</b></span><b>' + escapeHTML(fechaCorta(r.fecha_recepcion, false)) + '</b></div>' +
+      '<div class="pc-bot"><span>Lote <b>' + loteDe(r) + '</b></span><span>Peso <b>' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</b></span><b>' + escapeHTML(fechaCorta(r.fecha_recepcion, false)) + '</b></div>' +
     '</div>';
   }
 
@@ -864,6 +974,9 @@
     }
 
     const visibles = filtrados.slice(0, limiteMostrar);
+    lotesMapa = calcularLotes();
+    // Si ninguna fila tiene observaciones, la columna no se muestra
+    tabla.classList.toggle('sin-obs', !visibles.some(function(r){ return !!r.observaciones; }));
     const movil = mqMovil.matches;
     vacio.hidden = true;
     tabla.hidden = movil;
@@ -949,7 +1062,7 @@
     }).catch(function(err){ hayError = true; console.error('Error cargando recepciones:', err); });
 
     const pProd = conTiempo(
-      supabaseClient.from('productos').select('id,nombre,estado')
+      supabaseClient.from('productos').select('id,nombre,estado,proveedor')
     ).then(function(res){
       if (res.error) { hayError = true; console.error('Error productos:', res.error); return; }
       const datos = res.data || [];
@@ -1185,6 +1298,8 @@
     el.addEventListener('change', quitar);
   });
   form.addEventListener('input', function(){ formSucio = true; });
+  // Al elegir producto, el selector de proveedor muestra solo los de ese producto
+  $('producto').addEventListener('change', function(){ llenarProveedores($('producto').value, '', true); });
   form.addEventListener('change', function(){ formSucio = true; });
 
   // El peso solo admite números: se bloquean e, E, + y -
@@ -1214,7 +1329,7 @@
       if (!primero) primero = input;
     }
 
-    const productoId = $('producto').value;
+    const productoId = productoIdFinal();
     if (!productoId) {
       fallo('fieldProducto', 'Producto', 'Selecciona un producto.', $('producto'));
     } else if (!productos.some(function(p){ return String(p.id) === String(productoId); })) {
@@ -1289,6 +1404,16 @@
   // ---------------------------------------------------------------
   // VENTANA NUEVA / EDITAR
   // ---------------------------------------------------------------
+  function syncObs(){
+    const on = $('conObs').checked;
+    $('obsBox').hidden = !on;
+    if (!on) $('observaciones').value = '';      // sin observaciones: no se guarda nada
+  }
+  $('conObs').addEventListener('change', function(){
+    syncObs();
+    if ($('conObs').checked && window.matchMedia('(pointer:fine)').matches) setTimeout(function(){ $('observaciones').focus(); }, 30);
+  });
+
   function abrirModal(rec){
     if (!productos.length) {
       showToast(productosListos
@@ -1315,6 +1440,8 @@
       $('peso').value          = rec.peso != null ? rec.peso : '';
       $('estado').value        = rec.estado_producto || 'Fresco';
       $('observaciones').value = rec.observaciones || '';
+      $('conObs').checked = !!rec.observaciones;
+      syncObs();
       const f = parsearFecha(rec.fecha_recepcion);
       $('fecha').value = f ? aInputFecha(f) : '';
     } else {
@@ -1324,6 +1451,8 @@
       $('saveBtn').textContent = 'Guardar recepción';
       $('formDelete').hidden = true;
       $('receptionId').value = '';
+      $('conObs').checked = false;
+      syncObs();
       $('estado').value = 'Fresco';
       $('fecha').value = aInputFecha(new Date());
     }
@@ -1371,7 +1500,7 @@
 
     const idEditando = $('receptionId').value;
     const payload = {
-      producto_id:     $('producto').value,
+      producto_id:     productoIdFinal(),
       proveedor_id:    $('proveedor').value || null,
       peso:            Math.round(Number($('peso').value) * 100) / 100,
       estado_producto: $('estado').value,

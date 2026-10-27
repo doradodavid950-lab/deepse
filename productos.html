@@ -259,6 +259,14 @@
   .field-error{display:none;font-size:12.5px;color:var(--rojo);margin-top:4px}
   .field.invalid>input,.field.invalid>select,.field.invalid .field-input{border-color:var(--rojo);background:#FFF5F5}
   .field.invalid .field-error{display:block}
+  /* Sugerencias al escribir el nombre (autocompleta el nombre científico) */
+  #fieldNombre{position:relative}
+  .ac-lista{position:absolute;left:0;right:0;margin-top:6px;z-index:30;background:#fff;border:1px solid var(--borde);border-radius:14px;box-shadow:0 18px 40px rgba(6,43,91,.2);padding:6px;max-height:240px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .ac-lista[hidden]{display:none}
+  .ac-op{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;text-align:left;padding:9px 12px;border:0;background:none;border-radius:10px;cursor:pointer;font:inherit;color:var(--texto,#0F2540);-webkit-tap-highlight-color:transparent}
+  .ac-op b{font-size:14.5px}
+  .ac-op span{font-size:12.5px;font-style:italic;color:var(--texto-2,#5B7089)}
+  .ac-op:hover,.ac-op.activo{background:#F3F8FF}
 
   .bp,.bg,.bd{height:44px;padding:0 20px;border-radius:14px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,filter .12s}
   .bp{background:var(--g-azul);color:#fff;box-shadow:0 8px 18px rgba(30,102,245,.3)}
@@ -315,8 +323,8 @@
   .modal-card.pequeno{max-width:420px}
   .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
   .modal-head h3{font-size:21px;color:var(--azul-oscuro)}
-  .modal-close{width:36px;height:36px;border-radius:12px;color:var(--texto-2);display:flex;align-items:center;justify-content:center}
-  .modal-close:hover{background:#F1F6FC}
+  .modal-close{width:30px;height:30px;min-width:30px;border:0;border-radius:10px;padding:0;background:transparent;color:var(--texto-2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,color .18s}
+  .modal-close:hover,.modal-close:focus-visible{background:#F1F6FC;color:var(--azul-oscuro);outline:none}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form-grid .full{grid-column:1/-1}
   .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
@@ -411,6 +419,21 @@
   .nb-lnk{color:var(--azul-medio);font-weight:700;font-size:13px;text-decoration:none}
   @media (max-width:1000px){ .nb-row{flex-wrap:wrap} .nb-add select{font-size:16px}}
 </style>
+
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 
@@ -618,7 +641,8 @@
       <div class="form-grid">
         <div class="field full" id="fieldNombre">
           <label for="pNombre">Nombre del producto *</label>
-          <input type="text" id="pNombre" placeholder="Ej. Pargo Rojo" maxlength="100" autocomplete="off">
+          <input type="text" id="pNombre" placeholder="Ej. Pargo Rojo" maxlength="100" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="acNombre">
+          <div class="ac-lista" id="acNombre" role="listbox" aria-label="Productos ya registrados" hidden></div>
           <div class="field-error">El nombre es obligatorio.</div>
         </div>
         <div class="field" id="fieldCientifico">
@@ -633,8 +657,7 @@
         </div>
         <div class="field">
           <label for="pProveedor">Proveedor</label>
-          <input type="text" id="pProveedor" placeholder="Nombre del proveedor" maxlength="100" list="listaProveedores" autocomplete="off">
-          <datalist id="listaProveedores"></datalist>
+          <select id="pProveedor"><option value="">Sin proveedor</option></select>
         </div>
         <div class="field full nb" id="boxNormas">
           <div class="nb-head"><b>Normas de la categoría</b><span id="nbSub">Se cargan según la categoría elegida</span></div>
@@ -893,19 +916,158 @@
     });
   }
 
-  // Sugerencias de proveedor (los ya usados) para escribir más rápido y sin variaciones
-  function actualizarProveedores(){
+  // Lista de proveedores registrados (activos) + opción para registrar uno nuevo.
+  // Si el producto tiene un proveedor antiguo escrito a mano, se conserva como opción.
+  const NUEVO_PROV = '__nuevo__';
+  function actualizarProveedores(seleccion){
+    const sel = $('pProveedor');
+    const actual = seleccion !== undefined ? seleccion : sel.value;
+    const nombres = [];
     const vistos = {};
-    const lista = [];
-    productos.forEach(function(p){
-      const v = colapsar(p.proveedor);
-      const k = normalizar(v);
-      if (v && !vistos[k]) { vistos[k] = true; lista.push(v); }
+    proveedoresBusqueda.forEach(function(p){
+      const v = colapsar(p.nombre);
+      if (!v || vistos[normalizar(v)]) return;
+      if (p.estado && normalizar(p.estado) !== 'activo' && normalizar(v) !== normalizar(actual)) return;
+      vistos[normalizar(v)] = true; nombres.push(v);
     });
-    lista.sort(function(a, b){ return a.localeCompare(b, 'es'); });
-    $('listaProveedores').innerHTML = lista.slice(0, 60).map(function(v){
-      return '<option value="' + escapeHTML(v) + '"></option>';
+    if (actual && actual !== NUEVO_PROV && !vistos[normalizar(actual)]) nombres.push(actual);
+    nombres.sort(function(a, b){ return a.localeCompare(b, 'es'); });
+    sel.innerHTML = '<option value="">Sin proveedor</option>' +
+      nombres.map(function(v){ return '<option value="' + escapeHTML(v) + '">' + escapeHTML(v) + '</option>'; }).join('') +
+      '<option value="' + NUEVO_PROV + '">+ Registrar nuevo proveedor…</option>';
+    sel.value = (actual && actual !== NUEVO_PROV) ? actual : '';
+  }
+
+  // Al elegir "Registrar nuevo proveedor" se guarda lo escrito, se abre Proveedores y,
+  // al guardar allí, se vuelve aquí con el proveedor ya elegido.
+  const CLAVE_BORRADOR = 'dsi_borrador_producto';
+  $('pProveedor').addEventListener('change', function(){
+    if ($('pProveedor').value !== NUEVO_PROV) return;
+    try {
+      sessionStorage.setItem(CLAVE_BORRADOR, JSON.stringify({
+        id: $('productoId').value, nombre: $('pNombre').value, cientifico: $('pCientifico').value,
+        categoria: $('pCategoria').value, fecha: $('pFecha').value, origen: $('pOrigen').value,
+        estado: $('pEstado').value, descripcion: $('pDescripcion').value, observaciones: $('pObservaciones').value,
+        quitar: Array.from(nbQuitadas), extras: Array.from(nbExtras)
+      }));
+    } catch (e) { /* sin almacenamiento: se abre igual, pero sin recordar lo escrito */ }
+    window.location.href = 'proveedores.html?nuevo=1&volver=productos';
+  });
+
+  // ---------------------------------------------------------------
+  // AUTOCOMPLETAR: al escribir el nombre se sugieren los productos ya registrados;
+  // al elegir uno se llena el nombre científico. Si es nuevo, se sigue escribiendo normal.
+  // ---------------------------------------------------------------
+  const acLista = $('acNombre');
+  let acItems = [], acActivo = -1;
+
+  function productosUnicos(){
+    const mapa = new Map();
+    productos.forEach(function(p){
+      const n = colapsar(p.nombre);
+      if (!n) return;
+      const k = normalizar(n);
+      const g = mapa.get(k);
+      const c = colapsar(p.nombre_cientifico);
+      if (!g) mapa.set(k, { nombre: n, cientifico: c });
+      else if (!g.cientifico && c) g.cientifico = c;
+    });
+    return Array.from(mapa.values());
+  }
+  function acCerrar(){
+    acLista.hidden = true; acLista.innerHTML = '';
+    acItems = []; acActivo = -1;
+    $('pNombre').setAttribute('aria-expanded', 'false');
+  }
+  function acMarcar(i){
+    acActivo = i;
+    Array.prototype.forEach.call(acLista.children, function(el, j){
+      el.classList.toggle('activo', j === i);
+      if (j === i) el.scrollIntoView({ block: 'nearest' });
+    });
+  }
+  function acElegir(i){
+    const it = acItems[i];
+    if (!it) return;
+    $('pNombre').value = it.nombre;
+    if (it.cientifico) $('pCientifico').value = it.cientifico;
+    $('fieldNombre').classList.remove('invalid');
+    $('fieldCientifico').classList.remove('invalid');
+    formSucio = true;
+    acCerrar();
+  }
+  function acMostrar(){
+    // Solo al crear: al editar un producto no se sugiere ni se pisan sus datos
+    if ($('productoId').value) { acCerrar(); return; }
+    const q = normalizar(colapsar($('pNombre').value));
+    if (!q) { acCerrar(); return; }
+    const hallados = productosUnicos().filter(function(g){
+      return normalizar(g.nombre).indexOf(q) > -1 || normalizar(g.cientifico).indexOf(q) > -1;
+    }).sort(function(a, b){
+      const ea = normalizar(a.nombre).indexOf(q) === 0 ? 0 : 1, eb = normalizar(b.nombre).indexOf(q) === 0 ? 0 : 1;
+      return ea - eb || a.nombre.localeCompare(b.nombre, 'es');
+    }).slice(0, 6);
+    if (!hallados.length) { acCerrar(); return; }
+    acItems = hallados; acActivo = -1;
+    acLista.innerHTML = hallados.map(function(g, i){
+      return '<button type="button" class="ac-op" role="option" tabindex="-1" data-i="' + i + '"><b>' + escapeHTML(g.nombre) + '</b>' +
+        (g.cientifico ? '<span>' + escapeHTML(g.cientifico) + '</span>' : '') + '</button>';
     }).join('');
+    acLista.hidden = false;
+    $('pNombre').setAttribute('aria-expanded', 'true');
+  }
+  $('pNombre').addEventListener('input', acMostrar);
+  $('pNombre').addEventListener('keydown', function(e){
+    if (acLista.hidden) return;
+    if (e.key === 'ArrowDown') { acMarcar(acActivo + 1 >= acItems.length ? 0 : acActivo + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { acMarcar(acActivo <= 0 ? acItems.length - 1 : acActivo - 1); e.preventDefault(); }
+    else if (e.key === 'Enter' && acActivo > -1) { acElegir(acActivo); e.preventDefault(); }
+    else if (e.key === 'Escape') { acCerrar(); e.stopPropagation(); }
+  });
+  // mousedown evita que el campo pierda el foco antes de registrar el toque
+  acLista.addEventListener('mousedown', function(e){ e.preventDefault(); });
+  acLista.addEventListener('click', function(e){
+    const b = e.target.closest('.ac-op');
+    if (b) acElegir(Number(b.dataset.i));
+  });
+  $('pNombre').addEventListener('blur', function(){
+    setTimeout(function(){
+      acCerrar();
+      // Si escribió el nombre completo de un producto existente y dejó el científico vacío, se completa solo
+      if ($('productoId').value || colapsar($('pCientifico').value)) return;
+      const k = normalizar(colapsar($('pNombre').value));
+      const g = k && productosUnicos().find(function(x){ return normalizar(x.nombre) === k && x.cientifico; });
+      if (g) $('pCientifico').value = g.cientifico;
+    }, 160);
+  });
+  $('formProducto').addEventListener('reset', acCerrar);
+
+  // Al volver de registrar el proveedor: se reabre la ventana del producto con todo lo que había
+  function restaurarBorrador(){
+    let b = null, nuevo = null;
+    try {
+      b = JSON.parse(sessionStorage.getItem(CLAVE_BORRADOR) || 'null');
+      nuevo = sessionStorage.getItem('dsi_prov_nuevo');
+      sessionStorage.removeItem(CLAVE_BORRADOR);
+      sessionStorage.removeItem('dsi_prov_nuevo');
+    } catch (e) { /* se ignora */ }
+    if (!b) return;
+    const existente = b.id ? productos.find(function(p){ return String(p.id) === String(b.id); }) : null;
+    abrirModal(existente ? 'editar' : 'nuevo', existente || null);
+    $('pNombre').value = b.nombre || '';
+    $('pCientifico').value = b.cientifico || '';
+    $('pCategoria').value = b.categoria || '';
+    $('pFecha').value = b.fecha || '';
+    $('pOrigen').value = b.origen || '';
+    $('pEstado').value = b.estado || 'Activo';
+    $('pDescripcion').value = b.descripcion || '';
+    $('pObservaciones').value = b.observaciones || '';
+    actualizarProveedores(nuevo || (existente && existente.proveedor) || '');
+    nbQuitadas = new Set(b.quitar || []);
+    nbExtras = new Set(b.extras || []);
+    nbPintar();
+    formSucio = true;
+    if (nuevo) showToast('Proveedor registrado. Continúa con el producto.', 'success');
   }
 
   function hayFiltros(){
@@ -1053,7 +1215,7 @@
       if (!res[1].error) recepcionesNotif = res[1].data || [];
       else console.warn('Error recepciones (notificaciones):', res[1].error);
 
-      if (!res[2].error) proveedoresBusqueda = res[2].data || [];
+      if (!res[2].error) { proveedoresBusqueda = res[2].data || []; actualizarProveedores(); }
     } catch (err) {
       hayError = true;
       console.error('Error cargando productos:', err);
@@ -1446,7 +1608,7 @@
       $('pNombre').value        = producto.nombre || '';
       $('pCientifico').value    = producto.nombre_cientifico || '';
       $('pCategoria').value     = producto.categoria || '';
-      $('pProveedor').value     = producto.proveedor || '';
+      actualizarProveedores(producto.proveedor || '');
       $('pFecha').value         = producto.fecha_captura ? String(producto.fecha_captura).slice(0, 10) : '';
       $('pOrigen').value        = producto.origen || '';
       $('pEstado').value        = producto.estado || 'Activo';
@@ -1895,6 +2057,9 @@
 
     // 2) Se piden los datos frescos en segundo plano
     await cargarProductos();
+
+    // 3) Si venía de registrar un proveedor nuevo, se continúa con el producto
+    restaurarBorrador();
   }
 
   iniciar();

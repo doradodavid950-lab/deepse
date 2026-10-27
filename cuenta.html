@@ -386,6 +386,21 @@
     .mdl-card{max-width:none;border-radius:26px 26px 0 0;max-height:92vh;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px))}
   }
 </style>
+
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 
@@ -545,7 +560,7 @@
     </div>
   </div>
 
-  <!-- Solo celular: en computador se cierra la sesión desde el avatar -->
+  <!-- La sesión se cierra desde el avatar (computador y celular) -->
   <p class="pf-pie">Deep Sea Intelligence · v2.0</p>
 </main>
 

@@ -173,7 +173,7 @@
 .um-b-rojo{background:#D93A35;color:#fff}
 .um-b-rojo:disabled{opacity:.7;cursor:progress}
 @media (min-width:1001px) and (max-width:1180px){.um-panel{right:24px}}
-/* Celular: el mismo panel se convierte en hoja inferior (sin "Cerrar sesión", sin cabecera) */
+/* Celular: el mismo panel se convierte en hoja inferior (con cabecera y "Cerrar sesión", igual que en computador) */
 @media (max-width:1000px){
   .um-mini{display:block}
   .um-fondo{-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
@@ -186,7 +186,8 @@
   }
   .um-panel.abierto{transform:none}
   .um-panel::before{content:"";display:block;width:44px;height:5px;border-radius:3px;background:#CBD8E8;margin:2px auto 8px}
-  .um-cab,.um-sep,.um-salir{display:none}
+  .um-cab{padding:8px 6px 14px}
+  .um-sep{margin:4px 0}
   .um-item{padding:14px 6px;border-radius:14px;gap:14px}
   .um-ic{width:40px;height:40px;border-radius:13px}
   .um-ic svg.i{width:21px;height:21px}

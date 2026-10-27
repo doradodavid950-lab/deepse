@@ -315,8 +315,8 @@
   .modal-card.pequeno{max-width:420px}
   .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
   .modal-head h3{font-size:21px;color:var(--azul-oscuro)}
-  .modal-close{width:36px;height:36px;border-radius:12px;color:var(--texto-2);display:flex;align-items:center;justify-content:center}
-  .modal-close:hover{background:#F1F6FC}
+  .modal-close{width:30px;height:30px;min-width:30px;border:0;border-radius:10px;padding:0;background:transparent;color:var(--texto-2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,color .18s}
+  .modal-close:hover,.modal-close:focus-visible{background:#F1F6FC;color:var(--azul-oscuro);outline:none}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form-grid .full{grid-column:1/-1}
   .modal-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
@@ -438,6 +438,20 @@
   /* Barra inferior: el módulo activo siempre en azul (incluye "Más" cuando el módulo está en el menú) */
   .bnav a[aria-current="page"],.bnav button.cur,.bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
 </style>
+
+<style id="estilo-cierre-unificado">
+.fc-x, .modal-close, button[aria-label="Cerrar"], button[aria-label^="Cerrar "] {
+  border: 0 !important; outline: none; box-shadow: none !important;
+  background: transparent !important; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .18s ease, color .18s ease;
+}
+.fc-x:hover, .modal-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label^="Cerrar "]:hover,
+.fc-x:focus-visible, .modal-close:focus-visible, button[aria-label="Cerrar"]:focus-visible, button[aria-label^="Cerrar "]:focus-visible {
+  background: #F1F6FC !important; color: var(--azul-oscuro, #12345A);
+}
+</style>
+
 </head>
 <body>
 

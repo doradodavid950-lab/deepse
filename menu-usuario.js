@@ -4,7 +4,7 @@
  *
  * Qué hace:
  *  - Computador: al tocar el avatar (#userChip) se despliega un panel con Mi cuenta, Ayuda y Cerrar sesión.
- *  - Celular: el avatar pequeño (#userMini) abre una hoja desde abajo con Mi cuenta y Ayuda (sin cerrar sesión).
+ *  - Celular: el avatar pequeño (#userMini) abre una hoja desde abajo con el mismo contenido (Mi cuenta, Ayuda y Cerrar sesión).
  *  - Cerrar sesión pide confirmación, cierra en Supabase y limpia los datos guardados del dispositivo.
  *  - Registra el service worker (sw.js) para que las visitas siguientes carguen casi al instante.
  * No depende de la página: crea su propio HTML y estilos (los estilos del panel están en estilos.css).
