@@ -159,11 +159,11 @@
   .st span{font-size:13px;font-weight:700}
   .ln{flex:1;min-width:12px;height:3px;border-radius:3px;background:linear-gradient(90deg,#1E66F5,#3FD0F2);margin-bottom:26px}
   .dock a svg.i{width:26px;height:26px}
-  .dock a:hover,.dock a:focus-visible{transform:translateY(-16px) scale(1.3);box-shadow:0 20px 30px rgba(6,43,91,.38);outline:0}
-  .dock a:hover + a,.dock a:has(+ a:hover){transform:translateY(-6px) scale(1.12)}
+  .dock a:hover,.dock a:focus-visible{transform:scale(1.25);box-shadow:0 16px 26px rgba(6,43,91,.34);outline:0;z-index:2}
+  .dock a:hover + a,.dock a:has(+ a:hover){transform:scale(1.1)}
   .dock a[aria-current="page"]::after{content:"";position:absolute;bottom:-8px;left:50%;margin-left:-3px;width:6px;height:6px;border-radius:50%;background:var(--azul-medio);box-shadow:0 0 8px var(--azul-medio)}
   .dock .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#0B4DB5}
-  .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.78)}
+  .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.8)}
 
   /* Menú inferior y iconos flotantes (celular) */
   .bnav,.fan{display:none}
@@ -606,6 +606,27 @@
   .cm-err{color:#C2302B;font-size:12.5px;font-weight:700;margin-top:6px}
   @media (max-width:1000px){ .cm-grid{grid-template-columns:1fr} .cm-reglas{grid-template-columns:1fr 1fr} .cm-acc .bp,.cm-acc .bg{flex:1} }
 </style>
+<style id="estilosGuia">
+  .gd-info{background:#EAF2FF;border-radius:12px;padding:12px 14px;font-size:14px;color:#062B5B;margin:0 0 12px}
+  .gd-pasos{list-style:none;display:flex;align-items:center;gap:8px;margin:0 0 14px;padding:0;font-size:12.5px;color:#5B7089;flex-wrap:wrap}
+  .gd-pasos li{display:flex;align-items:center;gap:6px}
+  .gd-pasos li:not(:last-child)::after{content:"";width:22px;height:2px;background:#DCE8F6;margin-left:6px}
+  .gd-pasos b{width:22px;height:22px;border-radius:50%;background:#5B7089;color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+  .gd-pasos li.act{color:#062B5B;font-weight:700}
+  .gd-pasos li.act b{background:#1E66F5}
+  .gd-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .gd-chip{height:40px;padding:0 16px;border-radius:999px;border:1.5px solid #DCE8F6;background:#fff;color:#0F2540;font:inherit;font-size:14px;cursor:pointer}
+  .gd-chip.on{border-color:#1E66F5;background:#EAF2FF;font-weight:700}
+  .gd-det{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-bottom:12px}
+  .gd-det span{display:block;font-size:11.5px;font-weight:700;color:#5B7089;text-transform:uppercase;letter-spacing:.04em}
+  .gd-det div{font-size:15px;color:#0F2540;word-break:break-word}
+  .gd-vig{border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+  .gd-vig.ok{background:#F0FAF5;color:#0B6B49}.gd-vig.pend{background:#FFF1D1;color:#7A4D00}.gd-vig.bad{background:#FFE3E0;color:#B42318}
+  .gd-sub{display:block;font-size:15px;color:#062B5B;margin:6px 0 8px}
+  .gd-ck{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid #DCE8F6;border-radius:12px;font-size:14px;color:#0F2540;margin-bottom:8px;cursor:pointer}
+  .gd-ck input{width:18px;height:18px;margin:0;accent-color:#1E66F5}
+  @media (max-width:640px){.gd-det{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 
@@ -988,20 +1009,44 @@
 <div class="modal" id="modalDecl" role="dialog" aria-modal="true" aria-labelledby="dcTitulo">
   <div class="modal-box">
     <div class="modal-head">
-      <h3 id="dcTitulo">Declarar cumplimiento</h3>
+      <h3 id="dcTitulo">Subir mi certificado</h3>
       <button class="close" type="button" data-cerrar="modalDecl" aria-label="Cerrar">×</button>
     </div>
     <p class="sub-modal" id="dcInfo"></p>
+    <div class="gd-info" id="dcIntro">Esta norma es <b>obligatoria</b> para tu producto. Sube tu certificado para que el auditor lo verifique.</div>
+    <ol class="gd-pasos" aria-label="Pasos de la norma">
+      <li><b>&#10003;</b>Sin declarar</li>
+      <li class="act"><b>2</b>En revisión (al enviar)</li>
+      <li><b>3</b>Verificada</li>
+    </ol>
     <form id="formDecl" novalidate autocomplete="off">
       <div class="form-grid">
         <div class="field full">
-          <label for="dcCert">Certificado o documento *</label>
-          <input type="text" id="dcCert" maxlength="80" placeholder="Ej. Certificado BPM N.º 12345">
+          <label for="dcTipo">¿Qué documento tienes?</label>
+          <select id="dcTipo">
+            <option value="BPM">Certificado BPM</option>
+            <option value="Registro sanitario">Registro sanitario</option>
+            <option value="HACCP">Certificado HACCP</option>
+            <option value="Análisis de laboratorio">Análisis de laboratorio</option>
+            <option value="">Otro documento</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="dcCert">Número del documento *</label>
+          <input type="text" id="dcCert" maxlength="60" placeholder="Ej. 12345 (lo ves arriba o abajo del papel)">
           <small class="field-error"></small>
         </div>
         <div class="field full">
-          <label for="dcEmisora">Entidad emisora</label>
-          <input type="text" id="dcEmisora" maxlength="80" placeholder="Ej. INVIMA">
+          <label for="dcEmisoraSel">Entidad emisora</label>
+          <select id="dcEmisoraSel">
+            <option value="">Elige una opción</option>
+            <option value="INVIMA">INVIMA</option>
+            <option value="ICA">ICA</option>
+            <option value="Secretaría de Salud">Secretaría de Salud</option>
+            <option value="Laboratorio acreditado (ONAC)">Laboratorio acreditado (ONAC)</option>
+            <option value="__otra">Otra entidad</option>
+          </select>
+          <input type="text" id="dcEmisora" maxlength="80" placeholder="Escribe el nombre de la entidad" style="display:none;margin-top:8px">
         </div>
         <div class="field">
           <label for="dcEmision">Fecha de emisión *</label>
@@ -1012,6 +1057,17 @@
           <label for="dcVence">Fecha de vencimiento *</label>
           <input type="date" id="dcVence">
           <small class="field-error"></small>
+        </div>
+        <div class="field full">
+          <label>Vigencia (calcula el vencimiento)</label>
+          <div class="gd-chips" id="dcVig">
+            <button type="button" class="gd-chip" data-a="1">1 año</button>
+            <button type="button" class="gd-chip" data-a="2">2 años</button>
+            <button type="button" class="gd-chip" data-a="3">3 años</button>
+            <button type="button" class="gd-chip" data-a="5">5 años</button>
+            <button type="button" class="gd-chip" data-a="0">Otra fecha</button>
+          </div>
+          <span class="hint" id="dcVigTxt">Elige la fecha de emisión y cuánto dura el documento.</span>
         </div>
       </div>
       <span class="hint">El auditor revisará esta declaración. Hasta entonces la norma queda en revisión.</span>
@@ -1044,6 +1100,34 @@
         <button type="submit" class="bp" id="rvOk">Guardar</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- ===================== VENTANA: DETALLES Y VALORACIÓN (AUDITOR) ===================== -->
+<div class="modal" id="modalDet" role="dialog" aria-modal="true" aria-labelledby="dtTitulo">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="dtTitulo">Revisar norma</h3>
+      <button class="close" type="button" data-cerrar="modalDet" aria-label="Cerrar">×</button>
+    </div>
+    <p class="sub-modal" id="dtInfo"></p>
+    <div class="gd-det" id="dtDatos"></div>
+    <div class="gd-vig" id="dtVig"></div>
+    <b class="gd-sub">Antes de decidir, comprueba</b>
+    <label class="gd-ck"><input type="checkbox">Los datos coinciden con el documento</label>
+    <label class="gd-ck"><input type="checkbox">El certificado está vigente</label>
+    <label class="gd-ck"><input type="checkbox">La entidad emisora corresponde a esta norma</label>
+    <div class="field full">
+      <label for="dtTexto">Comentario (obligatorio si rechazas)</label>
+      <textarea id="dtTexto" maxlength="300" placeholder="Ej. El número del certificado no coincide con el documento."></textarea>
+      <small class="field-error"></small>
+    </div>
+    <span class="hint">El usuario recibe una notificación con tu decisión y este comentario.</span>
+    <div class="modal-actions">
+      <button type="button" class="bg" data-cerrar="modalDet">Cancelar</button>
+      <button type="button" class="bd" id="dtRechazar">Rechazar</button>
+      <button type="button" class="bp" id="dtVerificar">Verificar</button>
+    </div>
   </div>
 </div>
 
@@ -2093,12 +2177,12 @@
     const b = e.target.closest('[data-cerrar]');
     if (b) cerrarVentana(b.dataset.cerrar);
   });
-  ['modalNorma', 'modalDecl', 'modalRev'].forEach(function(id){
+  ['modalNorma', 'modalDecl', 'modalRev', 'modalDet'].forEach(function(id){
     $(id).addEventListener('mousedown', function(e){ if (e.target === $(id)) cerrarVentana(id); });
   });
   document.addEventListener('keydown', function(e){
     if (e.key !== 'Escape') return;
-    ['modalNorma', 'modalDecl', 'modalRev'].forEach(function(id){ if ($(id).classList.contains('show')) cerrarVentana(id); });
+    ['modalNorma', 'modalDecl', 'modalRev', 'modalDet'].forEach(function(id){ if ($(id).classList.contains('show')) cerrarVentana(id); });
   });
 
   // ---------- pestañas ----------
@@ -2386,12 +2470,13 @@
     let acciones = '';
     if (aud) {
       if (pn.estado === 'Declarada') {
-        acciones = '<button class="mini v" type="button" data-acc="verificar" data-pn="' + pn.id + '">Verificar</button>' +
+        acciones = '<button class="mini p" type="button" data-acc="detalle" data-pn="' + pn.id + '">Ver detalles y valorar</button>' +
+                   '<button class="mini v" type="button" data-acc="verificar" data-pn="' + pn.id + '">Verificar</button>' +
                    '<button class="mini d" type="button" data-acc="rechazar" data-pn="' + pn.id + '">Rechazar</button>';
       }
     } else {
       if (pn.estado === 'Sin declarar' || pn.estado === 'Rechazada') {
-        acciones += '<button class="mini p" type="button" data-acc="declarar" data-pn="' + pn.id + '">' + (pn.estado === 'Rechazada' ? 'Corregir y volver a declarar' : 'Declarar cumplimiento') + '</button>';
+        acciones += '<button class="mini p" type="button" data-acc="declarar" data-pn="' + pn.id + '">' + (pn.estado === 'Rechazada' ? 'Corregir y volver a declarar' : 'Subir mi certificado') + '</button>';
       } else if (pn.estado === 'Declarada') {
         acciones += '<button class="mini g" type="button" data-acc="declarar" data-pn="' + pn.id + '">Editar declaración</button>';
       }
@@ -2497,6 +2582,7 @@
       return;
     }
     if (acc === 'declarar') { abrirDeclaracion(b.dataset.pn); return; }
+    if (acc === 'detalle') { abrirDetalleNorma(b.dataset.pn); return; }
     if (acc === 'verificar' || acc === 'rechazar') { abrirRevision(b.dataset.pn, acc === 'verificar' ? 'Verificada' : 'Rechazada'); return; }
     if (acc === 'quitar') { quitarNorma(b.dataset.pn, b); return; }
     if (acc === 'agregar') { agregarNorma(b.dataset.id, b); return; }
@@ -2548,11 +2634,11 @@
     declarandoId = id;
     const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma' };
     $('dcInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
-    $('dcCert').value = pn.certificado || '';
-    $('dcEmisora').value = pn.entidad_emisora || '';
+    llenarGuiaDeclaracion(pn, n);
     $('dcEmision').value = pn.fecha_emision || '';
     $('dcVence').value = pn.fecha_vencimiento || '';
     $('dcEmision').max = hoyISO();
+    iniciarVigencia();
     ['dcCert', 'dcEmision', 'dcVence'].forEach(function(c){ marcarCampo(c, ''); });
     abrirVentana('modalDecl');
     setTimeout(function(){ $('dcCert').focus(); }, 60);
@@ -2561,8 +2647,10 @@
   $('formDecl').addEventListener('submit', async function(e){
     e.preventDefault();
     if (!declarandoId) return;
-    const cert = $('dcCert').value.trim();
-    const emisora = $('dcEmisora').value.trim();
+    const numeroCert = $('dcCert').value.trim();
+    const tipoCert = $('dcTipo').value;
+    const cert = numeroCert ? (tipoCert ? tipoCert + ' ' + numeroCert : numeroCert) : '';
+    const emisora = valorEmisora();
     const emision = $('dcEmision').value;
     const vence = $('dcVence').value;
     let ok = true;
@@ -2627,6 +2715,141 @@
     await cargarProductosNormas(true);
     actualizarBadgeRevision();
   });
+
+  // ---------- ayuda guiada para declarar (opciones en vez de escribir) ----------
+  const TIPOS_DOC = ['BPM', 'Registro sanitario', 'HACCP', 'Análisis de laboratorio'];
+
+  function llenarGuiaDeclaracion(pn, n){
+    $('dcIntro').innerHTML = 'Esta norma es <b>' + (pn.obligatoria ? 'obligatoria' : 'recomendada') +
+      '</b> para tu producto. Sube tu certificado para que el auditor lo verifique.';
+    // documento + número (se guardan juntos en "certificado", ej. "BPM 12345")
+    let tipo = '', numero = pn.certificado || '';
+    TIPOS_DOC.forEach(function(t){
+      if (!tipo && (numero === t || numero.indexOf(t + ' ') === 0)) { tipo = t; numero = numero.slice(t.length).trim(); }
+    });
+    if (!pn.certificado) {
+      const ref = ((n.nombre || '') + ' ' + (n.codigo || '')).toLowerCase();
+      if (ref.indexOf('bpm') >= 0) tipo = 'BPM';
+      else if (ref.indexOf('haccp') >= 0) tipo = 'HACCP';
+      else if (ref.indexOf('sanitari') >= 0) tipo = 'Registro sanitario';
+    }
+    $('dcTipo').value = tipo;
+    $('dcCert').value = numero;
+    // entidad: opciones fijas; si es otra, aparece el campo de texto
+    const ent = pn.entidad_emisora || n.entidad || '';
+    const sel = $('dcEmisoraSel');
+    const hay = Array.prototype.some.call(sel.options, function(o){ return o.value === ent && o.value !== '__otra'; });
+    sel.value = hay ? ent : (ent ? '__otra' : '');
+    $('dcEmisora').value = hay ? '' : ent;
+    $('dcEmisora').style.display = sel.value === '__otra' ? '' : 'none';
+  }
+  $('dcEmisoraSel').addEventListener('change', function(){
+    const otra = $('dcEmisoraSel').value === '__otra';
+    $('dcEmisora').style.display = otra ? '' : 'none';
+    if (otra) $('dcEmisora').focus(); else $('dcEmisora').value = '';
+  });
+  function valorEmisora(){
+    const v = $('dcEmisoraSel').value;
+    return v === '__otra' ? $('dcEmisora').value.trim() : v;
+  }
+
+  // vigencia rápida: calcula el vencimiento a partir de la emisión
+  function sumarAnios(iso, a){
+    const p = iso.split('-').map(Number);
+    const f = new Date(p[0] + a, p[1] - 1, p[2]);
+    if (f.getMonth() !== p[1] - 1) f.setDate(0);   // 29 de feb. en año no bisiesto
+    return f.getFullYear() + '-' + String(f.getMonth() + 1).padStart(2, '0') + '-' + String(f.getDate()).padStart(2, '0');
+  }
+  function marcarChip(a){
+    Array.prototype.forEach.call($('dcVig').querySelectorAll('.gd-chip'), function(c){
+      c.classList.toggle('on', a !== null && c.dataset.a === String(a));
+    });
+  }
+  function textoVigencia(){
+    const v = $('dcVence').value;
+    $('dcVigTxt').textContent = v ? 'Vence el ' + fechaISO(v) + '. Te avisaremos 30 días antes.' : 'Elige la fecha de emisión y cuánto dura el documento.';
+  }
+  function iniciarVigencia(){
+    let act = null;
+    const e = $('dcEmision').value, v = $('dcVence').value;
+    if (e && v) [1, 2, 3, 5].forEach(function(a){ if (sumarAnios(e, a) === v) act = a; });
+    marcarChip(act);
+    textoVigencia();
+  }
+  $('dcVig').addEventListener('click', function(ev){
+    const c = ev.target.closest('.gd-chip');
+    if (!c) return;
+    const a = Number(c.dataset.a);
+    marcarChip(a);
+    if (a === 0) { $('dcVence').focus(); return; }
+    const e = $('dcEmision').value;
+    if (!e) { marcarCampo('dcEmision', 'Primero indica la fecha de emisión.'); marcarChip(null); $('dcEmision').focus(); return; }
+    $('dcVence').value = sumarAnios(e, a);
+    marcarCampo('dcVence', '');
+    textoVigencia();
+  });
+  $('dcEmision').addEventListener('change', function(){
+    const on = $('dcVig').querySelector('.gd-chip.on');
+    if (on && on.dataset.a !== '0' && $('dcEmision').value) $('dcVence').value = sumarAnios($('dcEmision').value, Number(on.dataset.a));
+    textoVigencia();
+  });
+  $('dcVence').addEventListener('change', function(){
+    const e = $('dcEmision').value, v = $('dcVence').value;
+    let act = null;
+    if (e && v) [1, 2, 3, 5].forEach(function(a){ if (sumarAnios(e, a) === v) act = a; });
+    marcarChip(act);
+    textoVigencia();
+  });
+
+  // ---------- detalles y valoración (auditor) ----------
+  let detId = null;
+  function abrirDetalleNorma(id){
+    const pn = buscarPN(id);
+    if (!pn) return;
+    detId = id;
+    const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma', codigo: '', entidad: '' };
+    $('dtInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
+    const dato = function(k, v){ return '<div><span>' + k + '</span>' + (v ? escapeHTML(v) : '—') + '</div>'; };
+    $('dtDatos').innerHTML =
+      dato('Producto', nombreProductoDe(pn.producto_id)) +
+      dato('Norma', n.nombre + (n.codigo ? ' (' + n.codigo + ')' : '')) +
+      dato('Documento', pn.certificado) +
+      dato('Entidad emisora', pn.entidad_emisora) +
+      dato('Fecha de emisión', fechaISO(pn.fecha_emision)) +
+      dato('Fecha de vencimiento', fechaISO(pn.fecha_vencimiento));
+    const hoy = hoyISO();
+    const caja = $('dtVig');
+    if (!pn.fecha_vencimiento) { caja.className = 'gd-vig pend'; caja.textContent = 'No tiene fecha de vencimiento.'; }
+    else if (pn.fecha_vencimiento < hoy) { caja.className = 'gd-vig bad'; caja.textContent = 'Vencido: la fecha de vencimiento ya pasó.'; }
+    else {
+      const dias = Math.round((new Date(pn.fecha_vencimiento + 'T00:00:00') - new Date(hoy + 'T00:00:00')) / 86400000);
+      caja.className = 'gd-vig ' + (dias <= 30 ? 'pend' : 'ok');
+      caja.textContent = 'Vigente: faltan ' + dias + (dias === 1 ? ' día' : ' días') + ' para que venza.';
+    }
+    Array.prototype.forEach.call($('modalDet').querySelectorAll('.gd-ck input'), function(c){ c.checked = false; });
+    $('dtTexto').value = '';
+    marcarCampo('dtTexto', '');
+    abrirVentana('modalDet');
+  }
+  async function decidirDetalle(decision){
+    if (!detId) return;
+    const texto = $('dtTexto').value.trim();
+    if (decision === 'Rechazada' && texto.length < 3) { marcarCampo('dtTexto', 'Explica el motivo del rechazo.'); return; }
+    marcarCampo('dtTexto', '');
+    const b1 = $('dtVerificar'), b2 = $('dtRechazar');
+    b1.disabled = true; b2.disabled = true;
+    const { error } = await supabaseClient.from('producto_normas')
+      .update({ estado: decision, comentario_revision: texto || null })
+      .eq('id', detId);
+    b1.disabled = false; b2.disabled = false;
+    if (error) { mostrarToast(textoError(error), 'error'); return; }
+    cerrarVentana('modalDet');
+    mostrarToast(decision === 'Verificada' ? 'Norma verificada.' : 'Norma rechazada.', 'success');
+    await cargarProductosNormas(true);
+    actualizarBadgeRevision();
+  }
+  $('dtVerificar').addEventListener('click', function(){ decidirDetalle('Verificada'); });
+  $('dtRechazar').addEventListener('click', function(){ decidirDetalle('Rechazada'); });
 
   // ---------- arranque ----------
   obtenerRol().then(actualizarBadgeRevision);

@@ -159,11 +159,11 @@
   .st span{font-size:13px;font-weight:700}
   .ln{flex:1;min-width:12px;height:3px;border-radius:3px;background:linear-gradient(90deg,#1E66F5,#3FD0F2);margin-bottom:26px}
   .dock a svg.i{width:26px;height:26px}
-  .dock a:hover,.dock a:focus-visible{transform:translateY(-16px) scale(1.3);box-shadow:0 20px 30px rgba(6,43,91,.38);outline:0}
-  .dock a:hover + a,.dock a:has(+ a:hover){transform:translateY(-6px) scale(1.12)}
+  .dock a:hover,.dock a:focus-visible{transform:scale(1.25);box-shadow:0 16px 26px rgba(6,43,91,.34);outline:0;z-index:2}
+  .dock a:hover + a,.dock a:has(+ a:hover){transform:scale(1.1)}
   .dock a[aria-current="page"]::after{content:"";position:absolute;bottom:-8px;left:50%;margin-left:-3px;width:6px;height:6px;border-radius:50%;background:var(--azul-medio);box-shadow:0 0 8px var(--azul-medio)}
   .dock .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#0B4DB5}
-  .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.78)}
+  .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.8)}
 
   /* Menú inferior y iconos flotantes (celular) */
   .bnav,.fan{display:none}
