@@ -2366,6 +2366,14 @@
   const ETIQ_ESTADO = { 'Sin declarar': 'Sin declarar', 'Declarada': 'En revisión', 'Verificada': 'Verificada', 'Rechazada': 'Rechazada', 'No aplica': 'No aplica' };
   const CLASE_ESTADO = { 'Sin declarar': 'neutro', 'Declarada': 'info', 'Verificada': 'ok', 'Rechazada': 'bad', 'No aplica': 'neutro' };
   const CLASE_CUMPL = { 'Aprobado': 'ok', 'Rechazado': 'bad', 'Pendiente': 'pend', 'Sin normas': 'neutro' };
+  // La base puede devolver "Cumple" / "No cumple"; la pantalla los muestra como Aprobado / Rechazado
+  function estadoCump(c){
+    const e = normalizar((c && c.estado_cumplimiento) || '');
+    if (e === 'cumple') return 'Aprobado';
+    if (e === 'no cumple') return 'Rechazado';
+    if (e === 'en revision' || e === 'por revisar') return 'Pendiente';
+    return (c && c.estado_cumplimiento) || '';
+  }
 
   let pd = { productos: [], cumpl: new Map(), normas: new Map(), duenos: new Map() };
   let pdListo = false;
@@ -2517,7 +2525,7 @@
     return '<article class="pcard' + (abierto ? ' open' : '') + '" data-card="' + p.id + '">' +
       '<button class="pcard-h" type="button" data-acc="toggle" data-id="' + p.id + '" aria-expanded="' + (abierto ? 'true' : 'false') + '">' +
         '<div class="t"><b>' + escapeHTML(p.nombre) + '</b><small>' + escapeHTML(p.categoria || '') + dueno + ' · ' + progreso + '</small></div>' +
-        '<span class="pill ' + (CLASE_CUMPL[c.estado_cumplimiento] || 'neutro') + '">' + c.estado_cumplimiento + '</span>' +
+        '<span class="pill ' + (CLASE_CUMPL[estadoCump(c)] || 'neutro') + '">' + estadoCump(c) + '</span>' +
         '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>' +
       '</button>' +
       '<div class="pcard-b">' + (filas || '<div class="vacio-n">Este producto no tiene normas asignadas.</div>') + agregar + '</div>' +
@@ -2533,11 +2541,11 @@
       const c = pd.cumpl.get(p.id) || {};
       if (q && normalizar(p.nombre + ' ' + (p.categoria || '') + ' ' + (aud ? (pd.duenos.get(p.creado_por) || '') : '')).indexOf(q) < 0) return false;
       if (aud) return f === 'todos' ? true : (c.por_revisar > 0);
-      return !f || c.estado_cumplimiento === f;
+      return !f || estadoCump(c) === f;
     });
 
     const cuenta = { Aprobado: 0, Pendiente: 0, Rechazado: 0 };
-    pd.productos.forEach(function(p){ const c = pd.cumpl.get(p.id); if (c && cuenta[c.estado_cumplimiento] !== undefined) cuenta[c.estado_cumplimiento]++; });
+    pd.productos.forEach(function(p){ const c = pd.cumpl.get(p.id); if (c && cuenta[estadoCump(c)] !== undefined) cuenta[estadoCump(c)]++; });
     $('pdChips').innerHTML = aud
       ? '<span class="pill info">' + lista.length + ' por revisar</span>'
       : '<span class="pill ok">' + cuenta.Aprobado + ' aprobados</span><span class="pill pend">' + cuenta.Pendiente + ' pendientes</span><span class="pill bad">' + cuenta.Rechazado + ' rechazados</span>';
