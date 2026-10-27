@@ -927,21 +927,24 @@
           <small class="field-error"></small>
         </div>
         <div class="field">
-          <label for="color">Color</label>
-          <input type="text" id="color" data-filtro="letras" maxlength="50" placeholder="Ej. Característico">
-          <span class="hint">Solo letras y espacios.</span>
+          <label for="colorSel">Color</label>
+          <select id="colorSel"><option value="">Elige una opción</option></select>
+          <input type="text" id="color" data-filtro="letras" maxlength="50" placeholder="Escribe el color" style="display:none;margin-top:8px">
+          <span class="hint" id="colorHint" style="display:none">Solo letras y espacios.</span>
           <small class="field-error"></small>
         </div>
         <div class="field">
-          <label for="olor">Olor</label>
-          <input type="text" id="olor" data-filtro="letras" maxlength="50" placeholder="Ej. Fresco">
-          <span class="hint">Solo letras y espacios.</span>
+          <label for="olorSel">Olor</label>
+          <select id="olorSel"><option value="">Elige una opción</option></select>
+          <input type="text" id="olor" data-filtro="letras" maxlength="50" placeholder="Escribe el olor" style="display:none;margin-top:8px">
+          <span class="hint" id="olorHint" style="display:none">Solo letras y espacios.</span>
           <small class="field-error"></small>
         </div>
         <div class="field">
-          <label for="textura">Textura</label>
-          <input type="text" id="textura" data-filtro="letras" maxlength="50" placeholder="Ej. Firme">
-          <span class="hint">Solo letras y espacios.</span>
+          <label for="texturaSel">Textura</label>
+          <select id="texturaSel"><option value="">Elige una opción</option></select>
+          <input type="text" id="textura" data-filtro="letras" maxlength="50" placeholder="Escribe la textura" style="display:none;margin-top:8px">
+          <span class="hint" id="texturaHint" style="display:none">Solo letras y espacios.</span>
           <small class="field-error"></small>
         </div>
         <div class="field">
@@ -1607,6 +1610,38 @@
     }).join('');
   }
 
+  // ---------- opciones guiadas para color, olor y textura ----------
+  const OPCIONES_CAR = {
+    color:   ['Característico', 'Brillante', 'Opaco', 'Con manchas', 'Decolorado', 'Alterado'],
+    olor:    ['Fresco', 'Marino suave', 'Neutro', 'Fuerte', 'Amoniacal', 'Pútrido'],
+    textura: ['Firme', 'Elástica', 'Blanda', 'Viscosa', 'Pastosa', 'Desmenuzable']
+  };
+  function mostrarOtroCar(id, visible){
+    $(id).style.display = visible ? '' : 'none';
+    $(id + 'Hint').style.display = visible ? '' : 'none';
+  }
+  Object.keys(OPCIONES_CAR).forEach(function(id){
+    const sel = $(id + 'Sel');
+    sel.innerHTML = '<option value="">Elige una opción</option>' +
+      OPCIONES_CAR[id].map(function(o){ return '<option value="' + o + '">' + o + '</option>'; }).join('') +
+      '<option value="__otro">Otro (escribir)</option>';
+    sel.addEventListener('change', function(){
+      if (sel.value === '__otro') { $(id).value = ''; mostrarOtroCar(id, true); $(id).focus(); }
+      else { $(id).value = sel.value; mostrarOtroCar(id, false); }
+      marcarError(id, '');
+    });
+  });
+  // al abrir el formulario: refleja el valor guardado en la lista (o en "Otro")
+  function iniciarCaracteristicas(){
+    Object.keys(OPCIONES_CAR).forEach(function(id){
+      const sel = $(id + 'Sel'), val = $(id).value.trim();
+      const coincide = OPCIONES_CAR[id].filter(function(o){ return normalizar(o) === normalizar(val); })[0];
+      if (!val) { sel.value = ''; $(id).value = ''; mostrarOtroCar(id, false); }
+      else if (coincide) { sel.value = coincide; $(id).value = coincide; mostrarOtroCar(id, false); }
+      else { sel.value = '__otro'; mostrarOtroCar(id, true); }
+    });
+  }
+
   function abrirModal(item){
     editandoId = item ? item.id : null;
     $('formControl').reset();
@@ -1630,6 +1665,7 @@
 
     $('obsCount').textContent = $('observaciones').value.length;
     actualizarObligatoriedad();
+    iniciarCaracteristicas();
     modal.classList.add('show');
     actualizarScroll();
     setTimeout(() => $('producto').focus(), 60);
