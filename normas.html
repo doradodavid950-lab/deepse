@@ -625,6 +625,8 @@
   .gd-sub{display:block;font-size:15px;color:#062B5B;margin:6px 0 8px}
   .gd-ck{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid #DCE8F6;border-radius:12px;font-size:14px;color:#0F2540;margin-bottom:8px;cursor:pointer}
   .gd-ck input{width:18px;height:18px;margin:0;accent-color:#1E66F5}
+  .lote-nuevo{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:var(--azul-medio);text-decoration:none}
+  .lote-nuevo:hover{text-decoration:underline}
   @media (max-width:640px){.gd-det{grid-template-columns:1fr}}
 </style>
 </head>
@@ -926,6 +928,13 @@
           <select id="producto"><option value="">Cargando productos...</option></select>
           <small class="field-error"></small>
         </div>
+        <div class="field full">
+          <label for="lote">Lote *</label>
+          <select id="lote" disabled><option value="">Primero elige el producto</option></select>
+          <span class="hint" id="loteHint">Cada lote recibido se controla una vez. Si el auditor lo rechaza, podrás repetirlo.</span>
+          <a class="lote-nuevo" href="recepciones.html">+ ¿Llegó un lote nuevo? Regístralo en Recepciones</a>
+          <small class="field-error"></small>
+        </div>
         <div class="field">
           <label for="colorSel">Color</label>
           <select id="colorSel"><option value="">Elige una opción</option></select>
@@ -1164,7 +1173,7 @@
   const RESULTADOS = ['Pendiente', 'Aprobado', 'Rechazado'];
   const OBS_OBLIGATORIA_SI_RECHAZADO = true;   // un control rechazado debe explicar el motivo
   const POR_PAGINA = 20;
-  const CAMPOS = ['producto', 'color', 'olor', 'textura', 'resultado', 'observaciones'];
+  const CAMPOS = ['producto', 'lote', 'color', 'olor', 'textura', 'resultado', 'observaciones'];
 
   // ---------------------------------------------------------------
   // ESTADO
@@ -1329,6 +1338,16 @@
     if (!productoId) errores.producto = 'Selecciona un producto.';
     else if (!datos.productos.some(p => String(p.id) === productoId)) errores.producto = 'El producto seleccionado ya no existe.';
 
+    const loteId = $('lote').value;
+    if (editandoId === null && !errores.producto) {
+      if (!loteId) errores.lote = 'Elige el lote que vas a controlar.';
+      else {
+        const rec = datos.recepciones.find(x => String(x.id) === String(loteId));
+        if (!rec || String(rec.producto_id) !== String(productoId)) errores.lote = 'Ese lote no corresponde al producto elegido.';
+        else if (lotesBloqueados().has(String(loteId))) errores.lote = 'Ese lote ya tiene un control.';
+      }
+    }
+
     const color   = $('color').value.trim();
     const olor    = $('olor').value.trim();
     const textura = $('textura').value.trim();
@@ -1353,7 +1372,7 @@
       return null;
     }
 
-    return {
+    const reg = {
       producto_id: productoId,
       color: color || null,
       olor: olor || null,
@@ -1361,6 +1380,8 @@
       resultado: resultado,
       observaciones: obs || null
     };
+    if (editandoId === null) reg.recepcion_id = loteId;   // el control queda ligado a su lote
+    return reg;
   }
 
   CAMPOS.forEach(id => {
@@ -1431,14 +1452,14 @@
         supabaseClient.from('productos').select('id,nombre,estado').order('nombre', { ascending: true }),
         supabaseClient
           .from('controles_calidad')
-          .select('id,producto_id,color,olor,textura,resultado,observaciones,fecha_control,creado_por,productos(nombre)')
+          .select('id,producto_id,recepcion_id,color,olor,textura,resultado,observaciones,fecha_control,creado_por,productos(nombre)')
           .order('fecha_control', { ascending: false, nullsFirst: false }),
         // Solo para las notificaciones
         supabaseClient
           .from('recepciones')
-          .select('id,producto_id,peso,estado_producto,fecha_recepcion')
+          .select('id,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,proveedores(nombre)')
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
-          .limit(100)
+          .limit(300)
       ]), tiempoAgotado]);
 
       if (prod.error) { hayError = true; console.error('Error productos:', prod.error); }
@@ -1610,6 +1631,82 @@
     }).join('');
   }
 
+  // ---------- lotes: cada recepción se controla una vez ----------
+  const HINT_LOTE = 'Cada lote recibido se controla una vez. Si el auditor lo rechaza, podrás repetirlo.';
+  function estadoRevisionDe(id){ const x = revMap.get(String(id)); return x ? x.estado_revision : 'Pendiente'; }
+  // lotes que ya tienen un control vigente (pendiente o aprobado); un control rechazado libera el lote
+  function lotesBloqueados(){
+    const s = new Set();
+    datos.controles.forEach(c => { if (c.recepcion_id && estadoRevisionDe(c.id) !== 'Rechazado') s.add(String(c.recepcion_id)); });
+    return s;
+  }
+  // agrupa por proveedor y numera los lotes (Lote 1, Lote 2...) según la fecha de recepción
+  function agruparLotes(recs, bloqueados){
+    const grupos = new Map();
+    recs.slice().sort((a, b) => String(a.fecha_recepcion || '').localeCompare(String(b.fecha_recepcion || ''))).forEach(r => {
+      const k = String(r.proveedor_id || '');
+      if (!grupos.has(k)) grupos.set(k, { proveedor: (r.proveedores && r.proveedores.nombre) || '', lotes: [] });
+      const g = grupos.get(k);
+      g.lotes.push({ r: r, n: g.lotes.length + 1, bloqueado: bloqueados.has(String(r.id)) });
+    });
+    return Array.from(grupos.values());
+  }
+  function llenarLotes(pid, item){
+    const sel = $('lote'), hint = $('loteHint');
+    const editando = !!item;
+    if (editando && !item.recepcion_id) {
+      sel.innerHTML = '<option value="">Sin lote (control anterior)</option>';
+      sel.disabled = true;
+      hint.textContent = 'Este control se registró antes de ligar los controles a un lote.';
+      return;
+    }
+    if (!pid) {
+      sel.innerHTML = '<option value="">Primero elige el producto</option>';
+      sel.disabled = true;
+      hint.textContent = HINT_LOTE;
+      return;
+    }
+    const grupos = agruparLotes(datos.recepciones.filter(r => String(r.producto_id) === String(pid)), lotesBloqueados());
+    const prod = datos.productos.find(p => String(p.id) === String(pid));
+    const nombre = prod ? prod.nombre : 'Producto';
+    const libres = [];
+    let html = editando ? '' : '<option value="">Elige un lote</option>';
+    grupos.forEach(g => {
+      html += '<optgroup label="' + escapeHTML(nombre + ' (' + (g.proveedor || 'Sin proveedor') + ')') + '">' +
+        g.lotes.map(l => {
+          const actual = editando && String(l.r.id) === String(item.recepcion_id);
+          const bloq = l.bloqueado && !actual;
+          if (!bloq) libres.push(String(l.r.id));
+          return '<option value="' + escapeHTML(l.r.id) + '"' + (bloq ? ' disabled' : '') + '>Lote ' + l.n + ' · ' +
+            escapeHTML(formatearFecha(l.r.fecha_recepcion)) + ' · ' + escapeHTML(fmtPeso(Number(l.r.peso) || 0)) +
+            (bloq ? ' — ya tiene control' : '') + '</option>';
+        }).join('') + '</optgroup>';
+    });
+    if (!grupos.length && !editando) html = '<option value="">Sin recepciones</option>';
+    sel.innerHTML = html;
+    if (editando) {
+      if (!Array.prototype.some.call(sel.options, o => o.value === String(item.recepcion_id))) {
+        sel.insertAdjacentHTML('afterbegin', '<option value="' + escapeHTML(item.recepcion_id) + '">Lote registrado</option>');
+      }
+      sel.value = String(item.recepcion_id);
+      sel.disabled = true;
+      hint.textContent = 'El lote de un control ya guardado no se puede cambiar.';
+      return;
+    }
+    sel.disabled = !libres.length;
+    if (libres.length === 1) sel.value = libres[0];
+    hint.textContent = !grupos.length ? 'Este producto aún no tiene recepciones. Regístrala en Recepciones para poder controlarla.'
+      : (!libres.length ? 'Todos los lotes de este producto ya tienen control.' : HINT_LOTE);
+  }
+  function iniciarLotes(item){
+    $('producto').disabled = !!(item && item.recepcion_id);
+    llenarLotes($('producto').value, item);
+  }
+  $('producto').addEventListener('change', function(){
+    if (editandoId === null) llenarLotes($('producto').value, null);
+    marcarError('lote', '');
+  });
+
   // ---------- opciones guiadas para color, olor y textura ----------
   const OPCIONES_CAR = {
     color:   ['Característico', 'Brillante', 'Opaco', 'Con manchas', 'Decolorado', 'Alterado'],
@@ -1666,6 +1763,7 @@
     $('obsCount').textContent = $('observaciones').value.length;
     actualizarObligatoriedad();
     iniciarCaracteristicas();
+    iniciarLotes(item);
     modal.classList.add('show');
     actualizarScroll();
     setTimeout(() => $('producto').focus(), 60);
