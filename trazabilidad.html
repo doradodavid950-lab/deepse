@@ -2428,12 +2428,12 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
             .order('fecha_recepcion', { ascending: false, nullsFirst: false })
             .limit(LIMITE),
           supabaseClient.from('almacenamientos')
-            .select('id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento')
+            .select('id,recepcion_id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento,recepciones(id,fecha_recepcion,peso,proveedores(nombre))')
             .eq('producto_id', id)
             .order('fecha_almacenamiento', { ascending: false, nullsFirst: false })
             .limit(LIMITE),
           supabaseClient.from('ventas')
-            .select('id,cantidad,cliente,tipo_venta,canal_venta,destino,fecha_venta')
+            .select('id,recepcion_id,cantidad,cliente,tipo_venta,canal_venta,destino,fecha_venta,recepciones(id,fecha_recepcion,peso,proveedores(nombre))')
             .eq('producto_id', id)
             .order('fecha_venta', { ascending: false, nullsFirst: false })
             .limit(LIMITE)
@@ -2696,6 +2696,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     almacenamientos: {
       vacio: 'Este producto no tiene registros de almacenamiento.',
       cols: [
+        { t: 'Lote / proveedor', v: r => { const l = Array.isArray(r.recepciones) ? r.recepciones[0] : r.recepciones; const p = l && (Array.isArray(l.proveedores) ? l.proveedores[0] : l.proveedores); return l ? escapeHTML((l.fecha_recepcion ? formatearFecha(l.fecha_recepcion) : 'Lote') + ' · ' + (p?.nombre || 'Sin proveedor')) : 'Sin lote vinculado'; } },
         { t: 'Tipo', v: r => `<span class="pill ${normalizar(r.tipo) === 'refrigerado' ? 'refrigerado' : 'congelado'}">${escapeHTML(r.tipo || '-')}</span>` },
         { t: 'Ubicación', v: r => escapeHTML(r.ubicacion || '-') },
         { t: 'Temperatura', v: r => (r.temperatura !== null && r.temperatura !== undefined && r.temperatura !== '')
@@ -2707,6 +2708,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     ventas: {
       vacio: 'Este producto no tiene ventas registradas.',
       cols: [
+        { t: 'Lote / proveedor', v: r => { const l = Array.isArray(r.recepciones) ? r.recepciones[0] : r.recepciones; const p = l && (Array.isArray(l.proveedores) ? l.proveedores[0] : l.proveedores); return l ? escapeHTML((l.fecha_recepcion ? formatearFecha(l.fecha_recepcion) : 'Lote') + ' · ' + (p?.nombre || 'Sin proveedor')) : 'Sin lote vinculado'; } },
         { t: 'Cantidad', v: r => fmtNumero(Number(r.cantidad) || 0) },
         { t: 'Cliente', v: r => escapeHTML(r.cliente || '-') },
         { t: 'Tipo', v: r => `<span class="pill ${normalizar(r.tipo_venta) === 'local' ? 'local' : 'distribucion'}">${escapeHTML(r.tipo_venta || '-')}</span>` },
