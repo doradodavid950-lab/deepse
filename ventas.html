@@ -1441,7 +1441,7 @@
     const {data,error}=await supabaseClient.from('clientes').insert(payload).select('id,nombre,tipo,documento_tipo,documento_numero,telefono,correo,direccion').single();
     $('guardarClienteVenta').disabled=false;
     if(error){console.error(error);mostrarToast(/clientes_documento_por_usuario_uidx/i.test(error.message)?'Ya existe un cliente con ese documento.':'No se pudo registrar el cliente.','error');return;}
-    clientesVenta.push(data);clientesVenta.sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
+    clientesVenta.push(data);clientesVenta.sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));if($('clientesVentasVista')&&!$('clientesVentasVista').hidden)pintarClientesVentas();
     const select=$('clienteSelect');select.innerHTML='<option value="">Seleccionar cliente registrado...</option>'+clientesVenta.map(c=>'<option value="'+escapeHTML(c.id)+'">'+escapeHTML(c.nombre)+' · '+escapeHTML(c.tipo)+'</option>').join('');
     select.value=data.id;$('cliente').value=data.nombre;actualizarDetalleCliente();cerrarClienteVenta();mostrarToast('Cliente registrado y seleccionado.','success');
   });
