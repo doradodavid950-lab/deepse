@@ -85,6 +85,28 @@
   let uid = null;
   let items = [];
   let cliente = null;
+  let canalTiempoReal = null;
+  let timerRecarga = null;
+  let cargando = false;
+  let recargaPendiente = false;
+  let ultimaCarga = 0;
+
+  function programarRecarga(){
+    if (timerRecarga) clearTimeout(timerRecarga);
+    timerRecarga = setTimeout(function(){ cargar(); }, 120);
+  }
+
+  function conectarTiempoReal(idUsuario, esAdmin, esAuditor){
+    if (!cliente || !cliente.channel || !idUsuario) return;
+    if (canalTiempoReal) { try { cliente.removeChannel(canalTiempoReal); } catch (e) {} }
+    let canal = cliente.channel('dsi-notificaciones-' + idUsuario);
+    ['productos','recepciones','inventario_productos','proveedores'].forEach(function(tabla){
+      canal = canal.on('postgres_changes', { event: '*', schema: 'public', table: tabla }, programarRecarga);
+    });
+    if (esAdmin || esAuditor) canal = canal.on('postgres_changes', { event: '*', schema: 'public', table: 'controles_calidad' }, programarRecarga);
+    canal = canal.on('postgres_changes', { event: '*', schema: 'public', table: 'producto_normas' }, programarRecarga);
+    canalTiempoReal = canal.subscribe();
+  }
 
   function leidas(){
     if (!uid) return new Set();
@@ -140,17 +162,21 @@
 
   async function cargar(){
     if (!window.supabase) return;
+    if (cargando) { recargaPendiente = true; return; }
+    cargando = true;
     try {
       if (!cliente) cliente = (window.DSI && window.DSI.cliente) ? window.DSI.cliente() : window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       const sesion = await cliente.auth.getSession();
       const sess = sesion.data && sesion.data.session;
-      if (!sess) { items = []; uid = null; pintar(); return; }
+      if (!sess) { items = []; uid = null; if (canalTiempoReal) { try { cliente.removeChannel(canalTiempoReal); } catch (e) {} canalTiempoReal = null; } pintar(); return; }
+      const uidAnterior = uid;
       uid = sess.user.id;
 
       const perfil = await cliente.from('perfiles').select('rol').eq('id', uid).maybeSingle();
       const rol = perfil.data && perfil.data.rol;
       const esAdmin = rol === 'administrador';
       const esAuditor = rol === 'auditor';
+      if (uidAnterior !== uid || !canalTiempoReal) conectarTiempoReal(uid, esAdmin, esAuditor);
 
       const [prod, rec, prov, inv, ctrl, pnorm, perfiles] = await Promise.all([
         cliente.from('productos').select('id,nombre,estado,creado_por,created_at')
@@ -178,13 +204,13 @@
         ((prod.data) || []).forEach(function(p){
           if (p.creado_por === uid || !recientes(p.created_at, 7)) return;
           lista.push({ key: 'np:' + p.id, tipo: 'info', titulo: 'Nuevo producto',
-            texto: p.nombre + ' — ' + quien(p.creado_por), fecha: fecha(p.created_at), href: 'productos.html' });
+            texto: p.nombre + ' — ' + quien(p.creado_por), fecha: fecha(p.created_at), href: 'productos.html?id=' + encodeURIComponent(p.id) });
         });
         ((rec.data) || []).forEach(function(r){
           if (r.creado_por === uid || !recientes(r.created_at, 7)) return;
           lista.push({ key: 'nr:' + r.id, tipo: 'info', titulo: 'Nueva recepción',
             texto: nombreRel(r.productos) + ' — ' + kg(r.peso) + ' · ' + quien(r.creado_por),
-            fecha: fecha(r.fecha_recepcion), href: 'recepciones.html' });
+            fecha: fecha(r.fecha_recepcion), href: 'recepciones.html?id=' + encodeURIComponent(r.id) });
         });
       }
 
@@ -193,7 +219,7 @@
         ((ctrl.data) || []).forEach(function(c){
           if (c.estado_revision !== 'Pendiente' || c.creado_por === uid) return;
           lista.push({ key: 'ctrlp:' + c.id, tipo: 'pend', titulo: 'Control por revisar',
-            texto: nombreRel(c.productos) + ' — ' + quien(c.creado_por), fecha: fecha(c.fecha_control), href: 'normas.html' });
+            texto: nombreRel(c.productos) + ' — ' + quien(c.creado_por), fecha: fecha(c.fecha_control), href: 'normas.html?control=' + encodeURIComponent(c.id) + '#controles' });
         });
       }
       if (esAdmin) {
@@ -215,7 +241,7 @@
           tipo: aprobado ? 'ok' : 'warn',
           titulo: 'Control ' + (aprobado ? 'aprobado' : 'rechazado') + ' por el revisor',
           texto: nombreRel(c.productos) + (c.comentario_revision ? ' — Motivo: ' + c.comentario_revision : ''),
-          fecha: fecha(c.fecha_revision), href: 'normas.html' });
+          fecha: fecha(c.fecha_revision), href: 'normas.html?control=' + encodeURIComponent(c.id) + '#controles' });
       });
       ((pnorm.data) || []).forEach(function(n){
         if (n.creado_por !== uid || (n.estado !== 'Verificada' && n.estado !== 'Rechazada')) return;
@@ -237,7 +263,7 @@
           tipo: agotado ? 'warn' : 'pend',
           titulo: agotado ? 'Producto agotado' : 'Stock bajo',
           texto: i.nombre + ' — disponible ' + kg(i.disponible),
-          fecha: '', href: 'almacenamiento.html' });
+          fecha: '', href: 'almacenamiento.html?producto=' + encodeURIComponent(i.producto_id) + '#inventario' });
       });
       ((rec.data) || []).forEach(function(r){
         const estado = r.estado_producto || 'Fresco';
@@ -246,20 +272,35 @@
         lista.push({ key: 'rec:' + r.id + ':' + norm(estado), tipo: clase,
           titulo: 'Recepción ' + estado.toLowerCase(),
           texto: nombreRel(r.productos) + ' — ' + kg(r.peso),
-          fecha: fecha(r.fecha_recepcion), href: 'recepciones.html' });
+          fecha: fecha(r.fecha_recepcion), href: 'recepciones.html?id=' + encodeURIComponent(r.id) });
       });
       ((prov.data) || []).forEach(function(p){
         if (norm(p.estado) !== 'inactivo') return;
         lista.push({ key: 'prov:' + p.id, tipo: 'info', titulo: 'Proveedor inactivo',
-          texto: p.nombre || 'Proveedor', fecha: '', href: 'proveedores.html' });
+          texto: p.nombre || 'Proveedor', fecha: '', href: 'proveedores.html?id=' + encodeURIComponent(p.id) });
       });
 
       items = lista;
       pintar();
+      ultimaCarga = Date.now();
     } catch (e) { /* sin conexión: se vuelve a intentar */ }
+    finally {
+      cargando = false;
+      if (recargaPendiente) { recargaPendiente = false; programarRecarga(); }
+    }
   }
 
-  setTimeout(cargar, 1500);
-  setInterval(cargar, 120000);
+  // Cargar en cuanto el SDK esté disponible; no esperar 1,5 segundos en cada módulo.
+  if (window.supabase) cargar();
+  else {
+    const sdk = document.getElementById('sdk');
+    if (sdk) {
+      sdk.addEventListener('load', cargar, { once: true });
+      sdk.addEventListener('error', function(){ setTimeout(cargar, 800); }, { once: true });
+    } else {
+      window.addEventListener('load', cargar, { once: true });
+    }
+  }
+  setInterval(function(){ if (!document.hidden && Date.now() - ultimaCarga > 45000) cargar(); }, 45000);
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) cargar(); });
 })();
