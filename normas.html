@@ -2790,6 +2790,22 @@
 
   // ---------- declarar cumplimiento (establecimiento) ----------
   let declarandoId = null;
+  // Recuerda preferencias no sensibles para evitar repetir selecciones en cada declaración.
+  // Nunca guarda números de certificados ni fechas, porque pertenecen a cada documento real.
+  const CLAVE_PREF_DECLARACION = 'dsi_preferencias_declaracion_normas_v1';
+  function leerPreferenciasDeclaracion(){
+    try { return JSON.parse(localStorage.getItem(CLAVE_PREF_DECLARACION) || '{}') || {}; }
+    catch (e) { return {}; }
+  }
+  function guardarPreferenciasDeclaracion(datos){
+    try { localStorage.setItem(CLAVE_PREF_DECLARACION, JSON.stringify(datos)); }
+    catch (e) { /* almacenamiento local no disponible */ }
+  }
+  // Preferencias separadas por norma para no reutilizar un tipo o emisor incorrecto.
+  function preferenciasDeNorma(normaId){
+    const datos = leerPreferenciasDeclaracion();
+    return datos.normas && datos.normas[normaId] ? datos.normas[normaId] : {};
+  }
   function marcarCampo(idCampo, mensaje){
     const campo = $(idCampo).closest('.field');
     campo.classList.toggle('invalid', !!mensaje);
@@ -2804,6 +2820,18 @@
     const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma' };
     $('dcInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
     llenarGuiaDeclaracion(pn, n);
+    const preferencias = preferenciasDeNorma(pn.norma_id);
+    // Reutiliza solo las preferencias de esta misma norma; nunca copia certificados ni fechas.
+    if (!pn.certificado && preferencias.tipo && Array.prototype.some.call($('dcTipo').options, function(o){ return o.value === preferencias.tipo; })) {
+      $('dcTipo').value = preferencias.tipo;
+    }
+    if (!pn.entidad_emisora && preferencias.emisora) {
+      const selEntidad = $('dcEmisoraSel');
+      const existeEntidad = Array.prototype.some.call(selEntidad.options, function(o){ return o.value === preferencias.emisora; });
+      selEntidad.value = existeEntidad ? preferencias.emisora : '__otra';
+      $('dcEmisora').value = existeEntidad ? '' : preferencias.emisora;
+      $('dcEmisora').style.display = existeEntidad ? 'none' : '';
+    }
     $('dcEmision').value = pn.fecha_emision || '';
     $('dcVence').value = pn.fecha_vencimiento || '';
     $('dcEmision').max = hoyISO();
@@ -2831,6 +2859,20 @@
     else if (vence < hoyISO()) msgVence = 'El certificado ya está vencido.';
     marcarCampo('dcVence', msgVence); if (msgVence) ok = false;
     if (!ok) return;
+
+    const chipVigencia = $('dcVig').querySelector('.gd-chip.on');
+    const datosPreferencias = leerPreferenciasDeclaracion();
+    if (!datosPreferencias.normas) datosPreferencias.normas = {};
+    const pnActual = buscarPN(declarandoId);
+    const idNormaActual = pnActual ? pnActual.norma_id : null;
+    const preferencias = preferenciasDeNorma(idNormaActual);
+    preferencias.tipo = tipoCert;
+    preferencias.emisora = emisora || '';
+    if (chipVigencia && ['1','2','3','5'].indexOf(chipVigencia.dataset.a) >= 0) preferencias.vigencia = Number(chipVigencia.dataset.a);
+    if (idNormaActual) {
+      datosPreferencias.normas[idNormaActual] = preferencias;
+      guardarPreferenciasDeclaracion(datosPreferencias);
+    }
 
     const btn = $('dcGuardar');
     btn.disabled = true;
@@ -2942,6 +2984,11 @@
     let act = null;
     const e = $('dcEmision').value, v = $('dcVence').value;
     if (e && v) [1, 2, 3, 5].forEach(function(a){ if (sumarAnios(e, a) === v) act = a; });
+    if (act === null && !e && !v) {
+      const pnVigencia = buscarPN(declarandoId);
+      const preferida = Number(preferenciasDeNorma(pnVigencia && pnVigencia.norma_id).vigencia);
+      if ([1, 2, 3, 5].indexOf(preferida) >= 0) act = preferida;
+    }
     marcarChip(act);
     textoVigencia();
   }

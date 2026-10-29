@@ -1516,8 +1516,8 @@
     const extras = Array.from(nbExtras).map(function(id){ return mapa.get(id); }).filter(Boolean);
 
     info.textContent = oblig.length
-      ? 'Para ' + cat + ', ' + oblig.length + (oblig.length === 1 ? ' norma es obligatoria y no se puede quitar' : ' normas son obligatorias y no se pueden quitar') + '. Puedes agregar otras del catálogo.'
-      : 'Para ' + cat + ' todavía no hay normas obligatorias definidas. Puedes agregar otras del catálogo.';
+      ? 'Al guardar, las normas vigentes de ' + cat + ' se asignan automáticamente. ' + oblig.length + (oblig.length === 1 ? ' norma es obligatoria y no se puede quitar' : ' normas son obligatorias y no se pueden quitar') + '. Puedes agregar otras del catálogo.'
+      : 'Al guardar, se asignarán las normas vigentes configuradas para ' + cat + '. Por ahora no hay normas obligatorias definidas. Puedes agregar otras del catálogo.';
 
     cont.innerHTML =
       oblig.map(function(n){ return nbFila(n, '', NB_ICONO_LOCK, '<span class="nb-pill o">Obligatoria</span>'); }).join('') +
