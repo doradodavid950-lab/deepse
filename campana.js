@@ -90,6 +90,8 @@
   let cargando = false;
   let recargaPendiente = false;
   let ultimaCarga = 0;
+  let vistasAlInicio = new Set();
+  let vistasUid = null;
 
   function programarRecarga(){
     if (timerRecarga) clearTimeout(timerRecarga);
@@ -121,7 +123,7 @@
   function pintar(){
     observador.disconnect();
     const leer = leidas();
-    const visibles = items.filter(function(i){ return !leer.has(i.key); }).slice(0, 40);
+    const visibles = items.filter(function(i){ return !leer.has(i.key) && !vistasAlInicio.has(i.key); }).slice(0, 40);
 
     cont.innerHTML = visibles.length
       ? visibles.map(function(i){
@@ -142,6 +144,18 @@
 
   const observador = new MutationObserver(function(){ pintar(); });
   observador.observe(cont, { childList: true });
+
+  // Al abrir la campana se recuerdan las notificaciones vistas para no repetirlas
+  // al cambiar de módulo o cerrar y volver a iniciar sesión. Siguen visibles en esta vista.
+  btn.addEventListener('click', function(){
+    if (!uid) return;
+    try {
+      const key = 'dsi_notif_vistas_' + uid;
+      const guardadas = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+      items.forEach(function(i){ guardadas.add(i.key); });
+      localStorage.setItem(key, JSON.stringify(Array.from(guardadas).slice(-800)));
+    } catch (e) {}
+  });
 
   cont.addEventListener('click', function(e){
     const a = e.target.closest('.nt-item');
@@ -171,6 +185,11 @@
       if (!sess) { items = []; uid = null; if (canalTiempoReal) { try { cliente.removeChannel(canalTiempoReal); } catch (e) {} canalTiempoReal = null; } pintar(); return; }
       const uidAnterior = uid;
       uid = sess.user.id;
+      if (vistasUid !== uid) {
+        vistasUid = uid;
+        try { vistasAlInicio = new Set(JSON.parse(localStorage.getItem('dsi_notif_vistas_' + uid) || '[]')); }
+        catch (e) { vistasAlInicio = new Set(); }
+      }
 
       const perfil = await cliente.from('perfiles').select('rol').eq('id', uid).maybeSingle();
       const rol = perfil.data && perfil.data.rol;
