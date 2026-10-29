@@ -3138,7 +3138,48 @@
 
   // ---------- arranque ----------
   obtenerRol().then(actualizarBadgeRevision);
-  irTab(location.hash.slice(1) || 'catalogo', false);
+  const parametrosNotificacion = new URLSearchParams(window.location.search);
+  const controlNotificado = parametrosNotificacion.get('control');
+  const productoNotificado = parametrosNotificacion.get('producto');
+  irTab(controlNotificado ? 'controles' : (productoNotificado ? 'productos' : (location.hash.slice(1) || 'catalogo')), false);
+
+  // Al llegar desde una notificación, lleva directamente a la fila o producto afectado.
+  if (controlNotificado) {
+    const tablaNotificada = $('tablaControles');
+    const buscarControl = function(){
+      const botones = Array.from(tablaNotificada.querySelectorAll('[data-id]'));
+      const boton = botones.find(function(el){ return String(el.dataset.id) === String(controlNotificado); });
+      if (!boton) return false;
+      const fila = boton.closest('tr');
+      if (!fila) return false;
+      fila.classList.add('resaltado');
+      fila.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      try { history.replaceState(null, '', window.location.pathname + '#controles'); } catch (e) {}
+      return true;
+    };
+    if (!buscarControl()) {
+      const obsControl = new MutationObserver(function(){ if (buscarControl()) obsControl.disconnect(); });
+      obsControl.observe(tablaNotificada, { childList: true, subtree: true });
+      setTimeout(function(){ obsControl.disconnect(); }, 12000);
+    }
+  }
+  if (productoNotificado) {
+    const listaNotificada = $('pdLista');
+    const buscarProducto = function(){
+      const botones = Array.from(listaNotificada.querySelectorAll('.pcard-h[data-id]'));
+      const boton = botones.find(function(el){ return String(el.dataset.id) === String(productoNotificado); });
+      if (!boton) return false;
+      if (boton.getAttribute('aria-expanded') !== 'true') boton.click();
+      boton.closest('.pcard')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      try { history.replaceState(null, '', window.location.pathname + '#productos'); } catch (e) {}
+      return true;
+    };
+    if (!buscarProducto()) {
+      const obsProducto = new MutationObserver(function(){ if (buscarProducto()) obsProducto.disconnect(); });
+      obsProducto.observe(listaNotificada, { childList: true, subtree: true });
+      setTimeout(function(){ obsProducto.disconnect(); }, 12000);
+    }
+  }
 
 
   // ===================== ADMINISTRACIÓN DEL CATÁLOGO (solo administrador) =====================
