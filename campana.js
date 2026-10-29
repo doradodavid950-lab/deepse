@@ -102,7 +102,8 @@
     if (!cliente || !cliente.channel || !idUsuario) return;
     if (canalTiempoReal) { try { cliente.removeChannel(canalTiempoReal); } catch (e) {} }
     let canal = cliente.channel('dsi-notificaciones-' + idUsuario);
-    ['productos','recepciones','ventas','proveedores'].forEach(function(tabla){
+    // Las vistas no emiten eventos Realtime: escuchar también sus tablas base.
+    ['productos','recepciones','ventas','proveedores','almacenamientos','ajustes_inventario'].forEach(function(tabla){
       canal = canal.on('postgres_changes', { event: '*', schema: 'public', table: tabla }, programarRecarga);
     });
     if (esAdmin || esAuditor) canal = canal.on('postgres_changes', { event: '*', schema: 'public', table: 'controles_calidad' }, programarRecarga);
@@ -190,6 +191,16 @@
         try { vistasAlInicio = new Set(JSON.parse(localStorage.getItem('dsi_notif_vistas_' + uid) || '[]')); }
         catch (e) { vistasAlInicio = new Set(); }
       }
+
+      // Pintar una copia de la última carga mientras se consultan los datos actuales.
+      // Así el usuario ve la campana inmediatamente al cambiar de módulo.
+      try {
+        const cache = JSON.parse(sessionStorage.getItem('dsi_notif_cache_' + uid) || 'null');
+        if (cache && Array.isArray(cache.items)) {
+          items = cache.items;
+          pintar();
+        }
+      } catch (e) {}
 
       const perfil = await cliente.from('perfiles').select('rol').eq('id', uid).maybeSingle();
       const rol = perfil.data && perfil.data.rol;
@@ -300,6 +311,7 @@
       });
 
       items = lista;
+      try { sessionStorage.setItem('dsi_notif_cache_' + uid, JSON.stringify({ savedAt: Date.now(), items: lista })); } catch (e) {}
       pintar();
       ultimaCarga = Date.now();
     } catch (e) { /* sin conexión: se vuelve a intentar */ }
