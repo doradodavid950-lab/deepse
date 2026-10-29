@@ -20,4 +20,14 @@
     unico = window.supabase.createClient(D.SUPABASE_URL, D.SUPABASE_ANON_KEY);
     return unico;
   };
+
+  // Activa la caché de recursos estáticos ya preparada en sw.js.
+  // No intercepta operaciones de Supabase ni guarda respuestas con datos del usuario.
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw.js').catch(function(error){
+        console.warn('No se pudo activar la caché local:', error);
+      });
+    }, { once: true });
+  }
 })();
