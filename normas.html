@@ -874,7 +874,10 @@
         <div class="cm-full"><label class="cm-l" for="cmNombre">Nombre de la norma *</label><input class="cm-in" id="cmNombre" maxlength="120"></div>
         <div><label class="cm-l" for="cmTipo">Tipo *</label><select class="cm-in" id="cmTipo"><option>Sanitaria</option><option>Legal</option><option>Calidad</option><option>Ambiental</option><option>Internacional</option></select></div>
         <div><label class="cm-l" for="cmEstado">Estado</label><select class="cm-in" id="cmEstado"><option value="Vigente">Vigente</option><option value="Inactiva">Inactiva</option></select></div>
-        <div class="cm-full"><label class="cm-l" for="cmDesc">Descripción</label><textarea class="cm-in" id="cmDesc" maxlength="300" rows="2"></textarea></div>
+        <div class="cm-full"><label class="cm-l" for="cmDesc">Descripción de la norma</label><textarea class="cm-in" id="cmDesc" maxlength="300" rows="2" placeholder="Resumen breve del requisito oficial"></textarea></div>
+        <div class="cm-full"><label class="cm-l" for="cmExplicacion">¿Para qué sirve? (explicación sencilla)</label><textarea class="cm-in" id="cmExplicacion" maxlength="1200" rows="3" placeholder="Explica qué debe cumplir el producto o establecimiento"></textarea></div>
+        <div class="cm-full"><label class="cm-l" for="cmEvidencia">¿Qué documento o evidencia se requiere?</label><textarea class="cm-in" id="cmEvidencia" maxlength="1200" rows="3" placeholder="Indica la evidencia exacta confirmada para esta norma"></textarea></div>
+        <div class="cm-full"><label class="cm-l" for="cmOrientacion">¿Cómo obtenerlo? (orientación)</label><textarea class="cm-in" id="cmOrientacion" maxlength="1200" rows="2" placeholder="Entidad o proceso para solicitarlo, si aplica"></textarea></div>
       </div>
       <p class="cm-l" style="margin-top:12px"><b>¿A qué categorías aplica?</b></p>
       <p class="gris">Obligatoria: el producto debe cumplirla y no se puede quitar. Recomendada: se puede quitar. No aplica: no sale en esa categoría.</p>
@@ -1040,7 +1043,8 @@
       <button class="close" type="button" data-cerrar="modalDecl" aria-label="Cerrar">×</button>
     </div>
     <p class="sub-modal" id="dcInfo"></p>
-    <div class="gd-info" id="dcIntro">Esta norma es <b>obligatoria</b> para tu producto. Sube tu certificado para que el auditor lo verifique.</div>
+    <div class="gd-info" id="dcIntro">Esta norma aplica a tu producto. Revisa la guía antes de declarar el cumplimiento.</div>
+    <div class="gd-info" id="dcGuiaDocumento" style="margin-top:10px"><b>¿Qué exige esta norma?</b><p id="dcExplicacion" style="margin:6px 0 0">Consulta la descripción de la norma.</p><p style="margin:10px 0 4px"><b>¿Qué documento debes presentar?</b></p><p id="dcEvidencia" style="margin:0">La evidencia se debe confirmar con el requisito aplicable.</p><p style="margin:10px 0 0" id="dcOrientacion"></p></div>
     <ol class="gd-pasos" aria-label="Pasos de la norma">
       <li><b>&#10003;</b>Sin declarar</li>
       <li class="act"><b>2</b>En revisión (al enviar)</li>
@@ -2419,7 +2423,7 @@
       // 2) en segundo plano: lo más reciente
       try {
         const res = await Promise.all([
-          supabaseClient.from('normas_catalogo').select('id,codigo,nombre,tipo,entidad,descripcion,estado,actualizado').order('codigo', { ascending: false }),
+          supabaseClient.from('normas_catalogo').select('id,codigo,nombre,tipo,entidad,descripcion,explicacion_usuario,evidencia_requerida,orientacion_documento,estado,actualizado').order('codigo', { ascending: false }),
           supabaseClient.from('norma_categoria').select('norma_id,categoria,obligatoria')
         ]);
         if (res[0].error) throw res[0].error;
@@ -2932,7 +2936,10 @@
 
   function llenarGuiaDeclaracion(pn, n){
     $('dcIntro').innerHTML = 'Esta norma es <b>' + (pn.obligatoria ? 'obligatoria' : 'recomendada') +
-      '</b> para tu producto. Sube tu certificado para que el auditor lo verifique.';
+      '</b> para este producto. Revisa qué exige antes de declarar su cumplimiento.';
+    $('dcExplicacion').textContent = n.explicacion_usuario || n.descripcion || 'Aún no se ha registrado una explicación sencilla para esta norma. Consulta su texto oficial antes de declarar cumplimiento.';
+    $('dcEvidencia').textContent = n.evidencia_requerida || 'El documento exacto aún no está configurado para esta norma. No adjuntes un documento al azar: confirma la evidencia exigida en el texto oficial.';
+    $('dcOrientacion').textContent = n.orientacion_documento || '';
     // documento + número (se guardan juntos en "certificado", ej. "BPM 12345")
     let tipo = '', numero = pn.certificado || '';
     TIPOS_DOC.forEach(function(t){
@@ -3103,6 +3110,9 @@
     cmQ('cmTipo').value = n ? n.tipo : 'Sanitaria';
     cmQ('cmEstado').value = n ? n.estado : 'Vigente';
     cmQ('cmDesc').value = n ? (n.descripcion || '') : '';
+    cmQ('cmExplicacion').value = n ? (n.explicacion_usuario || '') : '';
+    cmQ('cmEvidencia').value = n ? (n.evidencia_requerida || '') : '';
+    cmQ('cmOrientacion').value = n ? (n.orientacion_documento || '') : '';
     cmEditando = n ? n.id : null;
     cmQ('cmTitulo').textContent = n ? 'Editar norma' : 'Nueva norma';
     document.querySelectorAll('#cmForm [data-cat]').forEach(function(s){
@@ -3140,7 +3150,10 @@
     if (errores.length) { errores.forEach(function(t){ const p = document.createElement('p'); p.className='cm-err'; p.textContent=t; cmQ('cmForm').prepend(p); }); return; }
 
     const datos = { codigo: codigo, nombre: nombre, entidad: entidad, tipo: cmQ('cmTipo').value,
-      estado: cmQ('cmEstado').value, descripcion: cmQ('cmDesc').value.trim() || null };
+      estado: cmQ('cmEstado').value, descripcion: cmQ('cmDesc').value.trim() || null,
+      explicacion_usuario: cmQ('cmExplicacion').value.trim() || null,
+      evidencia_requerida: cmQ('cmEvidencia').value.trim() || null,
+      orientacion_documento: cmQ('cmOrientacion').value.trim() || null };
     const reglasNuevas = [];
     document.querySelectorAll('#cmForm [data-cat]').forEach(function(s){
       if (s.value) reglasNuevas.push({ categoria: s.dataset.cat, obligatoria: s.value === 'Obligatoria' });
