@@ -2863,12 +2863,16 @@
     const chipVigencia = $('dcVig').querySelector('.gd-chip.on');
     const datosPreferencias = leerPreferenciasDeclaracion();
     if (!datosPreferencias.normas) datosPreferencias.normas = {};
-    const preferencias = preferenciasDeNorma((mapaCat.get(buscarPN(declarandoId).norma_id) || {}).id || buscarPN(declarandoId).norma_id);
+    const pnActual = buscarPN(declarandoId);
+    const idNormaActual = pnActual ? pnActual.norma_id : null;
+    const preferencias = preferenciasDeNorma(idNormaActual);
     preferencias.tipo = tipoCert;
     preferencias.emisora = emisora || '';
     if (chipVigencia && ['1','2','3','5'].indexOf(chipVigencia.dataset.a) >= 0) preferencias.vigencia = Number(chipVigencia.dataset.a);
-    datosPreferencias.normas[buscarPN(declarandoId).norma_id] = preferencias;
-    guardarPreferenciasDeclaracion(datosPreferencias);
+    if (idNormaActual) {
+      datosPreferencias.normas[idNormaActual] = preferencias;
+      guardarPreferenciasDeclaracion(datosPreferencias);
+    }
 
     const btn = $('dcGuardar');
     btn.disabled = true;
