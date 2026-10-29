@@ -2985,7 +2985,8 @@
     const e = $('dcEmision').value, v = $('dcVence').value;
     if (e && v) [1, 2, 3, 5].forEach(function(a){ if (sumarAnios(e, a) === v) act = a; });
     if (act === null && !e && !v) {
-      const preferida = Number(leerPreferenciasDeclaracion().vigencia);
+      const pnVigencia = buscarPN(declarandoId);
+      const preferida = Number(preferenciasDeNorma(pnVigencia && pnVigencia.norma_id).vigencia);
       if ([1, 2, 3, 5].indexOf(preferida) >= 0) act = preferida;
     }
     marcarChip(act);
