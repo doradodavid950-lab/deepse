@@ -3025,6 +3025,10 @@
   }
   function textoVigencia(){
     const v = $('dcVence').value;
+    if ($('dcSinVence').checked) {
+      $('dcVigTxt').textContent = 'Se guardará sin fecha de vencimiento. Confirma que el documento realmente no tenga una fecha de caducidad.';
+      return;
+    }
     $('dcVigTxt').textContent = v ? 'Vence el ' + fechaISO(v) + '. Te avisaremos 30 días antes.' : 'Elige la fecha de emisión y cuánto dura el documento.';
   }
   function iniciarVigencia(){
@@ -3043,6 +3047,10 @@
     const c = ev.target.closest('.gd-chip');
     if (!c) return;
     const a = Number(c.dataset.a);
+    if ($('dcSinVence').checked) {
+      $('dcSinVence').checked = false;
+      $('dcVence').disabled = false;
+    }
     marcarChip(a);
     if (a === 0) { $('dcVence').focus(); return; }
     const e = $('dcEmision').value;
