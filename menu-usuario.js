@@ -182,7 +182,7 @@
         const claves = [];
         for (let i = 0; i < localStorage.length; i++) {
           const k = localStorage.key(i);
-          if (k && k.indexOf('dsi_') === 0 && k.indexOf('dsi_notif_leidas_') !== 0) claves.push(k);
+          if (k && k.indexOf('dsi_') === 0 && k.indexOf('dsi_notif_leidas_') !== 0 && k.indexOf('dsi_notif_vistas_') !== 0) claves.push(k);
         }
         claves.forEach(function(k){ localStorage.removeItem(k); });
         sessionStorage.removeItem('dsi_perfil_rol');
