@@ -446,6 +446,13 @@
   .modal-card .form-grid{min-width:0}
   @media(max-width:560px){.cliente-venta-wrap{grid-template-columns:1fr}.cliente-venta-wrap>.bp{width:100%}}
 
+.ventas-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:5px;background:#fff;border:1px solid var(--borde);border-radius:16px;margin-bottom:16px}
+.ventas-tab{height:44px;border-radius:12px;font-weight:700;color:var(--texto-2);display:flex;align-items:center;justify-content:center;gap:8px}
+.ventas-tab.active{background:var(--g-azul);color:#fff;box-shadow:0 7px 15px rgba(30,102,245,.2)}
+.clientes-vista{background:#fff;border:1px solid var(--borde);border-radius:20px;padding:18px;box-shadow:var(--sombra)}
+.clientes-vista-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.clientes-vista-head .field-input{width:min(100%,320px)}
+@media(max-width:560px){.clientes-vista{padding:13px}.clientes-vista-head{align-items:stretch}.clientes-vista-head .field-input{width:100%}#clientesVentasTabla tr{display:grid;grid-template-columns:1fr auto;gap:4px;padding:11px 6px;border-bottom:1px solid #EDF2F8}#clientesVentasTabla td{border:0;padding:3px 4px;font-size:13px}#clientesVentasTabla td:last-child{grid-column:2;grid-row:1/4;align-self:center}}
 </style>
 
 <style id="estilo-cierre-unificado">
@@ -570,8 +577,9 @@
     <button type="button" id="avisoBtn">Reintentar</button>
   </div>
 
+<div class="ventas-tabs" role="tablist" aria-label="Secciones"><button type="button" class="ventas-tab active" id="tabVentas" aria-selected="true"><svg class="i"><use href="#i-cart"/></svg>Ventas</button><button type="button" class="ventas-tab" id="tabClientes" aria-selected="false"><svg class="i"><use href="#i-users"/></svg>Clientes</button></div>
   <!-- ===== RESUMEN ===== -->
-  <section class="kpis tres" aria-label="Resumen">
+  <section class="kpis tres" id="ventasResumen" aria-label="Resumen">
     <div class="k"><div class="ic" style="background:var(--g-naranja)"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></div><div><b id="totalCount" class="loading-val">0000</b><span>Ventas registradas</span></div></div>
     <div class="k"><div class="ic" style="background:var(--g-verde)"><svg class="i" aria-hidden="true"><use href="#i-store"/></svg></div><div><b id="localCount" class="loading-val">0000</b><span>Ventas locales</span></div></div>
     <div class="k"><div class="ic" style="background:var(--g-morado)"><svg class="i" aria-hidden="true"><use href="#i-truck"/></svg></div><div><b id="distributionCount" class="loading-val">0000</b><span>Ventas de distribución</span></div></div>
@@ -579,7 +587,7 @@
   </section>
 
   <!-- ===== REGISTROS ===== -->
-  <section class="c lista">
+  <section class="c lista" id="ventasRegistros">
     <div class="panel-head">
       <h3>Registros de ventas</h3>
       <div class="field-input search-box">
@@ -594,6 +602,7 @@
       </table>
     </div>
   </section>
+<section id="clientesVentasVista" class="clientes-vista" hidden><div class="clientes-vista-head"><h3>Clientes registrados</h3><div style="display:flex;gap:9px;flex-wrap:wrap"><div class="field-input"><svg class="i"><use href="#i-search"/></svg><input id="buscarClientesVentas" type="search" placeholder="Buscar cliente..." aria-label="Buscar cliente"></div><button type="button" class="bp" id="nuevoClienteLista"><svg class="i"><use href="#i-plus"/></svg>Nuevo cliente</button></div></div><div class="table-wrap"><table class="simple"><thead><tr><th>Cliente</th><th>Tipo</th><th>Contacto</th><th>Ventas</th><th>Última compra</th><th>Acciones</th></tr></thead><tbody id="clientesVentasTabla"><tr><td colspan="6" class="empty">Cargando clientes...</td></tr></tbody></table></div></section>
 </main>
 
 <button type="button" class="fab" id="newSaleFab" aria-label="Nueva venta"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
@@ -1408,6 +1417,17 @@
     if(!$('destino').value && c.direccion)$('destino').value=c.direccion;
   }
   $('clienteSelect').addEventListener('change',function(){const c=clientesVenta.find(x=>String(x.id)===this.value);$('cliente').value=c?c.nombre:'';actualizarDetalleCliente();marcarError('cliente','');});
+  function pintarClientesVentas(){
+    const q=normalizar($('buscarClientesVentas').value);
+    const rows=clientesVenta.filter(c=>normalizar([c.nombre,c.tipo,c.telefono,c.correo,c.documento_numero].join(' ')).includes(q));
+    $('clientesVentasTabla').innerHTML=rows.length?rows.map(c=>{const ventasCliente=datos.ventas.filter(x=>x.cliente_id===c.id||(!x.cliente_id&&normalizar(x.cliente)===normalizar(c.nombre)));const ultima=ventasCliente.map(x=>x.fecha_venta).filter(Boolean).sort().pop();return '<tr><td><strong>'+escapeHTML(c.nombre)+'</strong></td><td>'+escapeHTML(c.tipo)+'</td><td>'+escapeHTML(c.telefono||'—')+(c.correo?'<small style="display:block;color:var(--texto-2)">'+escapeHTML(c.correo)+'</small>':'')+'</td><td>'+ventasCliente.length+'</td><td>'+(ultima?formatearFecha(ultima):'—')+'</td><td><div class="row-actions"><button class="action-btn danger" data-borrar-cliente="'+escapeHTML(c.id)+'" aria-label="Eliminar cliente"><svg class="i"><use href="#i-trash"/></svg></button></div></td></tr>';}).join(''):'<tr><td colspan="6" class="empty">No hay clientes que coincidan.</td></tr>';
+  }
+  function cambiarPestanaClientes(activa){$('ventasResumen').hidden=activa;$('ventasRegistros').hidden=activa;$('clientesVentasVista').hidden=!activa;$('tabVentas').classList.toggle('active',!activa);$('tabClientes').classList.toggle('active',activa);$('tabVentas').setAttribute('aria-selected',String(!activa));$('tabClientes').setAttribute('aria-selected',String(activa));$('newSaleBtn').hidden=activa;$('newSaleFab').hidden=activa;if(activa)cargarClientesVenta().then(pintarClientesVentas);}
+  $('tabVentas').addEventListener('click',()=>cambiarPestanaClientes(false));
+  $('tabClientes').addEventListener('click',()=>cambiarPestanaClientes(true));
+  $('buscarClientesVentas').addEventListener('input',pintarClientesVentas);
+  $('nuevoClienteLista').addEventListener('click',()=>{$('clienteVentaForm').reset();$('clienteVentaModal').classList.add('show');});
+  $('clientesVentasTabla').addEventListener('click',async e=>{const b=e.target.closest('[data-borrar-cliente]');if(!b)return;const c=clientesVenta.find(x=>x.id===b.dataset.borrarCliente);if(!c||!confirm('¿Eliminar '+c.nombre+'?'))return;const {error}=await supabaseClient.from('clientes').delete().eq('id',c.id);if(error){mostrarToast('No se pudo eliminar el cliente.','error');return;}clientesVenta=clientesVenta.filter(x=>x.id!==c.id);pintarClientesVentas();mostrarToast('Cliente eliminado.','success');});
   function cerrarClienteVenta(){$('clienteVentaModal').classList.remove('show');}
   $('agregarClienteVenta').addEventListener('click',()=>{$('clienteVentaForm').reset();$('clienteVentaModal').classList.add('show');$('cvNombre').focus();});
   $('cerrarClienteVenta').addEventListener('click',cerrarClienteVenta);
