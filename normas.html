@@ -2823,6 +2823,15 @@
     if (err) err.textContent = mensaje || '';
   }
 
+  function tipoSugeridoDeNorma(n){
+    const texto = ((n.codigo || '') + ' ' + (n.nombre || '') + ' ' + (n.evidencia_requerida || '')).toLowerCase();
+    if (/iso\\s*22000/.test(texto)) return 'Certificado ISO 22000';
+    if (/5109|etiquetado|etiqueta del producto/.test(texto)) return 'Etiqueta del producto';
+    if (/235 de 2021|ica|referencia normativa/.test(texto)) return 'Documento sanitario por validar';
+    if (/codex|higiene|limpieza y desinfección/.test(texto)) return 'Procedimientos y registros de higiene';
+    return 'Otro documento';
+  }
+
   function abrirDeclaracion(id){
     const pn = buscarPN(id);
     if (!pn) return;
@@ -2830,6 +2839,8 @@
     const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma' };
     $('dcInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
     llenarGuiaDeclaracion(pn, n);
+    // Sugiere el tipo de evidencia según la norma; el usuario debe confirmar que corresponde a su documento real.
+    $('dcTipo').value = tipoSugeridoDeNorma(n);
     const preferencias = preferenciasDeNorma(pn.norma_id);
     // Reutiliza solo las preferencias de esta misma norma; nunca copia certificados ni fechas.
     if (!pn.certificado && preferencias.tipo && Array.prototype.some.call($('dcTipo').options, function(o){ return o.value === preferencias.tipo; })) {
