@@ -696,6 +696,12 @@
           <select id="producto"><option value="">Cargando productos...</option></select>
           <small class="field-error"></small>
         </div>
+        <div class="form-group field full">
+          <label for="lote">Lote / recepción</label>
+          <select id="lote"><option value="">Selecciona primero un producto</option></select>
+          <span class="hint">Vincula este almacenamiento con su recepción de origen para conservar la trazabilidad.</span>
+          <small class="field-error"></small>
+        </div>
         <div class="form-group field">
           <label for="tipo">Tipo de almacenamiento *</label>
           <select id="tipo">
@@ -962,7 +968,7 @@
   }
 
   function limpiarErrores(){
-    ['producto','tipo','ubicacion','temperatura','estado','fecha','observaciones'].forEach(id => marcarError(id, ''));
+    ['producto','lote','tipo','ubicacion','temperatura','estado','fecha','observaciones'].forEach(id => marcarError(id, ''));
   }
 
   function validarFormulario(){
@@ -1015,6 +1021,7 @@
 
     return {
       producto_id: productoId,
+      recepcion_id: $('lote').value || null,
       tipo: tipo,
       ubicacion: ubicacion,
       temperatura: tempTexto === '' ? null : Number(tempTexto),
@@ -1085,14 +1092,14 @@
         supabaseClient.from('productos').select('id,nombre,estado,proveedor').order('nombre', { ascending: true }),
         supabaseClient
           .from('almacenamientos')
-          .select('id,producto_id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento,observaciones,productos(nombre)')
+          .select('id,producto_id,recepcion_id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento,observaciones,productos(nombre)')
           .order('fecha_almacenamiento', { ascending: false, nullsFirst: false }),
         // Solo para las notificaciones (se piden las más recientes)
         supabaseClient
           .from('recepciones')
-          .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
+          .select('id,producto_id,peso,estado_producto,fecha_recepcion,proveedor_id,productos(nombre),proveedores(nombre)')
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
-          .limit(100),
+          .limit(500),
         // Solo para el buscador de la barra superior
         supabaseClient.from('proveedores').select('id,nombre,estado')
       ]), tiempoAgotado]);
@@ -1263,6 +1270,21 @@
     }).join('');
   }
 
+  function llenarLotes(productoId, item){
+    const select = $('lote');
+    const actual = item && item.recepcion_id ? String(item.recepcion_id) : '';
+    const lotes = (datos.recepciones || []).filter(r => String(r.producto_id) === String(productoId));
+    select.innerHTML = '<option value="">Sin lote vinculado</option>' + lotes.map(r => {
+      const prov = (Array.isArray(r.proveedores) ? r.proveedores[0] : r.proveedores)?.nombre || 'Sin proveedor';
+      const fecha = r.fecha_recepcion ? new Date(r.fecha_recepcion).toLocaleDateString('es-CO') : 'Fecha sin registrar';
+      const label = fecha + ' · ' + fmtPeso(Number(r.peso) || 0) + ' · ' + prov + ' · ' + (r.estado_producto || 'Recibido');
+      return '<option value="' + escapeHTML(r.id) + '">' + escapeHTML(label) + '</option>';
+    }).join('');
+    select.value = actual && lotes.some(r => String(r.id) === actual) ? actual : '';
+  }
+
+  $('producto').addEventListener('change', function(){ llenarLotes($('producto').value, null); });
+
   function abrirModal(item){
     editandoId = item ? item.id : null;
     $('storageForm').reset();
@@ -1276,6 +1298,8 @@
 
     if (item) {
       $('producto').value      = item.producto_id ?? '';
+      llenarLotes(item.producto_id, item);
+      $('lote').value          = item.recepcion_id || '';
       $('tipo').value          = item.tipo || '';
       $('ubicacion').value     = item.ubicacion || '';
       $('temperatura').value   = item.temperatura ?? '';
@@ -1286,6 +1310,7 @@
       $('modalTitle').textContent = 'Editar almacenamiento';
       $('saveBtn').textContent = 'Actualizar almacenamiento';
     } else {
+      llenarLotes($('producto').value, null);
       $('fecha').value = aInputFecha(ahora);
       $('modalTitle').textContent = 'Nuevo almacenamiento';
       $('saveBtn').textContent = 'Guardar almacenamiento';
