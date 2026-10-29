@@ -1718,6 +1718,19 @@
     return '<span class="pill ok">OK</span>';
   }
 
+  function enfocarProductoNotificado(){
+    let id = '';
+    try { id = new URLSearchParams(window.location.search).get('producto') || ''; } catch (e) {}
+    if (!id) return;
+    const filas = Array.from($('invTabla').querySelectorAll('tr[data-id]'));
+    const fila = filas.find(function(tr){ return String(tr.dataset.id) === String(id); });
+    if (!fila) return;
+    fila.classList.add('resaltado');
+    $('invSec').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    fila.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    try { history.replaceState(null, '', window.location.pathname + '#invSec'); } catch (e) {}
+  }
+
   function pintarInventario(filas){
     invFilas = filas;
     const total = filas.reduce(function(s, f){ return s + Number(f.disponible || 0); }, 0);
@@ -1742,6 +1755,7 @@
         '<td data-label="Estado">' + pillStockInv(f.estado_stock) + '</td>' +
       '</tr>';
     }).join('') : '<tr><td colspan="7" class="empty">No hay productos registrados.</td></tr>';
+    enfocarProductoNotificado();
   }
 
   async function cargarInventario(){
