@@ -452,12 +452,12 @@
               <label class="lbl" for="password">Contraseña</label>
               <div class="field-input">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-                <input type="password" id="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                <input type="password" id="password" placeholder="8+ caracteres, mayúscula, número y símbolo" autocomplete="new-password">
                 <button type="button" class="toggle-pass" id="togglePass" aria-label="Mostrar contraseña">
                   <svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
               </div>
-              <div class="field-error">La contraseña debe tener al menos 6 caracteres.</div>
+              <div class="field-error">Usa mínimo 8 caracteres, una mayúscula, un número y un símbolo; evita palabras comunes.</div>
             </div>
 
             <div class="field" id="confirmField">
@@ -473,7 +473,11 @@
           <div class="strength" id="strength" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
           <div class="strength-label" id="strengthLabel"></div>
           <div class="reqs">
-            <div class="req" id="reqLen"><span class="ck">✓</span>Mínimo 6 caracteres</div>
+            <div class="req" id="reqLen"><span class="ck">✓</span>Mínimo 8 caracteres</div>
+            <div class="req" id="reqUpper"><span class="ck">✓</span>Al menos una mayúscula</div>
+            <div class="req" id="reqNumber"><span class="ck">✓</span>Al menos un número</div>
+            <div class="req" id="reqSymbol"><span class="ck">✓</span>Al menos un carácter especial</div>
+            <div class="req" id="reqNoWords"><span class="ck">✓</span>Sin palabras comunes ni secuencias simples</div>
             <div class="req" id="reqMatch"><span class="ck">✓</span>Las dos contraseñas coinciden</div>
           </div>
         </section>
@@ -640,14 +644,32 @@
     togglePass.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
   });
 
+  function tienePalabraOsecuenciaDebil(p){
+    const v = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const comunes = ['password','contrasena','admin','usuario','deepsea','deepseaintelligence','marino','pescado','hola','welcome','letmein','qwerty','iloveyou','abc123','123456','000000'];
+    if (comunes.some(w => v.includes(w))) return true;
+    if (/(.)\1{3,}/i.test(p)) return true;
+    if (/(?:0123|1234|2345|3456|4567|5678|6789|9876|8765|7654|6543|5432|4321|abcd|bcde|cdef|qwer|asdf)/i.test(p)) return true;
+    return false;
+  }
+  function reglaContrasena(p){
+    if (p.length < 8) return 'La contraseña debe tener mínimo 8 caracteres.';
+    if (p !== p.trim()) return 'La contraseña no puede empezar ni terminar con espacios.';
+    if (p.length > 72) return 'La contraseña no puede superar los 72 caracteres.';
+    if (!/[A-Z]/.test(p)) return 'Incluye al menos una letra mayúscula.';
+    if (!/\d/.test(p)) return 'Incluye al menos un número.';
+    if (!/[^A-Za-z0-9]/.test(p)) return 'Incluye al menos un carácter especial, como !, @ o #.';
+    if (tienePalabraOsecuenciaDebil(p)) return 'Evita palabras comunes, repeticiones o secuencias simples.';
+    return '';
+  }
   function strengthScore(p){
     if (!p) return 0;
     let s = 0;
-    if (p.length >= 6) s++;
-    if (p.length >= 10) s++;
-    if (/[a-z]/i.test(p) && /\d/.test(p)) s++;
-    if (/[A-Z]/.test(p) && /[^A-Za-z0-9]/.test(p)) s++;
-    return Math.max(s, p.length >= 1 ? 1 : 0);
+    if (p.length >= 8) s++;
+    if (/[A-Z]/.test(p)) s++;
+    if (/\d/.test(p)) s++;
+    if (/[^A-Za-z0-9]/.test(p) && !tienePalabraOsecuenciaDebil(p)) s++;
+    return s;
   }
   function updateStrength(){
     const p = passInput.value;
@@ -659,8 +681,12 @@
     });
     strengthLbl.textContent = p ? labels[sc] : '';
     strengthLbl.style.color = p ? colors[sc - 1] : '';
-    reqLen.classList.toggle('ok', p.length >= 6);
-    reqMatch.classList.toggle('ok', p.length > 0 && p === confirmInput.value);
+    document.getElementById('reqLen').classList.toggle('ok', p.length >= 8);
+    document.getElementById('reqUpper').classList.toggle('ok', /[A-Z]/.test(p));
+    document.getElementById('reqNumber').classList.toggle('ok', /\d/.test(p));
+    document.getElementById('reqSymbol').classList.toggle('ok', /[^A-Za-z0-9]/.test(p));
+    document.getElementById('reqNoWords').classList.toggle('ok', p.length > 0 && !tienePalabraOsecuenciaDebil(p));
+    document.getElementById('reqMatch').classList.toggle('ok', p.length > 0 && p === confirmInput.value);
   }
   passInput.addEventListener('input', updateStrength);
   confirmInput.addEventListener('input', updateStrength);
@@ -693,11 +719,8 @@
     }
     if (n === 3){
       const pass = passInput.value;
-      // La contraseña no puede empezar/terminar con espacios (el login las recorta)
-      // ni pasar de 72 caracteres (límite real de Supabase).
-      if (pass.length < 6) { setInvalid(passField, 'La contraseña debe tener al menos 6 caracteres.'); ok = false; }
-      else if (pass !== pass.trim()) { setInvalid(passField, 'La contraseña no puede empezar ni terminar con espacios.'); ok = false; }
-      else if (pass.length > 72) { setInvalid(passField, 'La contraseña no puede superar los 72 caracteres.'); ok = false; }
+      const errorPass = reglaContrasena(pass);
+      if (errorPass) { setInvalid(passField, errorPass); ok = false; }
       if (confirmInput.value.length === 0 || confirmInput.value !== pass) { setInvalid(confirmField, 'Las contraseñas no coinciden.'); ok = false; }
     }
     return ok;
