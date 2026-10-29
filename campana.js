@@ -271,7 +271,7 @@
           tipo: ok ? 'ok' : 'warn',
           titulo: 'Norma ' + (ok ? 'verificada' : 'rechazada'),
           texto: nombreRel(n.productos) + ' — ' + (norma.codigo || '') + (!ok && n.comentario_revision ? ' · Motivo: ' + n.comentario_revision : ''),
-          fecha: fecha(n.fecha_revision), href: 'normas.html#productos' });
+          fecha: fecha(n.fecha_revision), href: 'normas.html?producto=' + encodeURIComponent(n.producto_id) + '#productos' });
       });
 
       // ---------- Todos: alertas de inventario y de proveedores ----------
