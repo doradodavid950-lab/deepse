@@ -1091,13 +1091,9 @@
           <small class="field-error"></small>
         </div>
         <div class="field">
-          <label for="dcVence">Fecha de vencimiento</label>
+          <label for="dcVence">Fecha de vencimiento *</label>
           <input type="date" id="dcVence">
           <small class="field-error"></small>
-          <label style="display:flex;align-items:center;gap:8px;margin-top:9px;font-size:12.5px;font-weight:600">
-            <input type="checkbox" id="dcSinVence" style="width:16px;height:16px;flex:none">
-            Este documento no tiene fecha de vencimiento
-          </label>
         </div>
         <div class="field full">
           <label>Vigencia (calcula el vencimiento)</label>
@@ -2848,8 +2844,7 @@
     }
     $('dcEmision').value = pn.fecha_emision || '';
     $('dcVence').value = pn.fecha_vencimiento || '';
-    $('dcSinVence').checked = !!pn.certificado && !pn.fecha_vencimiento;
-    $('dcVence').disabled = $('dcSinVence').checked;
+    $('dcVence').disabled = false;
     $('dcEmision').max = hoyISO();
     $('dcEmision').placeholder = '';
     $('dcVence').placeholder = '';
@@ -2871,11 +2866,10 @@
     let ok = true;
     marcarCampo('dcCert', cert ? '' : 'Completa este campo con el número, código o nombre real de la evidencia sugerida.'); if (!cert) ok = false;
     marcarCampo('dcEmision', !emision ? 'Indica la fecha de emisión.' : (emision > hoyISO() ? 'La emisión no puede ser futura.' : '')); if (!emision || emision > hoyISO()) ok = false;
-    const sinVencimiento = $('dcSinVence').checked;
     let msgVence = '';
-    if (!sinVencimiento && !vence) msgVence = 'Indica la fecha de vencimiento o marca que el documento no vence.';
-    else if (!sinVencimiento && emision && vence <= emision) msgVence = 'Debe ser posterior a la emisión.';
-    else if (!sinVencimiento && vence < hoyISO()) msgVence = 'El documento ya está vencido.';
+    if (!vence) msgVence = 'Indica la fecha de vencimiento.';
+    else if (emision && vence <= emision) msgVence = 'Debe ser posterior a la emisión.';
+    else if (vence < hoyISO()) msgVence = 'El documento ya está vencido.';
     marcarCampo('dcVence', msgVence); if (msgVence) ok = false;
     if (!ok) return;
 
@@ -2896,7 +2890,7 @@
     const btn = $('dcGuardar');
     btn.disabled = true;
     const { error } = await supabaseClient.from('producto_normas')
-      .update({ estado: 'Declarada', certificado: cert, entidad_emisora: emisora || null, fecha_emision: emision || null, fecha_vencimiento: sinVencimiento ? null : (vence || null) })
+      .update({ estado: 'Declarada', certificado: cert, entidad_emisora: emisora || null, fecha_emision: emision || null, fecha_vencimiento: vence })
       .eq('id', declarandoId);
     btn.disabled = false;
     if (error) { mostrarToast(textoError(error), 'error'); return; }
@@ -3026,10 +3020,6 @@
   }
   function textoVigencia(){
     const v = $('dcVence').value;
-    if ($('dcSinVence').checked) {
-      $('dcVigTxt').textContent = 'Se guardará sin fecha de vencimiento. Confirma que el documento realmente no tenga una fecha de caducidad.';
-      return;
-    }
     $('dcVigTxt').textContent = v ? 'Vence el ' + fechaISO(v) + '. Te avisaremos 30 días antes.' : 'Elige la fecha de emisión y cuánto dura el documento.';
   }
   function iniciarVigencia(){
@@ -3048,10 +3038,6 @@
     const c = ev.target.closest('.gd-chip');
     if (!c) return;
     const a = Number(c.dataset.a);
-    if ($('dcSinVence').checked) {
-      $('dcSinVence').checked = false;
-      $('dcVence').disabled = false;
-    }
     marcarChip(a);
     if (a === 0) { $('dcVence').focus(); return; }
     const e = $('dcEmision').value;
@@ -3066,26 +3052,12 @@
     textoVigencia();
   });
   $('dcVence').addEventListener('change', function(){
-    if (this.value) $('dcSinVence').checked = false;
-    this.disabled = $('dcSinVence').checked;
     const e = $('dcEmision').value, v = $('dcVence').value;
     let act = null;
     if (e && v) [1, 2, 3, 5].forEach(function(a){ if (sumarAnios(e, a) === v) act = a; });
     marcarChip(act);
     textoVigencia();
   });
-  $('dcSinVence').addEventListener('change', function(){
-    $('dcVence').disabled = this.checked;
-    if (this.checked) {
-      $('dcVence').value = '';
-      marcarChip(null);
-      $('dcVigTxt').textContent = 'Se guardará sin fecha de vencimiento. Confirma que el documento realmente no tenga una fecha de caducidad.';
-      marcarCampo('dcVence', '');
-    } else {
-      textoVigencia();
-    }
-  });
-
   // ---------- detalles y valoración (auditor) ----------
   let detId = null;
   function abrirDetalleNorma(id){
