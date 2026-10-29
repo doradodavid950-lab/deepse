@@ -1055,11 +1055,15 @@
         <div class="field full">
           <label for="dcTipo">¿Qué documento tienes?</label>
           <select id="dcTipo">
+            <option value="Procedimientos y registros de higiene">Procedimientos y registros de higiene</option>
+            <option value="Certificado ISO 22000">Certificado ISO 22000</option>
+            <option value="Etiqueta del producto">Etiqueta del producto</option>
+            <option value="Documento sanitario por validar">Documento sanitario por validar</option>
             <option value="BPM">Certificado BPM</option>
             <option value="Registro sanitario">Registro sanitario</option>
             <option value="HACCP">Certificado HACCP</option>
             <option value="Análisis de laboratorio">Análisis de laboratorio</option>
-            <option value="">Otro documento</option>
+            <option value="Otro documento">Otro documento</option>
           </select>
         </div>
         <div class="field full">
@@ -1070,7 +1074,8 @@
         <div class="field full">
           <label for="dcEmisoraSel">Entidad emisora</label>
           <select id="dcEmisoraSel">
-            <option value="">Elige una opción</option>
+            <option value="">Elige la entidad que aparece en tu evidencia</option>
+            <option value="Fabricante / empresa">Fabricante / empresa</option>
             <option value="INVIMA">INVIMA</option>
             <option value="ICA">ICA</option>
             <option value="Secretaría de Salud">Secretaría de Salud</option>
@@ -2839,6 +2844,8 @@
     $('dcEmision').value = pn.fecha_emision || '';
     $('dcVence').value = pn.fecha_vencimiento || '';
     $('dcEmision').max = hoyISO();
+    $('dcEmision').placeholder = '';
+    $('dcVence').placeholder = '';
     iniciarVigencia();
     ['dcCert', 'dcEmision', 'dcVence'].forEach(function(c){ marcarCampo(c, ''); });
     abrirVentana('modalDecl');
@@ -2855,7 +2862,7 @@
     const emision = $('dcEmision').value;
     const vence = $('dcVence').value;
     let ok = true;
-    marcarCampo('dcCert', cert ? '' : 'Escribe el número o nombre del certificado.'); if (!cert) ok = false;
+    marcarCampo('dcCert', cert ? '' : 'Completa este campo con el número, código o nombre real de la evidencia sugerida.'); if (!cert) ok = false;
     marcarCampo('dcEmision', !emision ? 'Indica la fecha de emisión.' : (emision > hoyISO() ? 'La emisión no puede ser futura.' : '')); if (!emision || emision > hoyISO()) ok = false;
     let msgVence = '';
     if (!vence) msgVence = 'Indica la fecha de vencimiento.';
@@ -2932,7 +2939,27 @@
   });
 
   // ---------- ayuda guiada para declarar (opciones en vez de escribir) ----------
-  const TIPOS_DOC = ['BPM', 'Registro sanitario', 'HACCP', 'Análisis de laboratorio'];
+  const TIPOS_DOC = ['Procedimientos y registros de higiene', 'Certificado ISO 22000', 'Etiqueta del producto', 'Documento sanitario por validar', 'BPM', 'Registro sanitario', 'HACCP', 'Análisis de laboratorio', 'Otro documento'];
+
+  // Sugerencias por norma: ayudan a completar el formulario, pero nunca inventan número ni fechas.
+  const SUGERENCIAS_DOC = {
+    'NOR-0011': { tipo: 'Procedimientos y registros de higiene', entidad: 'Fabricante / empresa',
+      numero: 'Ej. código del procedimiento o registro que vas a presentar',
+      emision: 'Fecha de elaboración o última revisión del registro',
+      vence: 'Si el documento no vence, consulta al auditor antes de registrar una fecha' },
+    'NOR-0014': { tipo: 'Documento sanitario por validar', entidad: '',
+      numero: 'No declares hasta confirmar la referencia normativa y el documento aplicable',
+      emision: 'Fecha real indicada en el documento, si corresponde',
+      vence: 'Fecha real de vencimiento, si corresponde' },
+    'NOR-0016': { tipo: 'Certificado ISO 22000', entidad: '',
+      numero: 'Número que aparece en el certificado ISO 22000',
+      emision: 'Fecha de emisión que aparece en el certificado',
+      vence: 'Fecha de vencimiento que aparece en el certificado' },
+    'NOR-0018': { tipo: 'Etiqueta del producto', entidad: 'Fabricante / empresa',
+      numero: 'Código o versión de la etiqueta aprobada por calidad',
+      emision: 'Fecha de aprobación o revisión de la etiqueta',
+      vence: 'Si no tiene vencimiento, confirma con el auditor cómo registrarlo' }
+  };
 
   function llenarGuiaDeclaracion(pn, n){
     $('dcIntro').innerHTML = 'Esta norma es <b>' + (pn.obligatoria ? 'obligatoria' : 'recomendada') +
@@ -2945,16 +2972,22 @@
     TIPOS_DOC.forEach(function(t){
       if (!tipo && (numero === t || numero.indexOf(t + ' ') === 0)) { tipo = t; numero = numero.slice(t.length).trim(); }
     });
-    if (!pn.certificado) {
+    const sugerencia = SUGERENCIAS_DOC[n.codigo] || {};
+    if (!pn.certificado && !tipo) {
       const ref = ((n.nombre || '') + ' ' + (n.codigo || '')).toLowerCase();
-      if (ref.indexOf('bpm') >= 0) tipo = 'BPM';
+      if (sugerencia.tipo) tipo = sugerencia.tipo;
+      else if (ref.indexOf('bpm') >= 0) tipo = 'BPM';
       else if (ref.indexOf('haccp') >= 0) tipo = 'HACCP';
       else if (ref.indexOf('sanitari') >= 0) tipo = 'Registro sanitario';
+      else tipo = 'Otro documento';
     }
     $('dcTipo').value = tipo;
     $('dcCert').value = numero;
-    // entidad: opciones fijas; si es otra, aparece el campo de texto
-    const ent = pn.entidad_emisora || n.entidad || '';
+    $('dcCert').placeholder = sugerencia.numero || 'Escribe el número, código o nombre real que aparece en la evidencia';
+    $('dcEmision').title = sugerencia.emision || 'Usa la fecha real que aparece en el documento';
+    $('dcVence').title = sugerencia.vence || 'Usa la fecha real que aparece en el documento';
+    // No confundimos la entidad que publica la norma con quien emitió la evidencia.
+    const ent = pn.entidad_emisora || sugerencia.entidad || '';
     const sel = $('dcEmisoraSel');
     const hay = Array.prototype.some.call(sel.options, function(o){ return o.value === ent && o.value !== '__otra'; });
     sel.value = hay ? ent : (ent ? '__otra' : '');
