@@ -2825,7 +2825,7 @@
 
   function tipoSugeridoDeNorma(n){
     const texto = ((n.codigo || '') + ' ' + (n.nombre || '') + ' ' + (n.evidencia_requerida || '')).toLowerCase();
-    if (/iso\\s*22000/.test(texto)) return 'Certificado ISO 22000';
+    if (/iso\s*22000/.test(texto)) return 'Certificado ISO 22000';
     if (/5109|etiquetado|etiqueta del producto/.test(texto)) return 'Etiqueta del producto';
     if (/235 de 2021|ica|referencia normativa/.test(texto)) return 'Documento sanitario por validar';
     if (/codex|higiene|limpieza y desinfección/.test(texto)) return 'Procedimientos y registros de higiene';
