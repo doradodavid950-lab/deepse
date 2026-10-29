@@ -247,7 +247,7 @@
           const norma = n.normas_catalogo || {};
           lista.push({ key: 'npv:' + n.id, tipo: 'pend', titulo: 'Norma por verificar',
             texto: nombreRel(n.productos) + ' — ' + (norma.codigo || '') + ' ' + (norma.nombre || '') + ' · ' + quien(n.creado_por),
-            fecha: '', href: 'normas.html#productos' });
+            fecha: '', href: 'normas.html?producto=' + encodeURIComponent(n.producto_id) + '#productos' });
         });
       }
 
@@ -282,7 +282,7 @@
           tipo: agotado ? 'warn' : 'pend',
           titulo: agotado ? 'Producto agotado' : 'Stock bajo',
           texto: i.nombre + ' — disponible ' + kg(i.disponible),
-          fecha: '', href: 'almacenamiento.html?producto=' + encodeURIComponent(i.producto_id) + '#inventario' });
+          fecha: '', href: 'almacenamiento.html?producto=' + encodeURIComponent(i.producto_id) + '#invSec' });
       });
       ((rec.data) || []).forEach(function(r){
         const estado = r.estado_producto || 'Fresco';
