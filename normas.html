@@ -2801,6 +2801,11 @@
     try { localStorage.setItem(CLAVE_PREF_DECLARACION, JSON.stringify(datos)); }
     catch (e) { /* almacenamiento local no disponible */ }
   }
+  // Preferencias separadas por norma para no reutilizar un tipo o emisor incorrecto.
+  function preferenciasDeNorma(normaId){
+    const datos = leerPreferenciasDeclaracion();
+    return datos.normas && datos.normas[normaId] ? datos.normas[normaId] : {};
+  }
   function marcarCampo(idCampo, mensaje){
     const campo = $(idCampo).closest('.field');
     campo.classList.toggle('invalid', !!mensaje);
@@ -2815,13 +2820,12 @@
     const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma' };
     $('dcInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
     llenarGuiaDeclaracion(pn, n);
-    const preferencias = leerPreferenciasDeclaracion();
-    // Si no hay certificado guardado para esta norma, reutiliza el tipo elegido la última vez.
+    const preferencias = preferenciasDeNorma(pn.norma_id);
+    // Reutiliza solo las preferencias de esta misma norma; nunca copia certificados ni fechas.
     if (!pn.certificado && preferencias.tipo && Array.prototype.some.call($('dcTipo').options, function(o){ return o.value === preferencias.tipo; })) {
       $('dcTipo').value = preferencias.tipo;
     }
-    // Solo reutiliza la entidad anterior cuando ni la declaración ni el catálogo indican una.
-    if (!pn.entidad_emisora && !n.entidad && preferencias.emisora) {
+    if (!pn.entidad_emisora && preferencias.emisora) {
       const selEntidad = $('dcEmisoraSel');
       const existeEntidad = Array.prototype.some.call(selEntidad.options, function(o){ return o.value === preferencias.emisora; });
       selEntidad.value = existeEntidad ? preferencias.emisora : '__otra';
@@ -2857,11 +2861,14 @@
     if (!ok) return;
 
     const chipVigencia = $('dcVig').querySelector('.gd-chip.on');
-    const preferencias = leerPreferenciasDeclaracion();
+    const datosPreferencias = leerPreferenciasDeclaracion();
+    if (!datosPreferencias.normas) datosPreferencias.normas = {};
+    const preferencias = preferenciasDeNorma((mapaCat.get(buscarPN(declarandoId).norma_id) || {}).id || buscarPN(declarandoId).norma_id);
     preferencias.tipo = tipoCert;
     preferencias.emisora = emisora || '';
     if (chipVigencia && ['1','2','3','5'].indexOf(chipVigencia.dataset.a) >= 0) preferencias.vigencia = Number(chipVigencia.dataset.a);
-    guardarPreferenciasDeclaracion(preferencias);
+    datosPreferencias.normas[buscarPN(declarandoId).norma_id] = preferencias;
+    guardarPreferenciasDeclaracion(datosPreferencias);
 
     const btn = $('dcGuardar');
     btn.disabled = true;
