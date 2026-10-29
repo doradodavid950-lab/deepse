@@ -1280,7 +1280,10 @@
       const label = fecha + ' · ' + fmtPeso(Number(r.peso) || 0) + ' · ' + prov + ' · ' + (r.estado_producto || 'Recibido');
       return '<option value="' + escapeHTML(r.id) + '">' + escapeHTML(label) + '</option>';
     }).join('');
-    select.value = actual && lotes.some(r => String(r.id) === actual) ? actual : '';
+    if (actual && !lotes.some(r => String(r.id) === actual)) {
+      select.insertAdjacentHTML('beforeend', '<option value="' + escapeHTML(actual) + '" data-historico="true">Lote vinculado anteriormente</option>');
+    }
+    select.value = actual || '';
   }
 
   $('producto').addEventListener('change', function(){ llenarLotes($('producto').value, null); });
