@@ -102,7 +102,7 @@
     if (!cliente || !cliente.channel || !idUsuario) return;
     if (canalTiempoReal) { try { cliente.removeChannel(canalTiempoReal); } catch (e) {} }
     let canal = cliente.channel('dsi-notificaciones-' + idUsuario);
-    ['productos','recepciones','inventario_productos','proveedores'].forEach(function(tabla){
+    ['productos','recepciones','ventas','proveedores'].forEach(function(tabla){
       canal = canal.on('postgres_changes', { event: '*', schema: 'public', table: tabla }, programarRecarga);
     });
     if (esAdmin || esAuditor) canal = canal.on('postgres_changes', { event: '*', schema: 'public', table: 'controles_calidad' }, programarRecarga);
