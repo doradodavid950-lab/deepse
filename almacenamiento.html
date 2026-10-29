@@ -978,6 +978,12 @@
     if (!productoId) errores.producto = 'Selecciona un producto.';
     else if (!datos.productos.some(p => String(p.id) === productoId)) errores.producto = 'El producto seleccionado ya no existe.';
 
+    const loteId = $('lote').value || null;
+    const lotesProducto = (datos.recepciones || []).filter(r => String(r.producto_id) === String(productoId));
+    const opcionLote = $('lote').selectedOptions[0];
+    if (lotesProducto.length && !loteId && editandoId === null) errores.lote = 'Selecciona el lote de origen del almacenamiento.';
+    if (loteId && !lotesProducto.some(r => String(r.id) === String(loteId)) && !(editandoId !== null && opcionLote && opcionLote.dataset.historico === 'true')) errores.lote = 'El lote no corresponde al producto seleccionado.';
+
     const tipo = $('tipo').value;
     if (!tipo) errores.tipo = 'Selecciona el tipo de almacenamiento.';
     else if (!TIPOS.includes(tipo)) errores.tipo = 'Tipo no válido.';
