@@ -3,8 +3,8 @@
  *   <script src="menu-usuario.js" defer></script>
  *
  * Qué hace:
- *  - Computador: al tocar el avatar (#userChip) se despliega un panel con Mi cuenta, Ayuda y Cerrar sesión.
- *  - Celular: el avatar pequeño (#userMini) abre una hoja desde abajo con el mismo contenido (Mi cuenta, Ayuda y Cerrar sesión).
+ *  - Computador: al tocar el avatar (#userChip) se despliega un panel con Mi cuenta, Configuración, Ayuda y Cerrar sesión.
+ *  - Celular: el avatar pequeño (#userMini) abre una hoja desde abajo con el mismo contenido (Mi cuenta, Configuración, Ayuda y Cerrar sesión).
  *  - Cerrar sesión pide confirmación, cierra en Supabase y limpia los datos guardados del dispositivo.
  *  - Registra el service worker (sw.js) para que las visitas siguientes carguen casi al instante.
  * No depende de la página: crea su propio HTML y estilos (los estilos del panel están en estilos.css).
@@ -23,6 +23,7 @@
     const movil = window.matchMedia('(max-width:1000px)');
     const ic = {
       user: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>',
+      settings: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 2.9-.2-.1a1.7 1.7 0 0 0-1.9.1 1.7 1.7 0 0 0-.8 1.6v.2H9v-.2a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.8.1l-.2.1-1.7-2.9.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3v-3.4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1L6 4.7l.2.1a1.7 1.7 0 0 0 1.8.1A1.7 1.7 0 0 0 9 3.3v-.2h6.2v.2a1.7 1.7 0 0 0 .8 1.6 1.7 1.7 0 0 0 1.9-.1l.2-.1 1.7 2.9-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg>',
       help: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 1 1 3.6 2.4c-.7.4-1.1.9-1.1 1.8"/><circle cx="12" cy="17" r=".6"/></svg>',
       out:  '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4"/><path d="M16 8l4 4-4 4M20 12H9"/></svg>'
     };
@@ -42,7 +43,8 @@
         '<div class="um-av av" id="umAv">C</div>' +
         '<div class="um-quien"><b id="umNombre">Usuario</b><span id="umCorreo"></span></div>' +
       '</div>' +
-      '<a class="um-item" role="menuitem" href="cuenta.html"><span class="um-ic um-ic-az">' + ic.user + '</span><span class="um-tx"><b>Mi cuenta</b><small>Datos, seguridad y sistema</small></span></a>' +
+      '<a class="um-item" role="menuitem" href="cuenta.html"><span class="um-ic um-ic-az">' + ic.user + '</span><span class="um-tx"><b>Mi cuenta</b><small>Datos y seguridad</small></span></a>' +
+      '<a class="um-item" role="menuitem" href="configuracion.html"><span class="um-ic um-ic-az">' + ic.settings + '</span><span class="um-tx"><b>Configuración</b><small>Preferencias del sistema</small></span></a>' +
       '<a class="um-item" role="menuitem" href="ayuda.html"><span class="um-ic um-ic-vi">' + ic.help + '</span><span class="um-tx"><b>Ayuda</b><small>Guías y preguntas frecuentes</small></span></a>' +
       '<div class="um-sep"></div>' +
       '<button class="um-item um-salir" role="menuitem" type="button" id="umSalir"><span class="um-ic um-ic-ro">' + ic.out + '</span><span class="um-tx"><b>Cerrar sesión</b></span></button>';
