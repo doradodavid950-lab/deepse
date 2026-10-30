@@ -461,6 +461,7 @@
     table.inv td.empty{display:block;text-align:center}
     table.inv td.empty::before{content:none}}
 
+<<<<<<< HEAD
   /* Gestión de clientes: pestañas adaptables */
   .inv-client-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
   .inv-client-tab{height:48px;border:1px solid var(--borde);border-radius:14px;background:#fff;color:var(--texto-2);font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px}
@@ -474,6 +475,8 @@
   .client-type-options input{accent-color:var(--azul-medio)}
   @media(max-width:700px){.inv-client-tabs{gap:7px}.inv-client-tab{font-size:13px}.client-toolbar{align-items:stretch}.client-toolbar .field-input{width:100%}.client-form-grid{grid-template-columns:1fr}.client-form-grid .full{grid-column:auto}}
   @media(max-width:520px){#clientesSec .table-wrap{overflow:visible}#clientesTabla tr{display:grid;grid-template-columns:1fr auto;gap:5px;padding:12px 8px;border-bottom:1px solid #EDF2F8}#clientesTabla td{border:0;padding:2px 4px;font-size:13px}#clientesTabla td[data-label="Acciones"]{grid-column:2;grid-row:1/4;align-self:center}#clientesTabla td[data-label="Tipo"],#clientesTabla td[data-label="Contacto"]{grid-column:1}#clientesTabla tr:first-child{border-top:1px solid #EDF2F8}}
+=======
+>>>>>>> 7aa7ac9 (seraaaaa)
 
 </style>
 
@@ -616,6 +619,7 @@
     </div>
   </section>
 
+<<<<<<< HEAD
 <!-- Pestañas de inventario y clientes -->
   <div class="inv-client-tabs" role="tablist" aria-label="Almacenamiento">
     <button type="button" class="inv-client-tab active" id="tabInventario" role="tab" aria-selected="true"><svg class="i"><use href="#i-box"/></svg>Inventario</button>
@@ -623,6 +627,9 @@
   </div>
 
   <!-- ===== INVENTARIO DISPONIBLE ===== -->
+=======
+<!-- ===== INVENTARIO DISPONIBLE ===== -->
+>>>>>>> 7aa7ac9 (seraaaaa)
   <section class="c" id="invSec" style="margin-top:14px">
     <div class="panel-head">
       <h3>Inventario disponible</h3>
@@ -663,6 +670,7 @@
     </div>
   </section>
 
+<<<<<<< HEAD
   <section class="c" id="clientesSec" hidden style="margin-top:14px">
     <div class="client-toolbar"><h3>Clientes registrados</h3><div style="display:flex;gap:9px;flex-wrap:wrap"><div class="field-input"><svg class="i"><use href="#i-search"/></svg><input id="buscarClienteInv" type="search" placeholder="Buscar cliente..." aria-label="Buscar cliente"></div><button type="button" class="bp" id="nuevoClienteInv"><svg class="i"><use href="#i-plus"/></svg>Registrar cliente</button></div></div>
     <div class="table-wrap"><table class="simple"><thead><tr><th>Cliente</th><th>Tipo</th><th>Contacto</th><th>Documento</th><th>Acciones</th></tr></thead><tbody id="clientesTabla"><tr><td colspan="5" class="empty">Cargando clientes...</td></tr></tbody></table></div>
@@ -670,6 +678,10 @@
 </main>
 
 <div class="modal-overlay" id="clienteInvModal" role="dialog" aria-modal="true" aria-labelledby="clienteInvTitulo"><div class="modal-card"><div class="modal-head"><h3 id="clienteInvTitulo">Registrar cliente</h3><button type="button" class="modal-close" id="cerrarClienteInv" aria-label="Cerrar"><svg class="i"><use href="#i-x"/></svg></button></div><form id="clienteInvForm" novalidate><div class="client-form-grid"><div class="field"><label for="ciNombre">Nombre o razón social *</label><input id="ciNombre" required maxlength="120"></div><div class="field"><label for="ciTipo">Tipo de cliente *</label><select id="ciTipo"><option>Restaurante</option><option>Hotel</option><option>Supermercado</option><option>Distribuidor</option><option>Persona natural</option><option>Otro</option></select></div><div class="field"><label for="ciDocTipo">Tipo de documento</label><select id="ciDocTipo"><option value="">No especificado</option><option>CC</option><option>NIT</option><option>CE</option><option>Pasaporte</option><option>Otro</option></select></div><div class="field"><label for="ciDocNumero">Número de documento</label><input id="ciDocNumero" maxlength="30"></div><div class="field"><label for="ciTelefono">Teléfono *</label><input id="ciTelefono" required maxlength="30"></div><div class="field"><label for="ciCorreo">Correo</label><input id="ciCorreo" type="email" maxlength="120"></div><div class="field full"><label for="ciDireccion">Dirección / ciudad</label><input id="ciDireccion" maxlength="180"></div></div><div class="modal-footer"><button type="button" class="bg" id="cancelarClienteInv">Cancelar</button><button type="submit" class="bp" id="guardarClienteInv">Guardar cliente</button></div></form></div></div>
+=======
+</main>
+
+>>>>>>> 7aa7ac9 (seraaaaa)
 
 <button type="button" class="fab" id="newStorageFab" aria-label="Nuevo almacenamiento"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
 
@@ -1898,6 +1910,7 @@
 <script src="vista-administrador.js" defer></script>
 <script src="menu-usuario.js" defer></script>
 
+<<<<<<< HEAD
 <script>
 (function(){'use strict';
  const $=id=>document.getElementById(id); if(!window.DSI||!DSI.cliente)return;
@@ -1914,5 +1927,8 @@
  $('clienteInvForm').addEventListener('submit',async e=>{e.preventDefault();if(busy)return;const nombre=$('ciNombre').value.trim(),telefono=$('ciTelefono').value.trim(),correo=$('ciCorreo').value.trim();if(nombre.length<2||!telefono){alert('Completa el nombre y el teléfono.');return;}const payload={nombre,tipo:$('ciTipo').value,documento_tipo:$('ciDocTipo').value||null,documento_numero:$('ciDocNumero').value.trim()||null,telefono,correo:correo||null,direccion:$('ciDireccion').value.trim()||null};busy=true;$('guardarClienteInv').disabled=true;const res=editId?await db.from('clientes').update(payload).eq('id',editId):await db.from('clientes').insert(payload);busy=false;$('guardarClienteInv').disabled=false;if(res.error){console.error(res.error);alert(/clientes_documento_por_usuario_uidx/i.test(res.error.message)?'Ya existe un cliente con ese documento.':'No se pudo guardar el cliente. Revisa los datos.');return;}cerrar();await cargar();});
 })();
 </script>
+=======
+
+>>>>>>> 7aa7ac9 (seraaaaa)
 </body>
 </html>
