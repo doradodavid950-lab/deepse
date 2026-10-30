@@ -830,6 +830,35 @@
       .catch(function(){ avisar('No se pudo borrar la caché'); });
   });
 
+  // ---------- Nombre y avatar del encabezado ----------
+  // Las demás páginas pintan estos datos; aquí faltaba, por eso se quedaba en "Cargando..."
+  function pintarUsuario(u, perfil){
+    const meta = u.user_metadata || {};
+    const nombre = ((perfil && perfil.nombre) || meta.full_name || meta.name || (u.email || '').split('@')[0] || 'Usuario').trim() || 'Usuario';
+    $('topUserName').textContent = nombre;
+    $('topAvatar').textContent = nombre.charAt(0).toUpperCase();
+  }
+
+  async function cargarUsuario(){
+    let cliente = null;
+    for (let i = 0; i < 40 && !(cliente = window.DSI && window.DSI.cliente && window.DSI.cliente()); i++) {
+      await new Promise(function(r){ setTimeout(r, 50); });   // espera a que cargue el SDK
+    }
+    if (!cliente) { $('topUserName').textContent = 'Usuario'; return; }
+    try {
+      const res = await cliente.auth.getSession();
+      const session = res.data && res.data.session;
+      if (!session) { window.location.replace('login.html'); return; }
+      pintarUsuario(session.user, null);                      // al instante, con los datos de la sesión
+      const r = await cliente.from('perfiles').select('nombre').eq('id', session.user.id).maybeSingle();
+      if (r && r.data && r.data.nombre) pintarUsuario(session.user, r.data);
+    } catch (err) {
+      console.error('No se pudo cargar el usuario:', err);
+      if ($('topUserName').textContent.trim() === 'Cargando...') $('topUserName').textContent = 'Usuario';
+    }
+  }
+
+  cargarUsuario();
   pintar();
   tamano();
 })();

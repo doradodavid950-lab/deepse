@@ -402,6 +402,45 @@
 }
 </style>
 
+
+<style id="mc-diseno-b">
+  /* ===== Mi cuenta · diseño B (portada con avatar) ===== */
+  .mc-perfil{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px 22px}
+  .mc-av{position:relative;z-index:1;width:92px;height:92px;border-radius:50%;margin-top:-58px;border:5px solid #fff;color:#fff;font-size:40px;font-weight:700;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1E66F5,#3FA9FF);box-shadow:0 14px 28px rgba(30,102,245,.35)}
+  .mc-perfil h2{font-size:24px;line-height:1.2;color:var(--azul-oscuro);margin-top:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mc-correo{font-size:15px;color:var(--texto-2);margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mc-perfil .pf-tags{justify-content:center}
+  .mc-edit{margin-top:16px;padding:0 26px}
+  .mc-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;width:100%;margin-top:20px;text-align:left}
+  .mc-stats>div{background:var(--campo);border:1px solid var(--borde);border-radius:16px;padding:12px 14px;min-width:0}
+  .mc-stats dt{font-size:12.5px;color:var(--texto-2)}
+  .mc-stats dd{font-size:15px;font-weight:700;color:var(--azul-oscuro);margin-top:2px;overflow-wrap:anywhere}
+  .mc-g{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  .mc-g .c h3{margin-bottom:6px}
+  .mc-fila{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #EDF2F8}
+  .mc-fila:last-child{border-bottom:0}
+  .mc-ic{width:42px;height:42px;border-radius:13px;flex:none;color:#fff;display:flex;align-items:center;justify-content:center}
+  .mc-ic svg.i{width:21px;height:21px}
+  .mc-t{flex:1;min-width:0}
+  .mc-t b{display:block;font-size:14.5px}
+  .mc-t span{display:block;font-size:12.5px;color:var(--texto-2);overflow-wrap:anywhere}
+  .mc-t a{color:inherit}
+  .mc-creadores{text-align:center;padding:6px 0 10px}
+  .mc-creadores>p{font-size:12px;color:#8DA0B8;margin-bottom:8px}
+  .mc-lista{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px}
+  .mc-chip{display:inline-flex;align-items:center;gap:8px;padding:3px 6px;font-size:12.5px;font-weight:400;color:#8DA0B8}
+  .mc-chip i{font-style:normal;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#DCE8F6;color:#7A90AB;font-size:10px;font-weight:400}
+  @media (max-width:1180px){.mc-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media (max-width:1000px){
+    .mc-av{margin-top:0;width:84px;height:84px;font-size:36px}
+    .mc-perfil{padding:18px 16px 18px}
+    .mc-perfil h2{font-size:21px}
+    .mc-stats{grid-template-columns:1fr 1fr;gap:8px}
+    .mc-stats>div:nth-child(1),.mc-stats>div:nth-child(2),.mc-stats>div:nth-child(5){grid-column:1/-1}
+    .mc-g{grid-template-columns:1fr;gap:12px}
+    .mc-chip{font-size:13px}
+  }
+</style>
 </head>
 <body>
 
@@ -506,63 +545,72 @@
   </div>
 
   <!-- ===== PERFIL ===== -->
-  <section class="c pf-card">
-    <div class="pf-av" id="pfAvatar" aria-hidden="true">C</div>
-    <div class="pf-id">
-      <h2 id="pfNombre">Cargando...</h2>
-      <p id="pfCorreo">&nbsp;</p>
-      <div class="pf-tags"><span class="pf-tag pf-rol" id="pfRol">—</span><span class="pf-tag pf-ok">Cuenta activa</span></div>
-    </div>
-    <button type="button" class="bp pf-edit" data-abrir="mdlDatos"><span aria-hidden="true">✎</span> Editar datos</button>
+  <section class="c mc-perfil">
+    <div class="mc-av" id="pfAvatar" aria-hidden="true">C</div>
+    <h2 id="pfNombre">Cargando...</h2>
+    <p class="mc-correo" id="pfCorreo">&nbsp;</p>
+    <div class="pf-tags"><span class="pf-tag pf-rol" id="pfRol">—</span><span class="pf-tag pf-ok">Cuenta activa</span></div>
+    <button type="button" class="bp mc-edit" data-abrir="mdlDatos"><span aria-hidden="true">✎</span> Editar datos</button>
+
+    <!-- Datos personales -->
+    <dl class="mc-stats">
+      <div><dt>Nombre</dt><dd id="dNombre">—</dd></div>
+      <div><dt>Correo</dt><dd id="dCorreo">—</dd></div>
+      <div><dt>Teléfono</dt><dd id="dTel">—</dd></div>
+      <div><dt>Establecimiento</dt><dd id="dEst">—</dd></div>
+      <div><dt>Rol</dt><dd id="dRol">—</dd></div>
+    </dl>
   </section>
 
-  <div class="pf-cols">
-    <!-- ===== DATOS PERSONALES ===== -->
+  <div class="mc-g">
+    <!-- ===== SEGURIDAD ===== -->
     <section class="c">
-      <h3>Datos personales <button type="button" class="pf-mini" data-abrir="mdlDatos">Editar</button></h3>
-      <dl class="pf-lista">
-        <div><dt>Nombre</dt><dd id="dNombre">—</dd></div>
-        <div><dt>Correo</dt><dd id="dCorreo">—</dd></div>
-        <div><dt>Teléfono</dt><dd id="dTel">—</dd></div>
-        <div><dt>Establecimiento</dt><dd id="dEst">—</dd></div>
-        <div><dt>Rol</dt><dd id="dRol">—</dd></div>
-      </dl>
+      <h3>Seguridad y preferencias</h3>
+      <div class="mc-fila">
+        <span class="mc-ic" style="background:var(--g-naranja)"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg></span>
+        <div class="mc-t"><b>Contraseña</b><span id="passInfo">Última vez: —</span></div>
+        <button type="button" class="pf-mini" data-abrir="mdlPass">Cambiar</button>
+      </div>
+      <div class="mc-fila">
+        <span class="mc-ic" style="background:var(--g-morado)"><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg></span>
+        <div class="mc-t"><b>Cierre automático por inactividad</b><span>Después de 2 horas sin usar el sistema</span></div>
+        <button type="button" class="pf-mini pf-ver" data-abrir="mdlInactividad">Ver</button>
+      </div>
+      <div class="mc-fila">
+        <span class="mc-ic" style="background:var(--g-azul)"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg></span>
+        <div class="mc-t"><b>Notificaciones</b><span>Campana de alertas del sistema</span></div>
+        <button type="button" class="pf-mini pf-ver" data-abrir="mdlNotif">Ver</button>
+      </div>
     </section>
 
-    <div class="pf-col2">
-      <!-- ===== SEGURIDAD Y PREFERENCIAS ===== -->
-      <section class="c">
-        <h3>Seguridad y preferencias</h3>
-        <div class="pf-fila">
-          <div class="t"><b>Contraseña</b><span class="s" id="passInfo">Última vez: —</span></div>
-          <button type="button" class="pf-mini" data-abrir="mdlPass">Cambiar</button>
-        </div>
-        <div class="pf-fila">
-          <div class="t"><b>Cierre automático por inactividad</b><span class="s">Después de 2 horas sin usar el sistema</span></div>
-          <button type="button" class="pf-mini pf-ver" data-abrir="mdlInactividad">Ver</button>
-        </div>
-        <div class="pf-fila">
-          <div class="t"><b>Notificaciones</b><span class="s">Campana de alertas del sistema</span></div>
-          <button type="button" class="pf-mini pf-ver" data-abrir="mdlNotif">Ver</button>
-        </div>
-      </section>
-
-      <!-- ===== INFORMACIÓN DEL SISTEMA ===== -->
-      <section class="c">
-        <h3>Información del sistema</h3>
-        <dl class="pf-lista">
-          <div><dt>Aplicación</dt><dd>Deep Sea Intelligence</dd></div>
-          <div><dt>Versión</dt><dd>2.0</dd></div>
-          <div><dt>Última actualización</dt><dd>25/10/2026</dd></div>
-          <div><dt>Creadores</dt><dd>Alejandro Palacios, Kevin Legarda, Juan Manuel Morán y David Dorado</dd></div>
-          <div><dt>Soporte</dt><dd><a href="mailto:DeepSea@gmail.com">DeepSea@gmail.com</a></dd></div>
-        </dl>
-      </section>
-    </div>
+    <!-- ===== RESUMEN DEL SISTEMA ===== -->
+    <section class="c">
+      <h3>Resumen del sistema</h3>
+      <div class="mc-fila">
+        <span class="mc-ic" style="background:var(--g-azul)"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg></span>
+        <div class="mc-t"><b>Deep Sea Intelligence</b><span>Aplicación</span></div>
+      </div>
+      <div class="mc-fila">
+        <span class="mc-ic" style="background:var(--g-verde)"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></span>
+        <div class="mc-t"><b>Versión 2.0</b><span>Última actualización: 25/10/2026</span></div>
+      </div>
+      <div class="mc-fila">
+        <span class="mc-ic" style="background:var(--g-morado)"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <div class="mc-t"><b><a href="mailto:DeepSea@gmail.com">DeepSea@gmail.com</a></b><span>Soporte</span></div>
+      </div>
+    </section>
   </div>
 
   <!-- La sesión se cierra desde el avatar (computador y celular) -->
-  <p class="pf-pie">Deep Sea Intelligence · v2.0</p>
+  <footer class="mc-creadores">
+    <p>Creado por</p>
+    <div class="mc-lista">
+      <span class="mc-chip"><i>AP</i>Alejandro Palacios</span>
+      <span class="mc-chip"><i>KL</i>Kevin Legarda</span>
+      <span class="mc-chip"><i>JM</i>Juan Manuel Morán</span>
+      <span class="mc-chip"><i>DD</i>David Dorado</span>
+    </div>
+  </footer>
 </main>
 
 <!-- ===== VENTANAS ===== -->
