@@ -668,7 +668,7 @@
         <select id="loteSel" disabled aria-label="Elegir lote"></select>
       </div>
       <div id="qrBody"></div>
-      <div class="qr-nota" id="qrNota" hidden>El cliente escanea el código y ve el recorrido de este lote: origen, fechas, temperatura y calidad. <b>Nunca ve precios ni ventas.</b></div>
+      <div class="qr-nota" id="qrNota" hidden>El cliente escanea el código y ve el recorrido de este lote: origen, fechas, temperatura y calidad. <b>Nunca ve datos de ventas.</b></div>
     </section>
 
   </div>
@@ -2994,7 +2994,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   // CÓDIGO QR PARA CLIENTES
   // Cada lote (recepción) tiene su propio enlace. La página pública del lote
   // (trazabilidad-publica.html) muestra solo: origen, fechas, temperatura y
-  // resultado de calidad. Nunca precios ni ventas.
+  // resultado de calidad. Nunca datos de ventas.
   // ---------------------------------------------------------------
   let urlQR = '';
 
