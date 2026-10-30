@@ -461,19 +461,6 @@
     table.inv td.empty{display:block;text-align:center}
     table.inv td.empty::before{content:none}}
 
-  /* Gestión de clientes: pestañas adaptables */
-  .inv-client-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
-  .inv-client-tab{height:48px;border:1px solid var(--borde);border-radius:14px;background:#fff;color:var(--texto-2);font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px}
-  .inv-client-tab.active{background:var(--g-azul);border-color:transparent;color:#fff;box-shadow:0 8px 18px rgba(30,102,245,.22)}
-  .client-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-  .client-toolbar .field-input{width:min(100%,320px)}
-  .client-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-  .client-form-grid .full{grid-column:1/-1}
-  .client-type-options{display:flex;gap:7px;flex-wrap:wrap}
-  .client-type-options label{border:1px solid var(--borde);border-radius:20px;padding:8px 12px;font-size:13px;cursor:pointer}
-  .client-type-options input{accent-color:var(--azul-medio)}
-  @media(max-width:700px){.inv-client-tabs{gap:7px}.inv-client-tab{font-size:13px}.client-toolbar{align-items:stretch}.client-toolbar .field-input{width:100%}.client-form-grid{grid-template-columns:1fr}.client-form-grid .full{grid-column:auto}}
-  @media(max-width:520px){#clientesSec .table-wrap{overflow:visible}#clientesTabla tr{display:grid;grid-template-columns:1fr auto;gap:5px;padding:12px 8px;border-bottom:1px solid #EDF2F8}#clientesTabla td{border:0;padding:2px 4px;font-size:13px}#clientesTabla td[data-label="Acciones"]{grid-column:2;grid-row:1/4;align-self:center}#clientesTabla td[data-label="Tipo"],#clientesTabla td[data-label="Contacto"]{grid-column:1}#clientesTabla tr:first-child{border-top:1px solid #EDF2F8}}
 
 </style>
 
@@ -616,13 +603,7 @@
     </div>
   </section>
 
-<!-- Pestañas de inventario y clientes -->
-  <div class="inv-client-tabs" role="tablist" aria-label="Almacenamiento">
-    <button type="button" class="inv-client-tab active" id="tabInventario" role="tab" aria-selected="true"><svg class="i"><use href="#i-box"/></svg>Inventario</button>
-    <button type="button" class="inv-client-tab" id="tabClientes" role="tab" aria-selected="false"><svg class="i"><use href="#i-users"/></svg>Clientes</button>
-  </div>
-
-  <!-- ===== INVENTARIO DISPONIBLE ===== -->
+<!-- ===== INVENTARIO DISPONIBLE ===== -->
   <section class="c" id="invSec" style="margin-top:14px">
     <div class="panel-head">
       <h3>Inventario disponible</h3>
@@ -663,13 +644,8 @@
     </div>
   </section>
 
-  <section class="c" id="clientesSec" hidden style="margin-top:14px">
-    <div class="client-toolbar"><h3>Clientes registrados</h3><div style="display:flex;gap:9px;flex-wrap:wrap"><div class="field-input"><svg class="i"><use href="#i-search"/></svg><input id="buscarClienteInv" type="search" placeholder="Buscar cliente..." aria-label="Buscar cliente"></div><button type="button" class="bp" id="nuevoClienteInv"><svg class="i"><use href="#i-plus"/></svg>Registrar cliente</button></div></div>
-    <div class="table-wrap"><table class="simple"><thead><tr><th>Cliente</th><th>Tipo</th><th>Contacto</th><th>Documento</th><th>Acciones</th></tr></thead><tbody id="clientesTabla"><tr><td colspan="5" class="empty">Cargando clientes...</td></tr></tbody></table></div>
-  </section>
 </main>
 
-<div class="modal-overlay" id="clienteInvModal" role="dialog" aria-modal="true" aria-labelledby="clienteInvTitulo"><div class="modal-card"><div class="modal-head"><h3 id="clienteInvTitulo">Registrar cliente</h3><button type="button" class="modal-close" id="cerrarClienteInv" aria-label="Cerrar"><svg class="i"><use href="#i-x"/></svg></button></div><form id="clienteInvForm" novalidate><div class="client-form-grid"><div class="field"><label for="ciNombre">Nombre o razón social *</label><input id="ciNombre" required maxlength="120"></div><div class="field"><label for="ciTipo">Tipo de cliente *</label><select id="ciTipo"><option>Restaurante</option><option>Hotel</option><option>Supermercado</option><option>Distribuidor</option><option>Persona natural</option><option>Otro</option></select></div><div class="field"><label for="ciDocTipo">Tipo de documento</label><select id="ciDocTipo"><option value="">No especificado</option><option>CC</option><option>NIT</option><option>CE</option><option>Pasaporte</option><option>Otro</option></select></div><div class="field"><label for="ciDocNumero">Número de documento</label><input id="ciDocNumero" maxlength="30"></div><div class="field"><label for="ciTelefono">Teléfono *</label><input id="ciTelefono" required maxlength="30"></div><div class="field"><label for="ciCorreo">Correo</label><input id="ciCorreo" type="email" maxlength="120"></div><div class="field full"><label for="ciDireccion">Dirección / ciudad</label><input id="ciDireccion" maxlength="180"></div></div><div class="modal-footer"><button type="button" class="bg" id="cancelarClienteInv">Cancelar</button><button type="submit" class="bp" id="guardarClienteInv">Guardar cliente</button></div></form></div></div>
 
 <button type="button" class="fab" id="newStorageFab" aria-label="Nuevo almacenamiento"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
 
@@ -1898,21 +1874,6 @@
 <script src="vista-administrador.js" defer></script>
 <script src="menu-usuario.js" defer></script>
 
-<script>
-(function(){'use strict';
- const $=id=>document.getElementById(id); if(!window.DSI||!DSI.cliente)return;
- const db=DSI.cliente(); let clientes=[], editId=null, busy=false;
- const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- function pintar(){const q=($('buscarClienteInv').value||'').toLowerCase().trim();const rows=clientes.filter(c=>[c.nombre,c.tipo,c.telefono,c.correo,c.documento_numero].join(' ').toLowerCase().includes(q));$('clientesTabla').innerHTML=rows.length?rows.map(c=>'<tr><td data-label="Cliente"><strong>'+esc(c.nombre)+'</strong></td><td data-label="Tipo">'+esc(c.tipo)+'</td><td data-label="Contacto">'+esc(c.telefono)+(c.correo?'<small style="display:block;color:var(--texto-2)">'+esc(c.correo)+'</small>':'')+'</td><td data-label="Documento">'+esc([c.documento_tipo,c.documento_numero].filter(Boolean).join(' ')||'—')+'</td><td data-label="Acciones"><div class="row-actions"><button class="action-btn" data-edit="'+esc(c.id)+'" aria-label="Editar cliente"><svg class="i"><use href="#i-edit"/></svg></button><button class="action-btn danger" data-del="'+esc(c.id)+'" aria-label="Eliminar cliente"><svg class="i"><use href="#i-trash"/></svg></button></div></td></tr>').join(''):'<tr><td colspan="5" class="empty">No hay clientes que coincidan con la búsqueda.</td></tr>';}
- async function cargar(){const {data,error}=await db.from('clientes').select('id,nombre,tipo,documento_tipo,documento_numero,telefono,correo,direccion').order('nombre');if(error){console.error(error);$('clientesTabla').innerHTML='<tr><td colspan="5" class="empty">No se pudieron cargar los clientes.</td></tr>';return;}clientes=data||[];pintar();}
- function abrir(c){editId=c?.id||null;$('clienteInvForm').reset();$('ciNombre').value=c?.nombre||'';$('ciTipo').value=c?.tipo||'Restaurante';$('ciDocTipo').value=c?.documento_tipo||'';$('ciDocNumero').value=c?.documento_numero||'';$('ciTelefono').value=c?.telefono||'';$('ciCorreo').value=c?.correo||'';$('ciDireccion').value=c?.direccion||'';$('clienteInvTitulo').textContent=editId?'Editar cliente':'Registrar cliente';$('guardarClienteInv').textContent=editId?'Guardar cambios':'Guardar cliente';$('clienteInvModal').classList.add('show');}
- function cerrar(){$('clienteInvModal').classList.remove('show');}
- $('tabInventario').addEventListener('click',()=>{ $('invSec').hidden=false;$('clientesSec').hidden=true;$('tabInventario').classList.add('active');$('tabClientes').classList.remove('active');$('tabInventario').setAttribute('aria-selected','true');$('tabClientes').setAttribute('aria-selected','false');});
- $('tabClientes').addEventListener('click',()=>{ $('invSec').hidden=true;$('clientesSec').hidden=false;$('tabClientes').classList.add('active');$('tabInventario').classList.remove('active');$('tabClientes').setAttribute('aria-selected','true');$('tabInventario').setAttribute('aria-selected','false');cargar();});
- $('nuevoClienteInv').addEventListener('click',()=>abrir(null));$('cerrarClienteInv').addEventListener('click',cerrar);$('cancelarClienteInv').addEventListener('click',cerrar);$('buscarClienteInv').addEventListener('input',pintar);
- $('clientesTabla').addEventListener('click',async e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-del]');if(ed){abrir(clientes.find(c=>c.id===ed.dataset.edit));return;}if(del){const c=clientes.find(x=>x.id===del.dataset.del);if(!c||!confirm('¿Eliminar el cliente '+c.nombre+'? Las ventas históricas conservarán el nombre.'))return;const {error}=await db.from('clientes').delete().eq('id',c.id);if(error){alert('No se pudo eliminar el cliente.');return;}await cargar();}});
- $('clienteInvForm').addEventListener('submit',async e=>{e.preventDefault();if(busy)return;const nombre=$('ciNombre').value.trim(),telefono=$('ciTelefono').value.trim(),correo=$('ciCorreo').value.trim();if(nombre.length<2||!telefono){alert('Completa el nombre y el teléfono.');return;}const payload={nombre,tipo:$('ciTipo').value,documento_tipo:$('ciDocTipo').value||null,documento_numero:$('ciDocNumero').value.trim()||null,telefono,correo:correo||null,direccion:$('ciDireccion').value.trim()||null};busy=true;$('guardarClienteInv').disabled=true;const res=editId?await db.from('clientes').update(payload).eq('id',editId):await db.from('clientes').insert(payload);busy=false;$('guardarClienteInv').disabled=false;if(res.error){console.error(res.error);alert(/clientes_documento_por_usuario_uidx/i.test(res.error.message)?'Ya existe un cliente con ese documento.':'No se pudo guardar el cliente. Revisa los datos.');return;}cerrar();await cargar();});
-})();
-</script>
+
 </body>
 </html>
