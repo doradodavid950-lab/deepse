@@ -121,10 +121,34 @@
     try { localStorage.setItem('dsi_notif_leidas_' + uid, JSON.stringify(Array.from(set).slice(-400))); } catch (e) {}
   }
 
+  // Opciones de Configuración (se guardan en este dispositivo)
+  function prefs(){
+    const base = { campana:true, stock:true, resultados:true, nuevos:true, revisar:true };
+    let p = base;
+    try { p = Object.assign(base, JSON.parse(localStorage.getItem('dsi_prefs_v1') || '{}')); } catch (e) { p = base; }
+    // "Mi cuenta" guarda el interruptor de la campana por separado: lo último elegido ahí también cuenta
+    try {
+      const n = localStorage.getItem('deepsea_notificaciones');
+      if (n === 'off') p.campana = false; else if (n === 'on') p.campana = true;
+    } catch (e) {}
+    return p;
+  }
+  function prefOk(i, p){
+    const k = i.key || '';
+    if (k.indexOf('stock:') === 0) return p.stock;
+    if (k.indexOf('ctrlr:') === 0 || k.indexOf('pnr:') === 0) return p.resultados;
+    if (k.indexOf('np:') === 0 || k.indexOf('nr:') === 0) return p.nuevos;
+    if (k.indexOf('ctrlp:') === 0 || k.indexOf('npv:') === 0) return p.revisar;
+    return true;
+  }
+
   function pintar(){
     observador.disconnect();
     const leer = leidas();
-    const visibles = items.filter(function(i){ return !leer.has(i.key) && !vistasAlInicio.has(i.key); }).slice(0, 40);
+    const p = prefs();
+    const wrap = document.getElementById('notifWrap');
+    if (wrap) wrap.hidden = !p.campana;
+    const visibles = items.filter(function(i){ return !leer.has(i.key) && !vistasAlInicio.has(i.key) && prefOk(i, p); }).slice(0, 40);
 
     cont.innerHTML = visibles.length
       ? visibles.map(function(i){

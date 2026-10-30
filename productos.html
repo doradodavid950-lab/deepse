@@ -419,6 +419,8 @@
   .nb-aviso{padding:10px 14px;border-radius:12px;background:#EAF3FF;border:1px solid #D3E3F5;font-size:13px;color:#0B3C74}
   .nb-lnk{color:var(--azul-medio);font-weight:700;font-size:13px;text-decoration:none}
   @media (max-width:1000px){ .nb-row{flex-wrap:wrap} .nb-add select{font-size:16px}}
+  .obs-chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#3D5573;margin:4px 0 8px;cursor:pointer}
+  .obs-chk input{width:18px;height:18px;accent-color:#1E66F5}
 </style>
 
 
@@ -688,8 +690,9 @@
           <textarea id="pDescripcion" placeholder="Descripción del producto (opcional)" maxlength="500"></textarea>
         </div>
         <div class="field full">
-          <label for="pObservaciones">Observaciones</label>
-          <textarea id="pObservaciones" placeholder="Observaciones (opcional)" maxlength="500"></textarea>
+          <label class="obs-chk" for="pConObs"><input type="checkbox" id="pConObs"> Agregar observaciones</label>
+          <div id="pObsWrap" hidden><label for="pObservaciones">Observaciones</label>
+          <textarea id="pObservaciones" placeholder="Observaciones (opcional)" maxlength="500"></textarea></div>
         </div>
       </div>
       <div class="modal-footer">
@@ -1078,7 +1081,7 @@
     $('pOrigen').value = b.origen || '';
     $('pEstado').value = b.estado || 'Activo';
     $('pDescripcion').value = b.descripcion || '';
-    $('pObservaciones').value = b.observaciones || '';
+    $('pObservaciones').value = b.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; syncObsP();
     let proveedorNuevo = nuevo;
     if (typeof nuevo === 'string' && nuevo) {
       try { proveedorNuevo = JSON.parse(nuevo); } catch (e) { proveedorNuevo = { nombre: nuevo }; }
@@ -1637,7 +1640,7 @@
       $('pOrigen').value        = producto.origen || '';
       $('pEstado').value        = producto.estado || 'Activo';
       $('pDescripcion').value   = producto.descripcion || '';
-      $('pObservaciones').value = producto.observaciones || '';
+      $('pObservaciones').value = producto.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; syncObsP();
     } else {
       $('modalTitle').textContent = 'Nuevo producto';
       $('btnGuardarLabel').textContent = 'Guardar producto';
@@ -2089,6 +2092,9 @@
 
   iniciar();
 
+
+  function syncObsP(){ const on=$('pConObs').checked; $('pObsWrap').hidden=!on; if(!on) $('pObservaciones').value=''; }
+  $('pConObs').addEventListener('change', syncObsP);
 })();
 </script>
 

@@ -271,6 +271,8 @@
   @media (min-width:1001px) and (max-width:1180px){
     .brand-sub{display:none}
     .kpis{gap:14px}}
+  .obs-chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#3D5573;margin:4px 0 8px;cursor:pointer}
+  .obs-chk input{width:18px;height:18px;accent-color:#1E66F5}
 </style>
 
 <style id="estilo-cierre-unificado">
@@ -531,8 +533,9 @@
         </div>
 
         <div class="field full">
-          <label for="observaciones">Observaciones</label>
-          <textarea id="observaciones" placeholder="Información adicional..." maxlength="500"></textarea>
+          <label class="obs-chk" for="conObsP"><input type="checkbox" id="conObsP"> Agregar observaciones</label>
+          <div id="obsWrapP" hidden><label for="observaciones">Observaciones</label>
+          <textarea id="observaciones" placeholder="Información adicional..." maxlength="500"></textarea></div>
         </div>
 
       </div>
@@ -1196,7 +1199,7 @@
     $('telefono').value      = normalizarTelefono(p.telefono).slice(0, 10);
     $('email').value         = p.email || '';
     $('estado').value        = p.estado || 'Activo';
-    $('observaciones').value = p.observaciones || '';
+    $('observaciones').value = p.observaciones || ''; $('conObsP').checked = !!$('observaciones').value; syncObsP();
 
     $('formTitle').textContent = 'Editar proveedor';
     $('formSub').textContent = 'Modifica los datos de "' + p.nombre + '".';
@@ -1693,6 +1696,9 @@
   }
 
   iniciar();
+
+  function syncObsP(){ const on=$('conObsP').checked; $('obsWrapP').hidden=!on; if(!on) $('observaciones').value=''; }
+  $('conObsP').addEventListener('change', syncObsP);
 })();
 </script>
    <script src="sesion-inactividad.js" defer></script>

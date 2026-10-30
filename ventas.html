@@ -452,7 +452,70 @@
 .clientes-vista{background:#fff;border:1px solid var(--borde);border-radius:20px;padding:18px;box-shadow:var(--sombra)}
 .clientes-vista-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .clientes-vista-head .field-input{width:min(100%,320px)}
-@media(max-width:560px){.clientes-vista{padding:13px}.clientes-vista-head{align-items:stretch}.clientes-vista-head .field-input{width:100%}#clientesVentasTabla tr{display:grid;grid-template-columns:1fr auto;gap:4px;padding:11px 6px;border-bottom:1px solid #EDF2F8}#clientesVentasTabla td{border:0;padding:3px 4px;font-size:13px}#clientesVentasTabla td:last-child{grid-column:2;grid-row:1/4;align-self:center}}
+
+  /* ===== Clientes y ventas (diseño final) ===== */
+  [hidden]{display:none!important}
+  .kpis.cli{grid-template-columns:repeat(4,1fr)}
+  .kpis.cli .k>div:last-child{min-width:0}
+  .kpis.cli .k b{font-size:24px;overflow-wrap:anywhere}
+  .kpis.cli #kcTop{font-size:20px;line-height:1.15}
+  #clientesVentasVista{padding:20px 22px}
+  #clientesVentasVista .clientes-vista-head h3{font-size:18px;color:#0F2540}
+  #clientesVentasVista table{border-collapse:separate;border-spacing:0;border:1px solid #E1EBF7;border-radius:16px;overflow:hidden;width:100%}
+  #clientesVentasVista th{background:#F3F7FD;font-size:11.5px;letter-spacing:.6px;color:#5B7089;padding:12px 14px;text-align:left;text-transform:uppercase}
+  #clientesVentasVista td{padding:13px 14px;border-bottom:1px solid #EDF2F8;font-size:14px;vertical-align:middle}
+  #clientesVentasVista tr:last-child td{border-bottom:0}
+  #clientesVentasVista tbody tr:hover td{background:#F8FBFF}
+  #clientesVentasVista td.empty{text-align:center;color:var(--texto-2);padding:28px 14px}
+  .cli-tel{display:block;font-weight:600;color:var(--texto)}
+  .cli-contacto small{display:block;color:var(--texto-2);font-size:12.5px;margin-top:1px}
+  .cli-total{font-weight:700;white-space:nowrap}
+  .pill.t-ok{background:#D6F7E2;color:#12804F}
+  .pill.t-hotel{background:#EADFFB;color:#6B3FB8}
+  .pill.t-super{background:#FFF1D1;color:#9A6200}
+  .pill.t-otro{background:#E4ECF6;color:#5B7089}
+  /* Cliente dentro de la ventana de venta */
+  .cliente-venta-detalle{margin-top:8px;background:#EEF5FF;border:1px solid #DCE8F6;border-radius:14px;padding:10px 12px;font-size:13px;color:var(--texto-2);line-height:1.5}
+  .cliente-venta-detalle .pill{margin-bottom:3px}
+  .cliente-venta-detalle .cv-linea{color:var(--texto-3);font-weight:600}
+  .cv-link{background:none;border:0;padding:0;margin-top:2px;color:var(--azul-medio);font-weight:700;font-size:13.5px;cursor:pointer;display:inline-block}
+  .cv-link:hover{text-decoration:underline}
+  .cv-ayuda{display:block;font-size:12px;color:var(--texto-2);margin-top:6px}
+  /* Ventana "Registrar cliente" */
+  .cv-sub{margin:-4px 0 14px;font-size:13.5px;color:var(--texto-2)}
+  .chips-tipo{display:flex;flex-wrap:wrap;gap:8px}
+  .chip-op{position:relative;display:inline-flex}
+  .chip-op input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
+  .chip-op span{display:inline-flex;align-items:center;height:38px;padding:0 16px;border-radius:999px;border:1.5px solid var(--borde);background:#fff;font-size:14px;font-weight:600;color:var(--texto);transition:background .15s,border-color .15s,color .15s}
+  .form-group label.chip-op{display:inline-flex;margin:0;font-size:inherit}
+  .chip-op:hover span{border-color:#9CC5F7}
+  .chip-op input:checked+span{background:#EAF2FF;border-color:var(--azul-medio);color:#0B3C74;font-weight:700}
+  .chip-op input:focus-visible+span{outline:2px solid var(--azul-medio);outline-offset:2px}
+  .form-group.invalid .chips-tipo .chip-op span{border-color:var(--rojo)}
+  .form-group label.consent{display:flex;gap:10px;align-items:flex-start;margin:0;background:#F5F9FE;border:1px solid var(--borde);border-radius:14px;padding:12px 14px;font-size:13px;font-weight:500;color:var(--texto);line-height:1.45;cursor:pointer}
+  .consent input{margin-top:2px;width:18px;height:18px;accent-color:var(--azul-medio);flex:none}
+  .form-group.invalid label.consent{border-color:var(--rojo);background:#FFF5F5}
+  @media (max-width:1000px){.kpis.cli{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){
+    .kpis.cli .k b{font-size:19px}.kpis.cli #kcTop{font-size:16px}
+    #clientesVentasVista{padding:14px}
+    #clientesVentasVista .table-wrap{overflow:visible}
+    #clientesVentasVista table{display:block;border:0;border-radius:0}
+    #clientesVentasVista thead{display:none}
+    #clientesVentasVista tbody{display:block}
+    #clientesVentasVista tr{display:block;background:#fff;border:1px solid #E1EBF7;border-radius:16px;padding:10px 14px;margin-bottom:10px;box-shadow:0 6px 16px rgba(6,43,91,.06)}
+    #clientesVentasVista td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0;border:0;font-size:14px;text-align:right;grid-area:auto;justify-self:stretch;min-width:0}
+    .cli-cont{min-width:0;text-align:right}
+    .cli-cont small{overflow-wrap:anywhere}
+    #clientesVentasVista td::before{content:attr(data-label);font-size:11px;font-weight:700;color:#5B7089;text-transform:uppercase;letter-spacing:.4px;text-align:left;flex:none}
+    #clientesVentasVista td:first-child{padding-bottom:8px;border-bottom:1px solid #EDF2F8;margin-bottom:4px;text-align:left}
+    #clientesVentasVista td:first-child::before,#clientesVentasVista td:last-child::before{display:none}
+    #clientesVentasVista td:last-child{justify-content:flex-end}
+    #clientesVentasVista tbody tr:hover td{background:transparent}
+    #clientesVentasVista td.empty{display:block;text-align:center}
+    #clientesVentasVista td.empty::before{display:none}
+    .clientes-vista-head .field-input{width:100%}
+  }
 </style>
 
 <style id="estilo-cierre-unificado">
@@ -565,7 +628,7 @@
         <h1>Ventas</h1>
         <p>Da seguimiento a cada venta, su cliente y su canal.</p>
       </div>
-      <button type="button" class="b1" id="newSaleBtn"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>Nueva venta</button>
+      <button type="button" class="b1" id="newSaleBtn"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span id="newSaleBtnTxt">Nueva venta</span></button>
     </section>
   </div>
 </div>
@@ -602,7 +665,27 @@
       </table>
     </div>
   </section>
-<section id="clientesVentasVista" class="clientes-vista" hidden><div class="clientes-vista-head"><h3>Clientes registrados</h3><div style="display:flex;gap:9px;flex-wrap:wrap"><div class="field-input"><svg class="i"><use href="#i-search"/></svg><input id="buscarClientesVentas" type="search" placeholder="Buscar cliente..." aria-label="Buscar cliente"></div><button type="button" class="bp" id="nuevoClienteLista"><svg class="i"><use href="#i-plus"/></svg>Nuevo cliente</button></div></div><div class="table-wrap"><table class="simple"><thead><tr><th>Cliente</th><th>Tipo</th><th>Contacto</th><th>Ventas</th><th>Última compra</th><th>Acciones</th></tr></thead><tbody id="clientesVentasTabla"><tr><td colspan="6" class="empty">Cargando clientes...</td></tr></tbody></table></div></section>
+<!-- ===== RESUMEN DE CLIENTES ===== -->
+  <section class="kpis cli" id="clientesResumen" aria-label="Resumen de clientes" hidden>
+    <div class="k"><div class="ic" style="background:var(--g-azul)"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></div><div><b id="kcActivos">0</b><span>Clientes activos</span></div></div>
+    <div class="k"><div class="ic" style="background:var(--g-verde)"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></div><div><b id="kcNuevos">0</b><span>Nuevos este mes</span></div></div>
+    <div class="k"><div class="ic" style="background:var(--g-naranja)"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg></div><div><b id="kcComprado">0 kg</b><span>Comprado este mes</span></div></div>
+    <div class="k"><div class="ic" style="background:var(--g-morado)"><svg class="i" aria-hidden="true"><use href="#i-store"/></svg></div><div><b id="kcTop">—</b><span>Quien más compra</span></div></div>
+  </section>
+
+  <!-- ===== LISTA DE CLIENTES ===== -->
+  <section id="clientesVentasVista" class="clientes-vista" hidden>
+    <div class="clientes-vista-head">
+      <h3>Clientes</h3>
+      <div class="field-input"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="buscarClientesVentas" type="search" maxlength="60" autocomplete="off" placeholder="Buscar cliente…" aria-label="Buscar cliente"></div>
+    </div>
+    <div class="table-wrap">
+      <table class="simple">
+        <thead><tr><th>Cliente</th><th>Tipo</th><th>Contacto</th><th>Ventas</th><th>Total comprado</th><th>Última compra</th><th>Acciones</th></tr></thead>
+        <tbody id="clientesVentasTabla"><tr><td colspan="7" class="empty">Cargando clientes...</td></tr></tbody>
+      </table>
+    </div>
+  </section>
 </main>
 
 <button type="button" class="fab" id="newSaleFab" aria-label="Nueva venta"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></button>
@@ -673,11 +756,9 @@
         </div>
         <div class="form-group field">
           <label for="clienteSelect">Cliente *</label>
-          <div class="cliente-venta-wrap">
-            <select id="clienteSelect"><option value="">Seleccionar cliente registrado...</option></select>
-            <button type="button" class="bp" id="agregarClienteVenta" style="height:44px;padding:0 13px"><svg class="i"><use href="#i-plus"/></svg>Agregar cliente</button>
-            <div class="cliente-venta-detalle" id="clienteVentaDetalle" hidden></div>
-          </div>
+          <select id="clienteSelect"><option value="">Seleccionar cliente registrado...</option></select>
+          <div class="cliente-venta-detalle" id="clienteVentaDetalle"><button type="button" class="cv-link">+ Registrar cliente nuevo</button></div>
+          <span class="cv-ayuda">¿No está en la lista? Lo registras aquí mismo y la venta sigue donde la dejaste.</span>
           <input type="hidden" id="cliente">
           <small class="field-error"></small>
         </div>
@@ -703,7 +784,7 @@
         <div class="form-group field">
           <label for="destino">Destino</label>
           <input type="text" id="destino" data-filtro="direccion" maxlength="80" placeholder="Destino de la venta">
-          <span class="hint">Letras, números, espacios, coma, punto, guion y #.</span>
+          <span class="hint" id="destinoHint">Letras, números, espacios, coma, punto, guion y #.</span>
           <small class="field-error"></small>
         </div>
         <div class="form-group field full">
@@ -729,17 +810,29 @@
 <!-- ===================== VENTANA: CONFIRMAR ELIMINACIÓN ===================== -->
 <div class="modal-overlay" id="clienteVentaModal" role="dialog" aria-modal="true" aria-labelledby="clienteVentaTitulo">
   <div class="modal-card">
-    <div class="modal-head"><h3 id="clienteVentaTitulo">Registrar cliente</h3><button type="button" class="modal-close" id="cerrarClienteVenta" aria-label="Cerrar"><svg class="i"><use href="#i-x"/></svg></button></div>
-    <p class="hint" style="margin-bottom:14px">Al guardar, el cliente quedará seleccionado en esta venta.</p>
-    <form id="clienteVentaForm" novalidate><div class="form-grid">
-      <div class="form-group field full"><label for="cvNombre">Nombre o razón social *</label><input id="cvNombre" maxlength="120" required></div>
-      <div class="form-group field full"><label>Tipo de cliente *</label><select id="cvTipo"><option>Restaurante</option><option>Hotel</option><option>Supermercado</option><option>Distribuidor</option><option>Persona natural</option><option>Otro</option></select></div>
-      <div class="form-group field"><label for="cvDocTipo">Documento</label><select id="cvDocTipo"><option value="">No especificado</option><option>CC</option><option>NIT</option><option>CE</option><option>Pasaporte</option><option>Otro</option></select></div>
-      <div class="form-group field"><label for="cvDocNumero">Número</label><input id="cvDocNumero" maxlength="30"></div>
-      <div class="form-group field"><label for="cvTelefono">Teléfono *</label><input id="cvTelefono" maxlength="30" required></div>
-      <div class="form-group field"><label for="cvCorreo">Correo</label><input id="cvCorreo" type="email" maxlength="120"></div>
-      <div class="form-group field full"><label for="cvDireccion">Dirección / ciudad</label><input id="cvDireccion" maxlength="180"></div>
-    </div><div class="modal-footer"><button type="button" class="bg" id="cancelarClienteVenta">Cancelar</button><button type="submit" class="bp" id="guardarClienteVenta">Guardar y usar en la venta</button></div></form>
+    <div class="modal-head"><h3 id="clienteVentaTitulo">Registrar cliente</h3><button type="button" class="modal-close" id="cerrarClienteVenta" aria-label="Cerrar"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <p class="cv-sub" id="clienteVentaSub">Solo lo necesario. Al guardar, el cliente queda elegido en tu venta.</p>
+    <form id="clienteVentaForm" novalidate autocomplete="off">
+      <div class="form-grid">
+        <div class="form-group field full"><label for="cvNombre">Nombre o razón social *</label><input id="cvNombre" data-filtro="razon" maxlength="120" placeholder="Ej. Restaurante El Mar"><small class="field-error"></small></div>
+        <div class="form-group field full"><label id="cvTipoLabel">Tipo de cliente *</label>
+          <div class="chips-tipo" id="cvTipoChips" role="radiogroup" aria-labelledby="cvTipoLabel">
+            <label class="chip-op"><input type="radio" name="cvTipo" value="Restaurante"><span>Restaurante</span></label>
+            <label class="chip-op"><input type="radio" name="cvTipo" value="Hotel"><span>Hotel</span></label>
+            <label class="chip-op"><input type="radio" name="cvTipo" value="Supermercado"><span>Supermercado</span></label>
+            <label class="chip-op"><input type="radio" name="cvTipo" value="Distribuidor"><span>Distribuidor</span></label>
+            <label class="chip-op"><input type="radio" name="cvTipo" value="Persona natural"><span>Persona natural</span></label>
+          </div>
+          <small class="field-error"></small></div>
+        <div class="form-group field"><label for="cvDocTipo">Documento (opcional)</label><select id="cvDocTipo"><option value="">No especificado</option><option>CC</option><option>NIT</option><option>CE</option><option>Pasaporte</option><option>Otro</option></select><small class="field-error"></small></div>
+        <div class="form-group field"><label for="cvDocNumero">Número</label><input id="cvDocNumero" data-filtro="documento" maxlength="30" placeholder="Ej. 900123456-7"><small class="field-error"></small></div>
+        <div class="form-group field"><label for="cvTelefono">Teléfono *</label><input id="cvTelefono" type="tel" data-filtro="telefono" inputmode="tel" maxlength="20" placeholder="Ej. 311 456 7890"><small class="field-error"></small></div>
+        <div class="form-group field"><label for="cvCorreo">Correo (opcional)</label><input id="cvCorreo" type="email" data-filtro="correo" maxlength="120" placeholder="correo@empresa.com"><small class="field-error"></small></div>
+        <div class="form-group field full"><label for="cvDireccion">Dirección / ciudad</label><input id="cvDireccion" data-filtro="direccion" maxlength="180" placeholder="Ej. Cra 5 #12-30, Pasto"><span class="hint">Se usará como destino cuando le vendas a este cliente.</span><small class="field-error"></small></div>
+        <div class="form-group field full" id="cvConsentGrupo"><label class="consent"><input type="checkbox" id="cvAutoriza"><span>El cliente autoriza el uso de sus datos para gestionar sus compras (Ley 1581 de 2012).</span></label><small class="field-error"></small></div>
+      </div>
+      <div class="modal-footer"><button type="button" class="bg" id="cancelarClienteVenta">Cancelar</button><button type="submit" class="bp" id="guardarClienteVenta">Guardar y usar en la venta</button></div>
+    </form>
   </div>
 </div>
 
@@ -920,6 +1013,11 @@
     texto:        v => v.replace(new RegExp('[^' + L + '0-9\\s.,;:()%°¿?¡!/\\-]', 'g'), '').replace(/[ \t]{2,}/g, ' ')
   };
 
+  FILTROS.razon     = v => v.replace(new RegExp("[^" + L + "0-9\\s.,\\-&']", 'g'), '').replace(/\s{2,}/g, ' ');
+  FILTROS.telefono  = v => v.replace(/[^0-9+\s\-()]/g, '').replace(/\s{2,}/g, ' ');
+  FILTROS.documento = v => v.replace(/[^A-Za-z0-9\-]/g, '');
+  FILTROS.correo    = v => v.replace(/\s/g, '');
+
   function aplicarFiltro(campo){
     const filtro = FILTROS[campo.dataset.filtro];
     if (!filtro) return;
@@ -942,7 +1040,7 @@
   // ---------------------------------------------------------------
   // VALIDACIÓN DEL FORMULARIO
   // ---------------------------------------------------------------
-  const RE_CLIENTE = new RegExp("^[" + L + "][" + L + " .\\-&']*$");
+  const RE_CLIENTE = new RegExp("^[" + L + "0-9][" + L + "0-9 .,\\-&']*$");
   const RE_DESTINO = new RegExp('^[' + L + '0-9][' + L + '0-9 .,\\-#]*$');
 
   function marcarError(idCampo, mensaje){
@@ -974,7 +1072,7 @@
     const clienteId = $('clienteSelect').value || null;
     if (!cliente) errores.cliente = 'El nombre del cliente es obligatorio.';
     else if (cliente.length < 2) errores.cliente = 'Escribe al menos 2 caracteres.';
-    else if (!RE_CLIENTE.test(cliente)) errores.cliente = 'Solo letras, espacios, punto, guion y &.';
+    else if (!RE_CLIENTE.test(cliente)) errores.cliente = 'Solo letras, números, espacios, punto, coma, guion y &.';
 
     const tipo = $('tipoVenta').value;
     if (!tipo) errores.tipoVenta = 'Selecciona el tipo de venta.';
@@ -1167,6 +1265,7 @@
     animarNumero($('qtyCount'), v.reduce((t, x) => t + (Number(x.cantidad) || 0), 0), fmtNumero);
 
     pintarTabla(true);
+    if (vistaClientes) pintarClientesVentas();
     renderNotificaciones();
   }
 
@@ -1239,6 +1338,7 @@
   function actualizarScroll(){
     const abierto = $('saleModal').classList.contains('show')
       || $('confirmModal').classList.contains('show')
+      || $('clienteVentaModal').classList.contains('show')
       || $('fan').classList.contains('open');
     document.body.style.overflow = abierto ? 'hidden' : '';
   }
@@ -1288,6 +1388,7 @@
     editandoId = item ? item.id : null;
     $('saleForm').reset();
     limpiarErrores();
+    destinoAuto = false; $('destinoHint').textContent = DESTINO_HINT;
     llenarProductos(item);
 
     const ahora = new Date();
@@ -1318,6 +1419,9 @@
       const lotesDisponibles = (datos.recepciones || []).filter(r => String(r.producto_id) === String($('producto').value) && !['rechazado','en revision'].includes(normalizar(r.estado_producto)));
       if (lotesDisponibles.length) $('lote').value = String(lotesDisponibles[0].id);
       $('fecha').value = aInputFecha(ahora);
+      const pc = prefsConfig();
+      if (TIPOS.includes(pc.ventaTipo)) $('tipoVenta').value = pc.ventaTipo;
+      if (CANALES.includes(pc.ventaCanal)) $('canalVenta').value = pc.ventaCanal;
       $('modalTitle').textContent = 'Nueva venta';
       $('saveBtn').textContent = 'Guardar venta';
     }
@@ -1333,8 +1437,9 @@
     actualizarScroll();
   }
 
-  $('newSaleBtn').addEventListener('click', () => abrirModal(null));
-  $('newSaleFab').addEventListener('click', () => abrirModal(null));
+  const accionNuevo = () => (vistaClientes ? abrirClienteModal('lista') : abrirModal(null));
+  $('newSaleBtn').addEventListener('click', accionNuevo);
+  $('newSaleFab').addEventListener('click', accionNuevo);
   $('closeModal').addEventListener('click', cerrarModal);
   $('cancelBtn').addEventListener('click', cerrarModal);
   modal.addEventListener('mousedown', e => { if (e.target === modal) cerrarModal(); });
@@ -1397,55 +1502,354 @@
 
 
   // ---------------------------------------------------------------
-  // CLIENTES: selección, autocompletado y alta rápida desde ventas
+  // CLIENTES: lista, resumen, alta rápida desde ventas, edición y eliminación
   // ---------------------------------------------------------------
+  const CLIENTE_COLS = 'id,nombre,tipo,documento_tipo,documento_numero,telefono,correo,direccion';
+  const DESTINO_HINT = 'Letras, números, espacios, coma, punto, guion y #.';
+  const TIPOS_CLIENTE = ['Restaurante', 'Hotel', 'Supermercado', 'Distribuidor', 'Persona natural'];
+  let vistaClientes = false;       // true cuando se está viendo la pestaña Clientes
+  let clientesCargados = false;
+  let clientesError = false;
+  let usarFechaAlta = true;        // se intenta leer created_at; si la tabla no lo tiene, se omite
+  let clienteModo = 'venta';       // 'venta' | 'lista' | 'editar'
+  let clienteEditandoId = null;
+  let guardandoCliente = false;
+  let destinoAuto = false;         // true si el destino se llenó solo con la dirección del cliente
+
+  // Opciones guardadas en Configuración (este dispositivo)
+  function prefsConfig(){
+    try { return JSON.parse(localStorage.getItem('dsi_prefs_v1') || '{}') || {}; }
+    catch (e) { return {}; }
+  }
+
+  function claseTipoCliente(t){
+    const n = normalizar(t);
+    if (n === 'hotel') return 't-hotel';
+    if (n === 'supermercado') return 't-super';
+    if (n === 'otro') return 't-otro';
+    return 't-ok';
+  }
+  function ciudadDe(dir){
+    if (!dir) return '';
+    const partes = String(dir).split(',');
+    return partes[partes.length - 1].trim();
+  }
+
   async function cargarClientesVenta(){
-    const {data,error}=await supabaseClient.from('clientes').select('id,nombre,tipo,documento_tipo,documento_numero,telefono,correo,direccion').order('nombre');
-    if(error){console.error('No se pudieron cargar los clientes:',error);return;}
-    clientesVenta=data||[];
-    const select=$('clienteSelect'), actual=select.value;
-    select.innerHTML='<option value="">Seleccionar cliente registrado...</option>'+clientesVenta.map(c=>'<option value="'+escapeHTML(c.id)+'">'+escapeHTML(c.nombre)+' · '+escapeHTML(c.tipo)+'</option>').join('');
-    if(actual && clientesVenta.some(c=>c.id===actual))select.value=actual;
+    let r = null;
+    if (usarFechaAlta) {
+      r = await supabaseClient.from('clientes').select(CLIENTE_COLS + ',created_at').order('nombre');
+      if (r.error) { usarFechaAlta = false; r = null; }
+    }
+    if (!r) r = await supabaseClient.from('clientes').select(CLIENTE_COLS).order('nombre');
+    if (r.error) {
+      console.error('No se pudieron cargar los clientes:', r.error);
+      clientesError = true;
+      if (vistaClientes) pintarClientesVentas();
+      return false;
+    }
+    clientesError = false;
+    clientesCargados = true;
+    clientesVenta = r.data || [];
+    llenarSelectClientes();
     actualizarDetalleCliente();
+    return true;
   }
+
+  function llenarSelectClientes(){
+    const select = $('clienteSelect'), actual = select.value;
+    select.innerHTML = '<option value="">Seleccionar cliente registrado...</option>' +
+      clientesVenta.map(c => '<option value="' + escapeHTML(c.id) + '">' + escapeHTML(c.nombre) + ' · ' + escapeHTML(c.tipo) + '</option>').join('');
+    if (actual && clientesVenta.some(c => String(c.id) === actual)) select.value = actual;
+  }
+
+  // Tarjeta con los datos del cliente elegido (y el enlace para registrar uno nuevo)
   function actualizarDetalleCliente(){
-    const c=clientesVenta.find(x=>String(x.id)===$('clienteSelect').value),box=$('clienteVentaDetalle');
-    if(!c){box.hidden=true;return;}
-    box.hidden=false;
-    box.innerHTML='<strong>'+escapeHTML(c.nombre)+' <span class="pill ok">'+escapeHTML(c.tipo)+'</span></strong>'+escapeHTML(c.documento_tipo&&c.documento_numero?c.documento_tipo+' '+c.documento_numero:'')+' · Tel. '+escapeHTML(c.telefono||'—')+(c.correo?' · '+escapeHTML(c.correo):'')+(c.direccion?'<br>'+escapeHTML(c.direccion):'');
-    $('cliente').value=c.nombre;
-    if(!$('destino').value && c.direccion)$('destino').value=c.direccion;
+    const c = clientesVenta.find(x => String(x.id) === $('clienteSelect').value);
+    let html = '';
+    if (c) {
+      const ciu = ciudadDe(c.direccion);
+      html += '<span class="pill ' + claseTipoCliente(c.tipo) + '">' + escapeHTML(c.tipo) + '</span>' +
+              '<div class="cv-linea">Tel. ' + escapeHTML(c.telefono || '—') + (ciu ? ' · ' + escapeHTML(ciu) : '') + '</div>';
+      $('cliente').value = c.nombre;
+      if (prefsConfig().ventaDestinoAuto !== false && c.direccion && (!$('destino').value || destinoAuto)) {
+        $('destino').value = c.direccion;
+        destinoAuto = true;
+        $('destinoHint').textContent = 'Se llenó con la dirección del cliente. Puedes cambiarla.';
+      }
+    }
+    html += '<button type="button" class="cv-link">+ Registrar cliente nuevo</button>';
+    $('clienteVentaDetalle').innerHTML = html;
   }
-  $('clienteSelect').addEventListener('change',function(){const c=clientesVenta.find(x=>String(x.id)===this.value);$('cliente').value=c?c.nombre:'';actualizarDetalleCliente();marcarError('cliente','');});
-  function pintarClientesVentas(){
-    const q=normalizar($('buscarClientesVentas').value);
-    const rows=clientesVenta.filter(c=>normalizar([c.nombre,c.tipo,c.telefono,c.correo,c.documento_numero].join(' ')).includes(q));
-    $('clientesVentasTabla').innerHTML=rows.length?rows.map(c=>{const ventasCliente=datos.ventas.filter(x=>x.cliente_id===c.id||(!x.cliente_id&&normalizar(x.cliente)===normalizar(c.nombre)));const ultima=ventasCliente.map(x=>x.fecha_venta).filter(Boolean).sort().pop();return '<tr><td><strong>'+escapeHTML(c.nombre)+'</strong></td><td>'+escapeHTML(c.tipo)+'</td><td>'+escapeHTML(c.telefono||'—')+(c.correo?'<small style="display:block;color:var(--texto-2)">'+escapeHTML(c.correo)+'</small>':'')+'</td><td>'+ventasCliente.length+'</td><td>'+(ultima?formatearFecha(ultima):'—')+'</td><td><div class="row-actions"><button class="action-btn danger" data-borrar-cliente="'+escapeHTML(c.id)+'" aria-label="Eliminar cliente"><svg class="i"><use href="#i-trash"/></svg></button></div></td></tr>';}).join(''):'<tr><td colspan="6" class="empty">No hay clientes que coincidan.</td></tr>';
-  }
-  function cambiarPestanaClientes(activa){$('ventasResumen').hidden=activa;$('ventasRegistros').hidden=activa;$('clientesVentasVista').hidden=!activa;$('tabVentas').classList.toggle('active',!activa);$('tabClientes').classList.toggle('active',activa);$('tabVentas').setAttribute('aria-selected',String(!activa));$('tabClientes').setAttribute('aria-selected',String(activa));$('newSaleBtn').hidden=activa;$('newSaleFab').hidden=activa;if(activa)cargarClientesVenta().then(pintarClientesVentas);}
-  $('tabVentas').addEventListener('click',()=>cambiarPestanaClientes(false));
-  $('tabClientes').addEventListener('click',()=>cambiarPestanaClientes(true));
-  $('buscarClientesVentas').addEventListener('input',pintarClientesVentas);
-  $('nuevoClienteLista').addEventListener('click',()=>{$('clienteVentaForm').reset();$('clienteVentaModal').classList.add('show');});
-  $('clientesVentasTabla').addEventListener('click',async e=>{const b=e.target.closest('[data-borrar-cliente]');if(!b)return;const c=clientesVenta.find(x=>x.id===b.dataset.borrarCliente);if(!c||!confirm('¿Eliminar '+c.nombre+'?'))return;const {error}=await supabaseClient.from('clientes').delete().eq('id',c.id);if(error){mostrarToast('No se pudo eliminar el cliente.','error');return;}clientesVenta=clientesVenta.filter(x=>x.id!==c.id);pintarClientesVentas();mostrarToast('Cliente eliminado.','success');});
-  function cerrarClienteVenta(){$('clienteVentaModal').classList.remove('show');}
-  $('agregarClienteVenta').addEventListener('click',()=>{$('clienteVentaForm').reset();$('clienteVentaModal').classList.add('show');$('cvNombre').focus();});
-  $('cerrarClienteVenta').addEventListener('click',cerrarClienteVenta);
-  $('cancelarClienteVenta').addEventListener('click',cerrarClienteVenta);
-  $('clienteVentaModal').addEventListener('mousedown',e=>{if(e.target===$('clienteVentaModal'))cerrarClienteVenta();});
-  $('clienteVentaForm').addEventListener('submit',async e=>{
-    e.preventDefault();const nombre=$('cvNombre').value.trim(),telefono=$('cvTelefono').value.trim(),correo=$('cvCorreo').value.trim();
-    if(nombre.length<2||!telefono){mostrarToast('Completa el nombre y el teléfono del cliente.','error');return;}
-    const payload={nombre,tipo:$('cvTipo').value,documento_tipo:$('cvDocTipo').value||null,documento_numero:$('cvDocNumero').value.trim()||null,telefono,correo:correo||null,direccion:$('cvDireccion').value.trim()||null};
-    $('guardarClienteVenta').disabled=true;
-    const {data,error}=await supabaseClient.from('clientes').insert(payload).select('id,nombre,tipo,documento_tipo,documento_numero,telefono,correo,direccion').single();
-    $('guardarClienteVenta').disabled=false;
-    if(error){console.error(error);mostrarToast(/clientes_documento_por_usuario_uidx/i.test(error.message)?'Ya existe un cliente con ese documento.':'No se pudo registrar el cliente.','error');return;}
-    clientesVenta.push(data);clientesVenta.sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));if($('clientesVentasVista')&&!$('clientesVentasVista').hidden)pintarClientesVentas();
-    const select=$('clienteSelect');select.innerHTML='<option value="">Seleccionar cliente registrado...</option>'+clientesVenta.map(c=>'<option value="'+escapeHTML(c.id)+'">'+escapeHTML(c.nombre)+' · '+escapeHTML(c.tipo)+'</option>').join('');
-    select.value=data.id;$('cliente').value=data.nombre;actualizarDetalleCliente();cerrarClienteVenta();mostrarToast('Cliente registrado y seleccionado.','success');
+  $('clienteSelect').addEventListener('change', function(){
+    if (!this.value) $('cliente').value = '';
+    actualizarDetalleCliente();
+    marcarError('cliente', '');
   });
+  $('clienteVentaDetalle').addEventListener('click', e => {
+    if (e.target.closest('.cv-link')) abrirClienteModal('venta');
+  });
+  $('destino').addEventListener('input', () => {
+    if (destinoAuto) { destinoAuto = false; $('destinoHint').textContent = DESTINO_HINT; }
+  });
+
+  // ---------- Resumen y tabla ----------
+  function estadisticasClientes(){
+    const porId = new Map(), porNombre = new Map();
+    clientesVenta.forEach(c => {
+      const st = { c: c, n: 0, kg: 0, ultima: null, ultimaRaw: null };
+      porId.set(String(c.id), st);
+      porNombre.set(normalizar(c.nombre), st);
+    });
+    const ini = new Date(); ini.setDate(1); ini.setHours(0, 0, 0, 0);
+    let kgMes = 0;
+    datos.ventas.forEach(v => {
+      const st = v.cliente_id ? porId.get(String(v.cliente_id)) : porNombre.get(normalizar(v.cliente));
+      if (!st) return;
+      const kg = Number(v.cantidad) || 0;
+      const f = parsearFecha(v.fecha_venta);
+      st.n++; st.kg += kg;
+      if (f) {
+        if (!st.ultima || f > st.ultima) { st.ultima = f; st.ultimaRaw = v.fecha_venta; }
+        if (f >= ini) kgMes += kg;
+      }
+    });
+    let nuevos = null;
+    if (usarFechaAlta) {
+      nuevos = clientesVenta.filter(c => { const f = parsearFecha(c.created_at); return f && f >= ini; }).length;
+    }
+    return { lista: Array.from(porId.values()), kgMes: kgMes, nuevos: nuevos };
+  }
+
+  function pintarClientesVentas(){
+    const tbody = $('clientesVentasTabla');
+    if (!clientesCargados) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">' + (clientesError ? 'No se pudieron cargar los clientes.' : 'Cargando clientes...') + '</td></tr>';
+      return;
+    }
+    const st = estadisticasClientes();
+    $('kcActivos').textContent = fmtNumero(clientesVenta.length);
+    $('kcNuevos').textContent = st.nuevos === null ? '—' : fmtNumero(st.nuevos);
+    $('kcComprado').textContent = fmtPeso(st.kgMes);
+    const top = st.lista.filter(x => x.kg > 0).sort((a, b) => b.kg - a.kg)[0];
+    $('kcTop').textContent = top ? top.c.nombre : '—';
+
+    const q = normalizar($('buscarClientesVentas').value);
+    const filas = st.lista.filter(x => !q || normalizar([x.c.nombre, x.c.tipo, x.c.telefono, x.c.correo, x.c.documento_numero, x.c.direccion].join(' ')).includes(q));
+    if (!filas.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">' + (q ? 'No hay clientes que coincidan con la búsqueda.' : 'Aún no tienes clientes. Usa “Nuevo cliente” para registrar el primero.') + '</td></tr>';
+      return;
+    }
+    tbody.innerHTML = filas.map(x => {
+      const c = x.c, id = escapeHTML(c.id), nombre = escapeHTML(c.nombre);
+      return '<tr data-id="' + id + '">' +
+        '<td data-label="Cliente"><div class="nom"><span class="chip"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg></span><strong>' + nombre + '</strong></div></td>' +
+        '<td data-label="Tipo"><span class="pill ' + claseTipoCliente(c.tipo) + '">' + escapeHTML(c.tipo) + '</span></td>' +
+        '<td data-label="Contacto" class="cli-contacto"><div class="cli-cont"><span class="cli-tel">' + escapeHTML(c.telefono || '—') + '</span><small>' + escapeHTML(c.correo || '—') + '</small></div></td>' +
+        '<td data-label="Ventas">' + fmtNumero(x.n) + '</td>' +
+        '<td data-label="Total comprado" class="cli-total">' + fmtPeso(x.kg) + '</td>' +
+        '<td data-label="Última compra">' + (x.ultimaRaw ? formatearFecha(x.ultimaRaw) : '—') + '</td>' +
+        '<td data-label="Acciones"><div class="row-actions">' +
+          '<button class="action-btn" type="button" data-editar-cliente="' + id + '" title="Editar" aria-label="Editar cliente ' + nombre + '"><svg class="i" aria-hidden="true"><use href="#i-edit"/></svg></button>' +
+          '<button class="action-btn danger" type="button" data-borrar-cliente="' + id + '" title="Eliminar" aria-label="Eliminar cliente ' + nombre + '"><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg></button>' +
+        '</div></td></tr>';
+    }).join('');
+  }
+
+  // ---------- Pestañas ----------
+  function cambiarPestanaClientes(activa){
+    vistaClientes = activa;
+    $('ventasResumen').hidden = activa;
+    $('ventasRegistros').hidden = activa;
+    $('clientesResumen').hidden = !activa;
+    $('clientesVentasVista').hidden = !activa;
+    $('tabVentas').classList.toggle('active', !activa);
+    $('tabClientes').classList.toggle('active', activa);
+    $('tabVentas').setAttribute('aria-selected', String(!activa));
+    $('tabClientes').setAttribute('aria-selected', String(activa));
+    const txt = activa ? 'Nuevo cliente' : 'Nueva venta';
+    $('newSaleBtnTxt').textContent = txt;
+    $('newSaleFab').setAttribute('aria-label', txt);
+    if (activa) {
+      pintarClientesVentas();
+      cargarClientesVenta().then(ok => { if (ok && vistaClientes) pintarClientesVentas(); });
+    }
+  }
+  $('tabVentas').addEventListener('click', () => cambiarPestanaClientes(false));
+  $('tabClientes').addEventListener('click', () => cambiarPestanaClientes(true));
+  $('buscarClientesVentas').addEventListener('input', pintarClientesVentas);
+
+  // ---------- Editar y eliminar ----------
+  $('clientesVentasTabla').addEventListener('click', e => {
+    const be = e.target.closest('[data-editar-cliente]');
+    if (be) { const c = clientesVenta.find(x => String(x.id) === be.dataset.editarCliente); if (c) abrirClienteModal('editar', c); return; }
+    const bb = e.target.closest('[data-borrar-cliente]');
+    if (bb) { const c = clientesVenta.find(x => String(x.id) === bb.dataset.borrarCliente); if (c) eliminarCliente(c); }
+  });
+
+  async function eliminarCliente(c){
+    $('confirmTitle').textContent = 'Eliminar cliente';
+    const ok = await confirmar('¿Deseas eliminar a <strong>' + escapeHTML(c.nombre) + '</strong>? Esta acción no se puede deshacer.');
+    $('confirmTitle').textContent = 'Eliminar venta';
+    if (!ok) return;
+    let error = null;
+    try { error = (await supabaseClient.from('clientes').delete().eq('id', c.id)).error; }
+    catch (err) { error = err; }
+    if (error) {
+      console.error('Error al eliminar el cliente:', { mensaje: error.message, codigo: error.code });
+      mostrarToast(error.code === '23503' ? 'No se puede eliminar: el cliente tiene ventas registradas.' : 'No se pudo eliminar el cliente.', 'error');
+      return;
+    }
+    clientesVenta = clientesVenta.filter(x => x.id !== c.id);
+    llenarSelectClientes(); actualizarDetalleCliente();
+    pintarClientesVentas();
+    mostrarToast('Cliente eliminado.', 'success');
+  }
+
+  // ---------- Ventana "Registrar / Editar cliente" ----------
+  const CV_CAMPOS = ['cvNombre', 'cvTipoChips', 'cvDocTipo', 'cvDocNumero', 'cvTelefono', 'cvCorreo', 'cvDireccion', 'cvAutoriza'];
+  const CV_TEXTOS = {
+    venta:  { titulo: 'Registrar cliente', sub: 'Solo lo necesario. Al guardar, el cliente queda elegido en tu venta.', boton: 'Guardar y usar en la venta' },
+    lista:  { titulo: 'Registrar cliente', sub: 'Solo lo necesario. Después podrás elegirlo al registrar una venta.', boton: 'Guardar cliente' },
+    editar: { titulo: 'Editar cliente',    sub: 'Actualiza los datos del cliente.', boton: 'Guardar cambios' }
+  };
+
+  function abrirClienteModal(modo, c){
+    clienteModo = modo;
+    clienteEditandoId = c ? c.id : null;
+    $('clienteVentaForm').reset();
+    CV_CAMPOS.forEach(id => marcarError(id, ''));
+    document.querySelectorAll('#cvTipoChips .chip-op.extra').forEach(el => el.remove());
+    const t = CV_TEXTOS[modo];
+    $('clienteVentaTitulo').textContent = t.titulo;
+    $('clienteVentaSub').textContent = t.sub;
+    $('guardarClienteVenta').textContent = t.boton;
+    $('cvConsentGrupo').hidden = modo === 'editar';
+    if (c) {
+      $('cvNombre').value = c.nombre || '';
+      let radio = document.querySelector('input[name="cvTipo"][value="' + (TIPOS_CLIENTE.includes(c.tipo) ? c.tipo : '__') + '"]');
+      if (!radio && c.tipo) {
+        // tipo guardado antes que no está en la lista (p. ej. "Otro"): se muestra para no perderlo
+        const l = document.createElement('label');
+        l.className = 'chip-op extra';
+        l.innerHTML = '<input type="radio" name="cvTipo"><span></span>';
+        l.querySelector('input').value = c.tipo;
+        l.querySelector('span').textContent = c.tipo;
+        $('cvTipoChips').appendChild(l);
+        radio = l.querySelector('input');
+      }
+      if (radio) radio.checked = true;
+      $('cvDocTipo').value = c.documento_tipo || '';
+      $('cvDocNumero').value = c.documento_numero || '';
+      $('cvTelefono').value = c.telefono || '';
+      $('cvCorreo').value = c.correo || '';
+      $('cvDireccion').value = c.direccion || '';
+    }
+    $('clienteVentaModal').classList.add('show');
+    actualizarScroll();
+    setTimeout(() => $('cvNombre').focus(), 60);
+  }
+  function cerrarClienteVenta(){
+    $('clienteVentaModal').classList.remove('show');
+    actualizarScroll();
+  }
+  $('cerrarClienteVenta').addEventListener('click', cerrarClienteVenta);
+  $('cancelarClienteVenta').addEventListener('click', cerrarClienteVenta);
+  $('clienteVentaModal').addEventListener('mousedown', e => { if (e.target === $('clienteVentaModal')) cerrarClienteVenta(); });
+  $('cvTipoChips').addEventListener('change', () => marcarError('cvTipoChips', ''));
+  ['cvNombre', 'cvDocTipo', 'cvDocNumero', 'cvTelefono', 'cvCorreo', 'cvDireccion'].forEach(id => {
+    $(id).addEventListener('input', () => { if ($(id).closest('.form-group').classList.contains('invalid')) marcarError(id, ''); });
+  });
+  $('cvAutoriza').addEventListener('change', () => marcarError('cvAutoriza', ''));
+
+  function validarCliente(){
+    let ok = true;
+    const err = (id, msg) => { marcarError(id, msg); if (msg) ok = false; };
+    const nombre = $('cvNombre').value.trim().replace(/\s{2,}/g, ' ');
+    const repetido = clientesVenta.some(x => String(x.id) !== String(clienteEditandoId) && normalizar(x.nombre) === normalizar(nombre));
+    err('cvNombre',
+      nombre.length < 2 ? 'Escribe el nombre o razón social (mínimo 2 caracteres).' :
+      !/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]/.test(nombre) ? 'El nombre debe tener letras o números.' :
+      repetido ? 'Ya tienes un cliente con ese nombre.' : '');
+    err('cvTipoChips', document.querySelector('input[name="cvTipo"]:checked') ? '' : 'Elige el tipo de cliente.');
+    const dt = $('cvDocTipo').value, dn = $('cvDocNumero').value.trim();
+    err('cvDocTipo', dn && !dt ? 'Elige el tipo de documento.' : '');
+    err('cvDocNumero', dt && !dn ? 'Escribe el número del documento.' : (dn && dn.replace(/[^A-Za-z0-9]/g, '').length < 5 ? 'El número es muy corto.' : ''));
+    const tel = $('cvTelefono').value.trim(), dig = tel.replace(/\D/g, '').length;
+    err('cvTelefono', !tel ? 'Escribe el teléfono.' : (dig < 7 || dig > 15 ? 'Revisa el teléfono (de 7 a 15 dígitos).' : ''));
+    const correo = $('cvCorreo').value.trim();
+    err('cvCorreo', correo && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo) ? 'Escribe un correo válido.' : '');
+    err('cvAutoriza', clienteModo !== 'editar' && !$('cvAutoriza').checked ? 'Confirma la autorización para guardar al cliente.' : '');
+    return ok;
+  }
+
+  $('clienteVentaForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (guardandoCliente) return;
+    if (!validarCliente()) { mostrarToast('Revisa los campos marcados en rojo', 'error'); return; }
+
+    const payload = {
+      nombre: $('cvNombre').value.trim().replace(/\s{2,}/g, ' '),
+      tipo: document.querySelector('input[name="cvTipo"]:checked').value,
+      documento_tipo: $('cvDocTipo').value || null,
+      documento_numero: $('cvDocNumero').value.trim() || null,
+      telefono: $('cvTelefono').value.trim().replace(/\s{2,}/g, ' '),
+      correo: $('cvCorreo').value.trim() || null,
+      direccion: $('cvDireccion').value.trim() || null
+    };
+    const btn = $('guardarClienteVenta');
+    guardandoCliente = true;
+    btn.disabled = true; btn.classList.add('loading'); btn.textContent = 'Guardando...';
+
+    try {
+      const editando = clienteModo === 'editar';
+      const previo = editando ? clientesVenta.find(x => String(x.id) === String(clienteEditandoId)) : null;
+      const q = editando
+        ? supabaseClient.from('clientes').update(payload).eq('id', clienteEditandoId)
+        : supabaseClient.from('clientes').insert(payload);
+      const { data, error } = await q.select(CLIENTE_COLS).single();
+      if (error) {
+        console.error('Error al guardar el cliente:', { mensaje: error.message, codigo: error.code });
+        mostrarToast(error.code === '23505' || /clientes_documento_por_usuario_uidx/i.test(error.message || '')
+          ? 'Ya existe un cliente con ese documento.'
+          : (editando ? 'No se pudieron guardar los cambios.' : 'No se pudo registrar el cliente.'), 'error');
+        return;
+      }
+
+      if (editando) {
+        clientesVenta = clientesVenta.map(x => String(x.id) === String(data.id) ? Object.assign({}, x, data) : x);
+        // Si cambió el nombre, las ventas de este cliente se muestran con el nombre nuevo
+        if (previo && previo.nombre !== data.nombre) {
+          const r = await supabaseClient.from('ventas').update({ cliente: data.nombre }).eq('cliente_id', data.id);
+          if (!r.error) datos.ventas.forEach(v => { if (String(v.cliente_id) === String(data.id)) v.cliente = data.nombre; });
+        }
+      } else {
+        clientesVenta.push(data);
+      }
+      clientesVenta.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+      llenarSelectClientes();
+      if (clienteModo === 'venta') {
+        $('clienteSelect').value = data.id;
+        $('cliente').value = data.nombre;
+        marcarError('cliente', '');
+      }
+      actualizarDetalleCliente();
+      if (vistaClientes) pintarClientesVentas();
+      if (editando) pintarTabla(false);
+      cerrarClienteVenta();
+      mostrarToast(editando ? 'Cliente actualizado.' : (clienteModo === 'venta' ? 'Cliente registrado y seleccionado.' : 'Cliente registrado.'), 'success');
+    } catch (err) {
+      console.error('Error inesperado al guardar el cliente:', err);
+      mostrarToast('No se pudo guardar el cliente. Revisa tu conexión.', 'error');
+    } finally {
+      guardandoCliente = false;
+      btn.disabled = false; btn.classList.remove('loading');
+      btn.textContent = CV_TEXTOS[clienteModo].boton;
+    }
+  });
+
   cargarClientesVenta();
+
 
   // ---------------------------------------------------------------
   // ELIMINAR (con ventana de confirmación)
