@@ -736,7 +736,7 @@
 
   const supabaseClient = DSI.cliente();
 
-  const COLUMNAS   = 'id,nombre,nombre_cientifico,categoria,proveedor,fecha_captura,origen,estado,descripcion,observaciones,created_at';
+  const COLUMNAS   = 'id,nombre,nombre_cientifico,categoria,proveedor,proveedor_id,fecha_captura,origen,estado,descripcion,observaciones,created_at';
   const CATEGORIAS = ['Peces', 'Mariscos', 'Moluscos', 'Otros'];
   const TAM_PAGINA = 25;        // filas que se dibujan por tanda (mantiene la página ligera)
   const LIMITE_MS  = 15000;     // tiempo máximo de espera por una consulta
@@ -939,6 +939,22 @@
     sel.value = (actual && actual !== NUEVO_PROV) ? actual : '';
   }
 
+  // Completa únicamente los campos existentes que dependen del proveedor.
+  function proveedorSeleccionado(valor){
+    const nombre = valor !== undefined ? valor : $('pProveedor').value;
+    return proveedoresBusqueda.find(function(p){ return normalizar(p.nombre) === normalizar(nombre); }) || null;
+  }
+  function autocompletarDatosProveedor(proveedor, forzarOrigen){
+    if (!proveedor) return;
+    if (proveedor.ubicacion && (forzarOrigen || !$('pOrigen').value.trim())) {
+      $('pOrigen').value = proveedor.ubicacion;
+    }
+  }
+  $('pProveedor').addEventListener('change', function(){
+    const proveedor = proveedorSeleccionado();
+    if (proveedor) autocompletarDatosProveedor(proveedor, true);
+  });
+
   // Al elegir "Registrar nuevo proveedor" se guarda lo escrito, se abre Proveedores y,
   // al guardar allí, se vuelve aquí con el proveedor ya elegido.
   const CLAVE_BORRADOR = 'dsi_borrador_producto';
@@ -1063,7 +1079,14 @@
     $('pEstado').value = b.estado || 'Activo';
     $('pDescripcion').value = b.descripcion || '';
     $('pObservaciones').value = b.observaciones || '';
-    actualizarProveedores(nuevo || (existente && existente.proveedor) || '');
+    let proveedorNuevo = nuevo;
+    if (typeof nuevo === 'string' && nuevo) {
+      try { proveedorNuevo = JSON.parse(nuevo); } catch (e) { proveedorNuevo = { nombre: nuevo }; }
+    }
+    const nombreProveedor = (proveedorNuevo && proveedorNuevo.nombre) || (existente && existente.proveedor) || '';
+    actualizarProveedores(nombreProveedor);
+    const proveedorRestaurado = (proveedorNuevo && proveedorNuevo.id && proveedoresBusqueda.find(function(p){ return String(p.id) === String(proveedorNuevo.id); })) || proveedorSeleccionado(nombreProveedor);
+    if (proveedorRestaurado) autocompletarDatosProveedor(proveedorRestaurado, true);
     nbQuitadas = new Set(b.quitar || []);
     nbExtras = new Set(b.extras || []);
     nbPintar();
@@ -1723,6 +1746,7 @@
       nombre_cientifico: colapsar($('pCientifico').value) || null,
       categoria:         $('pCategoria').value,
       proveedor:         colapsar($('pProveedor').value) || null,
+      proveedor_id:      (proveedorSeleccionado() && proveedorSeleccionado().id) || null,
       fecha_captura:     $('pFecha').value || null,
       origen:            colapsar($('pOrigen').value) || null,
       estado:            $('pEstado').value,
