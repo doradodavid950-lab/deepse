@@ -1277,7 +1277,7 @@
 
     // Venía de Productos: se guarda el nombre y se vuelve para seguir con el producto
     if (volverAProductos && idEditando === null && fila) {
-      try { sessionStorage.setItem('dsi_prov_nuevo', fila.nombre); } catch (e) { /* se ignora */ }
+      try { sessionStorage.setItem('dsi_prov_nuevo', JSON.stringify({ id: fila.id, nombre: fila.nombre, ubicacion: fila.ubicacion })); } catch (e) { /* se ignora */ }
       window.location.href = 'productos.html';
       return;
     }
