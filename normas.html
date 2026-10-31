@@ -1482,7 +1482,7 @@
         // Solo para las notificaciones
         supabaseClient
           .from('recepciones')
-          .select('id,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,proveedores(nombre)')
+          .select('id,codigo_lote,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,proveedores(nombre)')
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
           .limit(500)
       ]), tiempoAgotado]);
@@ -1686,7 +1686,7 @@
     let n = '';
     grupos.forEach(g => g.lotes.forEach(l => { if (String(l.r.id) === String(rec.id)) n = l.n; }));
     const prov = (rec.proveedores && rec.proveedores.nombre) || 'Sin proveedor';
-    return escapeHTML(prov) + (n ? '<br><small>Lote ' + n + '</small>' : '');
+    return escapeHTML(prov) + ((rec.codigo_lote || n) ? '<br><small>' + escapeHTML(rec.codigo_lote || ('Lote ' + n)) + '</small>' : '');
   }
   function llenarLotes(pid, item){
     const sel = $('lote'), hint = $('loteHint');
@@ -1714,7 +1714,7 @@
           const actual = editando && String(l.r.id) === String(item.recepcion_id);
           const bloq = l.bloqueado && !actual;
           if (!bloq) libres.push(String(l.r.id));
-          return '<option value="' + escapeHTML(l.r.id) + '"' + (bloq ? ' disabled' : '') + '>Lote ' + l.n + ' · ' +
+          return '<option value="' + escapeHTML(l.r.id) + '"' + (bloq ? ' disabled' : '') + '>' + escapeHTML(l.r.codigo_lote || ('Lote ' + l.n)) + ' · ' +
             escapeHTML(formatearFecha(l.r.fecha_recepcion)) + ' · ' + escapeHTML(fmtPeso(Number(l.r.peso) || 0)) +
             (bloq ? ' — ya tiene control' : '') + '</option>';
         }).join('') + '</optgroup>';

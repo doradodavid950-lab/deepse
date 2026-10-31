@@ -246,7 +246,7 @@
     $('pNombre').textContent = p.nombre || 'Producto';
     $('pCientifico').textContent = p.nombre_cientifico || '';
     $('pCientifico').hidden = !p.nombre_cientifico;
-    $('pCategoria').textContent = p.categoria ? 'Categoría: ' + p.categoria : '';
+    $('pCategoria').textContent = [p.categoria ? 'Categoría: ' + p.categoria : '', l.codigo ? 'Lote ' + l.codigo : ''].filter(Boolean).join(' · ');
     $('sOrigen').textContent = p.origen || '—';
     $('sPeso').textContent = fmtPeso(l.peso);
     $('sEstado').textContent = l.estado || '—';

@@ -540,7 +540,7 @@
   const $ = function(id){ return document.getElementById(id); };
 
   // Solo las columnas necesarias, en una sola consulta con los nombres ya unidos
-  const COLUMNAS = 'id,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,observaciones,productos(nombre),proveedores(nombre)';
+  const COLUMNAS = 'id,codigo_lote,producto_id,proveedor_id,peso,estado_producto,fecha_recepcion,observaciones,productos(nombre),proveedores(nombre)';
   const ESTADOS_FORM = ['Fresco', 'Congelado', 'En revisión', 'Rechazado'];
   const APROBADOS = ['fresco', 'congelado', 'recibido'];   // "recibido" = registros anteriores
   const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -917,6 +917,8 @@
     return mapa;
   }
   function loteDe(r){ return lotesMapa.get(String(r.id)) || 1; }
+  // Código único y permanente del lote (lo genera la base de datos al registrar la recepción)
+  function codigoDe(r){ return r.codigo_lote || ('Lote ' + loteDe(r)); }
 
   function filaHTML(r){
     const id = escapeHTML(r.id);
@@ -926,7 +928,7 @@
     return '<tr data-id="' + id + '">' +
       '<td>' + prod + '</td>' +
       '<td>' + escapeHTML(nombreRel(r.proveedores) || 'Sin proveedor') + '</td>' +
-      '<td><span class="lote-tag">Lote ' + loteDe(r) + '</span></td>' +
+      '<td><span class="lote-tag">' + escapeHTML(codigoDe(r)) + '</span></td>' +
       '<td class="nowrap">' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</td>' +
       '<td><span class="pill ' + claseEstado(r.estado_producto) + '">' + escapeHTML(r.estado_producto || '-') + '</span></td>' +
       '<td class="nowrap">' + escapeHTML(fechaCorta(r.fecha_recepcion, true)) + '</td>' +
@@ -947,7 +949,7 @@
         '<div class="pc-info"><strong>' + escapeHTML(producto) + '</strong><span>' + escapeHTML(nombreRel(r.proveedores) || 'Sin proveedor') + '</span></div>' +
         '<span class="pill ' + claseEstado(r.estado_producto) + '">' + escapeHTML(r.estado_producto || '-') + '</span>' +
       '</div>' +
-      '<div class="pc-bot"><span>Lote <b>' + loteDe(r) + '</b></span><span>Peso <b>' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</b></span><b>' + escapeHTML(fechaCorta(r.fecha_recepcion, false)) + '</b></div>' +
+      '<div class="pc-bot"><span>Lote <b>' + escapeHTML(codigoDe(r)) + '</b></span><span>Peso <b>' + escapeHTML(fmtPeso(Number(r.peso) || 0)) + '</b></span><b>' + escapeHTML(fechaCorta(r.fecha_recepcion, false)) + '</b></div>' +
     '</div>';
   }
 

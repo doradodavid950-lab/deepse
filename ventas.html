@@ -1203,7 +1203,7 @@
         // Solo para las notificaciones
         supabaseClient
           .from('recepciones')
-          .select('id,producto_id,peso,estado_producto,fecha_recepcion,proveedor_id,productos(nombre),proveedores(nombre)')
+          .select('id,codigo_lote,producto_id,peso,estado_producto,fecha_recepcion,proveedor_id,productos(nombre),proveedores(nombre)')
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
           .limit(500),
         // Solo para el buscador de la barra superior
@@ -1370,7 +1370,7 @@
     select.innerHTML = '<option value="">Sin lote vinculado</option>' + lotes.map(r => {
       const prov = (Array.isArray(r.proveedores) ? r.proveedores[0] : r.proveedores)?.nombre || 'Sin proveedor';
       const fecha = r.fecha_recepcion ? new Date(r.fecha_recepcion).toLocaleDateString('es-CO') : 'Fecha sin registrar';
-      const label = fecha + ' · ' + fmtPeso(Number(r.peso) || 0) + ' · ' + prov + ' · ' + (r.estado_producto || 'Recibido');
+      const label = (r.codigo_lote ? r.codigo_lote + ' · ' : '') + fecha + ' · ' + fmtPeso(Number(r.peso) || 0) + ' · ' + prov + ' · ' + (r.estado_producto || 'Recibido');
       return '<option value="' + escapeHTML(r.id) + '">' + escapeHTML(label) + '</option>';
     }).join('');
     if (actual && !lotes.some(r => String(r.id) === actual)) {
@@ -1797,6 +1797,7 @@
       correo: $('cvCorreo').value.trim() || null,
       direccion: $('cvDireccion').value.trim() || null
     };
+    if (clienteModo !== 'editar') payload.acepta_datos = $('cvAutoriza').checked;   // constancia de la autorización (Ley 1581)
     const btn = $('guardarClienteVenta');
     guardandoCliente = true;
     btn.disabled = true; btn.classList.add('loading'); btn.textContent = 'Guardando...';

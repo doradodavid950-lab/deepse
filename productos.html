@@ -421,6 +421,24 @@
   @media (max-width:1000px){ .nb-row{flex-wrap:wrap} .nb-add select{font-size:16px}}
   .obs-chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#3D5573;margin:4px 0 8px;cursor:pointer}
   .obs-chk input{width:18px;height:18px;accent-color:#1E66F5}
+  .opc{display:flex;flex-direction:column;gap:8px;grid-column:1/-1}
+  .opc-btn{align-self:flex-start;height:38px;padding:0 14px;border-radius:12px;border:1px dashed #9CC5F7;background:#F5F9FE;color:#1558D6;font-weight:700;font-size:13.5px;cursor:pointer}
+  .opc-btn:hover{background:#EAF3FF;border-style:solid}
+  .opc-btn[hidden]{display:none}
+  .opc-area{background:#F8FBFF;border:1px solid #D9E7F7;border-radius:16px;padding:12px 14px}
+  .opc-area[hidden]{display:none}
+  .opc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .opc-head label{font-size:13px;font-weight:700;color:var(--texto-3)}
+  .opc-quitar{border:0;background:none;color:#C2302B;font-weight:700;font-size:12.5px;cursor:pointer;padding:4px 8px;border-radius:8px}
+  .opc-quitar:hover{background:#FFE3E0}
+  .opc-area textarea{width:100%;min-height:84px;border-radius:12px;border:1px solid #D3E3F5;background:#fff;padding:10px 12px;font:inherit;font-size:15px;color:var(--texto);resize:vertical;outline:0;box-sizing:border-box}
+  .opc-area textarea:focus{border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.15)}
+  .opc-cont{text-align:right;font-size:12px;color:#8DA0B8;margin-top:4px}
+  #wrapDesc,#wrapObs{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  #wrapDesc[hidden],#wrapObs[hidden]{display:none!important}
+  #wrapDesc label,#wrapObs label{font-size:13px;font-weight:700;color:var(--texto-3)}
+  #wrapDesc textarea,#wrapObs textarea{width:100%;min-height:92px;border-radius:14px;border:1px solid var(--borde);background:var(--campo);padding:11px 14px;font:inherit;font-size:14.5px;color:var(--texto);resize:vertical;outline:0;box-sizing:border-box}
+  #wrapDesc textarea:focus,#wrapObs textarea:focus{background:#fff;border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.15)}
 </style>
 
 
@@ -686,13 +704,18 @@
           <select id="pEstado"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
         </div>
         <div class="field full">
-          <label for="pDescripcion">Descripción</label>
-          <textarea id="pDescripcion" placeholder="Descripción del producto (opcional)" maxlength="500"></textarea>
+<div class="field full">
+          <label class="obs-chk" for="pConDesc"><input type="checkbox" id="pConDesc"> Agregar descripción</label>
+          <div id="wrapDesc" hidden><label for="pDescripcion">Descripción</label>
+          <textarea id="pDescripcion" placeholder="Descripción del producto" maxlength="500"></textarea></div>
+        </div>
         </div>
         <div class="field full">
+<div class="field full">
           <label class="obs-chk" for="pConObs"><input type="checkbox" id="pConObs"> Agregar observaciones</label>
-          <div id="pObsWrap" hidden><label for="pObservaciones">Observaciones</label>
-          <textarea id="pObservaciones" placeholder="Observaciones (opcional)" maxlength="500"></textarea></div>
+          <div id="wrapObs" hidden><label for="pObservaciones">Observaciones</label>
+          <textarea id="pObservaciones" placeholder="Observaciones" maxlength="500"></textarea></div>
+        </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -947,10 +970,16 @@
     const nombre = valor !== undefined ? valor : $('pProveedor').value;
     return proveedoresBusqueda.find(function(p){ return normalizar(p.nombre) === normalizar(nombre); }) || null;
   }
-  function autocompletarDatosProveedor(proveedor, forzarOrigen){
-    if (!proveedor) return;
-    if (proveedor.ubicacion && (forzarOrigen || !$('pOrigen').value.trim())) {
-      $('pOrigen').value = proveedor.ubicacion;
+  let origenAuto = false;
+  function marcarOrigenAuto(on){ origenAuto = on; const h = document.getElementById('pOrigenHint'); if (h) h.hidden = !on; }
+  function autocompletarDatosProveedor(proveedor){
+    const o = $('pOrigen');
+    if (proveedor && proveedor.ubicacion) {
+      o.value = String(proveedor.ubicacion).slice(0, 100);
+      marcarOrigenAuto(true);
+    } else if (!proveedor && origenAuto) {
+      o.value = '';
+      marcarOrigenAuto(false);
     }
   }
   $('pProveedor').addEventListener('change', function(){
@@ -1081,7 +1110,7 @@
     $('pOrigen').value = b.origen || '';
     $('pEstado').value = b.estado || 'Activo';
     $('pDescripcion').value = b.descripcion || '';
-    $('pObservaciones').value = b.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; syncObsP();
+    $('pObservaciones').value = b.observaciones || ''; $('pDescripcion').value = b.descripcion || ''; $('pConObs').checked = !!$('pObservaciones').value; $('pConDesc').checked = !!$('pDescripcion').value; syncObsP(); syncDescP();
     let proveedorNuevo = nuevo;
     if (typeof nuevo === 'string' && nuevo) {
       try { proveedorNuevo = JSON.parse(nuevo); } catch (e) { proveedorNuevo = { nombre: nuevo }; }
@@ -1232,7 +1261,7 @@
           .select('id,peso,estado_producto,fecha_recepcion,productos(nombre)')
           .order('fecha_recepcion', { ascending: false, nullsFirst: false })
           .limit(200),
-        supabaseClient.from('proveedores').select('id,nombre,estado')
+        supabaseClient.from('proveedores').select('id,nombre,estado,ubicacion')
       ]));
 
       if (res[0].error) { hayError = true; console.error('Error productos:', res[0].error); }
@@ -1640,7 +1669,7 @@
       $('pOrigen').value        = producto.origen || '';
       $('pEstado').value        = producto.estado || 'Activo';
       $('pDescripcion').value   = producto.descripcion || '';
-      $('pObservaciones').value = producto.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; syncObsP();
+      $('pObservaciones').value = producto.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; $('pConDesc').checked = !!$('pDescripcion').value; syncObsP(); syncDescP();
     } else {
       $('modalTitle').textContent = 'Nuevo producto';
       $('btnGuardarLabel').textContent = 'Guardar producto';
@@ -2093,8 +2122,10 @@
   iniciar();
 
 
-  function syncObsP(){ const on=$('pConObs').checked; $('pObsWrap').hidden=!on; if(!on) $('pObservaciones').value=''; }
+  function syncObsP(){ const on=$('pConObs').checked; $('wrapObs').hidden=!on; if(!on) $('pObservaciones').value=''; }
+  function syncDescP(){ const on=$('pConDesc').checked; $('wrapDesc').hidden=!on; if(!on) $('pDescripcion').value=''; }
   $('pConObs').addEventListener('change', syncObsP);
+  $('pConDesc').addEventListener('change', syncDescP);
 })();
 </script>
 

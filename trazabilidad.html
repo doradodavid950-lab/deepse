@@ -462,6 +462,8 @@
   .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
   .tab{padding:8px 15px;border-radius:14px;background:#fff;border:1px solid #D3E3F5;font:inherit;font-size:14px;font-weight:700;color:var(--texto-3);display:inline-flex;align-items:center;gap:8px;cursor:pointer}
   .tab:hover{border-color:var(--azul-medio)}
+  .lote-tag{display:inline-block;padding:3px 10px;border-radius:999px;background:#EAF2FF;color:#1B4F9C;font-weight:700;font-size:13px;white-space:nowrap}
+  td small{display:block;color:var(--texto-2);font-size:12px;margin-top:2px}
   .tab.activa{background:var(--g-azul);color:#fff;border-color:transparent;box-shadow:0 6px 14px rgba(30,102,245,.3)}
   .tab .count{font-size:12px;background:#EAF3FF;color:#1558D6;padding:1px 8px;border-radius:20px}
   .tab .count:empty{display:none}
@@ -677,9 +679,12 @@
   <section class="c">
     <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Registros relacionados</h3>
     <div class="tabs" role="tablist" id="tabs">
-      <button class="tab activa" type="button" role="tab" data-vista="recepciones">Recepciones<span class="count" data-count="recepciones"></span></button>
+      <button class="tab activa" type="button" role="tab" data-vista="lotes">Lotes<span class="count" data-count="lotes"></span></button>
+      <button class="tab" type="button" role="tab" data-vista="recepciones">Recepciones<span class="count" data-count="recepciones"></span></button>
+      <button class="tab" type="button" role="tab" data-vista="calidad">Calidad<span class="count" data-count="calidad"></span></button>
       <button class="tab" type="button" role="tab" data-vista="almacenamientos">Almacenamiento<span class="count" data-count="almacenamientos"></span></button>
       <button class="tab" type="button" role="tab" data-vista="ventas">Ventas<span class="count" data-count="ventas"></span></button>
+      <button class="tab" type="button" role="tab" data-vista="historial">Historial<span class="count" data-count="historial"></span></button>
     </div>
     <div class="table-wrap">
       <table class="simple">
@@ -2032,7 +2037,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
 
   let seleccionado = null;        // producto que se está mostrando
   let tokenSel = 0;               // descarta respuestas de selecciones anteriores
-  let vistaActual = 'recepciones';
+  let vistaActual = 'lotes';
   let datosTraza = null;
   let firmaTraza = '';
   let sugerenciasActuales = [];
@@ -2421,21 +2426,26 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
 
     const promesa = (async () => {
       try {
-        const [rec, alm, ven] = await conLimite(Promise.all([
+        const [rec, alm, ven, cal] = await conLimite(Promise.all([
           supabaseClient.from('recepciones')
-            .select('id,peso,estado_producto,fecha_recepcion,proveedores(nombre)')
+            .select('id,codigo_lote,peso,estado_producto,fecha_recepcion,proveedores(nombre)')
             .eq('producto_id', id)
             .order('fecha_recepcion', { ascending: false, nullsFirst: false })
             .limit(LIMITE),
           supabaseClient.from('almacenamientos')
-            .select('id,recepcion_id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento,recepciones!almacenamientos_lote_producto_fkey(id,fecha_recepcion,peso,proveedores(nombre))')
+            .select('id,recepcion_id,tipo,ubicacion,temperatura,estado_producto,fecha_almacenamiento,recepciones!almacenamientos_lote_producto_fkey(id,codigo_lote,fecha_recepcion,peso,proveedores(nombre))')
             .eq('producto_id', id)
             .order('fecha_almacenamiento', { ascending: false, nullsFirst: false })
             .limit(LIMITE),
           supabaseClient.from('ventas')
-            .select('id,recepcion_id,cantidad,cliente,tipo_venta,canal_venta,destino,fecha_venta,recepciones!ventas_lote_producto_fkey(id,fecha_recepcion,peso,proveedores(nombre))')
+            .select('id,recepcion_id,cantidad,cliente,tipo_venta,canal_venta,destino,fecha_venta,recepciones!ventas_lote_producto_fkey(id,codigo_lote,fecha_recepcion,peso,proveedores(nombre))')
             .eq('producto_id', id)
             .order('fecha_venta', { ascending: false, nullsFirst: false })
+            .limit(LIMITE),
+          supabaseClient.from('controles_calidad')
+            .select('id,recepcion_id,resultado,estado_revision,fecha_control')
+            .eq('producto_id', id)
+            .order('fecha_control', { ascending: false, nullsFirst: false })
             .limit(LIMITE)
         ]));
 
@@ -2443,8 +2453,21 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
         if (rec.error) { fallos.push('recepciones'); console.error('Error recepciones:', rec.error); }
         if (alm.error) { fallos.push('almacenamiento'); console.error('Error almacenamientos:', alm.error); }
         if (ven.error) { fallos.push('ventas'); console.error('Error ventas:', ven.error); }
+        if (cal.error) { fallos.push('calidad'); console.error('Error calidad:', cal.error); }
 
-        const d = { recepciones: rec.data || [], almacenamientos: alm.data || [], ventas: ven.data || [] };
+        // Historial de cambios de este producto (si falla, la trazabilidad sigue funcionando)
+        let historial = [];
+        try {
+          const h = await conLimite(supabaseClient.from('auditoria')
+            .select('id,tabla,registro_id,accion,fecha,anterior,nuevo')
+            .in('tabla', ['recepciones', 'almacenamientos', 'ventas', 'controles_calidad'])
+            .or('nuevo->>producto_id.eq.' + id + ',anterior->>producto_id.eq.' + id)
+            .order('fecha', { ascending: false })
+            .limit(60));
+          if (!h.error) historial = h.data || [];
+        } catch (e) { /* sin historial */ }
+
+        const d = { recepciones: rec.data || [], almacenamientos: alm.data || [], ventas: ven.data || [], calidad: cal.data || [], historial: historial };
         if (!fallos.length) guardarCacheTraza(id, d);
         return { d: d, fallos: fallos };
       } catch (err) {
@@ -2482,7 +2505,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
       if (!mismo) vistaActual = primeraVistaConDatos(previo.d);
       pintarTraza(prod, previo.d);
     } else {
-      vistaActual = 'recepciones';
+      vistaActual = 'lotes';
       pintarCargando();
     }
 
@@ -2506,7 +2529,8 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   }
 
   function primeraVistaConDatos(d){
-    return ['recepciones', 'almacenamientos', 'ventas'].find(v => d[v].length) || 'recepciones';
+    if (d.recepciones.length) return 'lotes';
+    return ['almacenamientos', 'ventas'].find(v => d[v].length) || 'lotes';
   }
 
   function mostrarNoEncontrado(){
@@ -2545,6 +2569,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   const ICONOS = {
     captura: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z" stroke="currentColor" stroke-width="1.8"/></svg>',
     recepcion: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/></svg>',
+    calidad: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6l8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
     almacenamiento: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 9.5 12 4l9 5.5V20H3V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
     venta: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="20" r="1.2" fill="currentColor"/><circle cx="17" cy="20" r="1.2" fill="currentColor"/><path d="M2 3h3l2.6 12.2a2 2 0 0 0 1.9 1.6h7.6a2 2 0 0 0 1.9-1.4L21 7H6" stroke="currentColor" stroke-width="1.8"/></svg>'
   };
@@ -2552,6 +2577,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   const TEXTO_PENDIENTE = {
     captura: 'Información de captura y origen del producto.',
     recepcion: 'Registro del ingreso, proveedor, peso y estado del producto.',
+    calidad: 'Control de calidad del lote: color, olor, textura y revisión.',
     almacenamiento: 'Seguimiento de la ubicación y condiciones de almacenamiento.',
     venta: 'Registro de la venta y salida del producto.'
   };
@@ -2582,6 +2608,19 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
       });
     } else {
       etapas.push({ icono: ICONOS.recepcion, titulo: 'Recepción', hecho: false, fecha: 'Pendiente', texto: 'El producto todavía no tiene una recepción registrada.' });
+    }
+
+    // Control de calidad
+    const cal = d.calidad || [];
+    if (cal.length) {
+      const c = cal[0];
+      etapas.push({
+        icono: ICONOS.calidad, titulo: 'Control de calidad', hecho: true,
+        fecha: formatearFecha(c.fecha_control),
+        texto: `${conteo(cal.length)} control(es) · Último: ${c.resultado || 'Pendiente'}${c.estado_revision ? ' (revisión: ' + String(c.estado_revision).toLowerCase() + ')' : ''}.`
+      });
+    } else {
+      etapas.push({ icono: ICONOS.calidad, titulo: 'Control de calidad', hecho: false, fecha: 'Pendiente', texto: 'Todavía no hay controles de calidad para este producto.' });
     }
 
     // Almacenamiento
@@ -2621,6 +2660,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     const base = [
       { icono: ICONOS.captura, titulo: 'Captura', clave: 'captura' },
       { icono: ICONOS.recepcion, titulo: 'Recepción', clave: 'recepcion' },
+      { icono: ICONOS.calidad, titulo: 'Control de calidad', clave: 'calidad' },
       { icono: ICONOS.almacenamiento, titulo: 'Almacenamiento', clave: 'almacenamiento' },
       { icono: ICONOS.venta, titulo: 'Venta', clave: 'venta' }
     ];
@@ -2664,6 +2704,8 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   }
 
   function pintarTraza(prod, d){
+    d.calidad = d.calidad || [];
+    d.historial = d.historial || [];
     // Si los datos son idénticos a los ya dibujados, no se repite el trabajo
     const firma = prod.id + '|' + vistaActual + '|' + JSON.stringify(d);
     if (firma === firmaTraza) return;
@@ -2683,10 +2725,78 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
   // ---------------------------------------------------------------
   const proveedorDe = r => (Array.isArray(r.proveedores) ? r.proveedores[0] : r.proveedores)?.nombre || 'Sin proveedor';
 
+  // --- Ayudas para la vista por lote (usan los datos ya cargados del producto) ---
+  const delLote = (lista, r) => (lista || []).filter(x => String(x.recepcion_id) === String(r.id));
+  const codigoDeRecepcion = id => {
+    const r = (datosTraza.recepciones || []).find(x => String(x.id) === String(id));
+    return r ? (r.codigo_lote || 'Sin código') : 'Sin lote vinculado';
+  };
+  const tagLote = r => '<span class="lote-tag">' + escapeHTML(r.codigo_lote || 'Sin código') + '</span>';
+  const vacioGris = t => '<span style="color:#9AB0C9">' + t + '</span>';
+  const TABLAS_H = { recepciones: 'Recepción', almacenamientos: 'Almacenamiento', ventas: 'Venta', controles_calidad: 'Control de calidad' };
+  const ACCIONES_H = { INSERT: 'Registró', UPDATE: 'Modificó', DELETE: 'Eliminó' };
+  function detalleH(h){
+    const x = h.nuevo || h.anterior || {};
+    const kg = v => (v !== null && v !== undefined && v !== '') ? fmtPeso(Number(v)) : '';
+    let partes = [];
+    if (h.tabla === 'recepciones') partes = [x.codigo_lote, kg(x.peso), x.estado_producto];
+    else if (h.tabla === 'almacenamientos') partes = [x.tipo, x.ubicacion, (x.temperatura !== null && x.temperatura !== undefined && x.temperatura !== '') ? x.temperatura + ' °C' : ''];
+    else if (h.tabla === 'ventas') partes = [kg(x.cantidad), x.cliente];
+    else if (h.tabla === 'controles_calidad') partes = [x.resultado, x.estado_revision ? 'revisión: ' + x.estado_revision : ''];
+    return escapeHTML(partes.filter(Boolean).join(' · ') || '-');
+  }
+
   const VISTAS = {
+    lotes: {
+      vacio: 'Este producto no tiene lotes. Registra una recepción para crear el primero.',
+      filas: d => d.recepciones,
+      cols: [
+        { t: 'Lote', v: r => tagLote(r) },
+        { t: 'Proveedor', v: r => escapeHTML(proveedorDe(r)) },
+        { t: 'Recibido', v: r => celdaFecha(r.fecha_recepcion) },
+        { t: 'Calidad', v: r => {
+            const c = delLote(datosTraza.calidad, r)[0];
+            return c ? pillEstado(c.resultado || 'Pendiente') + '<small>Revisión: ' + escapeHTML(c.estado_revision || 'Pendiente') + '</small>'
+                     : '<span class="pill pend">Sin control</span>';
+        } },
+        { t: 'Almacenamiento', v: r => {
+            const x = delLote(datosTraza.almacenamientos, r)[0];
+            if (!x) return '<span class="pill pend">Sin registro</span>';
+            const temp = (x.temperatura !== null && x.temperatura !== undefined && x.temperatura !== '') ? ' · ' + Number(x.temperatura).toLocaleString('es-CO', { maximumFractionDigits: 1 }) + ' °C' : '';
+            return escapeHTML((x.tipo || '-') + ' · ' + (x.ubicacion || '-') + temp);
+        } },
+        { t: 'Vendido / disponible', v: r => {
+            const vendido = delLote(datosTraza.ventas, r).reduce((s, x) => s + (Number(x.cantidad) || 0), 0);
+            return escapeHTML(fmtPeso(vendido) + ' / ' + fmtPeso(Math.max(0, (Number(r.peso) || 0) - vendido)));
+        } },
+        { t: 'Clientes que lo recibieron', v: r => {
+            const nombres = Array.from(new Set(delLote(datosTraza.ventas, r).map(x => x.cliente).filter(Boolean)));
+            return nombres.length ? escapeHTML(nombres.join(', ')) : vacioGris('Aún sin ventas');
+        } }
+      ]
+    },
+    calidad: {
+      vacio: 'Este producto no tiene controles de calidad registrados.',
+      cols: [
+        { t: 'Lote', v: r => r.recepcion_id ? '<span class="lote-tag">' + escapeHTML(codigoDeRecepcion(r.recepcion_id)) + '</span>' : vacioGris('Sin lote vinculado') },
+        { t: 'Resultado', v: r => pillEstado(r.resultado || 'Pendiente') },
+        { t: 'Revisión', v: r => pillEstado(r.estado_revision || 'Pendiente') },
+        { t: 'Fecha', v: r => celdaFecha(r.fecha_control) }
+      ]
+    },
+    historial: {
+      vacio: 'Todavía no hay cambios registrados. El historial empieza a guardarse desde que se activó.',
+      cols: [
+        { t: 'Fecha', v: r => celdaFecha(r.fecha) },
+        { t: 'Acción', v: r => escapeHTML(ACCIONES_H[r.accion] || r.accion) },
+        { t: 'Registro', v: r => escapeHTML(TABLAS_H[r.tabla] || r.tabla) },
+        { t: 'Detalle', v: r => detalleH(r) }
+      ]
+    },
     recepciones: {
       vacio: 'Este producto no tiene recepciones registradas.',
       cols: [
+        { t: 'Lote', v: r => tagLote(r) },
         { t: 'Proveedor', v: r => escapeHTML(proveedorDe(r)) },
         { t: 'Peso', v: r => fmtPeso(Number(r.peso) || 0) },
         { t: 'Estado', v: r => pillEstado(r.estado_producto || 'Recibido') },
@@ -2696,7 +2806,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     almacenamientos: {
       vacio: 'Este producto no tiene registros de almacenamiento.',
       cols: [
-        { t: 'Lote / proveedor', v: r => { const l = Array.isArray(r.recepciones) ? r.recepciones[0] : r.recepciones; const p = l && (Array.isArray(l.proveedores) ? l.proveedores[0] : l.proveedores); return l ? escapeHTML((l.fecha_recepcion ? formatearFecha(l.fecha_recepcion) : 'Lote') + ' · ' + (p?.nombre || 'Sin proveedor')) : 'Sin lote vinculado'; } },
+        { t: 'Lote / proveedor', v: r => { const l = Array.isArray(r.recepciones) ? r.recepciones[0] : r.recepciones; const p = l && (Array.isArray(l.proveedores) ? l.proveedores[0] : l.proveedores); return l ? escapeHTML((l.codigo_lote || (l.fecha_recepcion ? formatearFecha(l.fecha_recepcion) : 'Lote')) + ' · ' + (p?.nombre || 'Sin proveedor')) : 'Sin lote vinculado'; } },
         { t: 'Tipo', v: r => `<span class="pill ${normalizar(r.tipo) === 'refrigerado' ? 'refrigerado' : 'congelado'}">${escapeHTML(r.tipo || '-')}</span>` },
         { t: 'Ubicación', v: r => escapeHTML(r.ubicacion || '-') },
         { t: 'Temperatura', v: r => (r.temperatura !== null && r.temperatura !== undefined && r.temperatura !== '')
@@ -2708,7 +2818,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     ventas: {
       vacio: 'Este producto no tiene ventas registradas.',
       cols: [
-        { t: 'Lote / proveedor', v: r => { const l = Array.isArray(r.recepciones) ? r.recepciones[0] : r.recepciones; const p = l && (Array.isArray(l.proveedores) ? l.proveedores[0] : l.proveedores); return l ? escapeHTML((l.fecha_recepcion ? formatearFecha(l.fecha_recepcion) : 'Lote') + ' · ' + (p?.nombre || 'Sin proveedor')) : 'Sin lote vinculado'; } },
+        { t: 'Lote / proveedor', v: r => { const l = Array.isArray(r.recepciones) ? r.recepciones[0] : r.recepciones; const p = l && (Array.isArray(l.proveedores) ? l.proveedores[0] : l.proveedores); return l ? escapeHTML((l.codigo_lote || (l.fecha_recepcion ? formatearFecha(l.fecha_recepcion) : 'Lote')) + ' · ' + (p?.nombre || 'Sin proveedor')) : 'Sin lote vinculado'; } },
         { t: 'Cantidad', v: r => fmtNumero(Number(r.cantidad) || 0) },
         { t: 'Cliente', v: r => escapeHTML(r.cliente || '-') },
         { t: 'Tipo', v: r => `<span class="pill ${normalizar(r.tipo_venta) === 'local' ? 'local' : 'distribucion'}">${escapeHTML(r.tipo_venta || '-')}</span>` },
@@ -2721,7 +2831,8 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
 
   function pintarContadores(d){
     document.querySelectorAll('[data-count]').forEach(el => {
-      el.textContent = d ? (d[el.dataset.count].length >= LIMITE ? LIMITE + '+' : d[el.dataset.count].length) : '';
+      const lista = d ? (d[el.dataset.count === 'lotes' ? 'recepciones' : el.dataset.count] || []) : null;
+      el.textContent = lista ? (lista.length >= LIMITE ? LIMITE + '+' : lista.length) : '';
     });
     document.querySelectorAll('.tab').forEach(t => {
       const activa = t.dataset.vista === vistaActual;
@@ -2741,7 +2852,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
       return;
     }
 
-    const filas = datosTraza[vistaActual];
+    const filas = vista.filas ? vista.filas(datosTraza) : (datosTraza[vistaActual] || []);
     if (!filas.length) {
       head.innerHTML = '';
       body.innerHTML = `<tr class="vacio"><td colspan="6" class="empty">${vista.vacio}</td></tr>`;
@@ -3042,7 +3153,7 @@ window.QRCodeLib=__req('index');window.QRCodeLib.EC=__req('QRErrorCorrectLevel')
     sel.dataset.producto = String(prod.id);
     sel.disabled = false;
     sel.innerHTML = lotes.map(r => {
-      const etiqueta = formatearFecha(r.fecha_recepcion) + ' · ' + fmtPeso(Number(r.peso) || 0);
+      const etiqueta = (r.codigo_lote ? r.codigo_lote + ' · ' : '') + formatearFecha(r.fecha_recepcion) + ' · ' + fmtPeso(Number(r.peso) || 0);
       return `<option value="${escapeHTML(r.id)}"${String(r.id) === elegido ? ' selected' : ''}>${escapeHTML(etiqueta)}</option>`;
     }).join('');
 
