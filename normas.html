@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="shell pg-normas">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <link rel="stylesheet" href="estilos.css">
+<link rel="stylesheet" href="shell.css">
 <style>
   :root{
     --azul-noche:#031632;
@@ -2567,16 +2568,29 @@
       : '<option value="">Todos mis productos</option><option value="Aprobado">Aprobados</option><option value="Pendiente">Pendientes</option><option value="Rechazado">Rechazados</option>';
   }
 
+  // Número de PRODUCTOS con algo pendiente: el auditor, los que tienen normas por revisar; el establecimiento, los que tienen normas
+  // por redactar sus normas OBLIGATORIAS (sin declarar, rechazadas o con el certificado vencido). Las recomendadas no cuentan. El mismo número enciende el punto rojo del mapa de navegación.
   async function actualizarBadgeRevision(){
     await obtenerRol();
     prepararFiltroProductos();
-    if (!soyAuditor()) return;
     try {
-      const r = await supabaseClient.from('producto_normas').select('id', { count: 'exact', head: true }).eq('estado', 'Declarada');
-      const n = r.count || 0;
+      const aud = soyAuditor();
+      const r = await supabaseClient.from('producto_normas').select('producto_id,obligatoria,estado,fecha_vencimiento').limit(5000);
+      if (r.error) return;
+      const hoy = hoyISO();
+      const productos = new Set();
+      (r.data || []).forEach(function(pn){
+        const pendiente = aud
+          ? pn.estado === 'Declarada'
+          : (pn.obligatoria && (pn.estado === 'Sin declarar' || pn.estado === 'Rechazada' || (pn.estado === 'Verificada' && pn.fecha_vencimiento && pn.fecha_vencimiento < hoy)));
+        if (pendiente) productos.add(pn.producto_id);
+      });
+      const n = productos.size;
       const b = $('tabBadge');
       b.textContent = n > 99 ? '99+' : String(n);
       b.classList.toggle('show', n > 0);
+      b.setAttribute('aria-label', aud ? 'Productos con normas por revisar' : 'Productos con normas pendientes');
+      if (window.dsiShell) window.dsiShell.setPendientes({ normas: n });
     } catch (e) { /* el contador es opcional */ }
   }
 
@@ -2611,6 +2625,7 @@
       pdListo = true;
       pdUltima = Date.now();
       pintarProductos();
+      actualizarBadgeRevision();
     } catch (e) {
       if (!pdListo) $('pdLista').innerHTML = '<div class="vacio-n">No se pudieron cargar tus normas. <button class="lk" type="button" id="pdReintentar">Reintentar</button></div>';
       else mostrarToast('No se pudo actualizar. Revisa tu conexión.', 'error');
@@ -2658,6 +2673,8 @@
         acciones += '<button class="mini p" type="button" data-acc="declarar" data-pn="' + pn.id + '">' + (pn.estado === 'Rechazada' ? 'Corregir y volver a declarar' : 'Subir mi certificado') + '</button>';
       } else if (pn.estado === 'Declarada') {
         acciones += '<button class="mini g" type="button" data-acc="declarar" data-pn="' + pn.id + '">Editar declaración</button>';
+      } else if (vencida) {
+        acciones += '<button class="mini p" type="button" data-acc="declarar" data-pn="' + pn.id + '">Renovar certificado</button>';
       }
       if (!pn.obligatoria && pn.estado !== 'Verificada') {
         acciones += '<button class="mini d" type="button" data-acc="quitar" data-pn="' + pn.id + '">Quitar</button>';
@@ -2800,6 +2817,7 @@
 
   // ---------- declarar cumplimiento (establecimiento) ----------
   let declarandoId = null;
+  let declarandoRenueva = false;
   // Recuerda preferencias no sensibles para evitar repetir selecciones en cada declaración.
   // Nunca guarda números de certificados ni fechas, porque pertenecen a cada documento real.
   const CLAVE_PREF_DECLARACION = 'dsi_preferencias_declaracion_normas_v1';
@@ -2839,6 +2857,10 @@
     const n = mapaCat.get(pn.norma_id) || { nombre: 'Norma' };
     $('dcInfo').textContent = n.nombre + ' · ' + nombreProductoDe(pn.producto_id);
     llenarGuiaDeclaracion(pn, n);
+    // Si el certificado ya venció, se renueva: se pide el certificado nuevo con sus fechas
+    declarandoRenueva = pn.estado === 'Verificada' && !!pn.fecha_vencimiento && pn.fecha_vencimiento < hoyISO();
+    $('dcTitulo').textContent = declarandoRenueva ? 'Renovar certificado' : 'Subir mi certificado';
+    if (declarandoRenueva) $('dcCert').value = '';
     // Sugiere el tipo de evidencia según la norma; el usuario debe confirmar que corresponde a su documento real.
     $('dcTipo').value = tipoSugeridoDeNorma(n);
     const preferencias = preferenciasDeNorma(pn.norma_id);
@@ -2853,8 +2875,8 @@
       $('dcEmisora').value = existeEntidad ? '' : preferencias.emisora;
       $('dcEmisora').style.display = existeEntidad ? 'none' : '';
     }
-    $('dcEmision').value = pn.fecha_emision || '';
-    $('dcVence').value = pn.fecha_vencimiento || '';
+    $('dcEmision').value = declarandoRenueva ? '' : (pn.fecha_emision || '');
+    $('dcVence').value = declarandoRenueva ? '' : (pn.fecha_vencimiento || '');
     $('dcVence').disabled = false;
     $('dcEmision').max = hoyISO();
     $('dcEmision').placeholder = '';
@@ -2906,7 +2928,7 @@
     btn.disabled = false;
     if (error) { mostrarToast(textoError(error), 'error'); return; }
     cerrarVentana('modalDecl');
-    mostrarToast('Declaración enviada al auditor.', 'success');
+    mostrarToast(declarandoRenueva ? 'Renovación enviada al auditor.' : 'Declaración enviada al auditor.', 'success');
     await cargarProductosNormas(true);
   });
 
@@ -3314,5 +3336,6 @@
 <script src="sesion-inactividad.js" defer></script>
 <script src="campana.js" defer></script>
 <script src="menu-usuario.js" defer></script>
+<script src="shell.js"></script>
 </body>
 </html>

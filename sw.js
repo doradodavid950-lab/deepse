@@ -4,8 +4,8 @@
  * Los datos NUNCA pasan por aquí: las peticiones a Supabase (y cualquier POST/PUT/DELETE) van directo a la red.
  * Al publicar una versión nueva, cambia VERSION para que todos los dispositivos limpien lo anterior.
  */
-const VERSION = 'dsi-v6';
-const ESTATICOS = ['estilos.css', 'supabase-config.js', 'menu-usuario.js', 'campana.js', 'sesion-inactividad.js', 'logo-emblema.png'];
+const VERSION = 'dsi-v8';
+const ESTATICOS = ['estilos.css', 'shell.css', 'shell.js', 'supabase-config.js', 'menu-usuario.js', 'vista-administrador.js', 'campana.js', 'sesion-inactividad.js', 'logo-emblema.png'];
 const SDK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
 
 self.addEventListener('install', function(e){

@@ -1,0 +1,191 @@
+/* Deep Sea — estructura común (barra lateral, encabezado, transiciones)
+ * Se activa con <html class="shell"> y shell.js. Las pantallas conservan toda su lógica. */
+html.shell{--sh-ic:clamp(34px,calc((100vh - 250px) / 9),46px);--sh-w:76px;--sh-gap:12px;--sh-off:calc(var(--sh-w) + var(--sh-gap) * 2);--sh-top:64px}
+html.shell body{background:#F1F5FA;padding:var(--sh-top) 0 28px var(--sh-off);min-height:100vh}
+
+/* La barra lateral se "reserva" desde el primer dibujo para que no parpadee al cambiar de módulo */
+html.shell body::before{content:"";position:fixed;left:var(--sh-gap);top:var(--sh-gap);bottom:var(--sh-gap);width:var(--sh-w);border-radius:30px;background:linear-gradient(180deg,#041B3D 0%,#0A3470 55%,#0B4DB5 100%);z-index:58}
+
+/* ----- se retira la navegación anterior ----- */
+html.shell .dock,html.shell .bnav,html.shell .fan{display:none!important}
+
+/* ----- BARRA LATERAL (fija) ----- */
+.sh-side{position:fixed;left:var(--sh-gap);top:var(--sh-gap);bottom:var(--sh-gap);width:var(--sh-w);z-index:60;border-radius:30px;
+  background:linear-gradient(180deg,#041B3D 0%,#0A3470 55%,#0B4DB5 100%);box-shadow:0 18px 40px rgba(4,27,61,.32);
+  display:flex;flex-direction:column;align-items:center;padding:14px 0 12px}
+.sh-logo{width:46px;height:46px;border-radius:15px;background:#fff;display:grid;place-items:center;flex:none;margin-bottom:10px;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.sh-logo img{width:34px;height:34px;object-fit:contain}
+.sh-nav{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;gap:clamp(3px,.85vh,7px);overflow-y:auto;padding:6px 0;scrollbar-width:none}
+.sh-nav::-webkit-scrollbar{display:none}
+.sh-sep{width:26px;height:1px;background:rgba(255,255,255,.16);margin:3px 0;flex:none}
+.sh-a{position:relative;flex:none;width:var(--sh-ic);height:var(--sh-ic);border-radius:calc(var(--sh-ic) * .33);display:grid;place-items:center;color:#BFD6F4;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);transition:background .18s,color .18s,transform .18s,box-shadow .18s}
+.sh-a:hover,.sh-a:focus-visible{background:rgba(255,255,255,.17);color:#fff;transform:translateY(-1px);outline:0}
+.sh-a[aria-current="page"]{background:linear-gradient(135deg,#1E66F5,#3FD0F2);color:#fff;border-color:rgba(255,255,255,.45);box-shadow:0 0 0 3px rgba(63,208,242,.22),0 10px 22px rgba(30,102,245,.45)}
+.sh-a[aria-current="page"]::before{content:"";position:absolute;left:-15px;top:13px;bottom:13px;width:4px;border-radius:0 4px 4px 0;background:#3FD0F2}
+.sh-a svg{width:calc(var(--sh-ic) * .48);height:calc(var(--sh-ic) * .48)}
+.sh-a svg,.sh-tile svg,.sh-bn svg,.sh-mhead svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* Nombre del módulo al pasar el cursor (flotante, para que la barra no lo recorte) */
+.sh-tipf{position:fixed;z-index:90;transform:translate(-6px,-50%);background:#0B2A57;color:#fff;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:10px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .14s,transform .14s;box-shadow:0 10px 24px rgba(2,16,42,.32)}
+.sh-tipf.on{opacity:1;transform:translate(0,-50%)}
+.sh-tipf::before{content:"";position:absolute;left:-5px;top:50%;margin-top:-5px;border:5px solid transparent;border-left:0;border-right-color:#0B2A57}
+.sh-foot{flex:none;padding-top:10px;display:flex;flex-direction:column;align-items:center}
+/* el avatar (el mismo botón de siempre, ahora abajo en la barra) */
+.sh-foot #userChip{display:grid!important;place-items:center;width:52px;height:52px;padding:0;margin:0;border-radius:50%;background:none;border:2px solid rgba(255,255,255,.28);
+  box-shadow:none;position:relative;cursor:pointer;transition:border-color .18s,transform .18s}
+.sh-foot #userChip:hover,.sh-foot #userChip[aria-expanded="true"]{border-color:#fff;transform:scale(1.04)}
+.sh-foot #userChip>div:not(.av){display:none!important}
+.sh-foot #userChip .av{width:40px;height:40px;font-size:15px;margin:0}
+.sh-foot #userChip::after{content:"";position:absolute;right:-1px;bottom:-1px;width:13px;height:13px;border-radius:50%;background:#2DD36F;border:2px solid #0A3470}
+
+/* Pantallas bajas: logo y avatar un poco más pequeños para que todos los módulos quepan sin deslizar */
+@media (min-width:1001px) and (max-height:640px){.sh-logo{width:38px;height:38px;margin-bottom:6px}.sh-logo img{width:28px;height:28px}.sh-foot{padding-top:6px}.sh-foot #userChip{width:42px;height:42px}.sh-foot #userChip .av{width:32px;height:32px;font-size:13px}.sh-side{padding:10px 0 8px}}
+
+/* Punto rojo: hay algo pendiente en ese módulo */
+.sh-dot{position:absolute;top:5px;right:5px;width:12px;height:12px;border-radius:50%;background:#FF4D4F;border:2px solid #0A3470;animation:shPing 2.2s ease-out infinite;pointer-events:none}
+.sh-dot[hidden]{display:none}
+@keyframes shPing{0%{box-shadow:0 0 0 0 rgba(255,77,79,.55)}70%,100%{box-shadow:0 0 0 8px rgba(255,77,79,0)}}
+@media (prefers-reduced-motion:reduce){.sh-dot{animation:none}}
+
+/* ----- ENCABEZADO (fijo) ----- */
+html.shell .topbar{position:fixed!important;top:0;left:var(--sh-off);right:0;height:var(--sh-top);margin:0!important;max-width:none!important;padding:0 24px!important;
+  display:flex;align-items:center;gap:8px;z-index:50;background:rgba(241,245,250,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+html.shell .topbar .brand,html.shell .topbar #userMini,html.shell .topbar .tb-space{display:none!important}
+.sh-crumb{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#5B7089;font-weight:600;white-space:nowrap;min-width:0}
+.sh-crumb b{color:#0F2540;font-weight:700}
+.sh-crumb .s{opacity:.45}
+html.shell .sh-crumb{flex:1}
+html.shell .topbar .search{margin-left:0;flex:0 1 340px;max-width:340px}
+
+/* ----- TÍTULO DE LA PÁGINA (compacto, sin banner) ----- */
+html.shell .top-zone{background:none!important;box-shadow:none!important;border-radius:0!important;padding:0!important;overflow:visible!important}
+html.shell .top-zone>svg.top-wave{display:none}
+html.shell .hero-wrap{max-width:1500px;margin:0 auto;padding:4px 24px 0}
+html.shell .hero{background:none!important;box-shadow:none!important;color:#0F2540;padding:4px 0 2px!important;border-radius:0;overflow:visible;
+  display:flex!important;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+html.shell .hero svg.w{display:none!important}
+html.shell .hero h1{font-size:24px!important;line-height:1.15;color:#0F2540}
+html.shell .hero p{color:#5B7089!important;font-size:13.5px!important;margin-top:2px}
+html.shell .hero-meta{color:#7A90AB!important;margin-top:3px}
+html.shell .hero .btns{margin-top:10px}
+html.shell .hero .b1{background:linear-gradient(135deg,#1E66F5,#3FA9FF)!important;color:#fff!important;box-shadow:0 8px 18px rgba(30,102,245,.28);padding:10px 18px}
+html.shell .hero .b2{background:#fff!important;color:#0B3C74!important;border:1px solid #D3E3F5!important}
+html.shell .hero .glass{align-self:center}
+html.shell .hero .gl{background:#fff!important;border:1px solid #DCE8F6!important;box-shadow:0 8px 22px rgba(6,43,91,.06);backdrop-filter:none;width:auto;min-width:116px;padding:9px 14px}
+html.shell .hero .gl b{color:#0F2540;font-size:22px}
+html.shell .hero .gl span{color:#5B7089}
+
+/* ----- CONTENIDO (más compacto) ----- */
+html.shell .main{max-width:1500px;padding:10px 24px 8px!important;margin-top:0!important;gap:14px}
+html.shell .c{padding:14px 16px;border-radius:18px}
+html.shell .k{padding:11px 14px}
+html.shell .k b{font-size:22px}
+html.shell .fab{bottom:calc(22px + env(safe-area-inset-bottom,0px))!important}
+html.shell .toast{bottom:26px!important}
+
+/* ----- TRANSICIÓN ENTRE MÓDULOS ----- */
+@keyframes shEntra{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+html.shell .hero-wrap{animation:shEntra .34s cubic-bezier(.22,.7,.2,1) both}
+html.shell .main{animation:shEntra .42s .05s cubic-bezier(.22,.7,.2,1) both}
+html.sh-leaving .hero-wrap,html.sh-leaving .main{opacity:0!important;transform:translateY(-8px)!important;transition:opacity .17s ease,transform .17s ease}
+@media (prefers-reduced-motion:reduce){html.shell .hero-wrap,html.shell .main{animation:none}html.sh-leaving .hero-wrap,html.sh-leaving .main{transition:none}}
+
+/* ----- INICIO: el banner azul de bienvenida (solo esta pantalla) ----- */
+html.pg-inicio .hero{background:linear-gradient(115deg,#062B5B 0%,#0B4DB5 45%,#1E8CF5 78%,#3FD0F2 100%)!important;box-shadow:0 18px 40px rgba(11,77,181,.26)!important;
+  color:#fff!important;padding:22px 28px!important;border-radius:24px!important;overflow:hidden!important;align-items:flex-start;flex-wrap:nowrap;position:relative}
+html.pg-inicio .hero svg.w{display:block!important}
+html.pg-inicio .hero>*{position:relative;z-index:1}
+html.pg-inicio .hero svg.w{position:absolute;z-index:0}
+html.pg-inicio .hero h1{color:#fff!important;font-size:28px!important}
+html.pg-inicio .hero p{color:#CFE6FF!important;font-size:15px!important}
+html.pg-inicio .hero-meta{color:#A9D3FF!important}
+html.pg-inicio .hero .btns{margin-top:14px}
+html.pg-inicio .main{padding-top:14px!important}
+html.pg-inicio .hero .b1{background:#fff!important;color:#0B3C74!important;box-shadow:none}
+html.pg-inicio .hero .b2{background:rgba(255,255,255,.16)!important;color:#fff!important;border:1px solid rgba(255,255,255,.35)!important}
+html.pg-inicio .hero .gl{background:rgba(255,255,255,.15)!important;border:1px solid rgba(255,255,255,.3)!important;box-shadow:none;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+html.pg-inicio .hero .gl b{color:#fff}
+html.pg-inicio .hero .gl span{color:#D9ECFF}
+
+/* ----- CELULAR / TABLET (como el diseño móvil): encabezado con avatar, barra inferior y cajón "Más" ----- */
+.sh-mhead,.sh-bnav,.sh-drawer,.sh-dbg{display:none}
+@media (max-width:1000px){
+  html.shell{--sh-top:64px}
+  html.shell body{padding:var(--sh-top) 0 calc(104px + env(safe-area-inset-bottom,0px)) 0}
+  html.shell body::before,.sh-side{display:none}
+  html.shell .topbar{left:0;padding:0 14px!important;gap:10px;background:rgba(241,245,250,.94)}
+  html.shell .topbar .search,.sh-crumb{display:none!important}
+  html.shell .topbar #userChip{display:none!important}
+  html.shell .topbar #userMini{display:block!important;margin:0}
+  html.shell .topbar #userMini .av{width:42px;height:42px;border:2px solid #fff;box-shadow:0 6px 14px rgba(30,102,245,.3)}
+  html.shell .topbar .notif-wrap{margin-left:auto}
+  html.shell .topbar .icon-btn{background:#fff;border:1px solid #D3E3F5;color:#0B3C74;width:42px;height:42px;border-radius:14px;margin:0}
+  html.shell .topbar .badge-n{border-color:#fff}
+  .sh-mhead{display:flex;align-items:center;gap:11px;min-width:0;flex:1}
+  .sh-mhead .lg{width:44px;height:44px;border-radius:14px;background:#fff;border:1px solid #D3E3F5;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(6,43,91,.08)}
+  .sh-mhead .lg img{width:32px;height:32px;object-fit:contain}
+  .sh-mhead .tx{min-width:0;line-height:1.15}
+  .sh-mhead small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#5B7089}
+  .sh-mhead b{display:block;font-size:19px;color:#0F2540;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* la página ya muestra su título arriba: aquí solo queda el subtítulo y las acciones */
+  html.shell:not(.pg-inicio) .hero h1{display:none}
+  html.shell .hero-wrap{padding:2px 14px 0}
+  html.shell:not(.pg-inicio) .hero{padding:0!important}
+  html.shell .hero p{font-size:13px!important;margin:0}
+  html.shell .hero .glass{width:100%;margin-top:8px}
+  html.shell .hero .gl{flex:1;min-width:0}
+  html.shell .main{padding:8px 14px 8px!important}
+  html.pg-inicio .hero-wrap{padding:6px 14px 0}
+  html.pg-inicio .hero{display:block!important;padding:18px 18px 20px!important;border-radius:22px!important}
+  html.pg-inicio .hero .btns{display:flex!important;flex-wrap:nowrap;gap:8px}
+  html.pg-inicio .hero .btns .b1,html.pg-inicio .hero .btns .b2{padding:10px 13px;font-size:14px;white-space:nowrap}
+  html.pg-inicio .hero h1{display:block;font-size:23px!important}
+  html.shell .fab{bottom:calc(98px + env(safe-area-inset-bottom,0px))!important}
+  html.shell .toast{bottom:calc(104px + env(safe-area-inset-bottom,0px))!important}
+
+  /* barra inferior flotante */
+  .sh-bnav{display:flex;align-items:flex-end;justify-content:space-between;position:fixed;z-index:60;left:50%;right:auto;width:calc(100% - 24px);transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));height:68px;padding:0 8px 8px;
+    transition:width .34s cubic-bezier(.3,.8,.25,1),height .3s ease,padding .3s ease,border-radius .3s ease,bottom .3s ease,box-shadow .3s;
+    border-radius:28px;background:linear-gradient(180deg,#0A2F66 0%,#051A3D 100%);box-shadow:0 18px 36px rgba(4,27,61,.45);border:1px solid rgba(255,255,255,.08)}
+  .sh-bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:52px;margin:0 2px;border-radius:18px;color:#A9C4E8;font-size:11px;font-weight:600;
+    border:1px solid transparent;background:none;font-family:inherit;transition:background .18s,color .18s}
+  .sh-bn svg{width:22px;height:22px}
+  .sh-bn[aria-current="page"],.sh-bn.on{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.14)}
+  .sh-bn.mid{flex:none;width:72px;height:72px;margin:0 6px;position:relative;top:-18px;border-radius:50%;background:linear-gradient(135deg,#1E66F5,#3FD0F2);color:#fff;
+    border:4px solid #F1F5FA;box-shadow:0 12px 24px rgba(30,102,245,.5);gap:1px;font-size:10.5px}
+  .sh-bn.mid svg{width:26px;height:26px}
+  .sh-bn.mid span{margin-bottom:-2px}
+  .sh-bn{position:relative}
+  .sh-bn .sh-dot{top:4px;right:calc(50% - 20px);border-color:#071F47}
+  .sh-tile{position:relative}
+  .sh-tile .sh-dot{top:8px;right:calc(50% - 26px);border-color:#fff}
+
+  /* Al bajar por la página la barra se encoge y deja solo el módulo abierto (más espacio para ver el contenido).
+     Al subir, o al tocarla, vuelve a mostrarse completa. */
+  .sh-bn{transition:background .18s,color .18s,flex-basis .3s ease,width .3s ease,margin .3s ease,opacity .2s ease,top .3s ease,height .3s ease}
+  html.sh-compacta .sh-bnav{width:124px;height:50px;padding:0 5px;align-items:center;border-radius:25px;overflow:hidden;bottom:calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 10px 22px rgba(4,27,61,.38)}
+  html.sh-compacta .sh-bn:not(.sh-keep){flex:0 0 0;width:0;min-width:0;margin:0;padding:0;opacity:0;overflow:hidden;pointer-events:none;border-width:0}
+  html.sh-compacta .sh-bn.sh-keep{flex:1;height:40px;margin:0}
+  html.sh-compacta .sh-bn.sh-keep.mid{width:auto;top:0;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.1);box-shadow:none;border-radius:20px;flex-direction:row;gap:7px}
+  html.sh-compacta .sh-bn.sh-keep.mid svg{width:20px;height:20px}
+  html.sh-compacta .sh-bn.sh-keep{flex-direction:row;gap:7px;font-size:12px}
+  html.sh-compacta .sh-bn.sh-keep svg{width:20px;height:20px}
+  html.sh-compacta .sh-bn .sh-dot{display:none}
+  html.sh-compacta .sh-bn.sh-keep .sh-dot:not([hidden]){display:block;right:6px;top:3px}
+  html.sh-compacta .fab{bottom:calc(72px + env(safe-area-inset-bottom,0px))!important}
+
+  /* cajón con el resto de módulos */
+  .sh-dbg{display:block;position:fixed;inset:0;z-index:70;background:rgba(4,26,58,.45);opacity:0;pointer-events:none;transition:opacity .22s}
+  .sh-drawer{display:block;position:fixed;z-index:71;left:0;right:0;bottom:0;padding:10px 16px calc(22px + env(safe-area-inset-bottom,0px));border-radius:28px 28px 0 0;background:#fff;
+    box-shadow:0 -20px 50px rgba(4,27,61,.3);transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.9,.3,1)}
+  html.sh-cajon .sh-drawer{transform:none}
+  html.sh-cajon .sh-dbg{opacity:1;pointer-events:auto}
+  .sh-drawer .gr{width:42px;height:5px;border-radius:5px;background:#D3E3F5;margin:0 auto 12px}
+  .sh-drawer h2{font-size:16px;color:#0F2540;margin:0 2px 12px}
+  .sh-dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .sh-tile{display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 4px;border-radius:18px;background:#F3F8FF;color:#0B3C74;font-size:12.5px;font-weight:700;text-align:center}
+  .sh-tile svg{width:24px;height:24px}
+  .sh-tile[aria-current="page"]{background:linear-gradient(135deg,#1E66F5,#3FD0F2);color:#fff;box-shadow:0 8px 18px rgba(30,102,245,.35)}
+}

@@ -254,14 +254,16 @@
     // Verificación: solo cuenta si un auditor la aprobó (no el resultado del laboratorio)
     const verif = $('verif');
     const v = d.verificacion;
-    if (v) {
+    const veredicto = d.veredicto || (v ? 'verificado' : 'pendiente');
+    if (veredicto === 'verificado') {
       verif.classList.remove('pend');
-      $('verifTitulo').textContent = 'Lote verificado' + (v.auditor ? ' por ' + v.auditor : '');
-      $('verifTexto').textContent = 'Aprobado por un auditor el ' + fmtFecha(v.fecha);
-    } else if (cal.some(function(c){ return c.estado_revision === 'Rechazado'; })) {
+      $('verifTitulo').textContent = 'Lote verificado' + (v && v.auditor ? ' por ' + v.auditor : '');
+      $('verifTexto').textContent = 'Aprobado por un auditor' + (v && v.fecha ? ' el ' + fmtFecha(v.fecha) : '') + '.';
+    } else if (veredicto === 'no_verificado') {
+      // Mensaje neutro: el público no necesita el detalle interno de la revisión
       verif.classList.add('pend');
-      $('verifTitulo').textContent = 'Control de calidad rechazado';
-      $('verifTexto').textContent = 'Este lote no pasó la revisión del auditor.';
+      $('verifTitulo').textContent = 'Lote sin verificación vigente';
+      $('verifTexto').textContent = 'Este lote no cuenta con una verificación aprobada. Consulta con el establecimiento antes de consumirlo.';
     } else {
       verif.classList.add('pend');
       $('verifTitulo').textContent = 'Pendiente de verificación';

@@ -95,7 +95,10 @@
 
   function programarRecarga(){
     if (timerRecarga) clearTimeout(timerRecarga);
-    timerRecarga = setTimeout(function(){ cargar(); }, 120);
+    // Con muchos usuarios, cada cambio en la base haría recargar a todos a la vez: se espera un mínimo entre cargas
+    // (5 s) más un retraso aleatorio, y varios cambios seguidos se juntan en una sola recarga.
+    const espera = Math.max(300, 5000 - (Date.now() - ultimaCarga)) + Math.random() * 1500;
+    timerRecarga = setTimeout(function(){ cargar(); }, espera);
   }
 
   function conectarTiempoReal(idUsuario, esAdmin, esAuditor){
@@ -338,6 +341,7 @@
       try { sessionStorage.setItem('dsi_notif_cache_' + uid, JSON.stringify({ savedAt: Date.now(), items: lista })); } catch (e) {}
       pintar();
       ultimaCarga = Date.now();
+      if (window.dsiShell && window.dsiShell.refrescar) window.dsiShell.refrescar();   // actualiza los puntos rojos del menú
     } catch (e) { /* sin conexión: se vuelve a intentar */ }
     finally {
       cargando = false;
@@ -356,6 +360,9 @@
       window.addEventListener('load', cargar, { once: true });
     }
   }
-  setInterval(function(){ if (!document.hidden && Date.now() - ultimaCarga > 45000) cargar(); }, 45000);
-  document.addEventListener('visibilitychange', function(){ if (!document.hidden) cargar(); });
+  // Respaldo por si se pierde el tiempo real: cada ~3 min (con retraso aleatorio), nunca con la pestaña oculta
+  (function respaldo(){
+    setTimeout(function(){ if (!document.hidden && Date.now() - ultimaCarga > 150000) cargar(); respaldo(); }, 170000 + Math.random() * 40000);
+  })();
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden && Date.now() - ultimaCarga > 30000) cargar(); });
 })();

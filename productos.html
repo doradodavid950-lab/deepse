@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="shell pg-productos">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://lohxgdeuohhczejyxwgr.supabase.co" crossorigin>
 
 <link rel="stylesheet" href="estilos.css">
+<link rel="stylesheet" href="shell.css">
 <style>
   :root{
     --azul-noche:#031632;
@@ -292,6 +293,9 @@
   td .nom{display:flex;align-items:center;gap:11px}
   td .nom .chip{width:34px;height:34px;border-radius:11px;background:var(--g-azul);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
   td .nom .chip svg.i{width:17px;height:17px}
+  td .nom .chip.ch-mariscos{background:var(--g-morado)}
+  td .nom .chip.ch-moluscos{background:var(--g-verde)}
+  td .nom .chip.ch-otros{background:linear-gradient(135deg,#64748B,#94A3B8)}
   td.cient{font-style:italic;color:var(--texto-3)}
   .cat-tag{display:inline-block;padding:3px 11px;border-radius:20px;font-size:12.5px;font-weight:700;background:#DCEBFF;color:#1558D6;white-space:nowrap}
   .cat-mariscos{background:#E7DDFB;color:#6540B8}
@@ -421,24 +425,9 @@
   @media (max-width:1000px){ .nb-row{flex-wrap:wrap} .nb-add select{font-size:16px}}
   .obs-chk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#3D5573;margin:4px 0 8px;cursor:pointer}
   .obs-chk input{width:18px;height:18px;accent-color:#1E66F5}
-  .opc{display:flex;flex-direction:column;gap:8px;grid-column:1/-1}
-  .opc-btn{align-self:flex-start;height:38px;padding:0 14px;border-radius:12px;border:1px dashed #9CC5F7;background:#F5F9FE;color:#1558D6;font-weight:700;font-size:13.5px;cursor:pointer}
-  .opc-btn:hover{background:#EAF3FF;border-style:solid}
-  .opc-btn[hidden]{display:none}
-  .opc-area{background:#F8FBFF;border:1px solid #D9E7F7;border-radius:16px;padding:12px 14px}
-  .opc-area[hidden]{display:none}
-  .opc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-  .opc-head label{font-size:13px;font-weight:700;color:var(--texto-3)}
-  .opc-quitar{border:0;background:none;color:#C2302B;font-weight:700;font-size:12.5px;cursor:pointer;padding:4px 8px;border-radius:8px}
-  .opc-quitar:hover{background:#FFE3E0}
-  .opc-area textarea{width:100%;min-height:84px;border-radius:12px;border:1px solid #D3E3F5;background:#fff;padding:10px 12px;font:inherit;font-size:15px;color:var(--texto);resize:vertical;outline:0;box-sizing:border-box}
-  .opc-area textarea:focus{border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.15)}
-  .opc-cont{text-align:right;font-size:12px;color:#8DA0B8;margin-top:4px}
-  #wrapDesc,#wrapObs{display:flex;flex-direction:column;gap:6px;margin-top:8px}
-  #wrapDesc[hidden],#wrapObs[hidden]{display:none!important}
-  #wrapDesc label,#wrapObs label{font-size:13px;font-weight:700;color:var(--texto-3)}
-  #wrapDesc textarea,#wrapObs textarea{width:100%;min-height:92px;border-radius:14px;border:1px solid var(--borde);background:var(--campo);padding:11px 14px;font:inherit;font-size:14.5px;color:var(--texto);resize:vertical;outline:0;box-sizing:border-box}
-  #wrapDesc textarea:focus,#wrapObs textarea:focus{background:#fff;border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.15)}
+  .form-grid .field>textarea[hidden]{display:none}
+  .field label.obs-chk{display:flex;align-items:center;gap:8px}
+  .hint-o{font-size:12px;color:#5B7089;margin-top:5px}
 </style>
 
 
@@ -480,6 +469,9 @@
   <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
   <symbol id="i-fish" viewBox="0 0 24 24"><path d="M3 12c3-5 8-6 12-4l4-3v14l-4-3c-4 2-9 1-12-4z"/><circle cx="9" cy="11" r=".8"/></symbol>
+  <symbol id="i-crab" viewBox="0 0 24 24"><ellipse cx="12" cy="14" rx="6" ry="4"/><path d="M6.5 12 3 8.5M17.5 12 21 8.5M3 8.5l1.5-2.5M21 8.5 19.5 6M9 10V7M15 10V7M7 17l-2.5 2.5M17 17l2.5 2.5M10 18.2V21M14 18.2V21"/></symbol>
+  <symbol id="i-shell" viewBox="0 0 24 24"><path d="M12 4C7 4 3 8 3 13c0 3 2 5 4 5h10c2 0 4-2 4-5 0-5-4-9-9-9z"/><path d="M12 4v14M8 5.5 6.5 18M16 5.5 17.5 18M12 18v3"/></symbol>
+  <symbol id="i-anchor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M8 10h8M5 14a7 7 0 0 0 14 0"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
   <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></symbol>
 </svg>
@@ -698,24 +690,19 @@
         <div class="field">
           <label for="pOrigen">Lugar de origen</label>
           <input type="text" id="pOrigen" placeholder="Ej. Bahía de Cartagena" maxlength="100" autocomplete="off">
+          <div class="hint-o" id="pOrigenHint" hidden>Se llenó con la ubicación del proveedor. Puedes cambiarla.</div>
         </div>
         <div class="field">
           <label for="pEstado">Estado</label>
           <select id="pEstado"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
         </div>
         <div class="field full">
-<div class="field full">
           <label class="obs-chk" for="pConDesc"><input type="checkbox" id="pConDesc"> Agregar descripción</label>
-          <div id="wrapDesc" hidden><label for="pDescripcion">Descripción</label>
-          <textarea id="pDescripcion" placeholder="Descripción del producto" maxlength="500"></textarea></div>
-        </div>
+          <textarea id="pDescripcion" placeholder="Descripción del producto" maxlength="500" hidden></textarea>
         </div>
         <div class="field full">
-<div class="field full">
           <label class="obs-chk" for="pConObs"><input type="checkbox" id="pConObs"> Agregar observaciones</label>
-          <div id="wrapObs" hidden><label for="pObservaciones">Observaciones</label>
-          <textarea id="pObservaciones" placeholder="Observaciones" maxlength="500"></textarea></div>
-        </div>
+          <textarea id="pObservaciones" placeholder="Observaciones" maxlength="500" hidden></textarea>
         </div>
       </div>
       <div class="modal-footer">
@@ -970,11 +957,12 @@
     const nombre = valor !== undefined ? valor : $('pProveedor').value;
     return proveedoresBusqueda.find(function(p){ return normalizar(p.nombre) === normalizar(nombre); }) || null;
   }
+  // El lugar de origen se llena con la ubicación del proveedor, salvo que ya hayas escrito otro a mano.
   let origenAuto = false;
-  function marcarOrigenAuto(on){ origenAuto = on; const h = document.getElementById('pOrigenHint'); if (h) h.hidden = !on; }
+  function marcarOrigenAuto(on){ origenAuto = on; $('pOrigenHint').hidden = !on; }
   function autocompletarDatosProveedor(proveedor){
     const o = $('pOrigen');
-    if (proveedor && proveedor.ubicacion) {
+    if (proveedor && proveedor.ubicacion && (!o.value.trim() || origenAuto)) {
       o.value = String(proveedor.ubicacion).slice(0, 100);
       marcarOrigenAuto(true);
     } else if (!proveedor && origenAuto) {
@@ -983,9 +971,10 @@
     }
   }
   $('pProveedor').addEventListener('change', function(){
-    const proveedor = proveedorSeleccionado();
-    if (proveedor) autocompletarDatosProveedor(proveedor, true);
+    if ($('pProveedor').value === NUEVO_PROV) return;
+    autocompletarDatosProveedor(proveedorSeleccionado());
   });
+  $('pOrigen').addEventListener('input', function(){ if (origenAuto) marcarOrigenAuto(false); });
 
   // Al elegir "Registrar nuevo proveedor" se guarda lo escrito, se abre Proveedores y,
   // al guardar allí, se vuelve aquí con el proveedor ya elegido.
@@ -1110,7 +1099,7 @@
     $('pOrigen').value = b.origen || '';
     $('pEstado').value = b.estado || 'Activo';
     $('pDescripcion').value = b.descripcion || '';
-    $('pObservaciones').value = b.observaciones || ''; $('pDescripcion').value = b.descripcion || ''; $('pConObs').checked = !!$('pObservaciones').value; $('pConDesc').checked = !!$('pDescripcion').value; syncObsP(); syncDescP();
+    $('pObservaciones').value = b.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; $('pConDesc').checked = !!$('pDescripcion').value; $('pDescripcion').hidden = !$('pConDesc').checked; $('pObservaciones').hidden = !$('pConObs').checked;
     let proveedorNuevo = nuevo;
     if (typeof nuevo === 'string' && nuevo) {
       try { proveedorNuevo = JSON.parse(nuevo); } catch (e) { proveedorNuevo = { nombre: nuevo }; }
@@ -1118,7 +1107,7 @@
     const nombreProveedor = (proveedorNuevo && proveedorNuevo.nombre) || (existente && existente.proveedor) || '';
     actualizarProveedores(nombreProveedor);
     const proveedorRestaurado = (proveedorNuevo && proveedorNuevo.id && proveedoresBusqueda.find(function(p){ return String(p.id) === String(proveedorNuevo.id); })) || proveedorSeleccionado(nombreProveedor);
-    if (proveedorRestaurado) autocompletarDatosProveedor(proveedorRestaurado, true);
+    if (proveedorRestaurado) autocompletarDatosProveedor(proveedorSeleccionado(proveedorRestaurado.nombre) || proveedorRestaurado);
     nbQuitadas = new Set(b.quitar || []);
     nbExtras = new Set(b.extras || []);
     nbPintar();
@@ -1150,6 +1139,9 @@
   // ---------------------------------------------------------------
   // TABLA
   // ---------------------------------------------------------------
+  // Cada categoría tiene su icono y su color
+  const ICONO_CAT = { peces: 'i-fish', mariscos: 'i-crab', moluscos: 'i-shell', otros: 'i-anchor' };
+
   function filaHTML(p){
     const id = escapeHTML(p.id);
     const nombre = escapeHTML(p.nombre);
@@ -1158,10 +1150,11 @@
     const prov  = p.proveedor ? escapeHTML(p.proveedor) : '—';
     const fecha = formatearFecha(p.fecha_captura);
     const cat   = escapeHTML(p.categoria || 'Otros');
-    const catClase = 'cat-' + normalizar(p.categoria || 'Otros');
+    const catKey = normalizar(p.categoria || 'Otros');
+    const catClase = 'cat-' + catKey;
 
     return '<tr data-id="' + id + '">' +
-      '<td><div class="nom"><span class="chip"><svg class="i" aria-hidden="true"><use href="#i-fish"/></svg></span><strong>' + nombre + '</strong></div></td>' +
+      '<td><div class="nom"><span class="chip ch-' + catKey + '" title="' + cat + '"><svg class="i" aria-hidden="true"><use href="#' + (ICONO_CAT[catKey] || 'i-anchor') + '"/></svg></span><strong>' + nombre + '</strong></div></td>' +
       '<td class="cient ' + (p.nombre_cientifico ? '' : 'sin-dato') + '">' + cient + '</td>' +
       '<td><span class="cat-tag ' + catClase + '">' + cat + '</span></td>' +
       '<td class="' + (p.proveedor ? '' : 'sin-dato') + '">' + prov + '</td>' +
@@ -1669,13 +1662,16 @@
       $('pOrigen').value        = producto.origen || '';
       $('pEstado').value        = producto.estado || 'Activo';
       $('pDescripcion').value   = producto.descripcion || '';
-      $('pObservaciones').value = producto.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; $('pConDesc').checked = !!$('pDescripcion').value; syncObsP(); syncDescP();
+      $('pObservaciones').value = producto.observaciones || ''; $('pConObs').checked = !!$('pObservaciones').value; $('pConDesc').checked = !!$('pDescripcion').value; $('pDescripcion').hidden = !$('pConDesc').checked; $('pObservaciones').hidden = !$('pConObs').checked;
     } else {
       $('modalTitle').textContent = 'Nuevo producto';
       $('btnGuardarLabel').textContent = 'Guardar producto';
       $('productoId').value = '';
       $('pEstado').value = 'Activo';
+      $('pConDesc').checked = false; $('pConObs').checked = false;
+      $('pDescripcion').hidden = true; $('pObservaciones').hidden = true;
     }
+    marcarOrigenAuto(false);
 
     nbPrepararModal(modo, producto);
     $('modalOverlay').classList.add('show');
@@ -2122,10 +2118,10 @@
   iniciar();
 
 
-  function syncObsP(){ const on=$('pConObs').checked; $('wrapObs').hidden=!on; if(!on) $('pObservaciones').value=''; }
-  function syncDescP(){ const on=$('pConDesc').checked; $('wrapDesc').hidden=!on; if(!on) $('pDescripcion').value=''; }
-  $('pConObs').addEventListener('change', syncObsP);
+  function syncObsP(){ const on=$('pConObs').checked; $('pObservaciones').hidden=!on; if(!on) $('pObservaciones').value=''; else $('pObservaciones').focus(); }
+  function syncDescP(){ const on=$('pConDesc').checked; $('pDescripcion').hidden=!on; if(!on) $('pDescripcion').value=''; else $('pDescripcion').focus(); }
   $('pConDesc').addEventListener('change', syncDescP);
+  $('pConObs').addEventListener('change', syncObsP);
 })();
 </script>
 
@@ -2133,5 +2129,6 @@
 <script src="campana.js" defer></script>
 <script src="vista-administrador.js" defer></script>
 <script src="menu-usuario.js" defer></script>
+<script src="shell.js"></script>
 </body>
 </html>

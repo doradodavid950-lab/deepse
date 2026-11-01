@@ -1,0 +1,26 @@
+-- Deep Sea Intelligence — cambios de base de datos de la v20 (ya aplicados en el proyecto lohxgdeuohhczejyxwgr).
+-- Se guardan aquí como registro y para poder recrear la base en otro proyecto.
+-- Se aplicaron como migraciones de Supabase con estos nombres:
+--   seguridad_revocar_anon_y_funciones
+--   lotes_inmutables_auditoria_completa_veredicto_publico
+--   rpc_pendientes_resumen
+--   fix_codigo_lote_mas_de_99_por_dia
+--   pendientes_resumen_almacenamiento_trazabilidad
+-- El texto completo de cada una está en el historial de migraciones de Supabase (Database → Migrations).
+--
+-- Resumen de lo que hacen:
+-- 1. Quitan TODOS los permisos del rol anónimo sobre las tablas (clientes los tenía todos) y el EXECUTE público
+--    de funciones internas. Solo queda público trazabilidad_publica (consulta por QR).
+-- 2. proteger_lote_aprobado(): un lote (recepción) con un control APROBADO por auditor no se borra ni cambia
+--    producto, proveedor, peso, fecha, código ni estado. Solo se permiten observaciones.
+-- 3. Auditoría (trg_auditoria) en todas las tablas de negocio: productos, proveedores, recepciones, almacenamientos,
+--    controles_calidad, ventas, clientes, producto_normas y ajustes_inventario.
+-- 4. trazabilidad_publica devuelve 'veredicto' (verificado | no_verificado | pendiente): un lote rechazado ya no
+--    se muestra como "pendiente".
+-- 5. pendientes_resumen(): una sola consulta liviana para los puntos rojos del menú (normas, recepciones,
+--    almacenamiento y trazabilidad).
+-- 6. generar_codigo_lote(): corregido el choque al llegar al lote nº 100 del día para el mismo producto.
+-- 7. Índices: se agregaron los compuestos que usan las listas (creado_por + fecha) y se quitaron los repetidos.
+--
+-- Pendiente MANUAL (no se puede por SQL): Supabase → Authentication → Sign In / Providers → Email →
+-- activar "Prevent use of leaked passwords" (puede requerir plan Pro).

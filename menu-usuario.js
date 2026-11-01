@@ -76,8 +76,17 @@
     }
 
     function posicionar(){
-      if (movil.matches || !ultimoDisparador) { panel.style.top = panel.style.right = ''; return; }
+      panel.style.left = panel.style.bottom = '';
+      if (movil.matches || !ultimoDisparador) { panel.style.top = panel.style.right = ''; panel.style.transformOrigin = ''; return; }
       const r = ultimoDisparador.getBoundingClientRect();
+      if (ultimoDisparador.dataset.lado === 'derecha') {   // avatar en la barra lateral: el panel sale hacia la derecha
+        panel.style.top = 'auto'; panel.style.right = 'auto';
+        panel.style.left = Math.round(r.right + 14) + 'px';
+        panel.style.bottom = Math.max(12, Math.round(window.innerHeight - r.bottom)) + 'px';
+        panel.style.transformOrigin = '0 100%';
+        return;
+      }
+      panel.style.transformOrigin = '';
       panel.style.top = Math.round(r.bottom + 10) + 'px';
       panel.style.right = Math.max(12, Math.round(window.innerWidth - r.right)) + 'px';
     }
