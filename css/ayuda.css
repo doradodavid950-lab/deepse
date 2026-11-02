@@ -1,0 +1,71 @@
+/* ==========================================================
+   Estilos del módulo: ayuda.html
+   Extraídos del HTML sin cambios: mismo contenido y mismo orden de aplicación.
+   ========================================================== */
+  :root{
+    --azul-oscuro:#062B5B;--azul-medio:#1E66F5;--azul-claro:#5CC0FF;--fondo:#E6F0FA;--borde:#DCE8F6;
+    --texto:#0F2540;--texto-2:#5B7089;--texto-3:#3D5573;--sombra:0 8px 22px rgba(6,43,91,.07);
+    --g-azul:linear-gradient(135deg,#1E66F5,#3FA9FF);
+  }
+  body{font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;color:var(--texto);background:var(--fondo);-webkit-font-smoothing:antialiased;padding-bottom:128px;min-height:100vh}
+  button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+  .topbar{display:flex;align-items:center;gap:16px;padding:16px 36px 12px;max-width:1500px;margin:0 auto;position:relative;z-index:20}
+  .uchip b{display:block;font-size:13.5px;line-height:1.1;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hero{border-radius:24px;color:#fff;padding:22px 32px;position:relative;overflow:hidden;background:linear-gradient(115deg,#062B5B 0%,#0B4DB5 45%,#1E8CF5 78%,#3FD0F2 100%);box-shadow:0 18px 40px rgba(11,77,181,.28)}
+  .hero svg.w{position:absolute;left:0;bottom:0;width:100%;height:80px;opacity:.9;pointer-events:none}
+  .hero h1{font-size:30px;font-weight:700;line-height:1.15}
+  .hero p{font-size:16px;color:#CFE6FF;margin-top:4px}
+  .main{max-width:1500px;margin:0 auto;padding:16px 36px 0;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}
+  .col{display:flex;flex-direction:column;gap:16px;min-width:0}
+  .c{background:#fff;border-radius:20px;border:1px solid var(--borde);box-shadow:var(--sombra);padding:16px 20px;min-width:0}
+  .c h3{font-size:17px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+  .gi{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;flex:none}
+  .buscar{height:46px;display:flex;align-items:center;gap:10px;padding:0 16px;border-radius:15px;background:#fff;border:1px solid #D3E3F5;color:#7A90AB;box-shadow:var(--sombra);transition:border-color .15s,box-shadow .15s}
+  .buscar:focus-within{border-color:var(--azul-medio);box-shadow:0 0 0 4px rgba(30,102,245,.14);color:var(--azul-medio)}
+  .buscar input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--texto)}
+  .q{border-top:1px solid #EDF2F8}
+  .q:first-of-type{border-top:0}
+  .q summary{list-style:none;cursor:pointer;padding:13px 4px;font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .q summary::-webkit-details-marker{display:none}
+  .q summary::after{content:"";width:9px;height:9px;border-right:2px solid #7A90AB;border-bottom:2px solid #7A90AB;transform:rotate(45deg);transition:transform .2s;flex:none;margin-right:4px}
+  .q[open] summary::after{transform:rotate(-135deg)}
+  .q summary:hover{color:var(--azul-medio)}
+  .q p{padding:0 4px 14px;color:var(--texto-3);font-size:14.5px;line-height:1.55}
+  .vacio{display:none;text-align:center;color:var(--texto-2);padding:30px 16px}
+  .vacio.show{display:block}
+  .soporte{background:linear-gradient(135deg,#062B5B,#0B4DB5);color:#fff;border:0}
+  .soporte p{color:#CFE6FF;font-size:14px;line-height:1.5;margin-bottom:14px}
+  .soporte a.mail{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0B3C74;font-weight:700;padding:11px 18px;border-radius:13px;word-break:break-all}
+  .atajos a{display:flex;align-items:center;gap:12px;padding:11px 8px;border-radius:13px;font-weight:600;font-size:14.5px}
+  .atajos a:hover{background:#F3F8FF}
+  .atajos .gi{width:34px;height:34px}
+  .atajos small{display:block;font-weight:400;font-size:12.5px;color:var(--texto-2)}
+  .dock a svg.i{width:26px;height:26px}
+  .dock a:hover,.dock a:focus-visible{transform:scale(1.25);box-shadow:0 16px 26px rgba(6,43,91,.34);outline:0;z-index:2}
+  .dock a:hover + a,.dock a:has(+ a:hover){transform:scale(1.1)}
+  .dock .tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#0B4DB5}
+  .dock a:hover .tip,.dock a:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(.8)}
+  .bnav,.fan{display:none}
+  .sin-scroll{overflow:hidden}
+  @media (max-width:1000px){
+    body{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+    .dock{display:none}
+    .top-zone{background:linear-gradient(120deg,#062B5B 0%,#0B4DB5 52%,#2FA8F0 100%);border-radius:0 0 30px 30px;box-shadow:0 14px 28px rgba(11,77,181,.25);padding:env(safe-area-inset-top,0px) 0 54px;overflow:hidden}
+    .topbar{padding:14px 18px 0;gap:11px}
+    .brand-name{color:#fff;font-size:19px}.brand-name span{color:var(--azul-claro)}
+    .brand-sub{color:#9CC8F2}
+    .uchip{display:none}
+    .hero{background:none;box-shadow:none;padding:16px 0 0;border-radius:0;overflow:visible}
+    .hero svg.w{display:none}
+    .hero h1{font-size:27px}.hero p{font-size:14px}
+    .main{grid-template-columns:1fr;padding:0 16px;margin-top:-36px;gap:12px;position:relative;z-index:2}
+    .col{gap:12px}
+    .c{padding:14px 16px;border-radius:18px}
+    .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;height:calc(78px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #D3E3F5;box-shadow:0 -8px 24px rgba(6,43,91,.08);padding:8px 8px calc(14px + env(safe-area-inset-bottom,0px))}
+    .bnav a,.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;color:#6B7F99;border-radius:16px}
+    .bnav svg.i{width:22px;height:22px}
+    .bnav button.open{color:#fff;font-weight:700;background:var(--g-azul);box-shadow:0 8px 16px rgba(30,102,245,.35)}
+    .bnav .ico-x{display:none}.bnav button.open .ico-x{display:block}.bnav button.open .ico-grid{display:none}
+    .fan{display:block;position:fixed;inset:0;z-index:55;pointer-events:none}
+    .fan-ic svg.i{width:24px;height:24px}
+  }

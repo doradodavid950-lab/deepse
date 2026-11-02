@@ -4,8 +4,65 @@
  * Los datos NUNCA pasan por aquí: las peticiones a Supabase (y cualquier POST/PUT/DELETE) van directo a la red.
  * Al publicar una versión nueva, cambia VERSION para que todos los dispositivos limpien lo anterior.
  */
-const VERSION = 'dsi-v8';
-const ESTATICOS = ['estilos.css', 'shell.css', 'shell.js', 'supabase-config.js', 'menu-usuario.js', 'vista-administrador.js', 'campana.js', 'sesion-inactividad.js', 'logo-emblema.png'];
+const VERSION = 'dsi-v9';
+const ESTATICOS = [
+  'estilos.css',
+  'shell.css',
+  'shell.js',
+  'supabase-config.js',
+  'menu-usuario.js',
+  'vista-administrador.js',
+  'campana.js',
+  'sesion-inactividad.js',
+  'logo-emblema.png',
+  'css/almacenamiento-1.css',
+  'css/almacenamiento-2.css',
+  'css/ayuda.css',
+  'css/configuracion-1.css',
+  'css/configuracion-2.css',
+  'css/cuenta-1.css',
+  'css/cuenta-2.css',
+  'css/cuenta-3.css',
+  'css/inicio-1.css',
+  'css/inicio-2.css',
+  'css/login.css',
+  'css/normas-1.css',
+  'css/normas-2.css',
+  'css/normas-3.css',
+  'css/productos-1.css',
+  'css/productos-2.css',
+  'css/proveedores-1.css',
+  'css/proveedores-2.css',
+  'css/recepciones-1.css',
+  'css/recepciones-2.css',
+  'css/registro.css',
+  'css/reportes-1.css',
+  'css/reportes-2.css',
+  'css/trazabilidad-1.css',
+  'css/trazabilidad-2.css',
+  'css/trazabilidad-3.css',
+  'css/trazabilidad-publica.css',
+  'css/ventas-1.css',
+  'css/ventas-2.css',
+  'js/almacenamiento.js',
+  'js/ayuda.js',
+  'js/configuracion.js',
+  'js/cuenta.js',
+  'js/index.js',
+  'js/inicio.js',
+  'js/login-1.js',
+  'js/login-2.js',
+  'js/normas.js',
+  'js/productos.js',
+  'js/proveedores.js',
+  'js/recepciones.js',
+  'js/registro-1.js',
+  'js/registro-2.js',
+  'js/reportes.js',
+  'js/trazabilidad-publica.js',
+  'js/trazabilidad.js',
+  'js/ventas.js'
+];
 const SDK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
 
 self.addEventListener('install', function(e){

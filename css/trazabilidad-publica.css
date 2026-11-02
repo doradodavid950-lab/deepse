@@ -1,0 +1,109 @@
+/* ==========================================================
+   Estilos del módulo: trazabilidad-publica.html
+   Extraídos del HTML sin cambios: mismo contenido y mismo orden de aplicación.
+   ========================================================== */
+  :root{
+    --azul-oscuro:#062B5B;
+    --azul-medio:#1E66F5;
+    --azul-claro:#5CC0FF;
+    --celeste:#3FD0F2;
+    --fondo:#E6F0FA;
+    --borde:#DCE8F6;
+    --texto:#0F2540;
+    --texto-2:#5B7089;
+    --texto-3:#3D5573;
+    --verde:#17A673;
+    --rojo:#E53935;
+    --g-azul:linear-gradient(135deg,#1E66F5,#3FA9FF);
+    --g-verde:linear-gradient(135deg,#17A673,#5BDDA0);
+    --g-morado:linear-gradient(135deg,#7B5CC7,#B494F5);
+    --g-naranja:linear-gradient(135deg,#F08A24,#FFC46B);
+    --sombra:0 8px 22px rgba(6,43,91,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,system-ui,sans-serif;
+    color:var(--texto);background:var(--fondo);min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(28px + env(safe-area-inset-bottom,0px));
+  }
+  [hidden]{display:none!important}
+  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* ---------- Encabezado ---------- */
+  .hero{
+    background:linear-gradient(120deg,#062B5B 0%,#0B4DB5 52%,#2FA8F0 100%);
+    color:#fff;border-radius:0 0 32px 32px;position:relative;overflow:hidden;
+    padding:calc(env(safe-area-inset-top,0px) + 18px) 20px 60px;
+    box-shadow:0 14px 28px rgba(11,77,181,.25);
+  }
+  .hero svg.w{position:absolute;left:0;bottom:0;width:100%;height:48px;opacity:.9}
+  .brand{display:flex;align-items:center;gap:12px;max-width:520px;margin:0 auto;position:relative}
+  .brand-badge{width:44px;height:44px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 14px rgba(0,0,0,.25);flex:none}
+  .brand-badge img{width:33px;height:33px}
+  .brand-name{font-size:19px;font-weight:700;line-height:1}
+  .brand-name span{color:var(--azul-claro)}
+  .brand-sub{font-size:12px;color:#9CC8F2;margin-top:3px}
+  .chip-pub{margin-left:auto;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);font-size:12px;font-weight:700;white-space:nowrap}
+  .hero h1{font-size:25px;font-weight:700;margin-top:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative}
+  .hero p{font-size:14px;color:#CFE6FF;margin-top:3px;max-width:520px;margin-left:auto;margin-right:auto;position:relative}
+
+  /* ---------- Contenido ---------- */
+  main{max-width:520px;margin:0 auto;padding:0 16px;margin-top:-34px;position:relative;z-index:2;display:flex;flex-direction:column;gap:14px}
+  .card{background:#fff;border-radius:22px;border:1px solid var(--borde);box-shadow:var(--sombra);padding:18px}
+  .card h2{font-size:16px;font-weight:700;margin-bottom:12px}
+
+  .prod{display:flex;align-items:center;gap:14px}
+  .prod-ic{width:56px;height:56px;border-radius:18px;background:var(--g-azul);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 10px 20px rgba(30,102,245,.3)}
+  .prod-ic svg.i{width:26px;height:26px}
+  .prod b{font-size:19px;display:block;line-height:1.2}
+  .prod i{font-size:13px;color:var(--texto-2)}
+  .prod small{display:block;font-size:13px;color:var(--texto-2);margin-top:3px}
+
+  .verif{margin-top:14px;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;border:1px solid #BDEBD0;background:linear-gradient(135deg,#D6F7E2,#E9FBF1)}
+  .verif .vic{width:34px;height:34px;border-radius:50%;background:var(--g-verde);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .verif b{display:block;color:#12804F;font-size:15px}
+  .verif span{font-size:12.5px;color:#3F8A68}
+  .verif.pend{background:#FFF6E0;border-color:#F5D58A}
+  .verif.pend .vic{background:linear-gradient(135deg,#F08A24,#FFC46B)}
+  .verif.pend b{color:#9A6200}
+  .verif.pend span{color:#8A5A10}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+  .stat{background:#F5F9FE;border:1px solid #E1ECF8;border-radius:14px;padding:9px 10px}
+  .stat small{display:block;font-size:10.5px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .stat b{display:block;font-size:14px;margin-top:2px}
+
+  /* ---------- Recorrido ---------- */
+  .tl{position:relative;display:flex;flex-direction:column;gap:12px}
+  .tl-item{display:flex;gap:12px;position:relative}
+  .tl-item:not(:last-child)::after{content:"";position:absolute;left:19px;top:42px;bottom:-12px;width:3px;border-radius:3px;background:linear-gradient(#1E66F5,#3FD0F2)}
+  .tl-circle{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 14px rgba(30,102,245,.28);position:relative;z-index:1}
+  .tl-circle svg.i{width:18px;height:18px}
+  .tl-circle.azul{background:var(--g-azul)}
+  .tl-circle.verde{background:var(--g-verde)}
+  .tl-circle.morado{background:var(--g-morado)}
+  .tl-circle.naranja{background:var(--g-naranja)}
+  .tl-box{flex:1;min-width:0;background:#F5F9FE;border:1px solid #E1ECF8;border-radius:14px;padding:9px 13px}
+  .tl-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .tl-top h3{font-size:15px}
+  .tl-top time{font-size:12.5px;font-weight:700;color:var(--azul-medio);white-space:nowrap}
+  .tl-box p{font-size:13px;color:var(--texto-2);margin-top:3px;line-height:1.4}
+  .tl-box ul{list-style:none;margin-top:5px}
+  .tl-box li{font-size:13px;color:var(--texto-2);padding:4px 0;border-top:1px dashed #D7E4F3;display:flex;justify-content:space-between;gap:8px}
+  .tl-box li:first-child{border-top:0}
+  .tl-box li b{color:var(--texto);font-weight:700;white-space:nowrap}
+
+  .empty{text-align:center;color:var(--texto-2);font-size:14px;line-height:1.5;padding:24px 8px}
+  .empty .ico{width:58px;height:58px;border-radius:18px;margin:0 auto 10px;background:#EAF3FF;color:var(--azul-medio);display:flex;align-items:center;justify-content:center}
+  .empty .ico svg.i{width:28px;height:28px}
+  .empty button{margin-top:14px;height:44px;padding:0 20px;border-radius:14px;border:0;background:var(--g-azul);color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 8px 18px rgba(30,102,245,.3)}
+
+  /* Esqueleto de carga */
+  .sk{height:72px;border-radius:16px;margin-bottom:12px;background:linear-gradient(90deg,#E8F0FA 25%,#F6FAFF 50%,#E8F0FA 75%);background-size:200% 100%;animation:brillo 1.2s linear infinite}
+  @keyframes brillo{to{background-position:-200% 0}}
+  @media (prefers-reduced-motion:reduce){.sk{animation:none}}
+
+  .pie{text-align:center;font-size:12.5px;color:var(--texto-2);line-height:1.5;padding:4px 10px}
+  .pie b{color:var(--azul-medio)}

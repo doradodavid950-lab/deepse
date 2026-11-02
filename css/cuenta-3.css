@@ -1,0 +1,40 @@
+/* ==========================================================
+   Estilos del módulo: cuenta.html (bloque 3)
+   Extraídos del HTML sin cambios: mismo contenido y mismo orden de aplicación.
+   ========================================================== */
+  /* ===== Mi cuenta · diseño B (portada con avatar) ===== */
+  .mc-perfil{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px 22px}
+  .mc-av{position:relative;z-index:1;width:92px;height:92px;border-radius:50%;margin-top:-58px;border:5px solid #fff;color:#fff;font-size:40px;font-weight:700;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1E66F5,#3FA9FF);box-shadow:0 14px 28px rgba(30,102,245,.35)}
+  .mc-perfil h2{font-size:24px;line-height:1.2;color:var(--azul-oscuro);margin-top:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mc-correo{font-size:15px;color:var(--texto-2);margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mc-perfil .pf-tags{justify-content:center}
+  .mc-edit{margin-top:16px;padding:0 26px}
+  .mc-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;width:100%;margin-top:20px;text-align:left}
+  .mc-stats>div{background:var(--campo);border:1px solid var(--borde);border-radius:16px;padding:12px 14px;min-width:0}
+  .mc-stats dt{font-size:12.5px;color:var(--texto-2)}
+  .mc-stats dd{font-size:15px;font-weight:700;color:var(--azul-oscuro);margin-top:2px;overflow-wrap:anywhere}
+  .mc-g{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  .mc-g .c h3{margin-bottom:6px}
+  .mc-fila{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #EDF2F8}
+  .mc-fila:last-child{border-bottom:0}
+  .mc-ic{width:42px;height:42px;border-radius:13px;flex:none;color:#fff;display:flex;align-items:center;justify-content:center}
+  .mc-ic svg.i{width:21px;height:21px}
+  .mc-t{flex:1;min-width:0}
+  .mc-t b{display:block;font-size:14.5px}
+  .mc-t span{display:block;font-size:12.5px;color:var(--texto-2);overflow-wrap:anywhere}
+  .mc-t a{color:inherit}
+  .mc-creadores{text-align:center;padding:6px 0 10px}
+  .mc-creadores>p{font-size:12px;color:#8DA0B8;margin-bottom:8px}
+  .mc-lista{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px}
+  .mc-chip{display:inline-flex;align-items:center;gap:8px;padding:3px 6px;font-size:12.5px;font-weight:400;color:#8DA0B8}
+  .mc-chip i{font-style:normal;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#DCE8F6;color:#7A90AB;font-size:10px;font-weight:400}
+  @media (max-width:1180px){.mc-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media (max-width:1000px){
+    .mc-av{margin-top:0;width:84px;height:84px;font-size:36px}
+    .mc-perfil{padding:18px 16px 18px}
+    .mc-perfil h2{font-size:21px}
+    .mc-stats{grid-template-columns:1fr 1fr;gap:8px}
+    .mc-stats>div:nth-child(1),.mc-stats>div:nth-child(2),.mc-stats>div:nth-child(5){grid-column:1/-1}
+    .mc-g{grid-template-columns:1fr;gap:12px}
+    .mc-chip{font-size:13px}
+  }
